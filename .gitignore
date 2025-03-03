@@ -1,0 +1,33 @@
+# Python virtual environments
+venv/
+
+# Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+*.egg
+
+# OS specific files
+.DS_Store
+.DS_Store?
+._*
+Thumbs.db
+.Spotlight-V100
+.Trashes
+
+# Logs and databases
+*.log
+
+# Local configuration
+.env
+
+# Coverage reports
+.coverage
+coverage/
+htmlcov/
