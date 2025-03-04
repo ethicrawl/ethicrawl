@@ -1,8 +1,8 @@
 import urllib.parse
-from .http_client import HttpClient
-from .http_response import HttpResponse
-from .robots_handler import RobotsHandler
-from .sitemaps_handler import SitemapsHandler
+from ethicrawl.client.http_client import HttpClient
+from ethicrawl.client.http_response import HttpResponse
+from ethicrawl.robots.robots_handler import RobotsHandler
+from ethicrawl.sitemaps import SitemapFactory
 from typing import Optional, Union, Pattern
 import socket
 
@@ -55,10 +55,14 @@ class EthiCrawl:
 
         # Get sitemaps
 
-        self._sitemaps = SitemapsHandler(
-            self._http_client,
-            self._base_url,
-            self._robots_handler.get_sitemaps(),
+        # self._sitemaps = SitemapsHandler(
+        #     self._http_client,
+        #     self._base_url,
+        #     self._robots_handler.get_sitemaps(),
+        # )
+
+        self._sitemaps = SitemapFactory.create_index(
+            self._robots_handler.get_sitemaps()
         )
 
     def bind(self, url: str, http_client=None) -> bool:

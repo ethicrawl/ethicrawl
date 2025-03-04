@@ -1,4 +1,4 @@
-from .http_client import HttpClient
+from ..client.http_client import HttpClient
 from protego import Protego
 
 

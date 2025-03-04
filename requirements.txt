@@ -1,9 +1,16 @@
 attrs==25.1.0
+black==25.1.0
 certifi==2025.1.31
 charset-normalizer==3.4.1
+click==8.1.8
 h11==0.14.0
 idna==3.10
+lxml==5.3.1
+mypy-extensions==1.0.0
 outcome==1.3.0.post0
+packaging==24.2
+pathspec==0.12.1
+platformdirs==4.3.6
 Protego==0.4.0
 PySocks==1.7.1
 requests==2.32.3
