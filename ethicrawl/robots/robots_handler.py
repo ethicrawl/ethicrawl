@@ -1,15 +1,17 @@
-from ..client.http_client import HttpClient
 from protego import Protego
 
+from ethicrawl.client import HttpClient
+from ethicrawl.logger import LoggingMixin
 
-class RobotsHandler:
+
+class RobotsHandler(LoggingMixin):
     """
     Handler for robots.txt processing and URL permission checking.
 
     This class encapsulates all robots.txt related functionality for a single domain.
     """
 
-    def __init__(self, http_client: HttpClient, base_url, logger=None) -> None:
+    def __init__(self, http_client: HttpClient, base_url) -> None:
         """
         Initialize the RobotsHandler for a specific domain.
 
@@ -21,6 +23,8 @@ class RobotsHandler:
         self._http_client = http_client
         self._base_url = base_url
         self._parser = None
+
+        self._setup_logger(base_url, "robots")
 
         # Initialize the parser immediately
         self._init_parser()
@@ -35,8 +39,11 @@ class RobotsHandler:
         Returns:
             bool: True if the URL can be fetched, False otherwise
         """
-        print(self._http_client.user_agent)
-        return self._parser.can_fetch(url, self._http_client.user_agent)
+        can_fetch = self._parser.can_fetch(url, self._http_client.user_agent)
+        self._logger.debug(
+            f"Permission check for {url}: {'allowed' if can_fetch else 'denied'}"
+        )
+        return can_fetch
 
     def get_sitemaps(self):
         """
@@ -54,7 +61,9 @@ class RobotsHandler:
         Initialize the robots.txt parser for the domain.
         """
         robots_url = f"{self._base_url}/robots.txt"
-        print(f"Fetching robots.txt: {robots_url}")
+        self._logger.info(f"Fetching robots.txt: {robots_url}")
+
+        self._parser = Protego.parse("")
 
         try:
             # Use our HTTP client to fetch robots.txt
@@ -63,21 +72,18 @@ class RobotsHandler:
             if response and response.status_code == 200:
                 # Parse the robots.txt content using Protego
                 self._parser = Protego.parse(response.text)
-                print(f"Successfully parsed robots.txt")
+                self._logger.info(f"Successfully parsed {robots_url}")
 
                 # Log sitemaps if present
                 sitemaps = list(self._parser.sitemaps)
                 if sitemaps:
-                    print(f"Found {len(sitemaps)} sitemaps in robots.txt")
+                    self._logger.info(f"Found {len(sitemaps)} sitemaps in {robots_url}")
                     for sitemap in sitemaps:
-                        print(f"  - {sitemap}")
+                        self._logger.debug(f"{sitemap}")
                 else:
-                    print("No sitemaps found in robots.txt")
+                    self._logger.info(f"No sitemaps found in {robots_url}")
             else:
-                # If robots.txt can't be fetched, create an empty parser
-                self._parser = Protego.parse("")
-                print(f"No robots.txt found or couldn't be fetched")
+                self._logger.warning(f"{robots_url} not found")
         except Exception as e:
-            # Create an empty parser on error
-            self._parser = Protego.parse("")
-            print(f"Error fetching robots.txt: {e}")
+            msg = f"Error fetching {robots_url}: {e}"
+            self._logger.warning(msg)

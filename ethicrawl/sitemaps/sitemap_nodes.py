@@ -1,10 +1,11 @@
 from abc import ABC, abstractmethod
-from typing import List
+from typing import List, Optional
 from lxml import etree
 
 
 import lxml
 
+from ethicrawl.logger import LoggingMixin
 from .sitemap_urls import SitemapIndexUrl, SitemapUrlsetUrl
 from .sitemap_util import SitemapError, SitemapHelper, SitemapType
 
@@ -41,6 +42,18 @@ class SitemapNode(ABC):
             self._type = SitemapType.INDEX
         else:
             self._type = SitemapType.UNDEFINED
+        self._source_url = None
+
+    @property
+    def source_url(self) -> Optional[SitemapIndexUrl]:  # could also return None
+        return self._source_url
+
+    @source_url.setter
+    def source_url(self, url: SitemapIndexUrl) -> None:
+        if isinstance(url, SitemapIndexUrl):
+            self._source_url = url
+        else:
+            raise ValueError(f"Expected a SitemapIndexUrl, got {type(url)}")
 
     @property
     def type(self) -> SitemapType:
@@ -59,7 +72,7 @@ class SitemapNode(ABC):
         pass
 
 
-class IndexNode(SitemapNode):
+class IndexNode(SitemapNode, LoggingMixin):
     """Node representing a sitemap index."""
 
     def __init__(self, document: str) -> None:
@@ -107,7 +120,7 @@ class IndexNode(SitemapNode):
         return sitemaps
 
 
-class UrlsetNode(SitemapNode):
+class UrlsetNode(SitemapNode, LoggingMixin):
     """Node representing a sitemap urlset."""
 
     def __init__(self, document: str) -> None:

@@ -5,9 +5,11 @@ from ethicrawl.robots.robots_handler import RobotsHandler
 from ethicrawl.sitemaps import SitemapFactory
 from typing import Optional, Union, Pattern
 import socket
+import uuid
 
 
 class EthiCrawl:
+
     @staticmethod
     def validate(url, scheme_netloc_only=False):
         try:
@@ -36,7 +38,6 @@ class EthiCrawl:
         self._http_client = http_client or self._lightweight_http_client
 
         # Parse and validate the base URL
-        print(base)
         self._base = self.validate(base)
         parsed_base = urllib.parse.urlparse(self._base)
 
@@ -54,15 +55,8 @@ class EthiCrawl:
         self._robots_handler = RobotsHandler(self._http_client, self._base_url)
 
         # Get sitemaps
-
-        # self._sitemaps = SitemapsHandler(
-        #     self._http_client,
-        #     self._base_url,
-        #     self._robots_handler.get_sitemaps(),
-        # )
-
         self._sitemaps = SitemapFactory.create_index(
-            self._robots_handler.get_sitemaps()
+            self._robots_handler.get_sitemaps(), loc=self._base + "/robots.txt"
         )
 
     def bind(self, url: str, http_client=None) -> bool:
@@ -129,6 +123,12 @@ class EthiCrawl:
             return self._robots_handler.get_sitemaps()
         else:
             return self._sitemaps.discover(pattern)
+
+    @property
+    def uuid(self) -> uuid.UUID:
+        # my_domain = urllib.parse.urlparse(self._base).netloc
+        uuid5 = uuid.uuid5(uuid.NAMESPACE_URL, self._base)
+        return uuid5
 
     def _parse_url(self, url: str) -> urllib.parse.ParseResult:
         """Parse and normalize a URL, handling relative URLs and validating format"""

@@ -82,6 +82,16 @@ class SitemapIndexUrl:
         # Validate lastmod
         self.lastmod = self._validate_lastmod(self.lastmod)
 
+    def __str__(self) -> str:
+        """Human-readable string representation"""
+        if self.lastmod:
+            return f"{self.loc} (last modified: {self.lastmod})"
+        return f"{self.loc}"
+
+    def __repr__(self) -> str:
+        """Detailed representation for debugging"""
+        return f"SitemapIndexUrl(loc='{self.loc}', lastmod={repr(self.lastmod)})"
+
 
 @dataclass
 class SitemapUrlsetUrl(SitemapIndexUrl):
@@ -152,3 +162,23 @@ class SitemapUrlsetUrl(SitemapIndexUrl):
 
         # Validate priority
         self.priority = self._validate_priority(self.priority)
+
+    def __str__(self) -> str:
+        """Human-readable string representation"""
+        parts = [self.loc]
+
+        if self.lastmod:
+            parts.append(f"last modified: {self.lastmod}")
+        if self.changefreq:
+            parts.append(f"frequency: {self.changefreq}")
+        if self.priority is not None:
+            parts.append(f"priority: {self.priority}")
+
+        return " | ".join(parts)
+
+    def __repr__(self) -> str:
+        """Detailed representation for debugging"""
+        return (
+            f"SitemapUrlsetUrl(loc='{self.loc}', lastmod={repr(self.lastmod)}"
+            + f"changefreq={repr(self.changefreq)}, priority={repr(self.priority)}"
+        )
