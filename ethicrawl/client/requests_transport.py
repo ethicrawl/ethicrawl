@@ -50,8 +50,6 @@ class RequestsTransport(Transport):
 
             response = self.session.get(url, timeout=timeout)
 
-            # TODO: Deal with gzipped content
-
             # Convert requests.Response to our HttpResponse
             return HttpResponse(
                 status_code=response.status_code,

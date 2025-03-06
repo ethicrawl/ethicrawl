@@ -1,200 +1,30 @@
-from lxml import html
-from typing import List, Optional, Set
-import lxml
-import gzip
+from typing import List, Optional
+from ethicrawl.config.config import Config
 from ethicrawl.client import HttpClient
-from ethicrawl.sitemaps.sitemap_util import SitemapError, SitemapHelper
-from ethicrawl.sitemaps.sitemap_urls import SitemapIndexUrl, SitemapUrlsetUrl
-from ethicrawl.sitemaps.sitemap_nodes import SitemapNode, IndexNode, UrlsetNode
+from ethicrawl.logger import LoggingMixin
+from ethicrawl.sitemaps.sitemap_urls import SitemapUrlsetUrl
+from ethicrawl.sitemaps.node_factory import NodeFactory
+from ethicrawl.sitemaps.sitemap_nodes import IndexNode, UrlsetNode
+
+from ethicrawl.core import EthicrawlContext
+
+import re
 
 
-class SitemapFactory:
-    """Factory for creating sitemap nodes of the appropriate type."""
+class Sitemap(LoggingMixin):
+    """Builds sitemap trees and extracts URLs."""
 
-    @staticmethod
-    def _extract_xml_from_chromium_response(content: bytes) -> str:
+    def __init__(self, context: EthicrawlContext, url_filter: Optional[str] = None):
         """
-        Extract XML content from a chromium-rendered XML page.
+        Initialize the sitemap processor.
 
         Args:
-            content: Raw response content from chromium
-
-        Returns:
-            str: Raw XML content or original content if no wrapper detected
+            url_filter: Optional regex pattern to filter top-level sitemaps
         """
+        self._context = context
+        self.url_filter = re.compile(url_filter) if url_filter else None
 
-        content_str = content.decode("utf-8", errors="replace")
-
-        # Check if this is a browser-rendered XML page
-        if '<div id="webkit-xml-viewer-source-xml">' in content_str:
-            try:
-                # Parse HTML
-                root = html.fromstring(content_str)
-
-                # Extract content from the XML viewer div
-                xml_div = root.xpath('//div[@id="webkit-xml-viewer-source-xml"]')
-                if xml_div and len(xml_div) > 0:
-                    # Get the XML content as string
-                    xml_content = "".join(
-                        lxml.etree.tostring(child, encoding="unicode")
-                        for child in xml_div[0].getchildren()
-                    )
-                    return xml_content
-            except Exception as e:
-                print(f"Warning: Failed to extract XML from browser response: {e}")
-
-        # Return original content if extraction failed
-        return content_str
-
-    @staticmethod
-    def _validate(document: str) -> SitemapNode:
-        """
-        Validate a sitemap document and create the appropriate node type.
-
-        Args:
-            document: XML document as string
-
-        Returns:
-            A sitemap node of the appropriate type
-
-        Raises:
-            SitemapError: For invalid sitemap documents
-        """
-        # Validate the XML structure using SitemapNode
-        root = SitemapNode.get_lxml(document=document)
-        root_name = lxml.etree.QName(root.tag).localname
-
-        if root_name == "urlset":
-            return UrlsetNode(document)
-        elif root_name == "sitemapindex":
-            return IndexNode(document)
-        else:
-            raise SitemapError(f"Unsupported sitemap type: {root_name}")
-
-    @staticmethod
-    def create(sitemap_url: SitemapIndexUrl, http_client: HttpClient) -> SitemapNode:
-        """
-        Create a sitemap node by fetching and parsing a remote URL.
-
-        Args:
-            sitemap_url: The SitemapIndexUrl to fetch
-            http_client: HttpClient instance for making requests
-
-        Returns:
-            A sitemap node of the appropriate type
-
-        Raises:
-            SitemapError: For any errors during fetch or parse
-        """
-        try:
-            # URL is already validated in the SitemapIndexUrl object
-            url = sitemap_url
-
-            # Fetch the sitemap
-            response = http_client.get(url.loc)
-
-            # Check for success
-            if not response or response.status_code != 200:
-                raise SitemapError(
-                    f"Failed to fetch sitemap from {url}: {response.status_code if response else 'No response'}"
-                )
-
-            # FIXME: Handle gzip sitemaps if the client hasn't already
-            # if url.loc.lower().endswith(
-            #     ".gz"
-            # ) or "application/gzip" in response.headers.get("content-type"):
-            #     try:
-            #         content = gzip.decompress(response.content)
-            #     except Exception as e:
-            #         raise SitemapError(f"Failed to decompress gzipped sitemap {str(e)}")
-            # else:
-            #     content = response.content
-
-            # Extract XML from browser-rendered response if needed
-            document = SitemapFactory._extract_xml_from_chromium_response(
-                response.content
-            )
-
-            # Validate the XML structure using SitemapNode
-            node = SitemapFactory._validate(document=document)
-
-            node.source_url = url
-
-            return node
-
-        except Exception as e:
-            if isinstance(e, SitemapError):
-                raise
-            raise SitemapError(
-                f"Error creating sitemap from URL {sitemap_url.loc}: {str(e)}"
-            )
-
-    @staticmethod
-    def create_index(
-        sitemap_urls: List[str], loc: str, lastmod: str = "2025-03-01"
-    ) -> IndexNode:
-        """
-        Create a new SitemapIndexNode from a list of sitemap URLs.
-
-        Args:
-            sitemap_urls: List of sitemap URL strings
-            lastmod: Optional lastmod date to use for all sitemaps
-
-        Returns:
-            SitemapIndexNode: A sitemap index containing the provided URLs
-
-        Raises:
-            SitemapError: If the sitemap generation fails
-        """
-        try:
-            # Generate the sitemap XML directly as a string
-            xml_lines = [
-                '<?xml version="1.0" encoding="UTF-8"?>',
-                '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
-            ]
-
-            # Add each sitemap URL as an entry
-            for url in sitemap_urls:
-                try:
-                    # Validate and normalize the URL
-                    url = SitemapHelper.validate_url(url)
-                    xml_lines.append("  <sitemap>")
-                    xml_lines.append(f"    <loc>{url}</loc>")
-                    if lastmod:
-                        xml_lines.append(f"    <lastmod>{lastmod}</lastmod>")
-                    xml_lines.append("  </sitemap>")
-                except ValueError as e:
-                    print(f"Skipping invalid URL: {e}")
-                    continue
-
-            # Close the root element
-            xml_lines.append("</sitemapindex>")
-
-            # Join into a single string
-            document = "\n".join(xml_lines)
-
-            # Validate and return the document
-            node = SitemapFactory._validate(document=document)
-
-            node.source_url = SitemapIndexUrl(loc=loc, lastmod=lastmod)
-
-            return node
-
-        except Exception as e:
-            import traceback
-
-            error_details = traceback.format_exc()
-            if isinstance(e, SitemapError):
-                raise
-            raise SitemapError(
-                f"Error creating sitemap index: {str(e)}\n{error_details}"
-            )
-
-    staticmethod
-
-    def build_tree(
-        root_node: IndexNode, http_client: HttpClient, max_depth: int = 5
-    ) -> List[SitemapUrlsetUrl]:
+    def items(self, root_node: IndexNode, max_depth: int = 5) -> List[SitemapUrlsetUrl]:
         """
         Build a sitemap tree and return a flat list of all URLs.
 
@@ -207,7 +37,21 @@ class SitemapFactory:
             List of all SitemapUrlsetUrl objects from all sitemaps
         """
         # Initialize tracking set for cycle detection
+        logger = self._context.get_logger("sitemap")
         visited_urls = set()
+
+        if self.url_filter:
+            original_count = len(root_node.items)
+            root_node.items = [
+                item for item in root_node.items if self.url_filter.search(item.loc)
+            ]
+            filtered_count = len(root_node.items)
+
+            if filtered_count < original_count:
+                logger.info(
+                    f"Filtered sitemaps with pattern '{self.url_filter.pattern}': "
+                    f"{filtered_count}/{original_count} remaining"
+                )
 
         # Define the recursive implementation as an inner function
         def _build_tree_recursive(
@@ -217,7 +61,7 @@ class SitemapFactory:
 
             # Check recursion depth
             if current_depth >= max_depth:
-                print(
+                logger.warning(
                     f"Warning: Maximum recursion depth ({max_depth}) reached. Some sitemaps may not be processed."
                 )
                 return all_urls
@@ -231,16 +75,18 @@ class SitemapFactory:
                 try:
                     # Skip already visited URLs to prevent cycles
                     if sitemap_url.loc in visited_urls:
-                        print(f"Skipping already visited sitemap: {sitemap_url.loc}")
+                        logger.debug(
+                            f"Skipping already visited sitemap: {sitemap_url.loc}"
+                        )
                         continue
 
-                    print(f"Processing sitemap: {sitemap_url.loc}")
+                    logger.debug(f"Processing sitemap: {sitemap_url.loc}")
 
                     # Mark this URL as visited
                     visited_urls.add(sitemap_url.loc)
 
                     # Fetch and parse this child sitemap
-                    child_node = SitemapFactory.create(sitemap_url, http_client)
+                    child_node = NodeFactory.create(self._context, sitemap_url)
 
                     # If it's another index node, recursively build its tree
                     if isinstance(child_node, IndexNode):
@@ -260,9 +106,14 @@ class SitemapFactory:
                     node.children.append(child_node)
 
                 except Exception as e:
-                    print(f"Error processing sitemap URL {sitemap_url.loc}: {str(e)}")
+                    logger.warning(
+                        f"Error processing sitemap URL {sitemap_url.loc}: {str(e)}"
+                    )
                     continue
 
+            logger.info(
+                f"Visited {len(visited_urls)} sitemaps and found {len(all_urls)} unique URLs"
+            )
             return all_urls
 
         # Start the recursive process and return results

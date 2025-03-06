@@ -12,7 +12,7 @@ class HttpConfig:
     _retry_delay: float = field(default=1.0, repr=False)
     _rate_limit: Optional[float] = field(default=0.5, repr=False)
     _jitter: float = field(default=0.2, repr=False)
-    _user_agent: str = field(default="EthiCrawl/1.0", repr=False)
+    _user_agent: str = field(default="Ethicrawl/1.0", repr=False)
     headers: Dict[str, str] = field(default_factory=dict)  # Not using property for this
 
     def __post_init__(self):

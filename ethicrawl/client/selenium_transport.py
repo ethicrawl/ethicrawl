@@ -5,9 +5,16 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from .transport import Transport
+
 from .http_response import HttpResponse
 import time
 import json
+
+# import html
+import lxml
+from lxml import html
+
+from typing import Dict, Any, Optional
 
 
 class SeleniumTransport(Transport):
@@ -98,9 +105,6 @@ class SeleniumTransport(Transport):
             if self.driver.get_log("performance"):
                 pass  # Just accessing to clear buffer
 
-            # Note: We intentionally ignore User-Agent in headers for Selenium
-            # as we want to use the browser's authentic User-Agent
-
             # Set page load timeout
             if timeout:
                 self.driver.set_page_load_timeout(timeout)
@@ -108,10 +112,10 @@ class SeleniumTransport(Transport):
             # Navigate to URL
             self.driver.get(url)
 
-            # Always capture the user agent on each request
+            # Update user agent information
             self._user_agent = self.driver.execute_script("return navigator.userAgent;")
 
-            # Wait for page to load (more reliable than fixed sleep)
+            # Wait for page to load
             try:
                 WebDriverWait(self.driver, timeout or 10).until(
                     EC.presence_of_element_located((By.TAG_NAME, "body"))
@@ -123,7 +127,7 @@ class SeleniumTransport(Transport):
             if self.wait_time:
                 time.sleep(self.wait_time)
 
-            # Get page content
+            # Get page source and final URL
             page_source = self.driver.page_source
             final_url = self.driver.current_url
 
@@ -132,23 +136,64 @@ class SeleniumTransport(Transport):
                 url, final_url
             )
 
-            # Create comprehensive response headers
+            # Convert page source to bytes for content
+            content_bytes = page_source.encode("utf-8")
+
+            # Handle XML content if needed
+            if mime_type and ("xml" in mime_type or url.lower().endswith(".xml")):
+                # Process XML content when rendered as HTML
+                content_bytes = self._extract_xml_content(page_source)
+
+            # Create response headers
             headers = {
                 "URL": final_url,
                 "Content-Type": mime_type or "text/html",
                 **response_headers,
             }
 
-            # Create and return HttpResponse
-            return HttpResponse(
+            # Create the response with text properly decoded from content
+            response = HttpResponse(
                 status_code=status_code or 200,
-                text=page_source,
+                text=content_bytes.decode("utf-8", errors="replace"),
                 headers=headers,
-                content=page_source.encode("utf-8"),
+                content=content_bytes,
             )
+
+            return response
 
         except Exception as e:
             raise IOError(f"Error fetching {url} with Selenium: {e}")
+
+    def _extract_xml_content(self, content_str: str) -> bytes:
+        """
+        Extract XML content when Chrome/Chromium renders XML as HTML.
+
+        Args:
+            content_str: Page source as string
+
+        Returns:
+            bytes: Raw XML content as bytes
+        """
+        try:
+            # Check if this is a browser-rendered XML page
+            if '<div id="webkit-xml-viewer-source-xml">' in content_str:
+                # Parse HTML
+                root = html.fromstring(content_str)
+
+                # Extract content from the XML viewer div
+                xml_div = root.xpath('//div[@id="webkit-xml-viewer-source-xml"]')
+                if xml_div and len(xml_div) > 0:
+                    # Get the XML content as string
+                    xml_content = "".join(
+                        lxml.etree.tostring(child, encoding="unicode")
+                        for child in xml_div[0].getchildren()
+                    )
+                    return xml_content.encode("utf-8")
+        except Exception as e:
+            print(f"Warning: Failed to extract XML from browser response: {e}")
+
+        # Return original content encoded as bytes if extraction failed
+        return content_str.encode("utf-8")
 
     def _extract_network_info(self, requested_url, final_url):
         """

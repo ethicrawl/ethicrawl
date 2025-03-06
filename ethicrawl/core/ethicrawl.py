@@ -2,13 +2,13 @@ import urllib.parse
 from ethicrawl.client.http_client import HttpClient
 from ethicrawl.client.http_response import HttpResponse
 from ethicrawl.robots.robots_handler import RobotsHandler
-from ethicrawl.sitemaps import SitemapFactory
+
+from ethicrawl.sitemaps.node_factory import NodeFactory
 from typing import Optional, Union, Pattern
 import socket
-import uuid
 
 
-class EthiCrawl:
+class Ethicrawl:
 
     @staticmethod
     def validate(url, scheme_netloc_only=False):
@@ -52,12 +52,17 @@ class EthiCrawl:
         self._allowed_domains = {self._base_domain: self._http_client}
 
         # Initialize robots handler for the main site
-        self._robots_handler = RobotsHandler(self._http_client, self._base_url)
+
+        from ethicrawl.core import EthicrawlContext
+
+        context = EthicrawlContext(url=self._base_url, http_client=self._http_client)
+
+        self._robots_handler = RobotsHandler(context)
 
         # Get sitemaps
-        self._sitemaps = SitemapFactory.create_index(
-            self._robots_handler.get_sitemaps(), loc=self._base + "/robots.txt"
-        )
+        # self._sitemaps = NodeFactory.create_index(
+        #     context, self._robots_handler.get_sitemaps(), loc=self._base + "/robots.txt"
+        # )
 
     def bind(self, url: str, http_client=None) -> bool:
         try:
@@ -121,14 +126,8 @@ class EthiCrawl:
         # Simply proxy to the SitemapsHandler's discover method
         if fast:
             return self._robots_handler.get_sitemaps()
-        else:
-            return self._sitemaps.discover(pattern)
-
-    @property
-    def uuid(self) -> uuid.UUID:
-        # my_domain = urllib.parse.urlparse(self._base).netloc
-        uuid5 = uuid.uuid5(uuid.NAMESPACE_URL, self._base)
-        return uuid5
+        # else:
+        #     return self._sitemaps.discover(pattern)
 
     def _parse_url(self, url: str) -> urllib.parse.ParseResult:
         """Parse and normalize a URL, handling relative URLs and validating format"""

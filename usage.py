@@ -1,95 +1,70 @@
-import logging
-from ethicrawl import EthiCrawl
+from ethicrawl import Ethicrawl
 from ethicrawl.client import HttpClient
-from ethicrawl.sitemaps import SitemapFactory
 from ethicrawl.config import Config
-import random
+from ethicrawl.sitemaps import Sitemap
+from ethicrawl.logger import Logger
+from ethicrawl.core import EthicrawlContext
+
+from ethicrawl.sitemaps.node_factory import NodeFactory
+
+# from ethicrawl.logger.formatter import GeoCitiesFormatter
 
 
 def setup_logging():
     """Configure logging for the application"""
-    # Create formatter
-    formatter = logging.Formatter(
-        "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-    )
+    config = Config()
+    # config.logger.level = "INFO"
+    # config.logger.console_enabled = True
+    # config.logger.use_colors = True
+    config.logger.set_component_level("robots", "DEBUG")
+    config.logger.set_component_level("sitemap", "DEBUG")
 
-    # Create console handler and set level
-    console = logging.StreamHandler()
-    console.setFormatter(formatter)
+    # config.logger.set_component_level("sitemaps", "WARNING")
 
-    # Configure root logger
-    root_logger = logging.getLogger()
-    root_logger.setLevel(logging.WARNING)  # Set base level for all loggers
-    root_logger.addHandler(console)
-
-    # Configure ethicrawl loggers specifically
-    ethicrawl_logger = logging.getLogger("ethicrawl")
-    ethicrawl_logger.setLevel(logging.INFO)  # More detailed for our library
-
-    # ethicrawl_logger.setLevel(logging.TRACE)
-
-    # You can also set specific component levels if needed
-    # logging.getLogger("ethicrawl.gb_maxmara_com.robots").setLevel(logging.DEBUG)
+    # Initialize logging
+    Logger.setup_logging()
 
 
 if __name__ == "__main__":
-    c = Config()
 
-    print(c.http.timeout)
-    c.http.timeout = 20
-    print(c.http.timeout)
+    setup_logging()
 
-    try:
-        c.http.timeout = -5  # Should raise ValueError
-    except ValueError as e:
-        print(f"Validation error: {e}")
+    # site = "https://gb.maxmara.com"
+    site = "https://zadig-et-voltaire.com"
 
-    try:
-        c.http.jitter = 1.5  # Should raise ValueError
-    except ValueError as e:
-        print(f"Validation error: {e}")
+    # client = http_client = HttpClient.with_selenium(headless=False)  # selenium
+    client = HttpClient()  # requests
 
-    c.update({"_lock": "bob", "http": {"timeout": 27}})
+    context = EthicrawlContext(site, client)
 
-    print(c._lock, c.http.timeout)
+    ec = Ethicrawl(site, http_client=client)  # .with_selenium(headless=False))
 
-    print(c)
-    print(c.to_dict())
+    # index = NodeFactory.create_index(
+    #     context, ec._robots_handler.get_sitemaps(), loc=f"{site}/robots.txt"
+    # )
 
-    d = c.to_dict()
+    from ethicrawl.sitemaps.sitemap_nodes import IndexNode
+    from ethicrawl.sitemaps.sitemap_urls import SitemapIndexUrl
 
-    d["http"]["timeout"] = 25
+    index = IndexNode(context)
+    index.items = ec._robots_handler.sitemaps
 
-    c.update(d)
+    # from ethicrawl.sitemaps.sitemap import Sitemap
 
-    print(c)
+    uk_usd_filter = r"uk_en|usd_store_en"
+    # Better API design
+    # tree = Sitemap(context, url_filter=uk_usd_filter).from_robots().items()
 
-# python usage.py
-# 30.0
-# 20.0
-# Validation error: timeout must be positive
-# Validation error: jitter must be between 0 and 1
-# <unlocked _thread.RLock object owner=0 count=0 at 0x774d45dd0e40> 27.0
-# {
-#   "http": {
-#     "headers": {},
-#     "jitter": 0.2,
-#     "max_retries": 3,
-#     "rate_limit": 0.5,
-#     "retry_delay": 1.0,
-#     "timeout": 27.0,
-#     "user_agent": "EthiCrawl/1.0"
-#   }
-# }
-# {'http': {'headers': {}, 'jitter': 0.2, 'max_retries': 3, 'rate_limit': 0.5, 'retry_delay': 1.0, 'timeout': 27.0, 'user_agent': 'EthiCrawl/1.0'}}
-# {
-#   "http": {
-#     "headers": {},
-#     "jitter": 0.2,
-#     "max_retries": 3,
-#     "rate_limit": 0.5,
-#     "retry_delay": 1.0,
-#     "timeout": 25.0,
-#     "user_agent": "EthiCrawl/1.0"
-#   }
-# }
+    # tree = Sitemap().items(context, index)
+
+    # Better API design
+    # Most streamlined approach
+    # sample product url = https://zadig-et-voltaire.com/eu/uk/p/WWDR02501404/dress-women-ramelil-dress-encre-wwdr02501
+    product_filter = r"/p/._?/"  # probably not escaped correctly
+    products = (
+        Sitemap(context)
+        .filter(uk_usd_filter)
+        .from_robots()
+        .items()
+        .filter(product_filter)
+    )

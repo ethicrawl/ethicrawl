@@ -1,8 +1,8 @@
-from ethicrawl.sitemaps.sitemap import SitemapFactory
+from ethicrawl.sitemaps.sitemap import Sitemap
 from ethicrawl.sitemaps.sitemap_urls import SitemapIndexUrl, SitemapUrlsetUrl
 
 __all__ = [
-    "SitemapFactory",
+    "Sitemap",
     "SitemapIndexUrl",
     "SitemapUrlsetUrl",
 ]

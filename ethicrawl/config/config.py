@@ -4,6 +4,7 @@ import json
 from dataclasses import dataclass, field
 from typing import Dict
 from .http_config import HttpConfig
+from .logger_config import LoggerConfig
 
 
 class SingletonMeta(type):
@@ -25,6 +26,7 @@ class Config(metaclass=SingletonMeta):
     """Main application configuration"""
 
     http: HttpConfig = field(default_factory=HttpConfig)
+    logger: LoggerConfig = field(default_factory=LoggerConfig)
 
     # Thread safety helpers
     _lock = threading.RLock()

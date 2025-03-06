@@ -1,5 +1,7 @@
 from protego import Protego
-
+from typing import List
+from ethicrawl.sitemaps.sitemap_urls import SitemapIndexUrl
+from ethicrawl.core import EthicrawlContext
 from ethicrawl.client import HttpClient
 from ethicrawl.logger import LoggingMixin
 
@@ -11,7 +13,7 @@ class RobotsHandler(LoggingMixin):
     This class encapsulates all robots.txt related functionality for a single domain.
     """
 
-    def __init__(self, http_client: HttpClient, base_url) -> None:
+    def __init__(self, context: EthicrawlContext) -> None:
         """
         Initialize the RobotsHandler for a specific domain.
 
@@ -20,11 +22,16 @@ class RobotsHandler(LoggingMixin):
             base_url (str): Base URL of the domain to handle
             logger: Logger for logging messages (optional)
         """
-        self._http_client = http_client
-        self._base_url = base_url
+        if not isinstance(context, EthicrawlContext):
+            raise ValueError(f"Invalid Context Provided")
+        else:
+            self._context = context
+
+        # self._http_client = http_client
+        # self._base_url = base_url
         self._parser = None
 
-        self._setup_logger(base_url, "robots")
+        self._setup_logger(self._context.url, "robots")
 
         # Initialize the parser immediately
         self._init_parser()
@@ -39,13 +46,14 @@ class RobotsHandler(LoggingMixin):
         Returns:
             bool: True if the URL can be fetched, False otherwise
         """
-        can_fetch = self._parser.can_fetch(url, self._http_client.user_agent)
+        can_fetch = self._parser.can_fetch(url, self._context.client.user_agent)
         self._logger.debug(
             f"Permission check for {url}: {'allowed' if can_fetch else 'denied'}"
         )
         return can_fetch
 
-    def get_sitemaps(self):
+    @property
+    def sitemaps(self) -> List[SitemapIndexUrl]:
         """
         Get sitemap URLs from the robots.txt.
 
@@ -53,6 +61,8 @@ class RobotsHandler(LoggingMixin):
             list: List of sitemap URLs
         """
         if self._parser:
+
+            return [SitemapIndexUrl(url) for url in self._parser.sitemaps]
             return list(self._parser.sitemaps)
         return []
 
@@ -60,14 +70,14 @@ class RobotsHandler(LoggingMixin):
         """
         Initialize the robots.txt parser for the domain.
         """
-        robots_url = f"{self._base_url}/robots.txt"
+        robots_url = f"{self._context.url}/robots.txt"
         self._logger.info(f"Fetching robots.txt: {robots_url}")
 
         self._parser = Protego.parse("")
 
         try:
             # Use our HTTP client to fetch robots.txt
-            response = self._http_client.get(robots_url)
+            response = self._context.client.get(robots_url)
 
             if response and response.status_code == 200:
                 # Parse the robots.txt content using Protego
@@ -77,9 +87,11 @@ class RobotsHandler(LoggingMixin):
                 # Log sitemaps if present
                 sitemaps = list(self._parser.sitemaps)
                 if sitemaps:
-                    self._logger.info(f"Found {len(sitemaps)} sitemaps in {robots_url}")
+                    self._logger.info(
+                        f"Discovered {len(sitemaps)} sitemaps in {robots_url}"
+                    )
                     for sitemap in sitemaps:
-                        self._logger.debug(f"{sitemap}")
+                        self._logger.debug(f"Discovered: {sitemap} in {robots_url}")
                 else:
                     self._logger.info(f"No sitemaps found in {robots_url}")
             else:

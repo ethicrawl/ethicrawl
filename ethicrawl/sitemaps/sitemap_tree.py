@@ -1,2 +1,0 @@
-class SitemapTree:
-    pass
