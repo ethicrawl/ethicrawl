@@ -2,7 +2,7 @@ import threading
 import copy
 import json
 from dataclasses import dataclass, field
-from typing import Dict
+from typing import Dict, Any
 from .http_config import HttpConfig
 from .logger_config import LoggerConfig
 
@@ -41,24 +41,29 @@ class Config(metaclass=SingletonMeta):
         with self._lock:
             return copy.deepcopy(self)
 
-    def update(self, config_dict):
-        """Thread-safe update of multiple config values."""
+    def update(self, config_dict: Dict[str, Any]) -> None:
+        """Update configuration from dictionary."""
         with self._lock:
-            for section, values in config_dict.items():
-                # Skip private attributes
-                if section.startswith("_"):
+            for section_name, section_dict in config_dict.items():
+                if not hasattr(self, section_name):
                     continue
 
-                if hasattr(self, section):
-                    section_obj = getattr(self, section)
-                    if isinstance(values, dict):
-                        for k, v in values.items():
-                            # Skip private attributes
-                            if k.startswith("_"):
-                                continue
+                section_obj = getattr(self, section_name)
 
-                            if hasattr(section_obj, k):
-                                setattr(section_obj, k, v)
+                for k, v in section_dict.items():
+                    # Special handling for component_levels
+                    if section_name == "logger" and k == "component_levels":
+                        # Use the set_component_level method instead of direct assignment
+                        for component, level in v.items():
+                            section_obj.set_component_level(component, level)
+                    else:
+                        try:
+                            setattr(section_obj, k, v)
+                        except AttributeError as e:
+                            # Provide a more helpful error message
+                            raise AttributeError(
+                                f"Failed to set '{k}' on {section_name} config: {e}"
+                            )
 
     @classmethod
     def reset(cls):
@@ -113,7 +118,6 @@ class Config(metaclass=SingletonMeta):
         return result
 
     def __str__(self):
-        """Return a string representation of the config."""
-        import json
+        """Return a JSON string representation of the config."""
 
         return json.dumps(self.to_dict(), indent=2)

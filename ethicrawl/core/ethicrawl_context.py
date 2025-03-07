@@ -1,35 +1,28 @@
-from ethicrawl.client import HttpClient
-from typing import Optional
+# from ethicrawl.client import HttpClient
+from typing import Optional, TYPE_CHECKING, Any
 import urllib.parse
 from ethicrawl.logger import Logger
+from ethicrawl.core.url import Url
+
+if TYPE_CHECKING:
+    from ethicrawl.client import HttpClient
 
 
 class EthicrawlContext:
-    def __init__(self, url: str, http_client: Optional[HttpClient] = None):
-        self._url = self._validate_and_normalize_url(url)
-        self._client = self._validate_client(http_client)  # Can be None
+    def __init__(self, url: Url, http_client: Optional["HttpClient"] = None) -> None:
+        self._url = Url(str(url))
+        self._client = None
+        if http_client is not None:
+            self._client = self._validate_client(http_client)
         self._logger = Logger.logger(self._url, "core")
 
-    def _validate_and_normalize_url(self, url: str) -> str:
-        """Validate URL and normalize to base URL (protocol + domain)."""
-        if not isinstance(url, str):
-            raise ValueError(f"URL must be a string, got {type(url)}")
-
-        # Parse URL into components
-        parsed = urllib.parse.urlparse(url)
-
-        # Check that we have the minimum required components
-        if not (parsed.scheme and parsed.netloc):
-            raise ValueError(f"URL must contain protocol and domain: {url}")
-
-        # Normalize to base URL (protocol + domain)
-        base_url = f"{parsed.scheme}://{parsed.netloc}"
-        return base_url
-
-    def _validate_client(self, client: Optional[HttpClient]) -> Optional[HttpClient]:
+    def _validate_client(
+        self, client: Any
+    ) -> Optional["HttpClient"]:  # Use Any for runtime
         """Validate client is either None or an HttpClient instance."""
         if client is None:
             return None
+        from ethicrawl.client import HttpClient
 
         if not isinstance(client, HttpClient):
             raise ValueError(
@@ -38,22 +31,22 @@ class EthicrawlContext:
         return client
 
     @property
-    def url(self) -> str:
+    def url(self) -> Url:
         return self._url
 
     @url.setter
     def url(self, url: str):
-        self._url = self._validate_and_normalize_url(url)
+        self._url = Url(url)
 
     @property
-    def client(self) -> Optional[HttpClient]:
+    def client(self) -> Optional["HttpClient"]:
         return self._client
 
     @client.setter
-    def client(self, client: Optional[HttpClient]):
+    def client(self, client: Optional["HttpClient"]):
         self._client = self._validate_client(client)
 
-    def get_logger(self, component: str):
+    def logger(self, component: str):
         """Get a component-specific logger within this context."""
         return Logger.logger(self._url, component)
 

@@ -17,12 +17,12 @@ from lxml import html
 from typing import Dict, Any, Optional
 
 
-class SeleniumTransport(Transport):
-    """Transport implementation using Selenium for JavaScript-rendered content."""
+class ChromiumTransport(Transport):
+    """Transport implementation using Chromium for JavaScript-rendered content."""
 
     def __init__(self, headless=True, wait_time=3):
         """
-        Initialize Selenium transport.
+        Initialize Chromium transport.
 
         Args:
             headless (bool): Run browser in headless mode
@@ -52,7 +52,7 @@ class SeleniumTransport(Transport):
     @property
     def user_agent(self):
         """
-        Get the User-Agent string used by Selenium.
+        Get the User-Agent string used by Chromium.
 
         Returns:
             str: The User-Agent string
@@ -75,22 +75,22 @@ class SeleniumTransport(Transport):
     @user_agent.setter
     def user_agent(self, agent):
         """
-        Set the User-Agent string for Selenium.
+        Set the User-Agent string for Chromium.
         This is a passive operation - it only records what was passed,
         but doesn't actually modify the browser's User-Agent.
 
         Args:
             agent (str): The User-Agent string that was requested
         """
-        # For Selenium, we just record that this was requested but don't modify
+        # For Chromium, we just record that this was requested but don't modify
         # the browser's actual User-Agent to maintain authenticity
         print(
-            f"Note: User-Agent override requested to '{agent}' but Selenium uses browser's native User-Agent"
+            f"Note: User-Agent override requested to '{agent}' but Chromium uses browser's native User-Agent"
         )
 
     def get(self, url, timeout=None, headers=None) -> HttpResponse:
         """
-        Make a GET request using Selenium with full network information capture.
+        Make a GET request using Chromium with full network information capture.
 
         Args:
             url (str): The URL to request
@@ -162,7 +162,7 @@ class SeleniumTransport(Transport):
             return response
 
         except Exception as e:
-            raise IOError(f"Error fetching {url} with Selenium: {e}")
+            raise IOError(f"Error fetching {url} with Chromium: {e}")
 
     def _extract_xml_content(self, content_str: str) -> bytes:
         """

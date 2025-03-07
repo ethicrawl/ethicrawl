@@ -1,3 +1,4 @@
+# ethicrawl/sitemaps/sitemap_result.py
 from typing import List
 import re
 from ethicrawl.core import EthicrawlContext
@@ -10,7 +11,7 @@ class SitemapResult:
     def __init__(self, urls: List[SitemapUrlsetUrl], context: EthicrawlContext):
         self._urls = urls
         self._context = context
-        self._logger = context.get_logger("sitemap.result")
+        self._logger = context.logger("sitemap.result")
 
     def filter(self, pattern: str) -> "SitemapResult":
         """Filter URLs by pattern and return a new result object."""
@@ -21,7 +22,7 @@ class SitemapResult:
 
         if filtered_count < original_count:
             self._logger.info(
-                f"URL filter '{pattern}': {filtered_count}/{original_count} remaining"
+                f"URL filter '{pattern}': {filtered_count}/{original_count} matched"
             )
 
         return SitemapResult(filtered, self._context)

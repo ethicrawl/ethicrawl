@@ -6,6 +6,7 @@ from typing import Optional, Dict
 import sys
 from ethicrawl.config.config import Config
 from ethicrawl.logger.formatter import ColorFormatter
+from ethicrawl.core.url import Url
 
 
 class Logger:
@@ -91,7 +92,7 @@ class Logger:
         return name or "unnamed"
 
     @staticmethod
-    def logger(url: str, component: Optional[str] = None) -> logging.Logger:
+    def logger(url: Url, component: Optional[str] = None) -> logging.Logger:
         """
         Get a logger for the specified URL, optionally with a component name.
 
@@ -107,13 +108,8 @@ class Logger:
             Logger.setup_logging()
 
         prefix = __name__.split(".")[0]
-        parsed = urllib.parse.urlparse(url)
 
-        if not (parsed.scheme and parsed.netloc):
-            raise ValueError(f"Invalid URL format: {url}")
-
-        # Replace dots in domain with underscores to maintain proper hierarchy
-        domain = parsed.netloc.replace(".", "_")
+        domain = url.hostname.replace(".", "_")
 
         # Build the logger name
         if component:

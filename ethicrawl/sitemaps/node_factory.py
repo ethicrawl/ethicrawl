@@ -61,14 +61,14 @@ class NodeFactory:
         Raises:
             SitemapError: For any errors during fetch or parse
         """
-        logger = context.get_logger("sitemap.factory.create")
+        logger = context.logger("sitemap.factory.create")
         try:
             # URL is already validated in the SitemapIndexUrl object
             url = sitemap_url
 
             # Fetch the sitemap
             response = context.client.get(url.loc)
-            logger = context.get_logger("sitemap")
+            # logger = context.get_logger("sitemap")
 
             # Check for success
             if not response or response.status_code != 200:

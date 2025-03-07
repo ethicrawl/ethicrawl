@@ -1,17 +1,23 @@
 import time
 import random
 from .requests_transport import RequestsTransport
-from .selenium_transport import SeleniumTransport
+from .chromium_transport import ChromiumTransport
+from ethicrawl.core.ethicrawl_context import EthicrawlContext
 
 
 class HttpClient:
     """
     A simple HTTP client for making web requests with rate limiting and jitter.
-    Supports both regular HTTP requests and Selenium-driven browser requests.
+    Supports both regular HTTP requests and Chromium-driven browser requests.
     """
 
     def __init__(
-        self, transport=None, timeout=10, rate_limit=1, jitter=0.5, selenium_params=None
+        self,
+        transport=None,
+        timeout=10,
+        rate_limit=1,
+        jitter=0.5,
+        chromium_params=None,
     ):
         """
         Initialize the HTTP client.
@@ -21,16 +27,18 @@ class HttpClient:
             timeout (int): Request timeout in seconds
             rate_limit (float): Maximum requests per second
             jitter (float): Random delay factor (0-1) to add to rate limiting
-            selenium_params (dict, optional): Parameters for Selenium if used
+            chromium_params (dict, optional): Parameters for Chromium if used
                                             (headless, wait_time, chrome_driver_path)
         """
+        self.context = None
         self.timeout = timeout
 
         # Initialize the appropriate transport
         if transport:
             self.transport = transport
-        elif selenium_params:
-            self.transport = SeleniumTransport(**selenium_params)
+        elif chromium_params:
+            self.transport = ChromiumTransport(**chromium_params)
+        # elif Gecko TODO: for expansion
         else:
             self.transport = RequestsTransport()
 
@@ -52,17 +60,16 @@ class HttpClient:
         self.transport.user_agent = agent
 
     @classmethod
-    def with_selenium(
+    def with_chromium(
         cls,
         headless=True,
         wait_time=3,
-        chrome_driver_path=None,
         timeout=30,
         rate_limit=0.5,
         jitter=0.3,
     ):
         """
-        Factory method to create a Selenium-powered HTTP client.
+        Factory method to create a Chromium-powered HTTP client.
 
         Args:
             headless (bool): Run in headless mode
@@ -73,14 +80,12 @@ class HttpClient:
             jitter (float): Random delay factor
 
         Returns:
-            HttpClient: Configured with Selenium transport
+            HttpClient: Configured with Chromium transport
         """
-        selenium_params = {"headless": headless, "wait_time": wait_time}
-        if chrome_driver_path:
-            selenium_params["chrome_driver_path"] = chrome_driver_path
+        chromium_params = {"headless": headless, "wait_time": wait_time}
 
         return cls(
-            selenium_params=selenium_params,
+            chromium_params=chromium_params,
             timeout=timeout,
             rate_limit=rate_limit,
             jitter=jitter,

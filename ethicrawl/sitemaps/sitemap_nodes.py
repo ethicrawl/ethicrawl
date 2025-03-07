@@ -11,15 +11,15 @@ from ethicrawl.client import HttpClient
 
 import lxml
 
-from ethicrawl.logger import LoggingMixin
 from .sitemap_urls import SitemapIndexUrl, SitemapUrlsetUrl
 from .sitemap_util import SitemapError, SitemapHelper, SitemapType
 from ethicrawl.core import EthicrawlContext
-from ethicrawl.logger import LoggingMixin
 from ethicrawl.config import Config
 
+from ethicrawl.core.url import Url
 
-class SitemapNode(ABC, LoggingMixin):
+
+class SitemapNode(ABC):
     """Should never be instantiated directly"""
 
     SITEMAP_NS = "http://www.sitemaps.org/schemas/sitemap/0.9"
@@ -27,7 +27,7 @@ class SitemapNode(ABC, LoggingMixin):
     @staticmethod
     def get_lxml(context: EthicrawlContext, document: str) -> lxml.etree._Element:
         # preparse
-        logger = context.get_logger("sitemap.node")
+        logger = context.logger("sitemap.node")
         document = SitemapHelper.escape_unescaped_ampersands(document)
         try:
             _element = etree.fromstring(document.encode("utf-8"))
@@ -50,9 +50,9 @@ class SitemapNode(ABC, LoggingMixin):
     def __init__(
         self, context: EthicrawlContext, document: Optional[str] = None
     ) -> None:
+
         self._context = context
-        self._setup_logger(self._context.url, "sitemap.node")
-        self._source_url = None
+        self._source_url = context.url
 
         if document is not None:
             # Parse document if provided
@@ -103,24 +103,6 @@ class SitemapNode(ABC, LoggingMixin):
         pass
 
 
-# class IndexNode(SitemapNode, LoggingMixin):
-#     """Node representing a sitemap index."""
-
-#     def __init__(self, context: EthicrawlContext, document: str) -> None:
-#         super().__init__(context, document)
-#         self._logger = context.get_logger("sitemap.node.index")
-#         self._sitemaps = None
-#         local_name = lxml.etree.QName(self._root.tag).localname
-
-#         if self._type != SitemapType.INDEX:
-#             self._logger.warning(
-#                 f"Not a sitemap index document. Root element is '{local_name}', expected 'sitemapindex'"
-#             )
-#             raise SitemapError(
-#                 f"Not a sitemap index document. Root element is '{local_name}', expected 'sitemapindex'"
-#             )
-
-
 class IndexNode(SitemapNode):
     """Node representing a sitemap index."""
 
@@ -129,7 +111,7 @@ class IndexNode(SitemapNode):
     ) -> None:
         # Initialize base with or without document
         super().__init__(context, document)
-        self._logger = context.get_logger("sitemap.node.index")
+        self._logger = context.logger("sitemap.IndexNode")
         self._sitemaps = []  # Start with empty list
 
         if document is None:
@@ -189,7 +171,7 @@ class IndexNode(SitemapNode):
 
                 # Create SitemapIndexUrl object (only loc and lastmod)
                 sitemap_url = SitemapIndexUrl(
-                    loc=loc_elem.text,
+                    loc=Url(loc_elem.text),
                     lastmod=lastmod_elem.text if lastmod_elem is not None else None,
                 )
 
@@ -199,12 +181,12 @@ class IndexNode(SitemapNode):
         return sitemaps
 
 
-class UrlsetNode(SitemapNode, LoggingMixin):
+class UrlsetNode(SitemapNode):
     """Node representing a sitemap urlset."""
 
     def __init__(self, context: EthicrawlContext, document: str) -> None:
         super().__init__(context, document)
-        self._logger = context.get_logger("sitemap.node.urlset")
+        self._logger = context.logger("sitemap.UrlsetNode")
         self._urls = None
         local_name = lxml.etree.QName(self._root.tag).localname
 
@@ -262,7 +244,7 @@ class UrlsetNode(SitemapNode, LoggingMixin):
 
                 # Create SitemapUrlsetUrl object - validation happens in __post_init__
                 url = SitemapUrlsetUrl(
-                    loc=loc_elem.text,
+                    loc=Url(loc_elem.text),
                     lastmod=lastmod_elem.text if lastmod_elem is not None else None,
                     changefreq=(
                         changefreq_elem.text if changefreq_elem is not None else None

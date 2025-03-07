@@ -2,11 +2,9 @@ from protego import Protego
 from typing import List
 from ethicrawl.sitemaps.sitemap_urls import SitemapIndexUrl
 from ethicrawl.core import EthicrawlContext
-from ethicrawl.client import HttpClient
-from ethicrawl.logger import LoggingMixin
 
 
-class RobotsHandler(LoggingMixin):
+class RobotsHandler:
     """
     Handler for robots.txt processing and URL permission checking.
 
@@ -30,8 +28,7 @@ class RobotsHandler(LoggingMixin):
         # self._http_client = http_client
         # self._base_url = base_url
         self._parser = None
-
-        self._setup_logger(self._context.url, "robots")
+        self._logger = self._context.logger("robots")
 
         # Initialize the parser immediately
         self._init_parser()
