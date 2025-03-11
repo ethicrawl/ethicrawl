@@ -19,7 +19,7 @@ if __name__ == "__main__":
     store_filter = r"uk_en|usd_store_en"
     product_filter = r"/p/[^/]+/"
 
-    # client = HttpClient.with_chromium(headless=False)  # chromium
+    client = HttpClient.with_chromium(headless=False)  # chromium
     client = HttpClient()  # requests
 
     ethicrawl = Ethicrawl()
