@@ -1,7 +1,7 @@
 from protego import Protego
 from typing import List
-from ethicrawl.sitemaps.sitemap_urls import SitemapIndexUrl
-from ethicrawl.core import EthicrawlContext
+from ethicrawl.sitemaps.sitemap_urls import SitemapIndexEntry
+from ethicrawl.core.context import Context
 
 
 class RobotsHandler:
@@ -11,7 +11,7 @@ class RobotsHandler:
     This class encapsulates all robots.txt related functionality for a single domain.
     """
 
-    def __init__(self, context: EthicrawlContext) -> None:
+    def __init__(self, context: Context) -> None:
         """
         Initialize the RobotsHandler for a specific domain.
 
@@ -20,7 +20,7 @@ class RobotsHandler:
             base_url (str): Base URL of the domain to handle
             logger: Logger for logging messages (optional)
         """
-        if not isinstance(context, EthicrawlContext):
+        if not isinstance(context, Context):
             raise ValueError(f"Invalid Context Provided")
         else:
             self._context = context
@@ -50,7 +50,7 @@ class RobotsHandler:
         return can_fetch
 
     @property
-    def sitemaps(self) -> List[SitemapIndexUrl]:
+    def sitemaps(self) -> List[SitemapIndexEntry]:
         """
         Get sitemap URLs from the robots.txt.
 
@@ -59,7 +59,7 @@ class RobotsHandler:
         """
         if self._parser:
 
-            return [SitemapIndexUrl(url) for url in self._parser.sitemaps]
+            return [SitemapIndexEntry(url) for url in self._parser.sitemaps]
             return list(self._parser.sitemaps)
         return []
 

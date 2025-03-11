@@ -3,18 +3,18 @@ from typing import List, Optional, Union, Pattern
 import re
 from ethicrawl.config.config import Config
 from ethicrawl.client import HttpClient
-from ethicrawl.sitemaps.sitemap_urls import SitemapUrlsetUrl
+from ethicrawl.sitemaps.sitemap_urls import SitemapUrlsetEntry
 from ethicrawl.sitemaps.node_factory import NodeFactory
 from ethicrawl.sitemaps.sitemap_nodes import IndexNode, UrlsetNode
 from ethicrawl.sitemaps.sitemap_result import SitemapResult
 
-from ethicrawl.core import EthicrawlContext
+from ethicrawl.core.context import Context
 
 
 class Sitemap:
     """Builds sitemap trees and extracts URLs."""
 
-    def __init__(self, context: EthicrawlContext, url_filter: Optional[str] = None):
+    def __init__(self, context: Context, url_filter: Optional[str] = None):
         """
         Initialize the sitemap processor.
 
@@ -40,6 +40,8 @@ class Sitemap:
         self._url_filter = re.compile(pattern) if pattern else None
         return self  # Return self for chaining
 
+    # we have context now, shouldn't need this grossness
+
     def from_robots(self) -> "Sitemap":
         """
         Use sitemaps discovered in robots.txt.
@@ -48,7 +50,7 @@ class Sitemap:
             self: For method chaining
         """
         # Get the robots_handler from the Ethicrawl instance
-        # Normally we'd have a getter for this in EthicrawlContext
+        # Normally we'd have a getter for this in Context
         # But we can access ec._robots_handler directly for now
         from ethicrawl.core.old_ethicrawl import Ethicrawl
 
@@ -134,7 +136,7 @@ class Sitemap:
 
     def _process_sitemaps(
         self, root_node: IndexNode, max_depth: int = 5
-    ) -> List[SitemapUrlsetUrl]:
+    ) -> List[SitemapUrlsetEntry]:
         """
         Build a sitemap tree and return a flat list of all URLs.
 
@@ -146,7 +148,7 @@ class Sitemap:
         # Define the recursive implementation as an inner function
         def _build_tree_recursive(
             node: IndexNode, current_depth: int = 0
-        ) -> List[SitemapUrlsetUrl]:
+        ) -> List[SitemapUrlsetEntry]:
             all_urls = []
 
             # Check recursion depth

@@ -11,9 +11,9 @@ from ethicrawl.client import HttpClient
 
 import lxml
 
-from .sitemap_urls import SitemapIndexUrl, SitemapUrlsetUrl
+from .sitemap_urls import SitemapIndexEntry, SitemapUrlsetEntry
 from .sitemap_util import SitemapError, SitemapHelper, SitemapType
-from ethicrawl.core import EthicrawlContext
+from ethicrawl.core.context import Context
 from ethicrawl.config import Config
 
 from ethicrawl.core.url import Url
@@ -25,7 +25,7 @@ class SitemapNode(ABC):
     SITEMAP_NS = "http://www.sitemaps.org/schemas/sitemap/0.9"
 
     @staticmethod
-    def get_lxml(context: EthicrawlContext, document: str) -> lxml.etree._Element:
+    def get_lxml(context: Context, document: str) -> lxml.etree._Element:
         # preparse
         logger = context.logger("sitemap.node")
         document = SitemapHelper.escape_unescaped_ampersands(document)
@@ -47,9 +47,7 @@ class SitemapNode(ABC):
             raise SitemapError(f"Root tag does not have a name")
         return _element
 
-    def __init__(
-        self, context: EthicrawlContext, document: Optional[str] = None
-    ) -> None:
+    def __init__(self, context: Context, document: Optional[str] = None) -> None:
 
         self._context = context
         self._source_url = context.url
@@ -69,16 +67,16 @@ class SitemapNode(ABC):
             self._root = None
 
     @property
-    def source_url(self) -> Optional[SitemapIndexUrl]:
+    def source_url(self) -> Optional[SitemapIndexEntry]:
         return self._source_url
 
     @source_url.setter
-    def source_url(self, url: SitemapIndexUrl) -> None:
-        if isinstance(url, SitemapIndexUrl):
+    def source_url(self, url: SitemapIndexEntry) -> None:
+        if isinstance(url, SitemapIndexEntry):
             self._source_url = url
         else:
-            self._logger.warning(f"Expected a SitemapIndexUrl, got {type(url)}")
-            raise ValueError(f"Expected a SitemapIndexUrl, got {type(url)}")
+            self._logger.warning(f"Expected a SitemapIndexEntry, got {type(url)}")
+            raise ValueError(f"Expected a SitemapIndexEntry, got {type(url)}")
 
     @property
     def type(self) -> SitemapType:
@@ -92,7 +90,7 @@ class SitemapNode(ABC):
         Get the items in this sitemap.
 
         Returns:
-            List: Either List[SitemapUrlsetUrl] (for urlset) or List[SitemapIndexUrl] (for index)
+            List: Either List[SitemapUrlsetEntry] (for urlset) or List[SitemapIndexEntry] (for index)
         """
         pass
 
@@ -106,9 +104,7 @@ class SitemapNode(ABC):
 class IndexNode(SitemapNode):
     """Node representing a sitemap index."""
 
-    def __init__(
-        self, context: EthicrawlContext, document: Optional[str] = None
-    ) -> None:
+    def __init__(self, context: Context, document: Optional[str] = None) -> None:
         # Initialize base with or without document
         super().__init__(context, document)
         self._logger = context.logger("sitemap.IndexNode")
@@ -129,14 +125,14 @@ class IndexNode(SitemapNode):
                 )
 
     @property
-    def items(self) -> List[SitemapIndexUrl]:
+    def items(self) -> List[SitemapIndexEntry]:
         """Get the sitemaps in this index."""
         if self._sitemaps is None:
             self._sitemaps = self._parse_sitemaps()
         return self._sitemaps
 
     @items.setter
-    def items(self, sitemaps: List[SitemapIndexUrl]) -> None:
+    def items(self, sitemaps: List[SitemapIndexEntry]) -> None:
         """
         Set the sitemaps in this index.
 
@@ -148,12 +144,12 @@ class IndexNode(SitemapNode):
 
         # Validate all items are of correct type
         for item in sitemaps:
-            if not isinstance(item, SitemapIndexUrl):
-                raise TypeError(f"Expected SitemapIndexUrl, got {type(item)}")
+            if not isinstance(item, SitemapIndexEntry):
+                raise TypeError(f"Expected SitemapIndexEntry, got {type(item)}")
 
         self._sitemaps = sitemaps
 
-    def _parse_sitemaps(self) -> List[SitemapIndexUrl]:
+    def _parse_sitemaps(self) -> List[SitemapIndexEntry]:
         """Parse sitemap references from a sitemap index."""
         sitemaps = []
         nsmap = {None: self.SITEMAP_NS}
@@ -169,9 +165,9 @@ class IndexNode(SitemapNode):
                 # Get optional lastmod element
                 lastmod_elem = sitemap_elem.find("lastmod", namespaces=nsmap)
 
-                # Create SitemapIndexUrl object (only loc and lastmod)
-                sitemap_url = SitemapIndexUrl(
-                    loc=Url(loc_elem.text),
+                # Create SitemapIndexEntry object (only loc and lastmod)
+                sitemap_url = SitemapIndexEntry(
+                    url=Url(loc_elem.text),
                     lastmod=lastmod_elem.text if lastmod_elem is not None else None,
                 )
 
@@ -184,7 +180,7 @@ class IndexNode(SitemapNode):
 class UrlsetNode(SitemapNode):
     """Node representing a sitemap urlset."""
 
-    def __init__(self, context: EthicrawlContext, document: str) -> None:
+    def __init__(self, context: Context, document: str) -> None:
         super().__init__(context, document)
         self._logger = context.logger("sitemap.UrlsetNode")
         self._urls = None
@@ -200,14 +196,14 @@ class UrlsetNode(SitemapNode):
 
     # In UrlsetNode class (implement the setter)
     @property
-    def items(self) -> List[SitemapUrlsetUrl]:
+    def items(self) -> List[SitemapUrlsetEntry]:
         """Get the URLs in this urlset."""
         if self._urls is None:
             self._urls = self._parse_urls()
         return self._urls
 
     @items.setter
-    def items(self, urls: List[SitemapUrlsetUrl]) -> None:
+    def items(self, urls: List[SitemapUrlsetEntry]) -> None:
         """
         Set the URLs in this urlset.
 
@@ -219,12 +215,12 @@ class UrlsetNode(SitemapNode):
 
         # Validate all items are of correct type
         for item in urls:
-            if not isinstance(item, SitemapUrlsetUrl):
-                raise TypeError(f"Expected SitemapUrlsetUrl, got {type(item)}")
+            if not isinstance(item, SitemapUrlsetEntry):
+                raise TypeError(f"Expected SitemapUrlsetEntry, got {type(item)}")
 
         self._urls = urls
 
-    def _parse_urls(self) -> List[SitemapUrlsetUrl]:
+    def _parse_urls(self) -> List[SitemapUrlsetEntry]:
         """Parse URLs from a sitemap urlset."""
         urls = []
         nsmap = {None: self.SITEMAP_NS}  # namespace mapping for the default namespace
@@ -242,9 +238,9 @@ class UrlsetNode(SitemapNode):
                 changefreq_elem = url_elem.find("changefreq", namespaces=nsmap)
                 priority_elem = url_elem.find("priority", namespaces=nsmap)
 
-                # Create SitemapUrlsetUrl object - validation happens in __post_init__
-                url = SitemapUrlsetUrl(
-                    loc=Url(loc_elem.text),
+                # Create SitemapUrlsetEntry object - validation happens in __post_init__
+                url = SitemapUrlsetEntry(
+                    url=Url(loc_elem.text),
                     lastmod=lastmod_elem.text if lastmod_elem is not None else None,
                     changefreq=(
                         changefreq_elem.text if changefreq_elem is not None else None

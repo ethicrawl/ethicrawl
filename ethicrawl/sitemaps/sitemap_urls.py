@@ -1,22 +1,21 @@
 from dataclasses import dataclass
 from re import match
 from typing import Optional, Union
+from ethicrawl.core.resource import Resource
 from ethicrawl.core.url import Url
+from datetime import datetime
 
 
 @dataclass
-class SitemapIndexUrl:
-    """Represents a URL from a sitemap index"""
+class SitemapEntry(Resource):
+    """Base class for entries in sitemaps"""
 
-    loc: Url  # REQUIRED: The location URI of a document
-    lastmod: Optional[str] = (
-        None  # OPTIONAL: W3C DATETIME format date the document was last modified
-    )
+    lastmod: Optional[str] = None
 
     @staticmethod
     def _validate_lastmod(value: Optional[str]) -> Optional[str]:
         """
-        Validate lastmod date format.
+        Validate lastmod date format using standard datetime.
 
         Args:
             value: Date string in W3C format
@@ -33,38 +32,52 @@ class SitemapIndexUrl:
         # Strip whitespace
         value = value.strip()
 
-        # Basic format validation for common patterns
-        date_patterns = [
-            r"^\d{4}-\d{2}-\d{2}$",  # YYYY-MM-DD
-            r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}([+-]\d{2}:\d{2}|Z)$",  # YYYY-MM-DDThh:mm:ssTZD
+        # Try standard formats for W3C datetime
+        formats = [
+            "%Y-%m-%d",  # YYYY-MM-DD
+            "%Y-%m-%dT%H:%M:%S",  # YYYY-MM-DDThh:mm:ss
+            "%Y-%m-%dT%H:%M:%SZ",  # YYYY-MM-DDThh:mm:ssZ
+            "%Y-%m-%dT%H:%M:%S%z",  # YYYY-MM-DDThh:mm:ss+hh:mm (no colon)
+            "%Y-%m-%dT%H:%M:%S%:z",  # YYYY-MM-DDThh:mm:ss+hh:mm (with colon)
         ]
 
-        if not any(match(pattern, value) for pattern in date_patterns):
-            raise ValueError(f"Invalid lastmod date format: {value}")
+        # Try each format
+        for fmt in formats:
+            try:
+                # If parse succeeds, the date is valid
+                datetime.strptime(value, fmt)
+                return value
+            except ValueError:
+                continue
 
-        return value
+        raise ValueError(f"Invalid lastmod date format: {value}")
 
     def __post_init__(self):
-        """
-        Validate and normalize all fields after initialization.
-        """
-        # Validate lastmod
+        """Validate fields after initialization."""
+        super().__post_init__()  # Call Resource.__post_init__ first
         self.lastmod = self._validate_lastmod(self.lastmod)
 
     def __str__(self) -> str:
         """Human-readable string representation"""
         if self.lastmod:
-            return f"{str(self.loc)} (last modified: {self.lastmod})"
-        return f"{str(self.loc)}"
-
-    def __repr__(self) -> str:
-        """Detailed representation for debugging"""
-        return f"SitemapIndexUrl(loc='{str(self.loc)}', lastmod={repr(self.lastmod)})"
+            return f"{str(self.url)} (last modified: {self.lastmod})"
+        return f"{str(self.url)}"
 
 
 @dataclass
-class SitemapUrlsetUrl(SitemapIndexUrl):
-    """Represents a URL from a sitemap urlset."""
+class SitemapIndexEntry(SitemapEntry):
+    """Represents an entry in a sitemap index file"""
+
+    # Index entries only have loc (url) and lastmod, which are inherited
+
+    def __repr__(self) -> str:
+        """Detailed representation for debugging"""
+        return f"SitemapIndexEntry(url='{str(self.url)}', lastmod={repr(self.lastmod)})"
+
+
+@dataclass
+class SitemapUrlsetEntry(SitemapEntry):
+    """Represents an entry in a sitemap urlset file"""
 
     changefreq: Optional[str] = None  # OPTIONAL: How frequently the content changes
     priority: Optional[float] = (
@@ -112,11 +125,8 @@ class SitemapUrlsetUrl(SitemapIndexUrl):
         return value
 
     def __post_init__(self):
-        """
-        Validate and normalize all fields after initialization.
-        """
-        # Call parent's validation (handles URL conversion and lastmod validation)
-        super().__post_init__()
+        """Validate fields after initialization."""
+        super().__post_init__()  # Call parent's validation
 
         # Validate changefreq
         if self.changefreq is not None:
@@ -129,7 +139,7 @@ class SitemapUrlsetUrl(SitemapIndexUrl):
 
     def __str__(self) -> str:
         """Human-readable string representation"""
-        parts = [str(self.loc)]
+        parts = [str(self.url)]
 
         if self.lastmod:
             parts.append(f"last modified: {self.lastmod}")
@@ -143,6 +153,6 @@ class SitemapUrlsetUrl(SitemapIndexUrl):
     def __repr__(self) -> str:
         """Detailed representation for debugging"""
         return (
-            f"SitemapUrlsetUrl(loc='{str(self.loc)}', lastmod={repr(self.lastmod)}, "
+            f"SitemapUrlsetEntry(url='{str(self.url)}', lastmod={repr(self.lastmod)}, "
             f"changefreq={repr(self.changefreq)}, priority={repr(self.priority)})"
         )

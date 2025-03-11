@@ -1,7 +1,7 @@
 import urllib.parse
 import socket
 
-from ethicrawl.core.ethicrawl_context import EthicrawlContext as Context
+from ethicrawl.core.context import Context
 from ethicrawl.robots.robots_handler import RobotsHandler
 from ethicrawl.client.http_client import HttpClient
 from ethicrawl.core.url import Url

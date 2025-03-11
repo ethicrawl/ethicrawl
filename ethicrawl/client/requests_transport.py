@@ -1,12 +1,13 @@
 from .transport import Transport
 from .http_response import HttpResponse
+from ethicrawl.core.context import Context
 import requests
 
 
 class RequestsTransport(Transport):
     """Transport implementation using the requests library."""
 
-    def __init__(self):
+    def __init__(self, context: Context):
         self.session = requests.Session()
         # Set a default User-Agent
         self._default_user_agent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"

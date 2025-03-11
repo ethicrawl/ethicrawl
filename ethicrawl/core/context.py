@@ -8,7 +8,7 @@ if TYPE_CHECKING:
     from ethicrawl.client import HttpClient
 
 
-class EthicrawlContext:
+class Context:
     def __init__(self, url: Url, http_client: Optional["HttpClient"] = None) -> None:
         self._url = Url(str(url))
         self._client = None

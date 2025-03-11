@@ -1,14 +1,14 @@
 # ethicrawl/sitemaps/sitemap_result.py
 from typing import List
 import re
-from ethicrawl.core import EthicrawlContext
-from ethicrawl.sitemaps.sitemap_urls import SitemapUrlsetUrl
+from ethicrawl.core.context import Context
+from ethicrawl.sitemaps.sitemap_urls import SitemapUrlsetEntry
 
 
 class SitemapResult:
     """Container for sitemap processing results with filtering capabilities."""
 
-    def __init__(self, urls: List[SitemapUrlsetUrl], context: EthicrawlContext):
+    def __init__(self, urls: List[SitemapUrlsetEntry], context: Context):
         self._urls = urls
         self._context = context
         self._logger = context.logger("sitemap.result")
@@ -28,7 +28,7 @@ class SitemapResult:
         return SitemapResult(filtered, self._context)
 
     @property
-    def items(self) -> List[SitemapUrlsetUrl]:
+    def items(self) -> List[SitemapUrlsetEntry]:
         """Access the URL items directly as a property."""
         return self._urls
 

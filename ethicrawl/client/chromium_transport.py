@@ -6,6 +6,8 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from .transport import Transport
 
+from ethicrawl.core.context import Context
+
 from .http_response import HttpResponse
 import time
 import json
@@ -20,7 +22,7 @@ from typing import Dict, Any, Optional
 class ChromiumTransport(Transport):
     """Transport implementation using Chromium for JavaScript-rendered content."""
 
-    def __init__(self, headless=True, wait_time=3):
+    def __init__(self, context: Context, headless=True, wait_time=3):
         """
         Initialize Chromium transport.
 

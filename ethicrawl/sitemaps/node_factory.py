@@ -11,18 +11,18 @@ from ethicrawl.client import HttpClient
 
 import lxml
 
-from .sitemap_urls import SitemapIndexUrl, SitemapUrlsetUrl
+from .sitemap_urls import SitemapIndexEntry, SitemapUrlsetEntry
 from .sitemap_util import SitemapError, SitemapHelper, SitemapType
 from .sitemap_nodes import SitemapNode, UrlsetNode, IndexNode
 
-from ethicrawl.core import EthicrawlContext
+from ethicrawl.core.context import Context
 
 
 class NodeFactory:
     """Factory for creating sitemap nodes of the appropriate type."""
 
     @staticmethod
-    def _validate(context: EthicrawlContext, document: str) -> SitemapNode:
+    def _validate(context: Context, document: str) -> SitemapNode:
         """
         Validate a sitemap document and create the appropriate node type.
 
@@ -47,12 +47,12 @@ class NodeFactory:
             raise SitemapError(f"Unsupported sitemap type: {root_name}")
 
     @staticmethod
-    def create(context: EthicrawlContext, sitemap_url: SitemapIndexUrl) -> SitemapNode:
+    def create(context: Context, sitemap_url: SitemapIndexEntry) -> SitemapNode:
         """
         Create a sitemap node by fetching and parsing a remote URL.
 
         Args:
-            sitemap_url: The SitemapIndexUrl to fetch
+            sitemap_url: The SitemapIndexEntry to fetch
             http_client: HttpClient instance for making requests
 
         Returns:
@@ -63,7 +63,7 @@ class NodeFactory:
         """
         logger = context.logger("sitemap.factory.create")
         try:
-            # URL is already validated in the SitemapIndexUrl object
+            # URL is already validated in the SitemapIndexEntry object
             url = sitemap_url
 
             # Fetch the sitemap

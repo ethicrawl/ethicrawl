@@ -2,7 +2,7 @@ import time
 import random
 from .requests_transport import RequestsTransport
 from .chromium_transport import ChromiumTransport
-from ethicrawl.core.ethicrawl_context import EthicrawlContext
+from ethicrawl.core.context import Context
 
 
 class HttpClient:
@@ -13,6 +13,7 @@ class HttpClient:
 
     def __init__(
         self,
+        context=Context,
         transport=None,
         timeout=10,
         rate_limit=1,
@@ -30,17 +31,21 @@ class HttpClient:
             chromium_params (dict, optional): Parameters for Chromium if used
                                             (headless, wait_time, chrome_driver_path)
         """
-        self.context = None
+        if not isinstance(context, Context):
+            context = Context("http://www.example.com/")  # dummy url
+        self._context = context
+        self._logger = self._context.logger("client")
+
         self.timeout = timeout
 
         # Initialize the appropriate transport
         if transport:
             self.transport = transport
         elif chromium_params:
-            self.transport = ChromiumTransport(**chromium_params)
+            self.transport = ChromiumTransport(context, **chromium_params)
         # elif Gecko TODO: for expansion
         else:
-            self.transport = RequestsTransport()
+            self.transport = RequestsTransport(context)
 
         self.headers = {}
 
@@ -59,9 +64,8 @@ class HttpClient:
         """Set the User-Agent on the underlying transport."""
         self.transport.user_agent = agent
 
-    @classmethod
     def with_chromium(
-        cls,
+        self,
         headless=True,
         wait_time=3,
         timeout=30,
@@ -69,22 +73,23 @@ class HttpClient:
         jitter=0.3,
     ):
         """
-        Factory method to create a Chromium-powered HTTP client.
+        Convert this client to use a Chromium-powered transport.
 
         Args:
             headless (bool): Run in headless mode
             wait_time (int): Wait time for JavaScript execution
-            chrome_driver_path (str, optional): Path to chromedriver
             timeout (int): Request timeout
             rate_limit (float): Requests per second
             jitter (float): Random delay factor
 
         Returns:
-            HttpClient: Configured with Chromium transport
+            HttpClient: A new client configured with Chromium transport
         """
         chromium_params = {"headless": headless, "wait_time": wait_time}
 
-        return cls(
+        # Create a new instance with the same context but Chromium transport
+        return HttpClient(
+            context=self._context,  # Use this instance's context
             chromium_params=chromium_params,
             timeout=timeout,
             rate_limit=rate_limit,

@@ -1,42 +1,17 @@
-# from ethicrawl import Ethicrawl
-# from ethicrawl.client import HttpClient
-# from ethicrawl.config import Config
-# from ethicrawl.sitemaps import Sitemap
-# from ethicrawl.logger import Logger
-# from ethicrawl.core import EthicrawlContext
-# from ethicrawl.sitemaps.node_factory import NodeFactory
-from ethicrawl.core import EthicrawlContext
 from ethicrawl.sitemaps.sitemap_nodes import IndexNode
-from ethicrawl.sitemaps import Sitemap
+from ethicrawl.sitemaps.sitemap import Sitemap
+from ethicrawl.core.ethicrawl import Ethicrawl
+from ethicrawl.client.http_client import HttpClient
+from ethicrawl.core.url import Url
 
-# from ethicrawl.logger.formatter import GeoCitiesFormatter
-
-from ethicrawl import Ethicrawl, HttpClient
-from ethicrawl.core import Url
-
-# from ethicrawl.logger.logger import Logger
 import logging
-
-# def setup_logging():
-#     """Configure logging for the application"""
-#     config = Config()
-#     # config.logger.level = "INFO"
-#     # config.logger.console_enabled = True
-#     # config.logger.use_colors = True
-#     config.logger.set_component_level("robots", "DEBUG")
-#     config.logger.set_component_level("sitemap", "DEBUG")
-
-#     # config.logger.set_component_level("sitemaps", "WARNING")
-
-#     # Initialize logging
-#     Logger.setup_logging()
 
 
 if __name__ == "__main__":
 
     # setup_logging()
 
-    visit_site = False
+    visit_site = True
     config_test = False
 
     # site = "https://gb.maxmara.com"
@@ -44,10 +19,8 @@ if __name__ == "__main__":
     store_filter = r"uk_en|usd_store_en"
     product_filter = r"/p/[^/]+/"
 
-    # client = http_client = HttpClient.with_chromium(headless=False)  # chromium
-    # client = HttpClient()  # requests
-
-    client = HttpClient()  # .with_chromium(headless=False)
+    # client = HttpClient.with_chromium(headless=False)  # chromium
+    client = HttpClient()  # requests
 
     ethicrawl = Ethicrawl()
     ethicrawl.bind(url, client)
@@ -70,12 +43,10 @@ if __name__ == "__main__":
 
         config.update(dict)
 
+        ethicrawl.bind(url, client)
+
+        print(ethicrawl.config.to_dict())
         config.http.rate_limit = 1
-
-    ethicrawl.unbind()
-    ethicrawl.bind(url, client)
-
-    print(ethicrawl.config.to_dict())
 
     # print(context.url)
 
@@ -91,65 +62,33 @@ if __name__ == "__main__":
 
     ethicrawl.unbind()
 
-{
-    "http": {
-        "headers": {},
-        "jitter": 0.2,
-        "max_retries": 3,
-        "rate_limit": 0.5,
-        "retry_delay": 1.0,
-        "timeout": 30.0,
-        "user_agent": "Ethicrawl/1.0",
-    },
-    "logger": {
-        "component_levels": {},
-        "console_enabled": True,
-        "file_enabled": False,
-        "file_path": None,
-        "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-        "level": 20,
-        "use_colors": True,
-    },
-}
-"""
-{
-    "http": {
-        "headers": {},
-        "jitter": 0.2,
-        "max_retries": 3,
-        "rate_limit": 0.5,
-        "retry_delay": 1.0,
-        "timeout": 30.0,
-        "user_agent": "Ethicrawl/1.0",
-    },
-    "logger": {
-        "component_levels": {},
-        "console_enabled": true,
-        "file_enabled": false,
-        "file_path": null,
-        "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-        "level": 20,
-        "use_colors": true,
-    },
-}
-{
-    "http": {
-        "headers": {},
-        "jitter": 0.2,
-        "max_retries": 3,
-        "rate_limit": 1.0,
-        "retry_delay": 1.0,
-        "timeout": 30.0,
-        "user_agent": "Ethicrawl/1.0",
-    },
-    "logger": {
-        "component_levels": {},
-        "console_enabled": true,
-        "file_enabled": false,
-        "file_path": null,
-        "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-        "level": 20,
-        "use_colors": true,
-    },
-}
-"""
+    index = IndexNode(robots.sitemaps)  # should break as we're unbound!
+
+    # filtered_robots = ethicrawl.robots.items.filter(store_filter)
+    # product_urls = ethicrawl.sitemaps(filtered_robots).items.filter(product_filter)
+
+
+# (venv) ➜  ethicrawl git:(develop) ✗ python usage.py
+# 2025-03-07 15:19:56,849 - ethicrawl.zadig-et-voltaire_com.robots - INFO - Fetching robots.txt: https://zadig-et-voltaire.com//robots.txt
+# 2025-03-07 15:20:02,142 - ethicrawl.zadig-et-voltaire_com.robots - INFO - Successfully parsed https://zadig-et-voltaire.com//robots.txt
+# 2025-03-07 15:20:02,142 - ethicrawl.zadig-et-voltaire_com.robots - INFO - Discovered 9 sitemaps in https://zadig-et-voltaire.com//robots.txt
+# 2025-03-07 15:20:02,142 - ethicrawl.zadig-et-voltaire_com.robots - DEBUG - Discovered: https://zadig-et-voltaire.com/media/sitemap_be_en.xml in https://zadig-et-voltaire.com//robots.txt
+# 2025-03-07 15:20:02,142 - ethicrawl.zadig-et-voltaire_com.robots - DEBUG - Discovered: https://zadig-et-voltaire.com/media/sitemap_ch_en.xml in https://zadig-et-voltaire.com//robots.txt
+# 2025-03-07 15:20:02,142 - ethicrawl.zadig-et-voltaire_com.robots - DEBUG - Discovered: https://zadig-et-voltaire.com/media/sitemap_de_de.xml in https://zadig-et-voltaire.com//robots.txt
+# 2025-03-07 15:20:02,142 - ethicrawl.zadig-et-voltaire_com.robots - DEBUG - Discovered: https://zadig-et-voltaire.com/media/sitemap_es_es.xml in https://zadig-et-voltaire.com//robots.txt
+# 2025-03-07 15:20:02,142 - ethicrawl.zadig-et-voltaire_com.robots - DEBUG - Discovered: https://zadig-et-voltaire.com/media/sitemap_fr_fr.xml in https://zadig-et-voltaire.com//robots.txt
+# 2025-03-07 15:20:02,142 - ethicrawl.zadig-et-voltaire_com.robots - DEBUG - Discovered: https://zadig-et-voltaire.com/media/sitemap_it_it.xml in https://zadig-et-voltaire.com//robots.txt
+# 2025-03-07 15:20:02,142 - ethicrawl.zadig-et-voltaire_com.robots - DEBUG - Discovered: https://zadig-et-voltaire.com/media/sitemap_row_en.xml in https://zadig-et-voltaire.com//robots.txt
+# 2025-03-07 15:20:02,142 - ethicrawl.zadig-et-voltaire_com.robots - DEBUG - Discovered: https://zadig-et-voltaire.com/media/sitemap_uk_en.xml in https://zadig-et-voltaire.com//robots.txt
+# 2025-03-07 15:20:02,143 - ethicrawl.zadig-et-voltaire_com.robots - DEBUG - Discovered: https://zadig-et-voltaire.com/media/sitemap_usd_store_en.xml in https://zadig-et-voltaire.com//robots.txt
+# 2025-03-07 15:20:02,143 - ethicrawl.zadig-et-voltaire_com.sitemap - DEBUG - Processing sitemap: https://zadig-et-voltaire.com/media/sitemap_be_en.xml
+# 2025-03-07 15:20:08,269 - ethicrawl.zadig-et-voltaire_com.sitemap - DEBUG - Processing sitemap: https://zadig-et-voltaire.com/media/sitemap_ch_en.xml
+# 2025-03-07 15:20:14,098 - ethicrawl.zadig-et-voltaire_com.sitemap - DEBUG - Processing sitemap: https://zadig-et-voltaire.com/media/sitemap_de_de.xml
+# 2025-03-07 15:20:20,312 - ethicrawl.zadig-et-voltaire_com.sitemap - DEBUG - Processing sitemap: https://zadig-et-voltaire.com/media/sitemap_es_es.xml
+# 2025-03-07 15:20:26,825 - ethicrawl.zadig-et-voltaire_com.sitemap - DEBUG - Processing sitemap: https://zadig-et-voltaire.com/media/sitemap_fr_fr.xml
+# 2025-03-07 15:20:33,235 - ethicrawl.zadig-et-voltaire_com.sitemap - DEBUG - Processing sitemap: https://zadig-et-voltaire.com/media/sitemap_it_it.xml
+# 2025-03-07 15:20:39,538 - ethicrawl.zadig-et-voltaire_com.sitemap - DEBUG - Processing sitemap: https://zadig-et-voltaire.com/media/sitemap_row_en.xml
+# 2025-03-07 15:20:45,663 - ethicrawl.zadig-et-voltaire_com.sitemap - DEBUG - Processing sitemap: https://zadig-et-voltaire.com/media/sitemap_uk_en.xml
+# 2025-03-07 15:20:52,035 - ethicrawl.zadig-et-voltaire_com.sitemap - DEBUG - Processing sitemap: https://zadig-et-voltaire.com/media/sitemap_usd_store_en.xml
+# 2025-03-07 15:20:58,098 - ethicrawl.zadig-et-voltaire_com.sitemap - INFO - Visited 9 sitemaps and found 13689 unique URLs
+# https://zadig-et-voltaire.com/us/en/archive | last modified: 2025-03-07 | frequency: daily | priority: 1.0 13689
