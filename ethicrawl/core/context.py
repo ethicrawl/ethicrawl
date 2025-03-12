@@ -3,18 +3,21 @@ from typing import Optional, TYPE_CHECKING, Any
 import urllib.parse
 from ethicrawl.logger import Logger
 from ethicrawl.core.url import Url
+from ethicrawl.core.resource import Resource
 
 if TYPE_CHECKING:
     from ethicrawl.client import HttpClient
 
 
 class Context:
-    def __init__(self, url: Url, http_client: Optional["HttpClient"] = None) -> None:
-        self._url = Url(str(url))
+    def __init__(
+        self, resource: Resource, http_client: Optional["HttpClient"] = None
+    ) -> None:
+        self._resource = resource
         self._client = None
         if http_client is not None:
             self._client = self._validate_client(http_client)
-        self._logger = Logger.logger(self._url, "core")
+        self._logger = Logger.logger(self._resource, "core")
 
     def _validate_client(
         self, client: Any
@@ -31,12 +34,12 @@ class Context:
         return client
 
     @property
-    def url(self) -> Url:
-        return self._url
+    def resource(self) -> Resource:
+        return self._resource
 
-    @url.setter
-    def url(self, url: str):
-        self._url = Url(url)
+    @resource.setter
+    def resource(self, resource: Resource):
+        self._resource = resource
 
     @property
     def client(self) -> Optional["HttpClient"]:
@@ -48,14 +51,14 @@ class Context:
 
     def logger(self, component: str):
         """Get a component-specific logger within this context."""
-        return Logger.logger(self._url, component)
+        return Logger.logger(self._resource, component)
 
     def __str__(self) -> str:
         """Return a human-readable string representation of the context."""
         client_status = "with client" if self._client else "without client"
-        return f"EthicrawlContext({self._url}, {client_status})"
+        return f"EthicrawlContext({self._resource.url}, {client_status})"
 
     def __repr__(self) -> str:
         """Return an unambiguous string representation of the context."""
         client_repr = f"client={repr(self._client)}" if self._client else "client=None"
-        return f"EthicrawlContext(url='{self._url}', {client_repr})"
+        return f"EthicrawlContext(url='{self._resource.url}', {client_repr})"

@@ -6,13 +6,27 @@ from functools import wraps
 
 
 def http_only(func):
-    @wraps(func)
-    def wrapper(self, *args, **kwargs):
-        if self._parsed.scheme not in ["http", "https"]:
-            raise ValueError("Only valid for HTTP and HTTPS urls")
-        return func(self, *args, **kwargs)
+    """Decorator to restrict property access to HTTP/HTTPS URLs only."""
+    if isinstance(func, property):
+        # If already a property, wrap its getter
+        original_getter = func.fget
 
-    return wrapper
+        @wraps(original_getter)
+        def new_getter(self):
+            if self._parsed.scheme not in ["http", "https"]:
+                raise ValueError("Only valid for HTTP and HTTPS urls")
+            return original_getter(self)
+
+        return property(new_getter, func.fset, func.fdel)
+    else:
+        # Normal function/method wrapper
+        @wraps(func)
+        def wrapper(self, *args, **kwargs):
+            if self._parsed.scheme not in ["http", "https"]:
+                raise ValueError("Only valid for HTTP and HTTPS urls")
+            return func(self, *args, **kwargs)
+
+        return wrapper
 
 
 class Url:
@@ -38,9 +52,9 @@ class Url:
         # Domain resolution validation (for HTTP/HTTPS only)
         if validate and self._parsed.scheme in ["http", "https"]:
             try:
-                socket.gethostbyname(self._parsed.netloc)
+                socket.gethostbyname(self._parsed.hostname)
             except socket.gaierror:
-                raise ValueError(f"Cannot resolve hostname: {self._parsed.netloc}")
+                raise ValueError(f"Cannot resolve hostname: {self._parsed.hostname}")
 
     @property
     def base(self) -> str:
@@ -51,17 +65,17 @@ class Url:
 
     @property
     def scheme(self) -> str:
-        """Get the URL scheme (http or https)."""
+        """Get the URL scheme (file, http or https)."""
         return self._parsed.scheme
 
-    @http_only
     @property
+    @http_only
     def netloc(self) -> str:
         """Get the network location (domain)."""
         return self._parsed.netloc
 
-    @http_only
     @property
+    @http_only
     def hostname(self) -> str:
         """Get just the hostname part."""
         return self._parsed.hostname
@@ -71,26 +85,26 @@ class Url:
         """Get the path component."""
         return self._parsed.path
 
-    @http_only
     @property
+    @http_only
     def params(self) -> str:
         """Get URL parameters."""
         return self._parsed.params
 
-    @http_only
     @property
+    @http_only
     def query(self) -> str:
         """Get the query string."""
         return self._parsed.query
 
-    @http_only
     @property
+    @http_only
     def query_params(self) -> Dict[str, Any]:
         """Get parsed query parameters as a dictionary."""
         return dict(urllib.parse.parse_qsl(self._parsed.query))
 
-    @http_only
     @property
+    @http_only
     def fragment(self) -> str:
         """Get URL fragment."""
         return self._parsed.fragment

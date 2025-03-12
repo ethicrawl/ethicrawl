@@ -1,10 +1,12 @@
 import urllib.parse
 import socket
 
+from typing import Union
 from ethicrawl.core.context import Context
 from ethicrawl.robots.robots_handler import RobotsHandler
 from ethicrawl.client.http_client import HttpClient
 from ethicrawl.core.url import Url
+from ethicrawl.core.resource import Resource
 from ethicrawl.config.config import Config
 import logging
 
@@ -52,10 +54,13 @@ class Ethicrawl:
         else:
             return None
 
-    def bind(self, url: Url, client: HttpClient = None):
+    def bind(self, url: Union[str, Url, Config], client: HttpClient = None):
+        if isinstance(url, Resource):
+            url = url.url
         url = Url(str(url), validate=True)
+        resource = Resource(url)
         client = client or HttpClient()
-        self._context = Context(url, client)
+        self._context = Context(resource, client)
         return True if self._context is not None else False
 
     def unbind(self):

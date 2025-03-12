@@ -1,212 +1,112 @@
-# ethicrawl/sitemaps/sitemap.py
-from typing import List, Optional, Union, Pattern
-import re
-from ethicrawl.config.config import Config
-from ethicrawl.client import HttpClient
-from ethicrawl.sitemaps.sitemap_urls import SitemapUrlsetEntry
-from ethicrawl.sitemaps.node_factory import NodeFactory
-from ethicrawl.sitemaps.sitemap_nodes import IndexNode, UrlsetNode
-from ethicrawl.sitemaps.sitemap_result import SitemapResult
-
+from typing import List, Union
 from ethicrawl.core.context import Context
+from ethicrawl.core.resource import Resource
+from ethicrawl.sitemaps.sitemap_entries import IndexEntry, UrlsetEntry
+from ethicrawl.sitemaps.sitemap_nodes import IndexNode, UrlsetNode, SitemapNode
+from ethicrawl.sitemaps.sitemap_util import SitemapType
+import lxml
 
 
 class Sitemap:
-    """Builds sitemap trees and extracts URLs."""
-
-    def __init__(self, context: Context, url_filter: Optional[str] = None):
-        """
-        Initialize the sitemap processor.
-
-        Args:
-            context: Ethicrawl context with HTTP client and base URL
-            url_filter: Optional regex pattern to filter top-level sitemaps
-        """
+    def __init__(self, context: Context):
         self._context = context
         self._logger = self._context.logger("sitemap")
-        self._url_filter = re.compile(url_filter) if url_filter else None
-        self._root_node = None
 
-    def filter(self, pattern: str) -> "Sitemap":
-        """
-        Apply a filter pattern to the sitemaps.
+    def parse(self, root: Union[IndexNode, List[Resource]] = None) -> List[UrlsetEntry]:
 
-        Args:
-            pattern: Regex pattern to filter sitemap URLs
+        if isinstance(root, IndexNode):
+            document = root
+        else:
+            document = IndexNode(self._context)
+            for resource in root:
+                document.entries.append(IndexEntry(resource.url))
 
-        Returns:
-            self: For method chaining
-        """
-        self._url_filter = re.compile(pattern) if pattern else None
-        return self  # Return self for chaining
+            # self._logger.debug(type(document), document.entries)
 
-    # we have context now, shouldn't need this grossness
+        def _get(resource: Resource):
+            response = self._context.client.get(resource)
 
-    def from_robots(self) -> "Sitemap":
-        """
-        Use sitemaps discovered in robots.txt.
+            # Instead of relying on SitemapNode to determine type, check directly
+            document = response.text
 
-        Returns:
-            self: For method chaining
-        """
-        # Get the robots_handler from the Ethicrawl instance
-        # Normally we'd have a getter for this in Context
-        # But we can access ec._robots_handler directly for now
-        from ethicrawl.core.old_ethicrawl import Ethicrawl
+            # Quick check of the XML root element name
+            try:
+                root = lxml.etree.fromstring(document.encode("utf-8"))
+                root_tag = lxml.etree.QName(root.tag).localname
+                self._logger.debug(f"Root tag: {root_tag}")
 
-        # Create a temporary Ethicrawl instance to get robots handler
-        # This isn't ideal but works as a workaround
-        ec = Ethicrawl(self._context.url, http_client=self._context.client)
+                if root_tag == SitemapType.INDEX.value:
+                    index_node = IndexNode(self._context, document)
+                    self._logger.debug(
+                        f"Created IndexNode with {len(index_node.entries)} items"
+                    )
+                    return index_node
+                elif root_tag == SitemapType.URLSET.value:
+                    urlset_node = UrlsetNode(self._context, document)
+                    self._logger.debug(
+                        f"Created UrlsetNode with {len(urlset_node.entries)} items"
+                    )
+                    return urlset_node
+                else:
+                    self._logger.warning(
+                        f"Unknown sitemap type with root element: {root_tag}"
+                    )
+                    raise ValueError(
+                        f"Unknown sitemap type with root element: {root_tag}"
+                    )
 
-        # Create an IndexNode with those sitemaps
-        self._root_node = IndexNode(self._context)
-        self._root_node.items = ec._robots_handler.sitemaps
+            except Exception as e:
+                self._logger.error(f"Failed to parse sitemap XML: {str(e)}")
+                raise ValueError(f"Failed to parse sitemap XML: {str(e)}")
 
-        # Apply filter if set
-        if self._url_filter and self._root_node.items:
-            original_count = len(self._root_node.items)
-            self._root_node.items = [
-                item
-                for item in self._root_node.items
-                if self._url_filter.search(item.loc)
-            ]
-            filtered_count = len(self._root_node.items)
-
-            if filtered_count < original_count:
-                self._logger.info(
-                    f"Filtered sitemaps with pattern '{self._url_filter.pattern}': "
-                    f"{filtered_count}/{original_count} matched"
-                )
-
-        return self  # Return self for chaining
-
-    def from_index(self, index: IndexNode) -> "Sitemap":
-        """
-        Use an existing sitemap index node.
-
-        Args:
-            index: Pre-populated IndexNode with sitemap URLs
-
-        Returns:
-            self: For method chaining
-        """
-        # Verify it's an IndexNode
-        if not isinstance(index, IndexNode):
-            raise TypeError("Expected IndexNode instance")
-
-        self._root_node = index
-
-        # Apply filter if set
-        if self._url_filter and self._root_node.items:
-            original_count = len(self._root_node.items)
-            self._root_node.items = [
-                item
-                for item in self._root_node.items
-                if self._url_filter.search(item.loc)
-            ]
-            filtered_count = len(self._root_node.items)
-
-            if filtered_count < original_count:
-                self._logger.info(
-                    f"Filtered sitemaps with pattern '{self._url_filter.pattern}': "
-                    f"{filtered_count}/{original_count} matched"
-                )
-
-        return self  # Return self for chaining
-
-    def items(self, max_depth: int = 5) -> "SitemapResult":
-        """
-        Process sitemaps and return a filterable result object.
-
-        Args:
-            max_depth: Maximum recursion depth for processing sitemap indexes
-
-        Returns:
-            SitemapResult: Object containing URLs that can be further filtered
-
-        Raises:
-            ValueError: If no sitemap source is specified
-        """
-        if not self._root_node:
-            raise ValueError("No sitemap source specified. Use from_robots() first.")
-
-        # Process sitemaps using the existing implementation
-        all_urls = self._process_sitemaps(self._root_node, max_depth)
-        return SitemapResult(all_urls, self._context)
-
-    def _process_sitemaps(
-        self, root_node: IndexNode, max_depth: int = 5
-    ) -> List[SitemapUrlsetEntry]:
-        """
-        Build a sitemap tree and return a flat list of all URLs.
-
-        This is the implementation moved from the old items() method
-        """
-        # Initialize tracking set for cycle detection
-        visited_urls = set()
-
-        # Define the recursive implementation as an inner function
-        def _build_tree_recursive(
-            node: IndexNode, current_depth: int = 0
-        ) -> List[SitemapUrlsetEntry]:
+        def _traverse(
+            node: IndexNode, depth: int = 0, max_depth: int = 5, visited=None
+        ):
+            # Collection of all found URLs
             all_urls = []
 
-            # Check recursion depth
-            if current_depth >= max_depth:
+            # Initialize visited set if this is the first call
+            if visited is None:
+                visited = set()
+
+            # Check if we've reached maximum depth
+            if depth >= max_depth:
                 self._logger.warning(
-                    f"Warning: Maximum recursion depth ({max_depth}) reached. Some sitemaps may not be processed."
+                    f"Maximum recursion depth ({max_depth}) reached, stopping traversal"
                 )
-                return all_urls
+                return
 
-            # Create placeholder for children if needed
-            if not hasattr(node, "children"):
-                node.children = []
+            self._logger.debug(
+                f"Traversing IndexNode at depth {depth}, has {len(node.entries)} items"
+            )
 
-            # Process all sitemap URLs in the node
-            for sitemap_url in node.items:
-                try:
-                    # Skip already visited URLs to prevent cycles
-                    if sitemap_url.loc in visited_urls:
-                        self._logger.debug(
-                            f"Skipping already visited sitemap: {sitemap_url.loc}"
-                        )
-                        continue
+            for item in node.entries:
+                url_str = str(item.url)
 
-                    self._logger.debug(f"Processing sitemap: {sitemap_url.loc}")
-
-                    # Mark this URL as visited
-                    visited_urls.add(sitemap_url.loc)
-
-                    # Fetch and parse this child sitemap
-                    child_node = NodeFactory.create(self._context, sitemap_url)
-
-                    # If it's another index node, recursively build its tree
-                    if isinstance(child_node, IndexNode):
-                        # Recursively collect URLs
-                        child_urls = _build_tree_recursive(
-                            child_node, current_depth + 1
-                        )
-                        all_urls.extend(child_urls)
-
-                    # If it's a urlset node, collect its URLs directly
-                    elif isinstance(child_node, UrlsetNode) and hasattr(
-                        child_node, "items"
-                    ):
-                        all_urls.extend(child_node.items)
-
-                    # Add to parent's children list
-                    node.children.append(child_node)
-
-                except Exception as e:
+                # Check for cycles - skip if we've seen this URL before
+                if url_str in visited:
                     self._logger.warning(
-                        f"Error processing sitemap URL {sitemap_url.loc}: {str(e)}"
+                        f"Cycle detected: {url_str} has already been processed"
                     )
                     continue
 
-            self._logger.info(
-                f"Visited {len(visited_urls)} sitemaps and found {len(all_urls)} unique URLs"
-            )
+                # Mark this URL as visited
+                visited.add(url_str)
+                self._logger.debug(f"Processing item: {item.url}")
+                document = _get(Resource(item.url))
+                if document.type == SitemapType.INDEX:
+                    self._logger.debug(
+                        f"Found index sitemap with {len(document.entries)} items"
+                    )
+                    nested_urls = _traverse(document, depth + 1, max_depth, visited)
+                    all_urls.extend(nested_urls)
+                elif document.type == SitemapType.URLSET:
+                    self._logger.debug(
+                        f"Found urlset with {len(document.entries)} URLs"
+                    )
+                    all_urls.extend(document.entries)
             return all_urls
 
-        # Start the recursive process and return results
-        return _build_tree_recursive(root_node)
+        result = _traverse(document, 0)
+
+        return result

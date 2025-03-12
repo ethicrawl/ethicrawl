@@ -14,5 +14,12 @@ class Resource:
                 f"Error creating resource, got type {type(self.url)} expected str or Url"
             )
 
-    # def __str__(self):
-    #     return self.url.__str__
+    def __hash__(self):
+        """Make instances hashable based on their URL."""
+        return hash(str(self.url))
+
+    def __eq__(self, other):
+        """Equality check based on URL and exact type."""
+        if not isinstance(other, self.__class__):
+            return False
+        return str(self.url) == str(other.url)

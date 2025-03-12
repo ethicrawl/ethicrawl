@@ -7,6 +7,7 @@ import sys
 from ethicrawl.config.config import Config
 from ethicrawl.logger.formatter import ColorFormatter
 from ethicrawl.core.url import Url
+from ethicrawl.core.resource import Resource
 
 
 class Logger:
@@ -87,12 +88,14 @@ class Logger:
         name = re.sub(r"[^a-zA-Z0-9_\-\.]", "_", name)
         # Replace consecutive dots with a single dot
         name = re.sub(r"\.{2,}", ".", name)
+        # Replace consecutive underscores with a single underscore
+        name = re.sub(r"\_{2,}", "_", name)
         # Remove leading and trailing dots
         name = re.sub(r"^\.|\.$", "", name)
         return name or "unnamed"
 
     @staticmethod
-    def logger(url: Url, component: Optional[str] = None) -> logging.Logger:
+    def logger(resource: Resource, component: Optional[str] = None) -> logging.Logger:
         """
         Get a logger for the specified URL, optionally with a component name.
 
@@ -103,19 +106,19 @@ class Logger:
         Returns:
             A logger instance
         """
-        # Ensure logging is set up
+
         if not Logger._initialized:
             Logger.setup_logging()
 
         prefix = __name__.split(".")[0]
 
-        domain = url.hostname.replace(".", "_")
+        base = resource.url.base.replace(".", "_")
 
         # Build the logger name
         if component:
-            logger_name = f"{prefix}.{domain}.{component}"
+            logger_name = f"{prefix}.{base}.{component}"
         else:
-            logger_name = f"{prefix}.{domain}"
+            logger_name = f"{prefix}.{base}"
 
         # Clean the name for logger compatibility
         logger_name = Logger._clean_name(logger_name)

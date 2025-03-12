@@ -3,6 +3,8 @@ import random
 from .requests_transport import RequestsTransport
 from .chromium_transport import ChromiumTransport
 from ethicrawl.core.context import Context
+from ethicrawl.core.url import Url
+from ethicrawl.core.resource import Resource
 
 
 class HttpClient:
@@ -32,7 +34,7 @@ class HttpClient:
                                             (headless, wait_time, chrome_driver_path)
         """
         if not isinstance(context, Context):
-            context = Context("http://www.example.com/")  # dummy url
+            context = Context(Resource(Url("http://www.example.com/")))  # dummy url
         self._context = context
         self._logger = self._context.logger("client")
 
@@ -121,7 +123,7 @@ class HttpClient:
         # Update the last request time
         self.last_request_time = time.time()
 
-    def get(self, url):
+    def get(self, resource: Resource):
         """
         Make a GET request to the specified URL with rate limiting.
 
@@ -135,8 +137,10 @@ class HttpClient:
             # Apply rate limiting before making request
             self._apply_rate_limiting()
 
+            self._logger.debug(f"fetching {resource.url}")
+
             response = self.transport.get(
-                url, timeout=self.timeout, headers=self.headers
+                resource.url, timeout=self.timeout, headers=self.headers
             )
 
             # Update last request time after successful request

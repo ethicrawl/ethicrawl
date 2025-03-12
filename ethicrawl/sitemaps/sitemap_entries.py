@@ -63,9 +63,11 @@ class SitemapEntry(Resource):
             return f"{str(self.url)} (last modified: {self.lastmod})"
         return f"{str(self.url)}"
 
+    __hash__ = Resource.__hash__
+
 
 @dataclass
-class SitemapIndexEntry(SitemapEntry):
+class IndexEntry(SitemapEntry):
     """Represents an entry in a sitemap index file"""
 
     # Index entries only have loc (url) and lastmod, which are inherited
@@ -74,9 +76,11 @@ class SitemapIndexEntry(SitemapEntry):
         """Detailed representation for debugging"""
         return f"SitemapIndexEntry(url='{str(self.url)}', lastmod={repr(self.lastmod)})"
 
+    __hash__ = SitemapEntry.__hash__
+
 
 @dataclass
-class SitemapUrlsetEntry(SitemapEntry):
+class UrlsetEntry(SitemapEntry):
     """Represents an entry in a sitemap urlset file"""
 
     changefreq: Optional[str] = None  # OPTIONAL: How frequently the content changes
@@ -156,3 +160,5 @@ class SitemapUrlsetEntry(SitemapEntry):
             f"SitemapUrlsetEntry(url='{str(self.url)}', lastmod={repr(self.lastmod)}, "
             f"changefreq={repr(self.changefreq)}, priority={repr(self.priority)})"
         )
+
+    __hash__ = SitemapEntry.__hash__
