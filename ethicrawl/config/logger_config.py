@@ -37,6 +37,10 @@ class LoggerConfig:
 
     @level.setter
     def level(self, value: Union[int, str]):
+        # Boolean is a subclass of int, so we need to check for it explicitly
+        if isinstance(value, bool) or not isinstance(value, (int, str)):
+            raise TypeError("Log level must be an integer or level name string")
+
         # Convert string level names to integers
         if isinstance(value, str):
             level_map = {
@@ -51,8 +55,7 @@ class LoggerConfig:
             else:
                 raise ValueError(f"Unknown log level: {value}")
 
-        if not isinstance(value, int):
-            raise TypeError("Log level must be an integer or level name string")
+        # Value should now be an integer
         self._level = value
 
     @property
@@ -124,7 +127,15 @@ class LoggerConfig:
         Args:
             component_name: The component name (e.g., "robots", "sitemaps")
             level: The log level (can be int or level name string)
+
+        Raises:
+            TypeError: If level is not an integer or string
+            ValueError: If string level name is not valid
         """
+        # Boolean is a subclass of int in Python, so check for it explicitly
+        if isinstance(level, bool) or not isinstance(level, (int, str)):
+            raise TypeError("Log level must be an integer or level name string")
+
         # Convert string level names to integers
         if isinstance(level, str):
             level_map = {
@@ -139,7 +150,5 @@ class LoggerConfig:
             else:
                 raise ValueError(f"Unknown log level: {level}")
 
-        if not isinstance(level, int):
-            raise TypeError("Log level must be an integer or level name string")
-
+        # Value should now be an integer
         self._component_levels[component_name] = level

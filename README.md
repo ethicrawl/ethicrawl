@@ -44,11 +44,10 @@ crawler = Ethicrawl()
 crawler.bind("https://example.com")
 
 # Check if a URL is allowed by robots.txt
-if crawler.robots.can_fetch("/some/path"):
+if crawler.robots.can_fetch("https://example.com/some/path"):
     # Fetch the page
-    response = crawler.get("/some/path")
+    response = crawler.get("https://example.com/some/path")
     print(f"Status: {response.status_code}")
-    print(f"Title: {response.html.title}")
 
 # Parse sitemaps
 sitemaps = crawler.robots.sitemaps

@@ -117,6 +117,14 @@ class Config(metaclass=SingletonMeta):
                         for component, level in v.items():
                             section_obj.set_component_level(component, level)
                     else:
+                        # Check if the attribute exists before trying to set it
+                        if not hasattr(section_obj.__class__, k) or not isinstance(
+                            getattr(section_obj.__class__, k), property
+                        ):
+                            raise AttributeError(
+                                f"No such property: '{k}' on {section_name} config"
+                            )
+
                         try:
                             setattr(section_obj, k, v)
                         except AttributeError as e:

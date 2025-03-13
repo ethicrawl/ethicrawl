@@ -217,4 +217,64 @@ crawler.bind('https://example.com', chromium_client)
 
 ==== Cleaning up ====
 Crawler unbound and resources released
+(venv) ➜  ethicrawl git:(develop) ✗ make test
+coverage run -m pytest
+======================================================================================================== test session starts =========================================================================================================
+platform linux -- Python 3.10.16, pytest-8.3.5, pluggy-1.5.0
+rootdir: /home/kris/code/ethicrawl
+configfile: pyproject.toml
+collected 125 items
+
+tests/test_config.py ............                                                                                                                                                                                              [  9%]
+tests/test_context.py .....                                                                                                                                                                                                    [ 13%]
+tests/test_formatter.py .....                                                                                                                                                                                                  [ 17%]
+tests/test_http_client.py ....                                                                                                                                                                                                 [ 20%]
+tests/test_http_config.py ..........                                                                                                                                                                                           [ 28%]
+tests/test_http_response.py ........                                                                                                                                                                                           [ 35%]
+tests/test_logger_config.py ............                                                                                                                                                                                       [ 44%]
+tests/test_resource.py ....                                                                                                                                                                                                    [ 48%]
+tests/test_resource_list.py ....                                                                                                                                                                                               [ 51%]
+tests/test_robots_handler.py .........                                                                                                                                                                                         [ 58%]
+tests/test_sitemap.py .......                                                                                                                                                                                                  [ 64%]
+tests/test_sitemap_entries.py .............                                                                                                                                                                                    [ 74%]
+tests/test_sitemap_nodes.py ................                                                                                                                                                                                   [ 87%]
+tests/test_sitemap_util.py ........                                                                                                                                                                                            [ 93%]
+tests/test_url.py ........                                                                                                                                                                                                     [100%]
+
+======================================================================================================== 125 passed in 0.43s =========================================================================================================
+coverage report
+Name                                     Stmts   Miss  Cover
+------------------------------------------------------------
+ethicrawl/__init__.py                        8      0   100%
+ethicrawl/client/__init__.py                 4      0   100%
+ethicrawl/client/chromium_transport.py     128    103    20%
+ethicrawl/client/http_client.py             62     11    82%
+ethicrawl/client/http_request.py            29     11    62%
+ethicrawl/client/http_response.py           33      0   100%
+ethicrawl/client/requests_transport.py      28     11    61%
+ethicrawl/client/transport.py               15      4    73%
+ethicrawl/config/__init__.py                 4      0   100%
+ethicrawl/config/config.py                  68      6    91%
+ethicrawl/config/http_config.py             80      0   100%
+ethicrawl/config/logger_config.py           86      0   100%
+ethicrawl/config/sitemap_config.py           7      0   100%
+ethicrawl/core/__init__.py                   6      0   100%
+ethicrawl/core/context.py                   40      2    95%
+ethicrawl/core/ethicrawl.py                 99     61    38%
+ethicrawl/core/ethicrawl_error.py            0      0   100%
+ethicrawl/core/resource.py                  16      0   100%
+ethicrawl/core/resource_list.py             38      3    92%
+ethicrawl/core/url.py                      119     21    82%
+ethicrawl/logger/__init__.py                 2      0   100%
+ethicrawl/logger/formatter.py               14      0   100%
+ethicrawl/logger/logger.py                  76     19    75%
+ethicrawl/robots/__init__.py                 2      0   100%
+ethicrawl/robots/robots_handler.py          77      3    96%
+ethicrawl/sitemaps/__init__.py               3      0   100%
+ethicrawl/sitemaps/sitemap_entries.py       70      0   100%
+ethicrawl/sitemaps/sitemap_nodes.py         99      5    95%
+ethicrawl/sitemaps/sitemap_util.py          25      0   100%
+ethicrawl/sitemaps/sitemaps.py              66     54    18%
+------------------------------------------------------------
+TOTAL                                     1304    314    76%
 """
