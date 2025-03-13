@@ -33,27 +33,48 @@ def ensure_bound(func):
 
 
 class Ethicrawl:
+    """
+    The main facade for ethicrawl operations.
+
+    This class provides a simplified interface for crawling websites while respecting
+    robots.txt rules, rate limits, and domain boundaries. It serves as the primary entry
+    point for most users of the library.
+
+    Examples:
+        >>> from ethicrawl import Ethicrawl, HttpClient, Url
+        >>> crawler = Ethicrawl()
+        >>> client = HttpClient()
+        >>> crawler.bind("https://example.com", client)
+        >>> response = crawler.get("https://example.com/about")
+        >>> print(response.status_code)
+        200
+        >>> crawler.unbind()  # Clean up when done
+
+    Attributes:
+        robots (RobotsHandler): Handler for robots.txt rules (available after binding)
+        sitemaps (Sitemaps): Parser and handler for XML sitemaps (available after binding)
+        logger (Logger): Logger for this crawler instance (available after binding)
+        bound (bool): Whether the crawler is currently bound to a site
+    """
 
     def __init__(self):
         pass
 
-    def for_dev_use_only_context(self) -> Context:
-        """
-        Get the internal context (advanced usage).
-
-        Note: Most operations should be performed through Ethicrawl methods directly.
-        Only use this for advanced customization or direct component access.
-
-        This is here currently to support test development in the usage.py file and
-        will be removed
-
-        """
-        if hasattr(self, "_context"):
-            return self._context
-        else:
-            return None
-
     def bind(self, url: Union[str, Url], client: HttpClient = None):
+        """
+        Bind the crawler to a specific website domain.
+
+        Args:
+            url (str or Url): The base URL of the site to crawl
+            client (HttpClient, optional): HTTP client to use for requests
+                                        Defaults to a standard HttpClient
+
+        Returns:
+            bool: True if binding was successful, False otherwise
+
+        Raises:
+            ValueError: If URL is invalid
+        """
         if isinstance(url, Resource):
             url = url.url
         url = Url(str(url), validate=True)
@@ -64,10 +85,12 @@ class Ethicrawl:
 
     def unbind(self):
         """
-        Unbind from the current site and clear all cached resources.
+        Unbind the crawler from its current site.
+
+        This releases resources and allows the crawler to be bound to a different site.
 
         Returns:
-            bool: True if successfully unbound
+            Ethicrawl: Self for method chaining
         """
         # Find all instance attributes starting with underscore
         private_attrs = [attr for attr in vars(self) if attr.startswith("_")]
@@ -81,6 +104,22 @@ class Ethicrawl:
 
     @ensure_bound
     def whitelist(self, url: Union[str, Url], client: HttpClient = None) -> bool:
+        """
+        Whitelist an additional domain for crawling.
+
+        By default, Ethicrawl will only request URLs from the bound domain.
+        Whitelisting allows accessing resources from other domains (like CDNs).
+
+        Args:
+            url (str or Url): URL from the domain to whitelist
+            client (HttpClient, optional): Client to use for this domain
+
+        Returns:
+            bool: True if whitelisting was successful
+
+        Raises:
+            RuntimeError: If not bound to a primary site
+        """
         if isinstance(url, Resource):
             url = url.url
         url = Url(str(url), validate=True)
@@ -143,7 +182,7 @@ class Ethicrawl:
         and domain whitelisting.
 
         Args:
-            url: URL to fetch (string, Url object, or Resource object)
+            url (str, Url, or Resource): URL to fetch
 
         Returns:
             HttpResponse: The response from the server

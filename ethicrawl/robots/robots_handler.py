@@ -2,7 +2,9 @@ from protego import Protego
 from ethicrawl.sitemaps.sitemap_entries import IndexEntry
 from ethicrawl.core.context import Context
 from ethicrawl.core.resource import Resource
+from ethicrawl.core.url import Url
 from ethicrawl.core.resource_list import ResourceList
+from typing import Union
 
 
 class RobotsHandler:
@@ -33,8 +35,35 @@ class RobotsHandler:
         # Initialize the parser immediately
         self._init_parser()
 
-    def can_fetch(self, resource: Resource):
-        """Check if a URL can be fetched according to robots.txt rules."""
+    def can_fetch(self, url_or_resource: Union[str, Url, Resource]) -> bool:
+        """
+        Check if a URL can be fetched according to robots.txt rules.
+
+        Args:
+            url_or_resource (str, Url, or Resource): URL to check permission for
+
+        Returns:
+            bool: True if allowed by robots.txt, False if disallowed
+
+        Examples:
+            >>> handler = RobotsHandler(context)
+            >>> # All these are equivalent:
+            >>> handler.can_fetch("https://example.com/page")
+            >>> handler.can_fetch(Url("https://example.com/page"))
+            >>> handler.can_fetch(Resource(Url("https://example.com/page")))
+        """
+        # Convert input to a Resource object
+        if isinstance(url_or_resource, str):
+            resource = Resource(Url(url_or_resource))
+        elif isinstance(url_or_resource, Url):
+            resource = Resource(url_or_resource)
+        elif isinstance(url_or_resource, Resource):
+            resource = url_or_resource
+        else:
+            raise TypeError(
+                f"Expected string, Url, or Resource, got {type(url_or_resource)}"
+            )
+
         # For 404, we explicitly allow everything per robots.txt protocol
         if self._robots_status == 404:
             self._logger.debug(
@@ -46,10 +75,12 @@ class RobotsHandler:
         can_fetch = self._parser.can_fetch(
             str(resource.url), self._context.client.user_agent
         )
+
         if can_fetch:
             self._logger.debug(f"Permission check for {resource.url}: allowed")
         else:
             self._logger.warning(f"Permission check for {resource.url}: denied")
+
         return can_fetch
 
     @property

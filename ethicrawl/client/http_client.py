@@ -11,13 +11,32 @@ from ethicrawl.client.http_response import HttpResponse
 
 class HttpClient:
     """
-    A simple HTTP client for making web requests with rate limiting and jitter.
+    HTTP client for making web requests with rate limiting and jitter.
+
     Supports both regular HTTP requests and Chromium-driven browser requests.
+    This client automatically applies rate limiting and jitter to avoid
+    overloading servers with requests.
+
+    Examples:
+        >>> from ethicrawl import HttpClient, Resource, Url
+        >>> client = HttpClient(timeout=30, rate_limit=1.0, jitter=0.2)
+        >>> url = Url("https://example.com")
+        >>> resource = Resource(url)
+        >>> response = client.get(resource)
+        >>> print(response.status_code)
+        200
+
+    Attributes:
+        transport: The underlying transport (RequestsTransport or ChromiumTransport)
+        timeout (int): Default timeout for requests in seconds
+        user_agent (str): User agent string used for requests
+        min_interval (float): Minimum time between requests in seconds
+        jitter (float): Random delay factor (0-1) for rate limiting
     """
 
     def __init__(
         self,
-        context=Context,
+        context=None,
         transport=None,
         timeout=10,
         rate_limit=1,
@@ -28,12 +47,15 @@ class HttpClient:
         Initialize the HTTP client.
 
         Args:
-            transport (Transport, optional): Transport implementation to use
+            context (Context, optional): Context for the client. If None, a default
+                                       Context with a dummy URL will be created.
+            transport (Transport, optional): Transport implementation to use.
+                                          If None, RequestsTransport is used.
             timeout (int): Request timeout in seconds
-            rate_limit (float): Maximum requests per second
+            rate_limit (float): Maximum requests per second (0 for unlimited)
             jitter (float): Random delay factor (0-1) to add to rate limiting
             chromium_params (dict, optional): Parameters for Chromium if used
-                                            (headless, wait_time, chrome_driver_path)
+                (headless, wait_time, chrome_driver_path)
         """
         if not isinstance(context, Context):
             context = Context(Resource(Url("http://www.example.com/")))  # dummy url
@@ -60,12 +82,22 @@ class HttpClient:
 
     @property
     def user_agent(self):
-        """Get the User-Agent from the underlying transport."""
+        """
+        Get the User-Agent from the underlying transport.
+
+        Returns:
+            str: The current User-Agent string
+        """
         return self.transport.user_agent
 
     @user_agent.setter
     def user_agent(self, agent):
-        """Set the User-Agent on the underlying transport."""
+        """
+        Set the User-Agent on the underlying transport.
+
+        Args:
+            agent (str): The User-Agent string to use for requests
+        """
         self.transport.user_agent = agent
 
     def with_chromium(
@@ -77,17 +109,27 @@ class HttpClient:
         jitter=0.3,
     ):
         """
-        Convert this client to use a Chromium-powered transport.
+        Create a new client that uses a Chromium-powered transport.
+
+        Creates a new HttpClient instance that uses Selenium with Chrome/Chromium to execute
+        JavaScript and render pages before returning them, allowing extraction
+        of content from modern single-page applications.
 
         Args:
-            headless (bool): Run in headless mode
-            wait_time (int): Wait time for JavaScript execution
-            timeout (int): Request timeout
-            rate_limit (float): Requests per second
-            jitter (float): Random delay factor
+            headless (bool): Run browser in headless mode
+            wait_time (int): Wait time for JavaScript execution in seconds
+            timeout (int): Request timeout in seconds
+            rate_limit (float): Maximum requests per second
+            jitter (float): Random delay factor (0-1)
 
         Returns:
             HttpClient: A new client configured with Chromium transport
+
+        Example:
+            >>> from ethicrawl import HttpClient
+            >>> client = HttpClient()
+            >>> chromium_client = client.with_chromium(headless=False)
+            >>> # Now use chromium_client for JavaScript-heavy pages
         """
         chromium_params = {"headless": headless, "wait_time": wait_time}
 
@@ -133,11 +175,23 @@ class HttpClient:
 
         Args:
             resource (Resource): The resource to request
-            timeout (int, optional): Request timeout override
+            timeout (int, optional): Request timeout override for this request
             headers (dict, optional): Additional headers for this request
 
         Returns:
             HttpResponse: The response from the server
+
+        Raises:
+            IOError: If the request fails due to network issues or other errors
+            TypeError: If resource is not a Resource object
+
+        Example:
+            >>> from ethicrawl import HttpClient, Resource, Url
+            >>> client = HttpClient()
+            >>> resource = Resource(Url("https://example.com"))
+            >>> response = client.get(resource)
+            >>> if response.status_code == 200:
+            ...     print("Success!")
         """
         try:
             # Apply rate limiting before making request

@@ -38,6 +38,8 @@ class SitemapEntry(Resource):
             "%Y-%m-%dT%H:%M:%SZ",  # YYYY-MM-DDThh:mm:ssZ
             "%Y-%m-%dT%H:%M:%S%z",  # YYYY-MM-DDThh:mm:ss+hh:mm (no colon)
             "%Y-%m-%dT%H:%M:%S%:z",  # YYYY-MM-DDThh:mm:ss+hh:mm (with colon)
+            "%Y-%m-%dT%H:%M:%S.%fZ",  # YYYY-MM-DDThh:mm:ss.ssssssZ (with microseconds)
+            "%Y-%m-%dT%H:%M:%S.%f",  # YYYY-MM-DDThh:mm:ss.ssssss (with microseconds, no Z)
         ]
 
         # Try each format

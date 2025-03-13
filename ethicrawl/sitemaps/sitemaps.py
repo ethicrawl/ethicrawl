@@ -5,6 +5,7 @@ from ethicrawl.sitemaps.sitemap_entries import IndexEntry
 from ethicrawl.sitemaps.sitemap_nodes import IndexNode, UrlsetNode
 from ethicrawl.sitemaps.sitemap_util import SitemapType
 from ethicrawl.core.resource_list import ResourceList
+from ethicrawl.config import Config
 
 
 import lxml
@@ -16,6 +17,8 @@ class Sitemaps:
         self._logger = self._context.logger("sitemap")
 
     def parse(self, root: Union[IndexNode, List[Resource]] = None) -> ResourceList:
+
+        max_depth = Config().sitemap.max_depth
 
         if isinstance(root, IndexNode):
             document = root
@@ -63,7 +66,7 @@ class Sitemaps:
                 raise ValueError(f"Failed to parse sitemap XML: {str(e)}")
 
         def _traverse(
-            node: IndexNode, depth: int = 0, max_depth: int = 5, visited=None
+            node: IndexNode, depth: int = 0, max_depth: int = max_depth, visited=None
         ):
             # Collection of all found URLs
             all_urls = ResourceList([])

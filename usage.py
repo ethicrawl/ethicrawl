@@ -1,140 +1,220 @@
-from ethicrawl.sitemaps.sitemap_nodes import IndexNode
-from ethicrawl.sitemaps.sitemaps import Sitemaps
-from ethicrawl.core.ethicrawl import Ethicrawl
-from ethicrawl.client.http_client import HttpClient
-from ethicrawl.core.url import Url
-from ethicrawl.core.resource import Resource
+"""
+Ethicrawl Usage Example
 
+This script demonstrates how to use the Ethicrawl library for ethical
+web crawling that respects robots.txt rules and maintains proper rate limits.
+"""
+
+from ethicrawl import Ethicrawl, HttpClient, Url, Resource, ResourceList, Config
+import time
+import re
 import logging
+import sys
+
+
+def setup_logging():
+    """Configure logging for the demo"""
+    # Configure root logger to show INFO and above
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
+        handlers=[logging.StreamHandler(sys.stdout)],
+    )
+
+
+def configure_crawler():
+    """Setup custom configuration"""
+    config = Config()
+
+    # HTTP settings
+    config.http.timeout = 15
+    config.http.rate_limit = 1.0  # 1 request per second max
+    config.http.jitter = 0.2  # Add up to 20% random delay
+
+    # Sitemap settings
+    config.sitemap.max_depth = 2  # Limit sitemap recursion
+
+    # Logging settings
+    config.logger.level = "INFO"
+
+    print(f"Configuration: {config}")
+    return config
+
+
+def main():
+    """Main demonstration function"""
+    setup_logging()
+    config = configure_crawler()
+
+    print("\n==== Creating crawler and HTTP client ====")
+    # Create a client with custom timeout
+    client = HttpClient(timeout=20)
+
+    # Create and bind the crawler
+    crawler = Ethicrawl()
+    print("Binding crawler to BBC website...")
+    crawler.bind("https://www.bbc.co.uk/", client)
+
+    print("\n==== Checking robots.txt rules ====")
+    # Check if certain paths are allowed
+    article_url = "https://www.bbc.co.uk/news/uk-northern-ireland-31591567"
+    print(f"Can fetch article: {crawler.robots.can_fetch(article_url)}")
+
+    search_url = "https://www.bbc.co.uk/cbeebies/search?q=test"
+    print(f"Can fetch search: {crawler.robots.can_fetch(search_url)}")
+
+    # Get all the sitemaps from robots.txt
+    print("\n==== Listing sitemaps from robots.txt ====")
+    sitemap_urls = crawler.robots.sitemaps
+    print(f"Found {len(sitemap_urls)} sitemaps:")
+    for i, url in enumerate(sitemap_urls, 1):
+        print(f"{i}. {url}")
+
+    # Process just the main sitemap with depth limit
+    print("\n==== Parsing main sitemap (with depth limit) ====")
+    # Filter to just the main sitemap
+    main_sitemap = crawler.robots.sitemaps.filter(r"https://www.bbc.co.uk/sitemap.xml")
+
+    start_time = time.time()
+    urls = crawler.sitemaps.parse(main_sitemap)
+    duration = time.time() - start_time
+
+    print(f"Found {len(urls)} URLs in {duration:.2f} seconds")
+
+    # Filter URLs by pattern
+    news_urls = urls.filter(r"/news/")
+    print(f"Found {len(news_urls)} news URLs")
+
+    # Show a sample of news URLs
+    print("\n==== Sample of news URLs ====")
+    for url in news_urls[:5]:  # Show first 5 news URLs
+        print(f"- {url.url}")
+
+    # Try to access an image URL from a different domain
+    print("\n==== Testing domain whitelisting ====")
+    image_url = "https://ichef.bbci.co.uk/ace/standard/624/mcs/media/images/81191000/jpg/_81191156_starship2.jpg"
+
+    try:
+        print("Attempting to access image without whitelisting...")
+        response = crawler.get(image_url)
+    except ValueError as e:
+        print(f"Expected error: {e}")
+
+    # Now whitelist the image domain and try again
+    print("\nWhitelisting image domain...")
+    crawler.whitelist("https://ichef.bbci.co.uk")
+
+    try:
+        print("Attempting to access image after whitelisting...")
+        response = crawler.get(image_url)
+        print(f"Success! Got {len(response.content)} bytes of image data")
+    except Exception as e:
+        print(f"Error: {e}")
+
+    # Show how to use a Chromium client for JavaScript-heavy sites
+    print("\n==== Using Chromium for JavaScript-heavy sites ====")
+    print("To use a Chromium client:")
+    print("crawler.unbind()")
+    print("chromium_client = client.with_chromium(headless=True)")
+    print("crawler.bind('https://example.com', chromium_client)")
+    print("# Now the crawler will render JavaScript before processing")
+
+    # Clean up
+    print("\n==== Cleaning up ====")
+    crawler.unbind()
+    print("Crawler unbound and resources released")
 
 
 if __name__ == "__main__":
-
-    # setup_logging()
-
-    visit_site = True
-    config_test = False
-
-    # site = "https://gb.maxmara.com"
-    url = Url("https://zadig-et-voltaire.com/", validate=True)
-    additional_urls = {
-        Url("https://helios.zadig-et-voltaire.com/"),
-        Url("https://assets.zadig-et-voltaire.com/"),
-    }
-
-    resource = Resource(url)
-
-    store_filter = r"uk_en|usd_store_en"
-    product_filter = r"/p/[^/]+/"
-
-    # client = HttpClient().with_chromium(headless=False)  # chromium
-    client = HttpClient()  # .with_chromium(headless=False)  # requests
-
-    ethicrawl = Ethicrawl()
-    ethicrawl.bind(url, client)  # the first bind establishes the root domain
-
-    logger = ethicrawl.logger
-    logger.setLevel(logging.DEBUG)
-
-    # context = ethicrawl.for_dev_use_only_context()
-
-    if config_test:
-        config = ethicrawl.config
-        print(config.to_dict())
-        print(config)
-
-        dict = config.to_dict()
-
-        print(dict)
-        dict["http"]["jitter"] = 0.3
-        print(dict)
-
-        config.update(dict)
-
-        ethicrawl.bind(url, client)
-
-        print(ethicrawl.config.to_dict())
-        config.http.rate_limit = 1
-
-    # print(context.url)
-
-    # ethicrawl = Ethicrawl(url, client)  # .with_selenium(headless=False))
-
-    # visit_site = False
-
-    if visit_site:
-        # Get robots.txt information
-        robots = ethicrawl.robots
-        sitemaps = ethicrawl.sitemaps.parse(robots.sitemaps.filter(store_filter))
-
-        # allowed page:
-        product_url = Url(
-            "https://zadig-et-voltaire.com/eu/uk/p/WWCR01291424/camisole-women-christy-camisole-100--silk-officer-wwcr01291"
-        )
-        ethicrawl.get(product_url).status_code
-        # disallowed page:
-        cache_url = Url("https://zadig-et-voltaire.com/uk/cache-invalidation")
-        try:
-            ethicrawl.get(cache_url).status_code
-        except ValueError as e:
-            pass
-
-        # image url (should fail if domain not bound)
-        image_url = Url(
-            "https://assets.zadig-et-voltaire.com/W/W/WWCR01291_OFFICER_SHOOTING_6763e73b1152a.jpg"
-        )
-        try:
-            ethicrawl.get(image_url).status_code
-        except ValueError as e:
-            pass
-
-        for url in additional_urls:
-            ethicrawl.whitelist(url, client)
-
-        ethicrawl.get(image_url).status_code
-
-        print(
-            len(list(set(sitemaps.filter(product_filter)))),
-            list(set(sitemaps.filter(product_filter)))[0],
-        )
-
-        # result = sitemap.entries()
-
-    # Clean up
-    ethicrawl.unbind()
+    main()
 
 """
 (venv) ➜  ethicrawl git:(develop) ✗ python usage.py
-2025-03-13 10:45:22,429 - ethicrawl.https_zadig-et-voltaire_com.robots - INFO - Fetching robots.txt: https://zadig-et-voltaire.com/robots.txt
-2025-03-13 10:45:23,968 - ethicrawl.https_zadig-et-voltaire_com.robots - INFO - Successfully parsed https://zadig-et-voltaire.com/robots.txt
-2025-03-13 10:45:23,968 - ethicrawl.https_zadig-et-voltaire_com.robots - INFO - Discovered 9 sitemaps in https://zadig-et-voltaire.com/robots.txt
-2025-03-13 10:45:23,968 - ethicrawl.https_zadig-et-voltaire_com.robots - DEBUG - Discovered: https://zadig-et-voltaire.com/media/sitemap_be_en.xml in https://zadig-et-voltaire.com/robots.txt
-2025-03-13 10:45:23,968 - ethicrawl.https_zadig-et-voltaire_com.robots - DEBUG - Discovered: https://zadig-et-voltaire.com/media/sitemap_ch_en.xml in https://zadig-et-voltaire.com/robots.txt
-2025-03-13 10:45:23,969 - ethicrawl.https_zadig-et-voltaire_com.robots - DEBUG - Discovered: https://zadig-et-voltaire.com/media/sitemap_de_de.xml in https://zadig-et-voltaire.com/robots.txt
-2025-03-13 10:45:23,969 - ethicrawl.https_zadig-et-voltaire_com.robots - DEBUG - Discovered: https://zadig-et-voltaire.com/media/sitemap_es_es.xml in https://zadig-et-voltaire.com/robots.txt
-2025-03-13 10:45:23,969 - ethicrawl.https_zadig-et-voltaire_com.robots - DEBUG - Discovered: https://zadig-et-voltaire.com/media/sitemap_fr_fr.xml in https://zadig-et-voltaire.com/robots.txt
-2025-03-13 10:45:23,969 - ethicrawl.https_zadig-et-voltaire_com.robots - DEBUG - Discovered: https://zadig-et-voltaire.com/media/sitemap_it_it.xml in https://zadig-et-voltaire.com/robots.txt
-2025-03-13 10:45:23,969 - ethicrawl.https_zadig-et-voltaire_com.robots - DEBUG - Discovered: https://zadig-et-voltaire.com/media/sitemap_row_en.xml in https://zadig-et-voltaire.com/robots.txt
-2025-03-13 10:45:23,969 - ethicrawl.https_zadig-et-voltaire_com.robots - DEBUG - Discovered: https://zadig-et-voltaire.com/media/sitemap_uk_en.xml in https://zadig-et-voltaire.com/robots.txt
-2025-03-13 10:45:23,969 - ethicrawl.https_zadig-et-voltaire_com.robots - DEBUG - Discovered: https://zadig-et-voltaire.com/media/sitemap_usd_store_en.xml in https://zadig-et-voltaire.com/robots.txt
-2025-03-13 10:45:23,969 - ethicrawl.https_zadig-et-voltaire_com.sitemap - DEBUG - Traversing IndexNode at depth 0, has 2 items
-2025-03-13 10:45:23,969 - ethicrawl.https_zadig-et-voltaire_com.sitemap - DEBUG - Processing item: https://zadig-et-voltaire.com/media/sitemap_uk_en.xml
-2025-03-13 10:45:25,191 - ethicrawl.https_zadig-et-voltaire_com.sitemap - DEBUG - Root tag: urlset
-2025-03-13 10:45:25,265 - ethicrawl.https_zadig-et-voltaire_com.sitemap - DEBUG - Created UrlsetNode with 1776 items
-2025-03-13 10:45:25,265 - ethicrawl.https_zadig-et-voltaire_com.sitemap - DEBUG - Found urlset with 1776 URLs
-2025-03-13 10:45:25,266 - ethicrawl.https_zadig-et-voltaire_com.sitemap - DEBUG - Processing item: https://zadig-et-voltaire.com/media/sitemap_usd_store_en.xml
-2025-03-13 10:45:26,250 - ethicrawl.https_zadig-et-voltaire_com.sitemap - DEBUG - Root tag: urlset
-2025-03-13 10:45:26,310 - ethicrawl.https_zadig-et-voltaire_com.sitemap - DEBUG - Created UrlsetNode with 1455 items
-2025-03-13 10:45:26,311 - ethicrawl.https_zadig-et-voltaire_com.sitemap - DEBUG - Found urlset with 1455 URLs
-2025-03-13 10:45:26,314 - ethicrawl.https_zadig-et-voltaire_com.robots - DEBUG - Permission check for https://zadig-et-voltaire.com/eu/uk/p/WWCR01291424/camisole-women-christy-camisole-100--silk-officer-wwcr01291: allowed
-2025-03-13 10:45:27,537 - ethicrawl.https_zadig-et-voltaire_com.robots - WARNING - Permission check for https://zadig-et-voltaire.com/uk/cache-invalidation: denied
-2025-03-13 10:45:27,537 - ethicrawl.https_zadig-et-voltaire_com - WARNING - Domain not allowed: assets.zadig-et-voltaire.com
-2025-03-13 10:45:27,550 - ethicrawl.https_helios_zadig-et-voltaire_com.robots - INFO - Fetching robots.txt: https://helios.zadig-et-voltaire.com/robots.txt
-2025-03-13 10:45:28,893 - ethicrawl.https_helios_zadig-et-voltaire_com.robots - WARNING - https://helios.zadig-et-voltaire.com/robots.txt not found (404) - allowing all URLs
-2025-03-13 10:45:28,893 - ethicrawl.https_zadig-et-voltaire_com - INFO - Whitelisted domain: helios.zadig-et-voltaire.com
-2025-03-13 10:45:28,899 - ethicrawl.https_assets_zadig-et-voltaire_com.robots - INFO - Fetching robots.txt: https://assets.zadig-et-voltaire.com/robots.txt
-2025-03-13 10:45:30,108 - ethicrawl.https_assets_zadig-et-voltaire_com.robots - INFO - Successfully parsed https://assets.zadig-et-voltaire.com/robots.txt
-2025-03-13 10:45:30,108 - ethicrawl.https_assets_zadig-et-voltaire_com.robots - INFO - No sitemaps found in https://assets.zadig-et-voltaire.com/robots.txt
-2025-03-13 10:45:30,108 - ethicrawl.https_zadig-et-voltaire_com - INFO - Whitelisted domain: assets.zadig-et-voltaire.com
-2589 https://zadig-et-voltaire.com/us/en/p/KMSW01779310/sweater-men-marko-jumper-kmsw01779 | last modified: 2025-03-13 | frequency: daily | priority: 1.0
+Configuration: {
+  "http": {
+    "headers": {},
+    "jitter": 0.2,
+    "max_retries": 3,
+    "rate_limit": 1.0,
+    "retry_delay": 1.0,
+    "timeout": 15.0,
+    "user_agent": "Ethicrawl/1.0"
+  },
+  "logger": {
+    "component_levels": {},
+    "console_enabled": true,
+    "file_enabled": false,
+    "file_path": null,
+    "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    "level": 20,
+    "use_colors": true
+  },
+  "sitemap": {
+    "max_depth": 2,
+    "follow_external": false,
+    "validate_urls": true,
+    "timeout": 30
+  }
+}
+
+==== Creating crawler and HTTP client ====
+Binding crawler to BBC website...
+
+==== Checking robots.txt rules ====
+2025-03-13 13:17:04,875 - ethicrawl.https_www_bbc_co_uk.robots - INFO - Fetching robots.txt: https://www.bbc.co.uk/robots.txt
+2025-03-13 13:17:05,916 - ethicrawl.https_www_bbc_co_uk.robots - INFO - Successfully parsed https://www.bbc.co.uk/robots.txt
+2025-03-13 13:17:05,916 - ethicrawl.https_www_bbc_co_uk.robots - INFO - Discovered 13 sitemaps in https://www.bbc.co.uk/robots.txt
+Can fetch article: True
+2025-03-13 13:17:05,916 - ethicrawl.https_www_bbc_co_uk.robots - WARNING - Permission check for https://www.bbc.co.uk/cbeebies/search?q=test: denied
+Can fetch search: False
+
+==== Listing sitemaps from robots.txt ====
+Found 13 sitemaps:
+1. https://www.bbc.co.uk/sitemap.xml
+2. https://www.bbc.co.uk/sitemaps/https-index-uk-archive.xml
+3. https://www.bbc.co.uk/sitemaps/https-index-uk-news.xml
+4. https://www.bbc.co.uk/food/sitemap.xml
+5. https://www.bbc.co.uk/bitesize/sitemap/sitemapindex.xml
+6. https://www.bbc.co.uk/teach/sitemap/sitemapindex.xml
+7. https://www.bbc.co.uk/sitemaps/https-index-uk-archive_video.xml
+8. https://www.bbc.co.uk/sitemaps/https-index-uk-video.xml
+9. https://www.bbc.co.uk/sitemaps/sitemap-uk-ws-topics.xml
+10. https://www.bbc.co.uk/sport/sitemap.xml
+11. https://www.bbc.co.uk/sitemaps/sitemap-uk-topics.xml
+12. https://www.bbc.co.uk/ideas/sitemap.xml
+13. https://www.bbc.co.uk/tiny-happy-people/sitemap/sitemapindex.xml
+
+==== Parsing main sitemap (with depth limit) ====
+Found 29348 URLs in 11.39 seconds
+Found 17968 news URLs
+
+==== Sample of news URLs ====
+- https://www.bbc.co.uk/news/topics/c4y26wwj72zt
+- https://www.bbc.co.uk/news/topics/czm9g685xgzt
+- https://www.bbc.co.uk/news/topics/cp29jzed52et
+- https://www.bbc.co.uk/news/topics/cerlz4j51w7t
+- https://www.bbc.co.uk/news/topics/c27968gy256t
+
+==== Testing domain whitelisting ====
+Attempting to access image without whitelisting...
+2025-03-13 13:17:17,374 - ethicrawl.https_www_bbc_co_uk - WARNING - Domain not allowed: ichef.bbci.co.uk
+Expected error: Domain not allowed: ichef.bbci.co.uk
+
+Whitelisting image domain...
+2025-03-13 13:17:17,385 - ethicrawl.https_ichef_bbci_co_uk.robots - INFO - Fetching robots.txt: https://ichef.bbci.co.uk/robots.txt
+2025-03-13 13:17:17,425 - ethicrawl.https_ichef_bbci_co_uk.robots - INFO - Successfully parsed https://ichef.bbci.co.uk/robots.txt
+2025-03-13 13:17:17,425 - ethicrawl.https_ichef_bbci_co_uk.robots - INFO - No sitemaps found in https://ichef.bbci.co.uk/robots.txt
+2025-03-13 13:17:17,425 - ethicrawl.https_www_bbc_co_uk - INFO - Whitelisted domain: ichef.bbci.co.uk
+Attempting to access image after whitelisting...
+Success! Got 33100 bytes of image data
+
+==== Using Chromium for JavaScript-heavy sites ====
+To use a Chromium client:
+crawler.unbind()
+chromium_client = client.with_chromium(headless=True)
+crawler.bind('https://example.com', chromium_client)
+# Now the crawler will render JavaScript before processing
+
+==== Cleaning up ====
+Crawler unbound and resources released
 """

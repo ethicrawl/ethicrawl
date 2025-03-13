@@ -30,8 +30,59 @@ def http_only(func):
 
 
 class Url:
+    """
+    URL handling and parsing.
+
+    A utility class for manipulating and parsing URLs, ensuring they're properly
+    formatted and providing easy access to their components. Supports HTTP, HTTPS,
+    and file URLs with different behavior for each scheme.
+
+    Examples:
+        >>> from ethicrawl import Url
+        >>> url = Url("https://example.com/path?q=search")
+        >>> print(url.netloc)
+        example.com
+        >>> print(url.path)
+        /path
+        >>> print(url.query_params)
+        {'q': 'search'}
+
+        # Extending URLs
+        >>> url = Url("https://example.com")
+        >>> new_url = url.extend("products")
+        >>> print(new_url)
+        https://example.com/products
+
+        # Adding query parameters
+        >>> url = Url("https://example.com/search")
+        >>> new_url = url.extend({"q": "term", "page": "1"})
+        >>> print(new_url)
+        https://example.com/search?q=term&page=1
+
+    Attributes:
+        scheme (str): URL scheme (http, https, file)
+        netloc (str): Network location/domain (HTTP/HTTPS only)
+        hostname (str): Just the hostname part without port (HTTP/HTTPS only)
+        path (str): URL path
+        params (str): URL parameters (semicolon params, HTTP/HTTPS only)
+        query (str): Raw query string (HTTP/HTTPS only)
+        query_params (dict): Query parameters as a dictionary (HTTP/HTTPS only)
+        fragment (str): URL fragment/anchor (HTTP/HTTPS only)
+        base (str): Base URL (scheme + netloc for HTTP/HTTPS, 'file://' for file)
+    """
 
     def __init__(self, url: Union[str, "Url"], validate: bool = False):
+        """
+        Initialize a URL object.
+
+        Args:
+            url (str or Url): URL string or another Url object
+            validate (bool): If True, performs hostname resolution to validate
+                            the domain (HTTP/HTTPS only)
+
+        Raises:
+            ValueError: If URL is invalid or hostname can't be resolved (when validate=True)
+        """
         if isinstance(url, Url):
             url = str(url)
 
@@ -100,7 +151,18 @@ class Url:
     @property
     @http_only
     def query_params(self) -> Dict[str, Any]:
-        """Get parsed query parameters as a dictionary."""
+        """
+        Get parsed query parameters as a dictionary.
+
+        Parses the URL's query string into a dictionary of parameter name/value pairs.
+        Only available for HTTP/HTTPS URLs.
+
+        Returns:
+            dict: Dictionary of query parameters
+
+        Raises:
+            ValueError: If used on a file:// URL
+        """
         return dict(urllib.parse.parse_qsl(self._parsed.query))
 
     @property
@@ -171,10 +233,34 @@ class Url:
 
     def extend(self, *args, **kwargs) -> "Url":
         """
-        Extend the URL with path or query parameters.
+        Extend the URL with path components or query parameters.
 
-        For HTTP(S) URLs, supports path and query parameter extension.
-        For file URLs, only supports path extension.
+        This method allows flexible extension of URLs in different ways:
+
+        1. Add path component: extend("path/to/resource")
+        2. Add query parameters as dictionary: extend({"param1": "value1"})
+        3. Add single query parameter: extend("param_name", "param_value")
+
+        Note that query parameter operations are only available for HTTP/HTTPS URLs,
+        not for file URLs.
+
+        Args:
+            *args: Either a path string, a parameter dictionary, or a name/value pair
+
+        Returns:
+            Url: A new Url instance with the extensions applied
+
+        Raises:
+            ValueError: For invalid arguments or when trying to add query parameters to file URLs
+
+        Examples:
+            >>> url = Url("https://example.com")
+            >>> # Add path
+            >>> url.extend("products").extend("category")
+            'https://example.com/products/category'
+            >>> # Add parameters
+            >>> url.extend({"search": "term", "page": "1"})
+            'https://example.com?search=term&page=1'
         """
         # Case 1: Dictionary of parameters
         if (

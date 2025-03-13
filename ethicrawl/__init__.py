@@ -9,7 +9,7 @@ from ethicrawl.core.ethicrawl import Ethicrawl
 from ethicrawl.client.http_client import HttpClient
 from ethicrawl.core.url import Url
 from ethicrawl.core.resource import Resource
-from ethicrawl.core.context import Context
+from ethicrawl.core.resource_list import ResourceList
 from ethicrawl.config import Config
 
 __version__ = "1.0.0-alpha"
@@ -19,5 +19,6 @@ __all__ = [
     "HttpClient",  # HTTP client for direct requests
     "Url",  # URL handling
     "Resource",  # Resource abstraction
+    "ResourceList",  # Resources
     "Config",  # Global configuration
 ]
