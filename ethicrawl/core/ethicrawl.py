@@ -10,6 +10,7 @@ from ethicrawl.core.resource import Resource
 from ethicrawl.config.config import Config
 from ethicrawl.sitemaps.sitemaps import Sitemaps
 import logging
+from ethicrawl.client.http_response import HttpResponse
 
 from functools import wraps
 
@@ -138,27 +139,53 @@ class Ethicrawl:
             self._sitemaps = Sitemaps(self._context)
         return self._sitemaps
 
-    def get(self, url: str):
-        pass
-        # try:
-        #     parsed_url = self._parse_url(url)
+    @ensure_bound
+    def get(self, url: Union[str, Url, Resource]) -> HttpResponse:
+        """
+        Make an HTTP GET request to the specified URL, respecting robots.txt rules
+        and domain whitelisting.
 
-        #     # Check domain permissions
-        #     domain = parsed_url.netloc
-        #     if domain not in self._allowed_domains:
-        #         raise ValueError(f"Domain not allowed: {domain}")
+        Args:
+            url: URL to fetch (string, Url object, or Resource object)
 
-        #     # Get the appropriate client for this domain
-        #     client = self._allowed_domains[domain]
+        Returns:
+            HttpResponse: The response from the server
 
-        #     # Check robots.txt rules only for the main site domain
-        #     if domain == self._base_domain:
-        #         if not self._robots_.can_fetch(parsed_url.geturl()):
-        #             raise ValueError(
-        #                 f"URL disallowed by robots.txt: {parsed_url.geturl()}"
-        #             )
+        Raises:
+            ValueError: If URL is from a non-whitelisted domain or disallowed by robots.txt
+            RuntimeError: If not bound to a site
+        """
+        # Handle different types of URL input
+        if isinstance(url, Resource):
+            resource = url
+        elif isinstance(url, (str, Url)):
+            resource = Resource(Url(str(url)))
+        else:
+            raise TypeError(f"Expected string, Url, or Resource, got {type(url)}")
 
-        #     # Finally, fetch the response with the domain-specific client
-        #     return client.get(parsed_url.geturl())
-        # except ValueError as e:
-        #     raise
+        # Get domain from URL
+        target_domain = resource.url.netloc
+
+        # Check if domain is allowed
+        if target_domain == self._context.resource.url.netloc:
+            # This is the main domain
+            context = self._context
+            robots_handler = self.robots
+        elif hasattr(self, "_whitelist") and target_domain in self._whitelist:
+            # This is a whitelisted domain
+            context = self._whitelist[target_domain]["context"]
+            robots_handler = self._whitelist[target_domain]["robots_handler"]
+        else:
+            # Log at WARNING level instead of just raising the exception
+            self.logger.warning(f"Domain not allowed: {target_domain}")
+            raise ValueError(f"Domain not allowed: {target_domain}")
+
+        # Check robots.txt rules if we have a handler
+        if robots_handler:
+            is_allowed = robots_handler.can_fetch(resource)
+            if not is_allowed:
+                # This is already logged as WARNING in the robots handler,
+                raise ValueError(f"URL disallowed by robots.txt: {resource.url}")
+
+        # Use the domain's context to get its client
+        return context.client.get(resource)

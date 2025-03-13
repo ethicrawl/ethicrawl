@@ -1,52 +1,69 @@
-from typing import Dict, Any, Optional
+from dataclasses import dataclass, field
+from typing import Dict, Any, Optional, List
+from ethicrawl.core.resource import Resource
+from ethicrawl.client.http_request import HttpRequest
 
 
+@dataclass
 class HttpResponse:
     """
     Standardized HTTP response object that's independent of the underlying HTTP library.
+    Contains the response data and reference to the original request.
     """
 
-    def __init__(
-        self, status_code: int, text: str, headers: Dict = None, content: bytes = None
-    ):
-        self.status_code = status_code
-        self._text = text
-        self.headers = headers or {}
-        self._content = content
+    status_code: int
+    request: HttpRequest
+    headers: Dict = field(default_factory=dict)
+    content: bytes = None  # Raw binary content
+    text: str = None  # Only populated for text content
 
-    @property
-    def content(self) -> bytes:
-        """Raw binary response content"""
-        return self._content
+    def __bool__(self):
+        """Allow response to be used in boolean context - True if we got any response"""
+        return self.status_code is not None
 
-    @property
-    def text(self) -> str:
+    def __str__(self):
         """
-        Response content decoded to string.
-        Uses encoding from Content-Type header or falls back to UTF-8.
+        Return a human-readable string representation of the response.
+        Truncates binary content for readability.
         """
-        if self._text is None:
-            # Try to extract encoding from headers or default to utf-8
-            content_type = self.headers.get("Content-Type", "")
-            encoding = "utf-8"  # Default encoding
+        status_line = f"HTTP {self.status_code}"
+        url_line = f"URL: {self.request.url}"
 
-            # Extract charset from Content-Type if available
-            if "charset=" in content_type.lower():
-                encoding = (
-                    content_type.lower().split("charset=")[1].split(";")[0].strip()
-                )
+        # Format the headers nicely
+        headers_str = "\n".join(f"{k}: {v}" for k, v in self.headers.items())
 
-            # Decode content with appropriate encoding
-            self._text = self._content.decode(encoding, errors="replace")
+        # Handle content display - summarize if binary
+        content_summary = "None"
+        if self.content:
+            if self.headers.get("Content-Type", "").startswith("text/"):
+                # For text content, show a preview
+                preview = self.text[:200] if self.text else ""
+                if self.text and len(self.text) > 200:
+                    preview += "..."
+                content_summary = f"'{preview}'"
+            else:
+                # For binary content, just show the size
+                content_summary = f"{len(self.content)} bytes"
 
-        return self._text
+        # Check if it's a text content type before showing text preview
+        content_type = self.headers.get("Content-Type", "").lower()
+        is_text = (
+            content_type.startswith("text/")
+            or "json" in content_type
+            or "xml" in content_type
+            or "javascript" in content_type
+            or "html" in content_type
+        )
 
-    def is_success(self) -> bool:
-        """Check if the response indicates success (2xx status code)"""
-        return 200 <= self.status_code < 300
+        # Show text section only for text content types
+        text_section = ""
+        if self.text and is_text:
+            # Limit text preview to 300 characters
+            text_preview = self.text[:300]
+            if len(self.text) > 300:
+                text_preview += "..."
 
-    def __bool__(
-        self,
-    ):  # FIXME: this should be based on whether we got ANY response back or not
-        """Allow response to be used in boolean context"""
-        return True  # The response exists, regardless of status code
+            # Format with proper line breaks
+            text_section = f"\n\nText: '{text_preview}'"
+
+        return f"{status_line}\n{url_line}\n\nHeaders:\n{headers_str}\n\nContent: {content_summary}{text_section}"

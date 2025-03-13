@@ -35,18 +35,23 @@ class RobotsHandler:
         # Initialize the parser immediately
         self._init_parser()
 
-    def can_fetch(self, url: Resource):
+    def can_fetch(self, resource: Resource):
         """Check if a URL can be fetched according to robots.txt rules."""
         # For 404, we explicitly allow everything per robots.txt protocol
         if self._robots_status == 404:
-            self._logger.debug(f"Permission check for {url}: allowed (no robots.txt)")
+            self._logger.debug(
+                f"Permission check for {resource.url}: allowed (no robots.txt)"
+            )
             return True
 
         # For all other cases, use the parser
-        can_fetch = self._parser.can_fetch(str(url), self._context.client.user_agent)
-        self._logger.debug(
-            f"Permission check for {url}: {'allowed' if can_fetch else 'denied'}"
+        can_fetch = self._parser.can_fetch(
+            str(resource.url), self._context.client.user_agent
         )
+        if can_fetch:
+            self._logger.debug(f"Permission check for {resource.url}: allowed")
+        else:
+            self._logger.warning(f"Permission check for {resource.url}: denied")
         return can_fetch
 
     @property
@@ -119,8 +124,10 @@ class RobotsHandler:
                     self._logger.info(f"No sitemaps found in {robots.url}")
             elif response.status_code == 404:
                 # 404 - Standard is to allow everything
-                self._logger.info(f"{robots.url} not found (404) - allowing all URLs")
-            elif response.status_code >= 400:
+                self._logger.warning(
+                    f"{robots.url} not found (404) - allowing all URLs"
+                )
+            elif response.status_code >= 400 and response.status_code != 404:
                 # Other 4xx errors - Be conservative
                 self._logger.warning(
                     f"{robots.url} returned {response.status_code} - being conservative"

@@ -19,7 +19,7 @@ if __name__ == "__main__":
     url = Url("https://zadig-et-voltaire.com/", validate=True)
     additional_urls = {
         Url("https://helios.zadig-et-voltaire.com/"),
-        Url("https://assets.zadig-et-voltaire.com:443/"),
+        Url("https://assets.zadig-et-voltaire.com/"),
     }
 
     resource = Resource(url)
@@ -28,13 +28,10 @@ if __name__ == "__main__":
     product_filter = r"/p/[^/]+/"
 
     # client = HttpClient().with_chromium(headless=False)  # chromium
-    client = HttpClient()  # requests
+    client = HttpClient()  # .with_chromium(headless=False)  # requests
 
     ethicrawl = Ethicrawl()
     ethicrawl.bind(url, client)  # the first bind establishes the root domain
-
-    for url in additional_urls:
-        ethicrawl.whitelist(url, client)
 
     logger = ethicrawl.logger
     logger.setLevel(logging.DEBUG)
@@ -70,6 +67,32 @@ if __name__ == "__main__":
         robots = ethicrawl.robots
         sitemaps = ethicrawl.sitemaps.parse(robots.sitemaps.filter(store_filter))
 
+        # allowed page:
+        product_url = Url(
+            "https://zadig-et-voltaire.com/eu/uk/p/WWCR01291424/camisole-women-christy-camisole-100--silk-officer-wwcr01291"
+        )
+        ethicrawl.get(product_url).status_code
+        # disallowed page:
+        cache_url = Url("https://zadig-et-voltaire.com/uk/cache-invalidation")
+        try:
+            ethicrawl.get(cache_url).status_code
+        except ValueError as e:
+            pass
+
+        # image url (should fail if domain not bound)
+        image_url = Url(
+            "https://assets.zadig-et-voltaire.com/W/W/WWCR01291_OFFICER_SHOOTING_6763e73b1152a.jpg"
+        )
+        try:
+            ethicrawl.get(image_url).status_code
+        except ValueError as e:
+            pass
+
+        for url in additional_urls:
+            ethicrawl.whitelist(url, client)
+
+        ethicrawl.get(image_url).status_code
+
         print(
             len(list(set(sitemaps.filter(product_filter)))),
             list(set(sitemaps.filter(product_filter)))[0],
@@ -82,33 +105,36 @@ if __name__ == "__main__":
 
 """
 (venv) ➜  ethicrawl git:(develop) ✗ python usage.py
-2025-03-13 07:13:18,687 - ethicrawl.https_helios_zadig-et-voltaire_com.robots - INFO - Fetching robots.txt: https://helios.zadig-et-voltaire.com/robots.txt
-2025-03-13 07:13:19,762 - ethicrawl.https_helios_zadig-et-voltaire_com.robots - INFO - https://helios.zadig-et-voltaire.com/robots.txt not found (404) - allowing all URLs
-2025-03-13 07:13:19,762 - ethicrawl.https_zadig-et-voltaire_com - INFO - Whitelisted domain: helios.zadig-et-voltaire.com
-2025-03-13 07:13:19,776 - ethicrawl.https_assets_zadig-et-voltaire_com_443.robots - INFO - Fetching robots.txt: https://assets.zadig-et-voltaire.com:443/robots.txt
-2025-03-13 07:13:21,025 - ethicrawl.https_assets_zadig-et-voltaire_com_443.robots - INFO - Successfully parsed https://assets.zadig-et-voltaire.com:443/robots.txt
-2025-03-13 07:13:21,025 - ethicrawl.https_assets_zadig-et-voltaire_com_443.robots - INFO - No sitemaps found in https://assets.zadig-et-voltaire.com:443/robots.txt
-2025-03-13 07:13:21,025 - ethicrawl.https_zadig-et-voltaire_com - INFO - Whitelisted domain: assets.zadig-et-voltaire.com:443
-2025-03-13 07:13:21,025 - ethicrawl.https_zadig-et-voltaire_com.robots - INFO - Fetching robots.txt: https://zadig-et-voltaire.com/robots.txt
-2025-03-13 07:13:22,291 - ethicrawl.https_zadig-et-voltaire_com.robots - INFO - Successfully parsed https://zadig-et-voltaire.com/robots.txt
-2025-03-13 07:13:22,291 - ethicrawl.https_zadig-et-voltaire_com.robots - INFO - Discovered 9 sitemaps in https://zadig-et-voltaire.com/robots.txt
-2025-03-13 07:13:22,291 - ethicrawl.https_zadig-et-voltaire_com.robots - DEBUG - Discovered: https://zadig-et-voltaire.com/media/sitemap_be_en.xml in https://zadig-et-voltaire.com/robots.txt
-2025-03-13 07:13:22,291 - ethicrawl.https_zadig-et-voltaire_com.robots - DEBUG - Discovered: https://zadig-et-voltaire.com/media/sitemap_ch_en.xml in https://zadig-et-voltaire.com/robots.txt
-2025-03-13 07:13:22,291 - ethicrawl.https_zadig-et-voltaire_com.robots - DEBUG - Discovered: https://zadig-et-voltaire.com/media/sitemap_de_de.xml in https://zadig-et-voltaire.com/robots.txt
-2025-03-13 07:13:22,291 - ethicrawl.https_zadig-et-voltaire_com.robots - DEBUG - Discovered: https://zadig-et-voltaire.com/media/sitemap_es_es.xml in https://zadig-et-voltaire.com/robots.txt
-2025-03-13 07:13:22,291 - ethicrawl.https_zadig-et-voltaire_com.robots - DEBUG - Discovered: https://zadig-et-voltaire.com/media/sitemap_fr_fr.xml in https://zadig-et-voltaire.com/robots.txt
-2025-03-13 07:13:22,291 - ethicrawl.https_zadig-et-voltaire_com.robots - DEBUG - Discovered: https://zadig-et-voltaire.com/media/sitemap_it_it.xml in https://zadig-et-voltaire.com/robots.txt
-2025-03-13 07:13:22,291 - ethicrawl.https_zadig-et-voltaire_com.robots - DEBUG - Discovered: https://zadig-et-voltaire.com/media/sitemap_row_en.xml in https://zadig-et-voltaire.com/robots.txt
-2025-03-13 07:13:22,291 - ethicrawl.https_zadig-et-voltaire_com.robots - DEBUG - Discovered: https://zadig-et-voltaire.com/media/sitemap_uk_en.xml in https://zadig-et-voltaire.com/robots.txt
-2025-03-13 07:13:22,291 - ethicrawl.https_zadig-et-voltaire_com.robots - DEBUG - Discovered: https://zadig-et-voltaire.com/media/sitemap_usd_store_en.xml in https://zadig-et-voltaire.com/robots.txt
-2025-03-13 07:13:22,292 - ethicrawl.https_zadig-et-voltaire_com.sitemap - DEBUG - Traversing IndexNode at depth 0, has 2 items
-2025-03-13 07:13:22,292 - ethicrawl.https_zadig-et-voltaire_com.sitemap - DEBUG - Processing item: https://zadig-et-voltaire.com/media/sitemap_uk_en.xml
-2025-03-13 07:13:23,673 - ethicrawl.https_zadig-et-voltaire_com.sitemap - DEBUG - Root tag: urlset
-2025-03-13 07:13:23,749 - ethicrawl.https_zadig-et-voltaire_com.sitemap - DEBUG - Created UrlsetNode with 1776 items
-2025-03-13 07:13:23,750 - ethicrawl.https_zadig-et-voltaire_com.sitemap - DEBUG - Found urlset with 1776 URLs
-2025-03-13 07:13:23,750 - ethicrawl.https_zadig-et-voltaire_com.sitemap - DEBUG - Processing item: https://zadig-et-voltaire.com/media/sitemap_usd_store_en.xml
-2025-03-13 07:13:24,770 - ethicrawl.https_zadig-et-voltaire_com.sitemap - DEBUG - Root tag: urlset
-2025-03-13 07:13:24,827 - ethicrawl.https_zadig-et-voltaire_com.sitemap - DEBUG - Created UrlsetNode with 1455 items
-2025-03-13 07:13:24,828 - ethicrawl.https_zadig-et-voltaire_com.sitemap - DEBUG - Found urlset with 1455 URLs
-2589 https://zadig-et-voltaire.com/eu/uk/p/LWSG00001323/card-holder-women-zv-pass-card-holder-record-lwsg00001 | last modified: 2025-03-04 | frequency: daily | priority: 1.0
+2025-03-13 10:45:22,429 - ethicrawl.https_zadig-et-voltaire_com.robots - INFO - Fetching robots.txt: https://zadig-et-voltaire.com/robots.txt
+2025-03-13 10:45:23,968 - ethicrawl.https_zadig-et-voltaire_com.robots - INFO - Successfully parsed https://zadig-et-voltaire.com/robots.txt
+2025-03-13 10:45:23,968 - ethicrawl.https_zadig-et-voltaire_com.robots - INFO - Discovered 9 sitemaps in https://zadig-et-voltaire.com/robots.txt
+2025-03-13 10:45:23,968 - ethicrawl.https_zadig-et-voltaire_com.robots - DEBUG - Discovered: https://zadig-et-voltaire.com/media/sitemap_be_en.xml in https://zadig-et-voltaire.com/robots.txt
+2025-03-13 10:45:23,968 - ethicrawl.https_zadig-et-voltaire_com.robots - DEBUG - Discovered: https://zadig-et-voltaire.com/media/sitemap_ch_en.xml in https://zadig-et-voltaire.com/robots.txt
+2025-03-13 10:45:23,969 - ethicrawl.https_zadig-et-voltaire_com.robots - DEBUG - Discovered: https://zadig-et-voltaire.com/media/sitemap_de_de.xml in https://zadig-et-voltaire.com/robots.txt
+2025-03-13 10:45:23,969 - ethicrawl.https_zadig-et-voltaire_com.robots - DEBUG - Discovered: https://zadig-et-voltaire.com/media/sitemap_es_es.xml in https://zadig-et-voltaire.com/robots.txt
+2025-03-13 10:45:23,969 - ethicrawl.https_zadig-et-voltaire_com.robots - DEBUG - Discovered: https://zadig-et-voltaire.com/media/sitemap_fr_fr.xml in https://zadig-et-voltaire.com/robots.txt
+2025-03-13 10:45:23,969 - ethicrawl.https_zadig-et-voltaire_com.robots - DEBUG - Discovered: https://zadig-et-voltaire.com/media/sitemap_it_it.xml in https://zadig-et-voltaire.com/robots.txt
+2025-03-13 10:45:23,969 - ethicrawl.https_zadig-et-voltaire_com.robots - DEBUG - Discovered: https://zadig-et-voltaire.com/media/sitemap_row_en.xml in https://zadig-et-voltaire.com/robots.txt
+2025-03-13 10:45:23,969 - ethicrawl.https_zadig-et-voltaire_com.robots - DEBUG - Discovered: https://zadig-et-voltaire.com/media/sitemap_uk_en.xml in https://zadig-et-voltaire.com/robots.txt
+2025-03-13 10:45:23,969 - ethicrawl.https_zadig-et-voltaire_com.robots - DEBUG - Discovered: https://zadig-et-voltaire.com/media/sitemap_usd_store_en.xml in https://zadig-et-voltaire.com/robots.txt
+2025-03-13 10:45:23,969 - ethicrawl.https_zadig-et-voltaire_com.sitemap - DEBUG - Traversing IndexNode at depth 0, has 2 items
+2025-03-13 10:45:23,969 - ethicrawl.https_zadig-et-voltaire_com.sitemap - DEBUG - Processing item: https://zadig-et-voltaire.com/media/sitemap_uk_en.xml
+2025-03-13 10:45:25,191 - ethicrawl.https_zadig-et-voltaire_com.sitemap - DEBUG - Root tag: urlset
+2025-03-13 10:45:25,265 - ethicrawl.https_zadig-et-voltaire_com.sitemap - DEBUG - Created UrlsetNode with 1776 items
+2025-03-13 10:45:25,265 - ethicrawl.https_zadig-et-voltaire_com.sitemap - DEBUG - Found urlset with 1776 URLs
+2025-03-13 10:45:25,266 - ethicrawl.https_zadig-et-voltaire_com.sitemap - DEBUG - Processing item: https://zadig-et-voltaire.com/media/sitemap_usd_store_en.xml
+2025-03-13 10:45:26,250 - ethicrawl.https_zadig-et-voltaire_com.sitemap - DEBUG - Root tag: urlset
+2025-03-13 10:45:26,310 - ethicrawl.https_zadig-et-voltaire_com.sitemap - DEBUG - Created UrlsetNode with 1455 items
+2025-03-13 10:45:26,311 - ethicrawl.https_zadig-et-voltaire_com.sitemap - DEBUG - Found urlset with 1455 URLs
+2025-03-13 10:45:26,314 - ethicrawl.https_zadig-et-voltaire_com.robots - DEBUG - Permission check for https://zadig-et-voltaire.com/eu/uk/p/WWCR01291424/camisole-women-christy-camisole-100--silk-officer-wwcr01291: allowed
+2025-03-13 10:45:27,537 - ethicrawl.https_zadig-et-voltaire_com.robots - WARNING - Permission check for https://zadig-et-voltaire.com/uk/cache-invalidation: denied
+2025-03-13 10:45:27,537 - ethicrawl.https_zadig-et-voltaire_com - WARNING - Domain not allowed: assets.zadig-et-voltaire.com
+2025-03-13 10:45:27,550 - ethicrawl.https_helios_zadig-et-voltaire_com.robots - INFO - Fetching robots.txt: https://helios.zadig-et-voltaire.com/robots.txt
+2025-03-13 10:45:28,893 - ethicrawl.https_helios_zadig-et-voltaire_com.robots - WARNING - https://helios.zadig-et-voltaire.com/robots.txt not found (404) - allowing all URLs
+2025-03-13 10:45:28,893 - ethicrawl.https_zadig-et-voltaire_com - INFO - Whitelisted domain: helios.zadig-et-voltaire.com
+2025-03-13 10:45:28,899 - ethicrawl.https_assets_zadig-et-voltaire_com.robots - INFO - Fetching robots.txt: https://assets.zadig-et-voltaire.com/robots.txt
+2025-03-13 10:45:30,108 - ethicrawl.https_assets_zadig-et-voltaire_com.robots - INFO - Successfully parsed https://assets.zadig-et-voltaire.com/robots.txt
+2025-03-13 10:45:30,108 - ethicrawl.https_assets_zadig-et-voltaire_com.robots - INFO - No sitemaps found in https://assets.zadig-et-voltaire.com/robots.txt
+2025-03-13 10:45:30,108 - ethicrawl.https_zadig-et-voltaire_com - INFO - Whitelisted domain: assets.zadig-et-voltaire.com
+2589 https://zadig-et-voltaire.com/us/en/p/KMSW01779310/sweater-men-marko-jumper-kmsw01779 | last modified: 2025-03-13 | frequency: daily | priority: 1.0
 """

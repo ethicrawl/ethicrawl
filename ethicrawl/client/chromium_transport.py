@@ -9,6 +9,7 @@ from .transport import Transport
 from ethicrawl.core.context import Context
 
 from .http_response import HttpResponse
+from .http_request import HttpRequest
 import time
 import json
 
@@ -90,7 +91,7 @@ class ChromiumTransport(Transport):
             f"Note: User-Agent override requested to '{agent}' but Chromium uses browser's native User-Agent"
         )
 
-    def get(self, url, timeout=None, headers=None) -> HttpResponse:
+    def get(self, request: HttpRequest) -> HttpResponse:
         """
         Make a GET request using Chromium with full network information capture.
 
@@ -103,16 +104,29 @@ class ChromiumTransport(Transport):
             HttpResponse: Standardized response object
         """
         try:
+
+            # Extract parameters from request object
+            url = str(request.url)
+            timeout = request.timeout
+
             # Clear logs before request
             if self.driver.get_log("performance"):
                 pass  # Just accessing to clear buffer
 
             # Set page load timeout
-            if timeout:
-                self.driver.set_page_load_timeout(timeout)
+            self.driver.set_page_load_timeout(timeout)
 
             # Navigate to URL
             self.driver.get(url)
+
+            # Note: While we can't directly set most headers in Selenium,
+            # we can record that headers were requested
+            if request.headers:
+                # Just log that headers were requested but can't be fully applied
+                header_names = ", ".join(request.headers.keys())
+                print(
+                    f"Note: Headers requested ({header_names}) but Chromium has limited header support"
+                )
 
             # Update user agent information
             self._user_agent = self.driver.execute_script("return navigator.userAgent;")

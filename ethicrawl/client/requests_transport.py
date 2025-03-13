@@ -2,6 +2,7 @@ from .transport import Transport
 from .http_response import HttpResponse
 from ethicrawl.core.context import Context
 import requests
+from ethicrawl.config.config import Config
 from ethicrawl.client.http_request import HttpRequest
 
 
@@ -10,8 +11,7 @@ class RequestsTransport(Transport):
 
     def __init__(self, context: Context):
         self.session = requests.Session()
-        # Set a default User-Agent
-        self._default_user_agent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+        self._default_user_agent = Config().http.user_agent
         self.session.headers.update({"User-Agent": self._default_user_agent})
 
     @property
@@ -39,9 +39,7 @@ class RequestsTransport(Transport):
         Make a GET request using requests library.
 
         Args:
-            url (str): The URL to request
-            timeout (int, optional): Request timeout in seconds
-            headers (dict, optional): Additional headers
+            request (HttpRequest): The request to perform
 
         Returns:
             HttpResponse: Standardized response object
@@ -49,11 +47,8 @@ class RequestsTransport(Transport):
         try:
             url = str(request.url)
 
-            # Get timeout from request (already validated)
-
             timeout = request.timeout
 
-            # Start with session headers (including User-Agent)
             merged_headers = dict(self.session.headers)
 
             # Merge in request-specific headers (without modifying session)
@@ -66,6 +61,7 @@ class RequestsTransport(Transport):
             # Convert requests.Response to our HttpResponse
             return HttpResponse(
                 status_code=response.status_code,
+                request=request,
                 text=response.text,
                 headers=dict(response.headers),
                 content=response.content,
