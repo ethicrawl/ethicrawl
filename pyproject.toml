@@ -8,7 +8,7 @@ version = "1.0.0-alpha.1"
 description = "A Python library for ethical web crawling"
 readme = "README.md"
 authors = [
-    {name = "Ethicrawl Team", email = "ethicrawl@smkd.net},
+    {name = "Ethicrawl Team", email = "ethicrawl@smkd.net"},
 ]
 license = {text = "Apache License 2.0"}
 classifiers = [
