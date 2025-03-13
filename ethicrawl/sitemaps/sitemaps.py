@@ -80,7 +80,8 @@ class Sitemaps:
                 self._logger.warning(
                     f"Maximum recursion depth ({max_depth}) reached, stopping traversal"
                 )
-                return
+                # Return empty ResourceList instead of None
+                return ResourceList()
 
             self._logger.debug(
                 f"Traversing IndexNode at depth {depth}, has {len(node.entries)} items"

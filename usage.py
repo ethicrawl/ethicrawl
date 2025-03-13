@@ -48,7 +48,7 @@ def main():
 
     print("\n==== Creating crawler and HTTP client ====")
     # Create a client with custom timeout
-    client = HttpClient(timeout=20)
+    client = HttpClient(timeout=20).with_chromium(headless=False)
 
     # Create and bind the crawler
     crawler = Ethicrawl()
