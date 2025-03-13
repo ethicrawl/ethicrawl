@@ -8,6 +8,7 @@ from ethicrawl.client.http_client import HttpClient
 from ethicrawl.core.url import Url
 from ethicrawl.core.resource import Resource
 from ethicrawl.config.config import Config
+from ethicrawl.sitemaps.sitemaps import Sitemaps
 import logging
 
 from functools import wraps
@@ -54,7 +55,7 @@ class Ethicrawl:
         else:
             return None
 
-    def bind(self, url: Union[str, Url, Config], client: HttpClient = None):
+    def bind(self, url: Union[str, Url], client: HttpClient = None):
         if isinstance(url, Resource):
             url = url.url
         url = Url(str(url), validate=True)
@@ -79,6 +80,28 @@ class Ethicrawl:
 
         # Verify unbinding was successful
         return not hasattr(self, "_context")
+
+    @ensure_bound
+    def whitelist(self, url: Union[str, Url], client: HttpClient = None) -> bool:
+        if isinstance(url, Resource):
+            url = url.url
+        url = Url(str(url), validate=True)
+
+        if not hasattr(self, "_whitelist"):
+            self._whitelist = {}
+
+        domain = url.netloc
+        context = Context(Resource(url), client or self._context.client)
+        try:
+            robots_handler = RobotsHandler(context)
+        except Exception as e:
+            self.logger.warning(f"Failed to load robots.txt for {domain}: {e}")
+            # Still create a permissive handler or use None
+            robots_handler = None  # Or a permissive fallback
+
+        self._whitelist[domain] = {"context": context, "robots_handler": robots_handler}
+        self.logger.info(f"Whitelisted domain: {domain}")
+        return True
 
     @property
     def bound(self) -> bool:
@@ -110,9 +133,10 @@ class Ethicrawl:
 
     @property
     @ensure_bound
-    def sitemaps(self):
-        if not hasattr(self, "_sitemap_index") and not isinstance():
-            pass
+    def sitemaps(self) -> Sitemaps:
+        if not hasattr(self, "_sitemaps"):
+            self._sitemaps = Sitemaps(self._context)
+        return self._sitemaps
 
     def get(self, url: str):
         pass

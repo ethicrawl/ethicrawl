@@ -1,5 +1,5 @@
 from ethicrawl.sitemaps.sitemap_nodes import IndexNode
-from ethicrawl.sitemaps.sitemap import Sitemap
+from ethicrawl.sitemaps.sitemaps import Sitemaps
 from ethicrawl.core.ethicrawl import Ethicrawl
 from ethicrawl.client.http_client import HttpClient
 from ethicrawl.core.url import Url
@@ -16,7 +16,12 @@ if __name__ == "__main__":
     config_test = False
 
     # site = "https://gb.maxmara.com"
-    url = Url("http://localhost:8000/", validate=True)
+    url = Url("https://zadig-et-voltaire.com/", validate=True)
+    additional_urls = {
+        Url("https://helios.zadig-et-voltaire.com/"),
+        Url("https://assets.zadig-et-voltaire.com:443/"),
+    }
+
     resource = Resource(url)
 
     store_filter = r"uk_en|usd_store_en"
@@ -26,12 +31,15 @@ if __name__ == "__main__":
     client = HttpClient()  # requests
 
     ethicrawl = Ethicrawl()
-    ethicrawl.bind(url, client)
+    ethicrawl.bind(url, client)  # the first bind establishes the root domain
+
+    for url in additional_urls:
+        ethicrawl.whitelist(url, client)
 
     logger = ethicrawl.logger
     logger.setLevel(logging.DEBUG)
 
-    context = ethicrawl.for_dev_use_only_context()
+    # context = ethicrawl.for_dev_use_only_context()
 
     if config_test:
         config = ethicrawl.config
@@ -60,49 +68,47 @@ if __name__ == "__main__":
     if visit_site:
         # Get robots.txt information
         robots = ethicrawl.robots
-        sitemap = Sitemap(context).parse(robots.sitemaps)
+        sitemaps = ethicrawl.sitemaps.parse(robots.sitemaps.filter(store_filter))
 
-        print(list(set(sitemap)))
+        print(
+            len(list(set(sitemaps.filter(product_filter)))),
+            list(set(sitemaps.filter(product_filter)))[0],
+        )
 
         # result = sitemap.entries()
 
     # Clean up
     ethicrawl.unbind()
 
-# python usage.py
-# 2025-03-12 18:30:40,836 - ethicrawl.http_localhost_8000.robots - INFO - Fetching robots.txt: http://localhost:8000/robots.txt
-# 2025-03-12 18:30:42,068 - ethicrawl.http_localhost_8000.robots - INFO - Successfully parsed http://localhost:8000/robots.txt
-# 2025-03-12 18:30:42,068 - ethicrawl.http_localhost_8000.robots - INFO - Discovered 1 sitemaps in http://localhost:8000/robots.txt
-# 2025-03-12 18:30:42,068 - ethicrawl.http_localhost_8000.robots - DEBUG - Discovered: http://localhost:8000/sitemap.xml in http://localhost:8000/robots.txt
-# 2025-03-12 18:30:42,069 - ethicrawl.http_localhost_8000.sitemap - DEBUG - Traversing IndexNode at depth 0, has 1 items
-# 2025-03-12 18:30:42,069 - ethicrawl.http_localhost_8000.sitemap - DEBUG - Processing item: http://localhost:8000/sitemap.xml
-# 2025-03-12 18:30:43,164 - ethicrawl.http_localhost_8000.sitemap - DEBUG - Root tag: sitemapindex
-# 2025-03-12 18:30:43,168 - ethicrawl.http_localhost_8000.sitemap - DEBUG - Created IndexNode with 3 items
-# 2025-03-12 18:30:43,168 - ethicrawl.http_localhost_8000.sitemap - DEBUG - Found index sitemap with 3 items
-# 2025-03-12 18:30:43,168 - ethicrawl.http_localhost_8000.sitemap - DEBUG - Traversing IndexNode at depth 1, has 3 items
-# 2025-03-12 18:30:43,168 - ethicrawl.http_localhost_8000.sitemap - DEBUG - Processing item: http://localhost:8000/products.xml
-# 2025-03-12 18:30:44,599 - ethicrawl.http_localhost_8000.sitemap - DEBUG - Root tag: urlset
-# 2025-03-12 18:30:44,599 - ethicrawl.http_localhost_8000.sitemap - DEBUG - Created UrlsetNode with 3 items
-# 2025-03-12 18:30:44,599 - ethicrawl.http_localhost_8000.sitemap - DEBUG - Found urlset with 3 URLs
-# 2025-03-12 18:30:44,599 - ethicrawl.http_localhost_8000.sitemap - DEBUG - Processing item: http://localhost:8000/categories.xml
-# 2025-03-12 18:30:45,644 - ethicrawl.http_localhost_8000.sitemap - DEBUG - Root tag: urlset
-# 2025-03-12 18:30:45,644 - ethicrawl.http_localhost_8000.sitemap - DEBUG - Created UrlsetNode with 2 items
-# 2025-03-12 18:30:45,644 - ethicrawl.http_localhost_8000.sitemap - DEBUG - Found urlset with 2 URLs
-# 2025-03-12 18:30:45,644 - ethicrawl.http_localhost_8000.sitemap - DEBUG - Processing item: http://localhost:8000/cycle1.xml
-# 2025-03-12 18:30:46,927 - ethicrawl.http_localhost_8000.sitemap - DEBUG - Root tag: sitemapindex
-# 2025-03-12 18:30:46,927 - ethicrawl.http_localhost_8000.sitemap - DEBUG - Created IndexNode with 1 items
-# 2025-03-12 18:30:46,927 - ethicrawl.http_localhost_8000.sitemap - DEBUG - Found index sitemap with 1 items
-# 2025-03-12 18:30:46,927 - ethicrawl.http_localhost_8000.sitemap - DEBUG - Traversing IndexNode at depth 2, has 1 items
-# 2025-03-12 18:30:46,927 - ethicrawl.http_localhost_8000.sitemap - DEBUG - Processing item: http://localhost:8000/cycle2.xml
-# 2025-03-12 18:30:48,033 - ethicrawl.http_localhost_8000.sitemap - DEBUG - Root tag: sitemapindex
-# 2025-03-12 18:30:48,033 - ethicrawl.http_localhost_8000.sitemap - DEBUG - Created IndexNode with 1 items
-# 2025-03-12 18:30:48,033 - ethicrawl.http_localhost_8000.sitemap - DEBUG - Found index sitemap with 1 items
-# 2025-03-12 18:30:48,033 - ethicrawl.http_localhost_8000.sitemap - DEBUG - Traversing IndexNode at depth 3, has 1 items
-# 2025-03-12 18:30:48,033 - ethicrawl.http_localhost_8000.sitemap - WARNING - Cycle detected: http://localhost:8000/cycle1.xml has already been processed
-# [
-# SitemapUrlsetEntry(url='http://localhost:8000/product1.html', lastmod='2025-02-01', changefreq='weekly', priority=0.8),
-# SitemapUrlsetEntry(url='http://localhost:8000/product2.html', lastmod='2025-02-15', changefreq='weekly', priority=0.8),
-# SitemapUrlsetEntry(url='http://localhost:8000/product3.html', lastmod='2025-02-20', changefreq='weekly', priority=0.8),
-# SitemapUrlsetEntry(url='http://localhost:8000/category1.html', lastmod='2025-01-15', changefreq='monthly', priority=0.6),
-# SitemapUrlsetEntry(url='http://localhost:8000/category2.html', lastmod='2025-01-15', changefreq='monthly', priority=0.6)
-# ]
+"""
+(venv) ➜  ethicrawl git:(develop) ✗ python usage.py
+2025-03-13 07:13:18,687 - ethicrawl.https_helios_zadig-et-voltaire_com.robots - INFO - Fetching robots.txt: https://helios.zadig-et-voltaire.com/robots.txt
+2025-03-13 07:13:19,762 - ethicrawl.https_helios_zadig-et-voltaire_com.robots - INFO - https://helios.zadig-et-voltaire.com/robots.txt not found (404) - allowing all URLs
+2025-03-13 07:13:19,762 - ethicrawl.https_zadig-et-voltaire_com - INFO - Whitelisted domain: helios.zadig-et-voltaire.com
+2025-03-13 07:13:19,776 - ethicrawl.https_assets_zadig-et-voltaire_com_443.robots - INFO - Fetching robots.txt: https://assets.zadig-et-voltaire.com:443/robots.txt
+2025-03-13 07:13:21,025 - ethicrawl.https_assets_zadig-et-voltaire_com_443.robots - INFO - Successfully parsed https://assets.zadig-et-voltaire.com:443/robots.txt
+2025-03-13 07:13:21,025 - ethicrawl.https_assets_zadig-et-voltaire_com_443.robots - INFO - No sitemaps found in https://assets.zadig-et-voltaire.com:443/robots.txt
+2025-03-13 07:13:21,025 - ethicrawl.https_zadig-et-voltaire_com - INFO - Whitelisted domain: assets.zadig-et-voltaire.com:443
+2025-03-13 07:13:21,025 - ethicrawl.https_zadig-et-voltaire_com.robots - INFO - Fetching robots.txt: https://zadig-et-voltaire.com/robots.txt
+2025-03-13 07:13:22,291 - ethicrawl.https_zadig-et-voltaire_com.robots - INFO - Successfully parsed https://zadig-et-voltaire.com/robots.txt
+2025-03-13 07:13:22,291 - ethicrawl.https_zadig-et-voltaire_com.robots - INFO - Discovered 9 sitemaps in https://zadig-et-voltaire.com/robots.txt
+2025-03-13 07:13:22,291 - ethicrawl.https_zadig-et-voltaire_com.robots - DEBUG - Discovered: https://zadig-et-voltaire.com/media/sitemap_be_en.xml in https://zadig-et-voltaire.com/robots.txt
+2025-03-13 07:13:22,291 - ethicrawl.https_zadig-et-voltaire_com.robots - DEBUG - Discovered: https://zadig-et-voltaire.com/media/sitemap_ch_en.xml in https://zadig-et-voltaire.com/robots.txt
+2025-03-13 07:13:22,291 - ethicrawl.https_zadig-et-voltaire_com.robots - DEBUG - Discovered: https://zadig-et-voltaire.com/media/sitemap_de_de.xml in https://zadig-et-voltaire.com/robots.txt
+2025-03-13 07:13:22,291 - ethicrawl.https_zadig-et-voltaire_com.robots - DEBUG - Discovered: https://zadig-et-voltaire.com/media/sitemap_es_es.xml in https://zadig-et-voltaire.com/robots.txt
+2025-03-13 07:13:22,291 - ethicrawl.https_zadig-et-voltaire_com.robots - DEBUG - Discovered: https://zadig-et-voltaire.com/media/sitemap_fr_fr.xml in https://zadig-et-voltaire.com/robots.txt
+2025-03-13 07:13:22,291 - ethicrawl.https_zadig-et-voltaire_com.robots - DEBUG - Discovered: https://zadig-et-voltaire.com/media/sitemap_it_it.xml in https://zadig-et-voltaire.com/robots.txt
+2025-03-13 07:13:22,291 - ethicrawl.https_zadig-et-voltaire_com.robots - DEBUG - Discovered: https://zadig-et-voltaire.com/media/sitemap_row_en.xml in https://zadig-et-voltaire.com/robots.txt
+2025-03-13 07:13:22,291 - ethicrawl.https_zadig-et-voltaire_com.robots - DEBUG - Discovered: https://zadig-et-voltaire.com/media/sitemap_uk_en.xml in https://zadig-et-voltaire.com/robots.txt
+2025-03-13 07:13:22,291 - ethicrawl.https_zadig-et-voltaire_com.robots - DEBUG - Discovered: https://zadig-et-voltaire.com/media/sitemap_usd_store_en.xml in https://zadig-et-voltaire.com/robots.txt
+2025-03-13 07:13:22,292 - ethicrawl.https_zadig-et-voltaire_com.sitemap - DEBUG - Traversing IndexNode at depth 0, has 2 items
+2025-03-13 07:13:22,292 - ethicrawl.https_zadig-et-voltaire_com.sitemap - DEBUG - Processing item: https://zadig-et-voltaire.com/media/sitemap_uk_en.xml
+2025-03-13 07:13:23,673 - ethicrawl.https_zadig-et-voltaire_com.sitemap - DEBUG - Root tag: urlset
+2025-03-13 07:13:23,749 - ethicrawl.https_zadig-et-voltaire_com.sitemap - DEBUG - Created UrlsetNode with 1776 items
+2025-03-13 07:13:23,750 - ethicrawl.https_zadig-et-voltaire_com.sitemap - DEBUG - Found urlset with 1776 URLs
+2025-03-13 07:13:23,750 - ethicrawl.https_zadig-et-voltaire_com.sitemap - DEBUG - Processing item: https://zadig-et-voltaire.com/media/sitemap_usd_store_en.xml
+2025-03-13 07:13:24,770 - ethicrawl.https_zadig-et-voltaire_com.sitemap - DEBUG - Root tag: urlset
+2025-03-13 07:13:24,827 - ethicrawl.https_zadig-et-voltaire_com.sitemap - DEBUG - Created UrlsetNode with 1455 items
+2025-03-13 07:13:24,828 - ethicrawl.https_zadig-et-voltaire_com.sitemap - DEBUG - Found urlset with 1455 URLs
+2589 https://zadig-et-voltaire.com/eu/uk/p/LWSG00001323/card-holder-women-zv-pass-card-holder-record-lwsg00001 | last modified: 2025-03-04 | frequency: daily | priority: 1.0
+"""

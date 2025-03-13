@@ -45,6 +45,8 @@ class HttpResponse:
         """Check if the response indicates success (2xx status code)"""
         return 200 <= self.status_code < 300
 
-    def __bool__(self):
+    def __bool__(
+        self,
+    ):  # FIXME: this should be based on whether we got ANY response back or not
         """Allow response to be used in boolean context"""
-        return self.is_success()
+        return True  # The response exists, regardless of status code

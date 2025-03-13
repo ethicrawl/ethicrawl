@@ -5,6 +5,8 @@ from .chromium_transport import ChromiumTransport
 from ethicrawl.core.context import Context
 from ethicrawl.core.url import Url
 from ethicrawl.core.resource import Resource
+from ethicrawl.client.http_request import HttpRequest
+from ethicrawl.client.http_response import HttpResponse
 
 
 class HttpClient:
@@ -123,12 +125,16 @@ class HttpClient:
         # Update the last request time
         self.last_request_time = time.time()
 
-    def get(self, resource: Resource):
+    def get(
+        self, resource: Resource, timeout: int = None, headers: dict = None
+    ) -> HttpResponse:
         """
         Make a GET request to the specified URL with rate limiting.
 
         Args:
-            url (str): The URL to request
+            resource (Resource): The resource to request
+            timeout (int, optional): Request timeout override
+            headers (dict, optional): Additional headers for this request
 
         Returns:
             HttpResponse: The response from the server
@@ -139,9 +145,16 @@ class HttpClient:
 
             self._logger.debug(f"fetching {resource.url}")
 
-            response = self.transport.get(
-                resource.url, timeout=self.timeout, headers=self.headers
-            )
+            request = HttpRequest(resource.url)
+
+            if timeout is not None:
+                request.timeout = timeout
+
+            if headers:
+                for header, value in headers.items():
+                    request.headers[header] = value
+
+            response = self.transport.get(request)
 
             # Update last request time after successful request
             self.last_request_time = time.time()

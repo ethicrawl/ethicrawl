@@ -4,15 +4,18 @@ from ethicrawl.core.resource import Resource
 from ethicrawl.sitemaps.sitemap_entries import IndexEntry, UrlsetEntry
 from ethicrawl.sitemaps.sitemap_nodes import IndexNode, UrlsetNode, SitemapNode
 from ethicrawl.sitemaps.sitemap_util import SitemapType
+from ethicrawl.core.resource_list import ResourceList
+
+
 import lxml
 
 
-class Sitemap:
+class Sitemaps:
     def __init__(self, context: Context):
         self._context = context
         self._logger = self._context.logger("sitemap")
 
-    def parse(self, root: Union[IndexNode, List[Resource]] = None) -> List[UrlsetEntry]:
+    def parse(self, root: Union[IndexNode, List[Resource]] = None) -> ResourceList:
 
         if isinstance(root, IndexNode):
             document = root
@@ -63,7 +66,7 @@ class Sitemap:
             node: IndexNode, depth: int = 0, max_depth: int = 5, visited=None
         ):
             # Collection of all found URLs
-            all_urls = []
+            all_urls = ResourceList([])
 
             # Initialize visited set if this is the first call
             if visited is None:

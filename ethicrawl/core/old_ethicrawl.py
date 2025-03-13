@@ -4,7 +4,7 @@ from ethicrawl.client.http_client import HttpClient
 from ethicrawl.client.http_response import HttpResponse
 from ethicrawl.robots.robots_handler import RobotsHandler
 
-from ethicrawl.sitemaps.node_factory import NodeFactory
+# from ethicrawl.sitemaps.node_factory import NodeFactory
 from typing import Optional, Union, Pattern
 
 

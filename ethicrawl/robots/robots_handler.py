@@ -4,6 +4,7 @@ from ethicrawl.sitemaps.sitemap_entries import IndexEntry
 from ethicrawl.core.context import Context
 from ethicrawl.core.resource import Resource
 from ethicrawl.core.url import Url
+from ethicrawl.core.resource_list import ResourceList
 
 
 class RobotsHandler:
@@ -27,32 +28,29 @@ class RobotsHandler:
         else:
             self._context = context
 
-        # self._http_client = http_client
-        # self._base_url = base_url
         self._parser = None
+        self._robots_status = None  # Track the HTTP status
         self._logger = self._context.logger("robots")
 
         # Initialize the parser immediately
         self._init_parser()
 
     def can_fetch(self, url: Resource):
-        """
-        Check if a URL can be fetched according to robots.txt rules.
+        """Check if a URL can be fetched according to robots.txt rules."""
+        # For 404, we explicitly allow everything per robots.txt protocol
+        if self._robots_status == 404:
+            self._logger.debug(f"Permission check for {url}: allowed (no robots.txt)")
+            return True
 
-        Args:
-            url (str): URL to check
-
-        Returns:
-            bool: True if the URL can be fetched, False otherwise
-        """
-        can_fetch = self._parser.can_fetch(url, self._context.client.user_agent)
+        # For all other cases, use the parser
+        can_fetch = self._parser.can_fetch(str(url), self._context.client.user_agent)
         self._logger.debug(
             f"Permission check for {url}: {'allowed' if can_fetch else 'denied'}"
         )
         return can_fetch
 
     @property
-    def sitemaps(self) -> List[IndexEntry]:
+    def sitemaps(self) -> ResourceList:
         """
         Get sitemap URLs from the robots.txt, resolving relative paths.
 
@@ -60,10 +58,10 @@ class RobotsHandler:
             list: List of SitemapIndexEntry objects
         """
         if not self._parser:
-            return []
+            return ResourceList()
 
         base_url = self._context.resource.url
-        result = []
+        result = ResourceList([])
 
         for sitemap_url in self._parser.sitemaps:
             # Normalize the sitemap URL
@@ -88,20 +86,24 @@ class RobotsHandler:
         return result
 
     def _init_parser(self):
-        """
-        Initialize the robots.txt parser for the domain.
-        """
+        """Initialize the robots.txt parser for the domain."""
         robots = Resource(f"{self._context.resource.url.base}/robots.txt")
         self._logger.info(f"Fetching robots.txt: {robots.url}")
 
+        # Default to empty parser (permissive)
         self._parser = Protego.parse("")
 
         try:
             # Use our HTTP client to fetch robots.txt
             response = self._context.client.get(robots)
 
-            if response and response.status_code == 200:
-                # Parse the robots.txt content using Protego
+            # Store the status code directly without conversion
+            self._robots_status = None
+            if response:
+                self._robots_status = response.status_code
+
+            if response.status_code == 200:
+                # Success - parse robots.txt normally
                 self._parser = Protego.parse(response.text)
                 self._logger.info(f"Successfully parsed {robots.url}")
 
@@ -115,8 +117,22 @@ class RobotsHandler:
                         self._logger.debug(f"Discovered: {sitemap} in {robots.url}")
                 else:
                     self._logger.info(f"No sitemaps found in {robots.url}")
+            elif response.status_code == 404:
+                # 404 - Standard is to allow everything
+                self._logger.info(f"{robots.url} not found (404) - allowing all URLs")
+            elif response.status_code >= 400:
+                # Other 4xx errors - Be conservative
+                self._logger.warning(
+                    f"{robots.url} returned {response.status_code} - being conservative"
+                )
+                self._parser = Protego.parse("User-agent: *\nDisallow: /")
             else:
-                self._logger.warning(f"{robots.url} not found")
+                # Other unusual responses
+                self._logger.warning(
+                    f"{robots.url} returned{response.status_code} - being conservative"
+                )
+                self._parser = Protego.parse("User-agent: *\nDisallow: /")
         except Exception as e:
-            msg = f"Error fetching {robots.url}: {e}"
-            self._logger.warning(msg)
+            self._logger.warning(f"Error fetching {robots.url}: {e}")
+            # Exception during fetch - be conservative
+            self._parser = Protego.parse("User-agent: *\nDisallow: /")
