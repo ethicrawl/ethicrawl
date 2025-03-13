@@ -11,8 +11,23 @@ A Python library for ethical web crawling that respects robots.txt rules, mainta
 
 ## Installation
 
+Since this package is not yet available on PyPI, you can install it directly from GitHub:
+
 ```bash
-pip install ethicrawl
+pip install git+https://github.com/ethicrawl/ethicrawl.git
+```
+
+For development:
+
+```bash
+# Clone the repository
+git clone https://github.com/ethicrawl/ethicrawl.git
+
+# Navigate to the directory
+cd ethicrawl
+
+# Install in development mode
+pip install -e .
 ```
 
 ## Quick Start

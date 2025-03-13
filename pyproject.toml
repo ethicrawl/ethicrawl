@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ethicrawl"
+version = "1.0.0-alpha.1"
+description = "A Python library for ethical web crawling"
+readme = "README.md"
+authors = [
+    {name = "Ethicrawl Team", email = "ethicrawl@smkd.net},
+]
+license = {text = "Apache License 2.0"}
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Software Development :: Libraries",
+]
+keywords = ["web crawler", "ethical", "robots.txt", "sitemap", "web scraping"]
+dependencies = [
+    "requests>=2.32.0",
+    "lxml>=5.3.0",
+    "protego>=0.4.0",
+    "colorama>=0.4.6",
+    "selenium>=4.29.0",
+]
+requires-python = ">=3.10"
+
+[project.urls]
+"Homepage" = "https://github.com/ethicrawl/ethicrawl"
+"Bug Tracker" = "https://github.com/ethicrawl/ethicrawl/issues"
