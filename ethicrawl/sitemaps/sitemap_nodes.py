@@ -14,14 +14,10 @@ from lxml import etree
 import lxml
 import lxml.etree
 
-from .sitemap_entries import IndexEntry, UrlsetEntry
-
-# from .sitemap_util import SitemapError, SitemapHelper, SitemapType
-from ethicrawl.core.context import Context
+from ethicrawl.sitemaps.sitemap_entries import IndexEntry, UrlsetEntry
 from ethicrawl.sitemaps.sitemap_util import SitemapError, SitemapHelper, SitemapType
 
-# from ethicrawl.config import Config
-
+from ethicrawl.core.context import Context
 from ethicrawl.core.url import Url
 
 

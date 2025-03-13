@@ -1,9 +1,7 @@
 from protego import Protego
-from typing import List
 from ethicrawl.sitemaps.sitemap_entries import IndexEntry
 from ethicrawl.core.context import Context
 from ethicrawl.core.resource import Resource
-from ethicrawl.core.url import Url
 from ethicrawl.core.resource_list import ResourceList
 
 

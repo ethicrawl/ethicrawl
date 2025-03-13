@@ -1,6 +1,3 @@
-import urllib.parse
-import socket
-
 from typing import Union
 from ethicrawl.core.context import Context
 from ethicrawl.robots.robots_handler import RobotsHandler

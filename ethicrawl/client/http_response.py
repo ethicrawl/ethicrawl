@@ -1,6 +1,5 @@
 from dataclasses import dataclass, field
-from typing import Dict, Any, Optional, List
-from ethicrawl.core.resource import Resource
+from typing import Dict
 from ethicrawl.client.http_request import HttpRequest
 
 

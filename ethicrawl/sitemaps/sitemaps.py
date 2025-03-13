@@ -1,8 +1,8 @@
 from typing import List, Union
 from ethicrawl.core.context import Context
 from ethicrawl.core.resource import Resource
-from ethicrawl.sitemaps.sitemap_entries import IndexEntry, UrlsetEntry
-from ethicrawl.sitemaps.sitemap_nodes import IndexNode, UrlsetNode, SitemapNode
+from ethicrawl.sitemaps.sitemap_entries import IndexEntry
+from ethicrawl.sitemaps.sitemap_nodes import IndexNode, UrlsetNode
 from ethicrawl.sitemaps.sitemap_util import SitemapType
 from ethicrawl.core.resource_list import ResourceList
 

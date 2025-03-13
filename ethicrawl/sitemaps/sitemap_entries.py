@@ -1,9 +1,8 @@
 from dataclasses import dataclass
-from re import match
 from typing import Optional, Union
-from ethicrawl.core.resource import Resource
-from ethicrawl.core.url import Url
 from datetime import datetime
+
+from ethicrawl.core.resource import Resource
 
 
 @dataclass

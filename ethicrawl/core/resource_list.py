@@ -1,7 +1,6 @@
 import re
-from typing import List, TypeVar, Generic, Optional, Union, Pattern, Callable, Iterator
+from typing import List, TypeVar, Generic, Union, Pattern, Iterator
 from ethicrawl.core.resource import Resource
-from ethicrawl.core.url import Url
 
 T = TypeVar("T", bound=Resource)
 

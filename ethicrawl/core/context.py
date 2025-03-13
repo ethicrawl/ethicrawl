@@ -1,6 +1,5 @@
 # from ethicrawl.client import HttpClient
 from typing import Optional, TYPE_CHECKING, Any
-import urllib.parse
 from ethicrawl.logger import Logger
 from ethicrawl.core.url import Url
 from ethicrawl.core.resource import Resource

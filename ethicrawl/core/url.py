@@ -1,6 +1,6 @@
 import urllib.parse
 import socket
-from typing import Optional, Dict, Any, Union
+from typing import Dict, Any, Union
 
 from functools import wraps
 

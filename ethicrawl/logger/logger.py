@@ -1,12 +1,10 @@
 import logging
-import urllib.parse
 import re
 import os
-from typing import Optional, Dict
+from typing import Optional
 import sys
 from ethicrawl.config.config import Config
 from ethicrawl.logger.formatter import ColorFormatter
-from ethicrawl.core.url import Url
 from ethicrawl.core.resource import Resource
 
 
