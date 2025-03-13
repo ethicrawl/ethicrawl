@@ -1,13 +1,23 @@
-# from ethicrawl.client import HttpClient
-# from ethicrawl.core.old_ethicrawl import Ethicrawl
-from ethicrawl.core.ethicrawl import Ethicrawl
+"""
+Ethicrawl - An ethical web crawler that respects robots.txt and rate limits.
 
-# from ethicrawl.core.ethicrawl_context import EthicrawlContext as Context
-# from ethicrawl.client.http_response import HttpResponse
+This package provides tools for crawling websites in an ethical manner,
+following robots.txt rules and maintaining reasonable request rates.
+"""
+
+from ethicrawl.core.ethicrawl import Ethicrawl
 from ethicrawl.client.http_client import HttpClient
+from ethicrawl.core.url import Url
+from ethicrawl.core.resource import Resource
+from ethicrawl.core.context import Context
+from ethicrawl.config import Config
+
+__version__ = "1.0.0-alpha"
 
 __all__ = [
-    "HttpClient",
-    # "HttpResponse",
-    "Ethicrawl",
+    "Ethicrawl",  # Main crawler facade
+    "HttpClient",  # HTTP client for direct requests
+    "Url",  # URL handling
+    "Resource",  # Resource abstraction
+    "Config",  # Global configuration
 ]

@@ -1,9 +1,11 @@
-from ethicrawl.logger.formatter import ColorFormatter
+"""
+Logging system for Ethicrawl.
+
+Provides structured, configurable logging across the application.
+"""
+
 from ethicrawl.logger.logger import Logger
 
-# from ethicrawl.logger.logging_mixin import LoggingMixin
-
 __all__ = [
-    "ColorFormatter",
     "Logger",
 ]
