@@ -227,7 +227,10 @@ class Url:
                 return Url(f"{self.scheme}://{self.netloc}{path}")
             else:
                 current = self.path
-                if current and not current.endswith("/"):
+                # If path is empty, ensure we add a leading slash before the new path
+                if not current:
+                    current = "/"
+                elif not current.endswith("/"):
                     current += "/"
                 return Url(f"{self.scheme}://{self.netloc}{current}{path}")
 

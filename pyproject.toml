@@ -34,3 +34,7 @@ requires-python = ">=3.10"
 [project.urls]
 "Homepage" = "https://github.com/ethicrawl/ethicrawl"
 "Bug Tracker" = "https://github.com/ethicrawl/ethicrawl/issues"
+
+[tool.coverage.run]
+source = ["ethicrawl"]
+omit = ["tests/*"]
