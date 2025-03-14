@@ -40,20 +40,14 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y google-chrome-stable
 
-      # - name: Set up Squid proxy for testing
-      #   run: |
-      #     sudo apt-get update
-      #     sudo apt-get install -y squid
-      #     sudo systemctl start squid
-
       - name: Run tests with coverage
         run: |
           coverage run -m pytest
           coverage report
           coverage xml
 
-      # - name: Upload coverage reports to Codecov
-      #   uses: codecov/codecov-action@v3
-      #   with:
-      #     file: ./coverage.xml
-      #     fail_ci_if_error: false
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          file: ./coverage.xml
+          fail_ci_if_error: false
