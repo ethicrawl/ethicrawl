@@ -192,11 +192,9 @@ class Config(metaclass=SingletonMeta):
                     if not prop_name.startswith("_") and isinstance(
                         getattr(section_value.__class__, prop_name), property
                     ):
-                        try:
+                        # Dont use try except, be explicit
+                        if hasattr(section_value, prop_name):
                             section_dict[prop_name] = getattr(section_value, prop_name)
-                        except Exception:
-                            # Skip properties that can't be accessed
-                            pass
 
                 result[section_name] = section_dict
             else:

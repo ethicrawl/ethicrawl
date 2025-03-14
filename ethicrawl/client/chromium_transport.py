@@ -29,8 +29,9 @@ class ChromiumTransport(Transport):
             headless (bool): Run browser in headless mode
             wait_time (int): Time to wait for JavaScript to execute in seconds
         """
-        self.context = context
-        self.wait_time = wait_time
+        self._context = context
+        self._logger = self._context.logger("client.chromium")
+        self._wait_time = wait_time
         self._user_agent = None  # Will be populated after first request
 
         # Set up Chrome options
@@ -151,12 +152,12 @@ class ChromiumTransport(Transport):
                 WebDriverWait(self.driver, timeout or 10).until(
                     EC.presence_of_element_located((By.TAG_NAME, "body"))
                 )
-            except:
-                pass  # Continue even if timeout
+            except Exception as e:
+                self._logger.debug(f"Page load wait timed out (continuing anyway): {e}")
 
             # Additional wait for dynamic content if specified
-            if self.wait_time:
-                time.sleep(self.wait_time)
+            if self._wait_time:
+                time.sleep(self._wait_time)
 
             # Get page source and final URL
             page_source = self.driver.page_source
@@ -261,7 +262,8 @@ class ChromiumTransport(Transport):
 
                         # If we found an exact match, return immediately
                         return status_code, headers, mime_type
-                except:
+                except Exception as e:
+                    self._logger.debug(f"Error processing network log entry: {e}")
                     continue
 
             # If no exact match, look for main document response
@@ -285,7 +287,8 @@ class ChromiumTransport(Transport):
                             headers[key] = value
 
                         return status_code, headers, mime_type
-                except:
+                except Exception as e:
+                    self._logger.debug(f"Error processing document response log: {e}")
                     continue
 
             # Default fallback
@@ -300,5 +303,7 @@ class ChromiumTransport(Transport):
         try:
             if hasattr(self, "driver") and self.driver:
                 self.driver.quit()
-        except:
-            pass
+        except Exception as e:
+            # Use the logger if it exists, otherwise we can't log during cleanup
+            if hasattr(self, "_logger"):
+                self._logger.debug(f"Error closing browser during cleanup: {e}")
