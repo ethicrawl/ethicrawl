@@ -48,6 +48,8 @@ def main():
 
     print("\n==== Creating crawler and HTTP client ====")
     # Create a client with custom timeout
+    config.http.set_all_proxies("http://localhost:3128")
+
     client = HttpClient(timeout=20).with_chromium(headless=False)
 
     # Create and bind the crawler
@@ -129,12 +131,12 @@ if __name__ == "__main__":
     main()
 
 """
-(venv) ➜  ethicrawl git:(develop) ✗ python usage.py
 Configuration: {
   "http": {
     "headers": {},
     "jitter": 0.2,
     "max_retries": 3,
+    "proxies": {},
     "rate_limit": 1.0,
     "retry_delay": 1.0,
     "timeout": 15.0,
@@ -161,11 +163,11 @@ Configuration: {
 Binding crawler to BBC website...
 
 ==== Checking robots.txt rules ====
-2025-03-13 13:17:04,875 - ethicrawl.https_www_bbc_co_uk.robots - INFO - Fetching robots.txt: https://www.bbc.co.uk/robots.txt
-2025-03-13 13:17:05,916 - ethicrawl.https_www_bbc_co_uk.robots - INFO - Successfully parsed https://www.bbc.co.uk/robots.txt
-2025-03-13 13:17:05,916 - ethicrawl.https_www_bbc_co_uk.robots - INFO - Discovered 13 sitemaps in https://www.bbc.co.uk/robots.txt
+2025-03-14 04:36:43,933 - ethicrawl.https_www_bbc_co_uk.robots - INFO - Fetching robots.txt: https://www.bbc.co.uk/robots.txt
+2025-03-14 04:36:43,970 - ethicrawl.https_www_bbc_co_uk.robots - INFO - Successfully parsed https://www.bbc.co.uk/robots.txt
+2025-03-14 04:36:43,970 - ethicrawl.https_www_bbc_co_uk.robots - INFO - Discovered 13 sitemaps in https://www.bbc.co.uk/robots.txt
 Can fetch article: True
-2025-03-13 13:17:05,916 - ethicrawl.https_www_bbc_co_uk.robots - WARNING - Permission check for https://www.bbc.co.uk/cbeebies/search?q=test: denied
+2025-03-14 04:36:43,971 - ethicrawl.https_www_bbc_co_uk.robots - WARNING - Permission check for https://www.bbc.co.uk/cbeebies/search?q=test: denied
 Can fetch search: False
 
 ==== Listing sitemaps from robots.txt ====
@@ -185,7 +187,7 @@ Found 13 sitemaps:
 13. https://www.bbc.co.uk/tiny-happy-people/sitemap/sitemapindex.xml
 
 ==== Parsing main sitemap (with depth limit) ====
-Found 29348 URLs in 11.39 seconds
+Found 29349 URLs in 10.71 seconds
 Found 17968 news URLs
 
 ==== Sample of news URLs ====
@@ -197,14 +199,14 @@ Found 17968 news URLs
 
 ==== Testing domain whitelisting ====
 Attempting to access image without whitelisting...
-2025-03-13 13:17:17,374 - ethicrawl.https_www_bbc_co_uk - WARNING - Domain not allowed: ichef.bbci.co.uk
+2025-03-14 04:36:54,743 - ethicrawl.https_www_bbc_co_uk - WARNING - Domain not allowed: ichef.bbci.co.uk
 Expected error: Domain not allowed: ichef.bbci.co.uk
 
 Whitelisting image domain...
-2025-03-13 13:17:17,385 - ethicrawl.https_ichef_bbci_co_uk.robots - INFO - Fetching robots.txt: https://ichef.bbci.co.uk/robots.txt
-2025-03-13 13:17:17,425 - ethicrawl.https_ichef_bbci_co_uk.robots - INFO - Successfully parsed https://ichef.bbci.co.uk/robots.txt
-2025-03-13 13:17:17,425 - ethicrawl.https_ichef_bbci_co_uk.robots - INFO - No sitemaps found in https://ichef.bbci.co.uk/robots.txt
-2025-03-13 13:17:17,425 - ethicrawl.https_www_bbc_co_uk - INFO - Whitelisted domain: ichef.bbci.co.uk
+2025-03-14 04:36:54,752 - ethicrawl.https_ichef_bbci_co_uk.robots - INFO - Fetching robots.txt: https://ichef.bbci.co.uk/robots.txt
+2025-03-14 04:36:54,901 - ethicrawl.https_ichef_bbci_co_uk.robots - INFO - Successfully parsed https://ichef.bbci.co.uk/robots.txt
+2025-03-14 04:36:54,902 - ethicrawl.https_ichef_bbci_co_uk.robots - INFO - No sitemaps found in https://ichef.bbci.co.uk/robots.txt
+2025-03-14 04:36:54,902 - ethicrawl.https_www_bbc_co_uk - INFO - Whitelisted domain: ichef.bbci.co.uk
 Attempting to access image after whitelisting...
 Success! Got 33100 bytes of image data
 
@@ -217,64 +219,11 @@ crawler.bind('https://example.com', chromium_client)
 
 ==== Cleaning up ====
 Crawler unbound and resources released
-(venv) ➜  ethicrawl git:(develop) ✗ make test
-coverage run -m pytest
-======================================================================================================== test session starts =========================================================================================================
-platform linux -- Python 3.10.16, pytest-8.3.5, pluggy-1.5.0
-rootdir: /home/kris/code/ethicrawl
-configfile: pyproject.toml
-collected 125 items
-
-tests/test_config.py ............                                                                                                                                                                                              [  9%]
-tests/test_context.py .....                                                                                                                                                                                                    [ 13%]
-tests/test_formatter.py .....                                                                                                                                                                                                  [ 17%]
-tests/test_http_client.py ....                                                                                                                                                                                                 [ 20%]
-tests/test_http_config.py ..........                                                                                                                                                                                           [ 28%]
-tests/test_http_response.py ........                                                                                                                                                                                           [ 35%]
-tests/test_logger_config.py ............                                                                                                                                                                                       [ 44%]
-tests/test_resource.py ....                                                                                                                                                                                                    [ 48%]
-tests/test_resource_list.py ....                                                                                                                                                                                               [ 51%]
-tests/test_robots_handler.py .........                                                                                                                                                                                         [ 58%]
-tests/test_sitemap.py .......                                                                                                                                                                                                  [ 64%]
-tests/test_sitemap_entries.py .............                                                                                                                                                                                    [ 74%]
-tests/test_sitemap_nodes.py ................                                                                                                                                                                                   [ 87%]
-tests/test_sitemap_util.py ........                                                                                                                                                                                            [ 93%]
-tests/test_url.py ........                                                                                                                                                                                                     [100%]
-
-======================================================================================================== 125 passed in 0.43s =========================================================================================================
-coverage report
-Name                                     Stmts   Miss  Cover
-------------------------------------------------------------
-ethicrawl/__init__.py                        8      0   100%
-ethicrawl/client/__init__.py                 4      0   100%
-ethicrawl/client/chromium_transport.py     128    103    20%
-ethicrawl/client/http_client.py             62     11    82%
-ethicrawl/client/http_request.py            29     11    62%
-ethicrawl/client/http_response.py           33      0   100%
-ethicrawl/client/requests_transport.py      28     11    61%
-ethicrawl/client/transport.py               15      4    73%
-ethicrawl/config/__init__.py                 4      0   100%
-ethicrawl/config/config.py                  68      6    91%
-ethicrawl/config/http_config.py             80      0   100%
-ethicrawl/config/logger_config.py           86      0   100%
-ethicrawl/config/sitemap_config.py           7      0   100%
-ethicrawl/core/__init__.py                   6      0   100%
-ethicrawl/core/context.py                   40      2    95%
-ethicrawl/core/ethicrawl.py                 99     61    38%
-ethicrawl/core/ethicrawl_error.py            0      0   100%
-ethicrawl/core/resource.py                  16      0   100%
-ethicrawl/core/resource_list.py             38      3    92%
-ethicrawl/core/url.py                      119     21    82%
-ethicrawl/logger/__init__.py                 2      0   100%
-ethicrawl/logger/formatter.py               14      0   100%
-ethicrawl/logger/logger.py                  76     19    75%
-ethicrawl/robots/__init__.py                 2      0   100%
-ethicrawl/robots/robots_handler.py          77      3    96%
-ethicrawl/sitemaps/__init__.py               3      0   100%
-ethicrawl/sitemaps/sitemap_entries.py       70      0   100%
-ethicrawl/sitemaps/sitemap_nodes.py         99      5    95%
-ethicrawl/sitemaps/sitemap_util.py          25      0   100%
-ethicrawl/sitemaps/sitemaps.py              66     54    18%
-------------------------------------------------------------
-TOTAL                                     1304    314    76%
+(venv) ➜  ethicrawl git:(develop) ✗ sudo tail /var/log/squid/access.log
+1741926903.160   1367 127.0.0.1 TCP_TUNNEL/200 40235 CONNECT ichef.bbci.co.uk:443 - HIER_DIRECT/23.219.196.111 -
+1741926903.160  13328 127.0.0.1 TCP_TUNNEL/200 2760721 CONNECT www.bbc.co.uk:443 - HIER_DIRECT/212.58.235.129 -
+1741926951.625   1227 127.0.0.1 TCP_TUNNEL/200 40235 CONNECT ichef.bbci.co.uk:443 - HIER_DIRECT/23.219.196.111 -
+1741926951.626  12746 127.0.0.1 TCP_TUNNEL/200 2760573 CONNECT www.bbc.co.uk:443 - HIER_DIRECT/212.58.235.129 -
+1741927016.147   1393 127.0.0.1 TCP_TUNNEL/200 40246 CONNECT ichef.bbci.co.uk:443 - HIER_DIRECT/95.100.244.116 -
+1741927016.147  12212 127.0.0.1 TCP_TUNNEL/200 2760607 CONNECT www.bbc.co.uk:443 - HIER_DIRECT/212.58.235.129 -
 """
