@@ -37,6 +37,9 @@ def configure_crawler():
     # Logging settings
     config.logger.level = "INFO"
 
+    # Proxy settings
+    # config.http.set_all_proxies("http://localhost:3128")
+
     print(f"Configuration: {config}")
     return config
 
@@ -47,8 +50,9 @@ def main():
     config = configure_crawler()
 
     print("\n==== Creating crawler and HTTP client ====")
+
     # Create a client with custom timeout
-    client = HttpClient(timeout=20)
+    client = HttpClient(timeout=20)  # .with_chromium(headless=False)
 
     # Create and bind the crawler
     crawler = Ethicrawl()
@@ -127,94 +131,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-"""
-(venv) ➜  ethicrawl git:(develop) ✗ python usage.py
-Configuration: {
-  "http": {
-    "headers": {},
-    "jitter": 0.2,
-    "max_retries": 3,
-    "rate_limit": 1.0,
-    "retry_delay": 1.0,
-    "timeout": 15.0,
-    "user_agent": "Ethicrawl/1.0"
-  },
-  "logger": {
-    "component_levels": {},
-    "console_enabled": true,
-    "file_enabled": false,
-    "file_path": null,
-    "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-    "level": 20,
-    "use_colors": true
-  },
-  "sitemap": {
-    "max_depth": 2,
-    "follow_external": false,
-    "validate_urls": true,
-    "timeout": 30
-  }
-}
-
-==== Creating crawler and HTTP client ====
-Binding crawler to BBC website...
-
-==== Checking robots.txt rules ====
-2025-03-13 13:17:04,875 - ethicrawl.https_www_bbc_co_uk.robots - INFO - Fetching robots.txt: https://www.bbc.co.uk/robots.txt
-2025-03-13 13:17:05,916 - ethicrawl.https_www_bbc_co_uk.robots - INFO - Successfully parsed https://www.bbc.co.uk/robots.txt
-2025-03-13 13:17:05,916 - ethicrawl.https_www_bbc_co_uk.robots - INFO - Discovered 13 sitemaps in https://www.bbc.co.uk/robots.txt
-Can fetch article: True
-2025-03-13 13:17:05,916 - ethicrawl.https_www_bbc_co_uk.robots - WARNING - Permission check for https://www.bbc.co.uk/cbeebies/search?q=test: denied
-Can fetch search: False
-
-==== Listing sitemaps from robots.txt ====
-Found 13 sitemaps:
-1. https://www.bbc.co.uk/sitemap.xml
-2. https://www.bbc.co.uk/sitemaps/https-index-uk-archive.xml
-3. https://www.bbc.co.uk/sitemaps/https-index-uk-news.xml
-4. https://www.bbc.co.uk/food/sitemap.xml
-5. https://www.bbc.co.uk/bitesize/sitemap/sitemapindex.xml
-6. https://www.bbc.co.uk/teach/sitemap/sitemapindex.xml
-7. https://www.bbc.co.uk/sitemaps/https-index-uk-archive_video.xml
-8. https://www.bbc.co.uk/sitemaps/https-index-uk-video.xml
-9. https://www.bbc.co.uk/sitemaps/sitemap-uk-ws-topics.xml
-10. https://www.bbc.co.uk/sport/sitemap.xml
-11. https://www.bbc.co.uk/sitemaps/sitemap-uk-topics.xml
-12. https://www.bbc.co.uk/ideas/sitemap.xml
-13. https://www.bbc.co.uk/tiny-happy-people/sitemap/sitemapindex.xml
-
-==== Parsing main sitemap (with depth limit) ====
-Found 29348 URLs in 11.39 seconds
-Found 17968 news URLs
-
-==== Sample of news URLs ====
-- https://www.bbc.co.uk/news/topics/c4y26wwj72zt
-- https://www.bbc.co.uk/news/topics/czm9g685xgzt
-- https://www.bbc.co.uk/news/topics/cp29jzed52et
-- https://www.bbc.co.uk/news/topics/cerlz4j51w7t
-- https://www.bbc.co.uk/news/topics/c27968gy256t
-
-==== Testing domain whitelisting ====
-Attempting to access image without whitelisting...
-2025-03-13 13:17:17,374 - ethicrawl.https_www_bbc_co_uk - WARNING - Domain not allowed: ichef.bbci.co.uk
-Expected error: Domain not allowed: ichef.bbci.co.uk
-
-Whitelisting image domain...
-2025-03-13 13:17:17,385 - ethicrawl.https_ichef_bbci_co_uk.robots - INFO - Fetching robots.txt: https://ichef.bbci.co.uk/robots.txt
-2025-03-13 13:17:17,425 - ethicrawl.https_ichef_bbci_co_uk.robots - INFO - Successfully parsed https://ichef.bbci.co.uk/robots.txt
-2025-03-13 13:17:17,425 - ethicrawl.https_ichef_bbci_co_uk.robots - INFO - No sitemaps found in https://ichef.bbci.co.uk/robots.txt
-2025-03-13 13:17:17,425 - ethicrawl.https_www_bbc_co_uk - INFO - Whitelisted domain: ichef.bbci.co.uk
-Attempting to access image after whitelisting...
-Success! Got 33100 bytes of image data
-
-==== Using Chromium for JavaScript-heavy sites ====
-To use a Chromium client:
-crawler.unbind()
-chromium_client = client.with_chromium(headless=True)
-crawler.bind('https://example.com', chromium_client)
-# Now the crawler will render JavaScript before processing
-
-==== Cleaning up ====
-Crawler unbound and resources released
-"""

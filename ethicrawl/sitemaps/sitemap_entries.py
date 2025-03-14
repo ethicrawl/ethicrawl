@@ -84,10 +84,8 @@ class IndexEntry(SitemapEntry):
 class UrlsetEntry(SitemapEntry):
     """Represents an entry in a sitemap urlset file"""
 
-    changefreq: Optional[str] = None  # OPTIONAL: How frequently the content changes
-    priority: Optional[float] = (
-        None  # OPTIONAL: Priority relative to other pages (0.0-1.0)
-    )
+    changefreq: Optional[str] = None
+    priority: Optional[float] = None
 
     _valid_change_freqs = [
         "always",
@@ -100,7 +98,7 @@ class UrlsetEntry(SitemapEntry):
     ]
 
     @staticmethod
-    def _validate_priority(value: Union[str, float, None]) -> Optional[float]:
+    def _validate_priority(value: Union[str, float, int, None]) -> Optional[float]:
         """
         Validate and convert priority value.
 
@@ -122,6 +120,9 @@ class UrlsetEntry(SitemapEntry):
                 value = float(value)
             except ValueError:
                 raise ValueError(f"Priority must be a number, got '{value}'")
+
+        # Always convert to float (handles integers)
+        value = float(value)
 
         # Validate range
         if not (0.0 <= value <= 1.0):

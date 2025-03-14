@@ -1,13 +1,4 @@
-# from abc import ABC, abstractmethod
-# from typing import List, Optional
-# from lxml import etree
-
-# from lxml import html
-from typing import List  # , Optional, Set
-
-# import lxml
-# import gzip
-# from ethicrawl.client import HttpClient
+from typing import List
 
 
 from lxml import etree

@@ -28,9 +28,11 @@ class ChromiumTransport(Transport):
         Initialize Chromium transport.
 
         Args:
+            context (Context): The application context
             headless (bool): Run browser in headless mode
             wait_time (int): Time to wait for JavaScript to execute in seconds
         """
+        self.context = context
         self.wait_time = wait_time
         self._user_agent = None  # Will be populated after first request
 
@@ -43,6 +45,22 @@ class ChromiumTransport(Transport):
         options.add_argument("--disable-dev-shm-usage")
         options.add_argument("--disable-gpu")
         options.add_argument("--window-size=1920,1080")
+
+        # Set up proxy if configured
+        from ethicrawl.config import Config
+
+        if hasattr(Config().http, "proxies") and Config().http.proxies:
+            proxies = Config().http.proxies
+
+            # If both HTTP and HTTPS use the same proxy (common case)
+            if proxies.get("http") == proxies.get("https") and proxies.get("http"):
+                options.add_argument(f'--proxy-server={proxies["http"]}')
+            else:
+                # Handle case when HTTP and HTTPS proxies are different
+                if proxies.get("http"):
+                    options.add_argument(f'--proxy-server=http={proxies["http"]}')
+                if proxies.get("https"):
+                    options.add_argument(f'--proxy-server=https={proxies["https"]}')
 
         # Enable performance logging - critical for getting network details
         options.set_capability(
@@ -169,6 +187,7 @@ class ChromiumTransport(Transport):
 
             # Create the response with text properly decoded from content
             response = HttpResponse(
+                request=request,
                 status_code=status_code or 200,
                 text=content_bytes.decode("utf-8", errors="replace"),
                 headers=headers,

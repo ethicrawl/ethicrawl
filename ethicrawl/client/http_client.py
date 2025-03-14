@@ -78,7 +78,7 @@ class HttpClient:
         # Rate limiting parameters
         self.min_interval = 1.0 / rate_limit if rate_limit > 0 else 0
         self.jitter = jitter
-        self.last_request_time = time.time()
+        self.last_request_time = None  # Initialize last_request_time to None to indicate no previous requests
 
     @property
     def user_agent(self):
@@ -143,25 +143,22 @@ class HttpClient:
         )
 
     def _apply_rate_limiting(self):
-        """Apply rate limiting with jitter before making a request."""
-        if self.min_interval <= 0:
+        """Apply rate limiting to avoid overloading servers."""
+        # If this is the first request, no need to apply rate limiting
+        if self.last_request_time is None:
             return
 
         # Calculate time since last request
-        now = time.time()
-        elapsed = now - self.last_request_time
+        elapsed = time.time() - self.last_request_time
 
-        # Calculate delay needed to maintain rate limit
-        delay = self.min_interval - elapsed
+        # If we've made a request too recently, sleep to maintain rate limit
+        if elapsed < self.min_interval:
+            # Calculate delay with optional jitter
+            delay = self.min_interval - elapsed
+            if self.jitter > 0:
+                delay += random.random() * self.jitter
 
-        # Add random jitter (0-100% of jitter value)
-        jitter_amount = 0
-        if delay > 0 and self.jitter > 0:
-            jitter_amount = random.uniform(0, self.jitter * self.min_interval)
-            delay += jitter_amount
-
-        # Sleep if needed
-        if delay > 0:
+            self._logger.debug(f"Rate limiting - sleeping for {delay:.2f}s")
             time.sleep(delay)
 
         # Update the last request time
@@ -184,15 +181,11 @@ class HttpClient:
         Raises:
             IOError: If the request fails due to network issues or other errors
             TypeError: If resource is not a Resource object
-
-        Example:
-            >>> from ethicrawl import HttpClient, Resource, Url
-            >>> client = HttpClient()
-            >>> resource = Resource(Url("https://example.com"))
-            >>> response = client.get(resource)
-            >>> if response.status_code == 200:
-            ...     print("Success!")
         """
+        # First validate that resource is the correct type
+        if not isinstance(resource, Resource):
+            raise TypeError(f"Expected Resource object, got {type(resource).__name__}")
+
         try:
             # Apply rate limiting before making request
             self._apply_rate_limiting()

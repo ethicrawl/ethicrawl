@@ -1,0 +1,51 @@
+(venv) ➜  ethicrawl git:(develop) ✗ make test
+coverage run -m pytest
+======================================================================================================== test session starts =========================================================================================================
+platform linux -- Python 3.10.16, pytest-8.3.5, pluggy-1.5.0
+rootdir: /home/kris/code/ethicrawl
+configfile: pyproject.toml
+collected 15 items
+
+tests/test_resource.py ....                                                                                                                                                                                                    [ 26%]
+tests/test_resource_list.py ....                                                                                                                                                                                               [ 53%]
+tests/test_url.py .......                                                                                                                                                                                                      [100%]
+
+========================================================================================================= 15 passed in 0.20s =========================================================================================================
+coverage report
+Name                                     Stmts   Miss  Cover
+------------------------------------------------------------
+ethicrawl/__init__.py                        8      0   100%
+ethicrawl/client/__init__.py                 4      0   100%
+ethicrawl/client/chromium_transport.py     128    103    20%
+ethicrawl/client/http_client.py             62     44    29%
+ethicrawl/client/http_request.py            29     14    52%
+ethicrawl/client/http_response.py           33     21    36%
+ethicrawl/client/requests_transport.py      28     15    46%
+ethicrawl/client/transport.py               15      4    73%
+ethicrawl/config/__init__.py                 4      0   100%
+ethicrawl/config/config.py                  66     37    44%
+ethicrawl/config/http_config.py             80     18    78%
+ethicrawl/config/logger_config.py           86     26    70%
+ethicrawl/config/sitemap_config.py           7      0   100%
+ethicrawl/core/__init__.py                   6      0   100%
+ethicrawl/core/context.py                   40     21    48%
+ethicrawl/core/ethicrawl.py                 99     61    38%
+ethicrawl/core/resource.py                  16      0   100%
+ethicrawl/core/resource_list.py             38      3    92%
+ethicrawl/core/url.py                      119     23    81%
+ethicrawl/logger/__init__.py                 2      0   100%
+ethicrawl/logger/formatter.py               43     29    33%
+ethicrawl/logger/logger.py                  76     56    26%
+ethicrawl/robots/__init__.py                 2      0   100%
+ethicrawl/robots/robots_handler.py          77     64    17%
+ethicrawl/sitemaps/__init__.py               3      0   100%
+ethicrawl/sitemaps/sitemap_entries.py       69     42    39%
+ethicrawl/sitemaps/sitemap_nodes.py         99     73    26%
+ethicrawl/sitemaps/sitemap_util.py          25     11    56%
+ethicrawl/sitemaps/sitemaps.py              66     54    18%
+tests/__init__.py                            0      0   100%
+tests/test_resource.py                      24      0   100%
+tests/test_resource_list.py                 29      0   100%
+tests/test_url.py                           50      0   100%
+------------------------------------------------------------
+TOTAL                                     1433    719    50%

@@ -14,6 +14,9 @@ class HttpConfig:
     _jitter: float = field(default=0.2, repr=False)
     _user_agent: str = field(default="Ethicrawl/1.0", repr=False)
     headers: Dict[str, str] = field(default_factory=dict)  # Not using property for this
+    _proxies: Dict[str, str] = field(
+        default_factory=dict, repr=False
+    )  # New proxies attribute
 
     def __post_init__(self):
         # Validate initial values by calling setters
@@ -105,3 +108,42 @@ class HttpConfig:
         if not value.strip():
             raise ValueError("user_agent cannot be empty")
         self._user_agent = value
+
+    @property
+    def proxies(self) -> dict:
+        """Get proxy settings."""
+        return self._proxies.copy()
+
+    @proxies.setter
+    def proxies(self, value: dict):
+        """Set proxy settings."""
+        if not isinstance(value, dict):
+            raise TypeError("Proxies must be a dictionary")
+        self._proxies = value.copy()
+
+    def to_dict(self) -> dict:
+        """Convert config to dictionary."""
+        return {
+            "timeout": self._timeout,
+            "rate_limit": self._rate_limit,
+            "jitter": self._jitter,
+            "max_retries": self._max_retries,
+            "retry_delay": self._retry_delay,
+            "user_agent": self._user_agent,
+            "headers": self.headers,
+            "proxies": self._proxies,
+        }
+
+    # Convenience methods for common proxy configurations
+    def set_http_proxy(self, proxy_url: str):
+        """Set HTTP proxy."""
+        self._proxies["http"] = proxy_url
+
+    def set_https_proxy(self, proxy_url: str):
+        """Set HTTPS proxy."""
+        self._proxies["https"] = proxy_url
+
+    def set_all_proxies(self, proxy_url: str):
+        """Set proxy for all protocols."""
+        self._proxies["http"] = proxy_url
+        self._proxies["https"] = proxy_url
