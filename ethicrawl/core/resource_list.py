@@ -116,7 +116,7 @@ class ResourceList(Generic[T]):
             ...     Resource("https://example.com/product-123"),
             ...     Resource("https://example.com/about")
             ... ])
-            >>> product_pages = resources.filter(r"product-\d+")
+            >>> product_pages = resources.filter(r"product-[0-9]+")
             >>> len(product_pages)
             1
         """
