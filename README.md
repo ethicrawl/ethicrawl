@@ -5,6 +5,7 @@
 [![Security](https://github.com/ethicrawl/ethicrawl/actions/workflows/security.yml/badge.svg)](https://github.com/ethicrawl/ethicrawl/actions/workflows/security.yml)
 [![Python Version](https://img.shields.io/badge/python-3.10+-blue)](https://github.com/ethicrawl/ethicrawl)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
+[![PyPI version](https://badge.fury.io/py/ethicrawl.svg)](https://badge.fury.io/py/ethicrawl)
 
 A Python library for ethical web crawling that respects robots.txt rules, maintains proper rate limits, and provides powerful tools for web scraping.
 
@@ -21,7 +22,7 @@ A Python library for ethical web crawling that respects robots.txt rules, mainta
 Since this package is not yet available on PyPI, you can install it directly from GitHub:
 
 ```bash
-pip install git+https://github.com/ethicrawl/ethicrawl.git
+pip install ethicrawl
 ```
 
 For development:
