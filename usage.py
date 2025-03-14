@@ -37,6 +37,9 @@ def configure_crawler():
     # Logging settings
     config.logger.level = "INFO"
 
+    # Proxy settings
+    # config.http.set_all_proxies("http://localhost:3128")
+
     print(f"Configuration: {config}")
     return config
 
@@ -45,7 +48,6 @@ def main():
     """Main demonstration function"""
     setup_logging()
     config = configure_crawler()
-    # config.http.set_all_proxies("http://localhost:3128")
 
     print("\n==== Creating crawler and HTTP client ====")
 
@@ -129,101 +131,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-"""
-Configuration: {
-  "http": {
-    "headers": {},
-    "jitter": 0.2,
-    "max_retries": 3,
-    "proxies": {},
-    "rate_limit": 1.0,
-    "retry_delay": 1.0,
-    "timeout": 15.0,
-    "user_agent": "Ethicrawl/1.0"
-  },
-  "logger": {
-    "component_levels": {},
-    "console_enabled": true,
-    "file_enabled": false,
-    "file_path": null,
-    "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-    "level": 20,
-    "use_colors": true
-  },
-  "sitemap": {
-    "max_depth": 2,
-    "follow_external": false,
-    "validate_urls": true,
-    "timeout": 30
-  }
-}
-
-==== Creating crawler and HTTP client ====
-Binding crawler to BBC website...
-
-==== Checking robots.txt rules ====
-2025-03-14 04:36:43,933 - ethicrawl.https_www_bbc_co_uk.robots - INFO - Fetching robots.txt: https://www.bbc.co.uk/robots.txt
-2025-03-14 04:36:43,970 - ethicrawl.https_www_bbc_co_uk.robots - INFO - Successfully parsed https://www.bbc.co.uk/robots.txt
-2025-03-14 04:36:43,970 - ethicrawl.https_www_bbc_co_uk.robots - INFO - Discovered 13 sitemaps in https://www.bbc.co.uk/robots.txt
-Can fetch article: True
-2025-03-14 04:36:43,971 - ethicrawl.https_www_bbc_co_uk.robots - WARNING - Permission check for https://www.bbc.co.uk/cbeebies/search?q=test: denied
-Can fetch search: False
-
-==== Listing sitemaps from robots.txt ====
-Found 13 sitemaps:
-1. https://www.bbc.co.uk/sitemap.xml
-2. https://www.bbc.co.uk/sitemaps/https-index-uk-archive.xml
-3. https://www.bbc.co.uk/sitemaps/https-index-uk-news.xml
-4. https://www.bbc.co.uk/food/sitemap.xml
-5. https://www.bbc.co.uk/bitesize/sitemap/sitemapindex.xml
-6. https://www.bbc.co.uk/teach/sitemap/sitemapindex.xml
-7. https://www.bbc.co.uk/sitemaps/https-index-uk-archive_video.xml
-8. https://www.bbc.co.uk/sitemaps/https-index-uk-video.xml
-9. https://www.bbc.co.uk/sitemaps/sitemap-uk-ws-topics.xml
-10. https://www.bbc.co.uk/sport/sitemap.xml
-11. https://www.bbc.co.uk/sitemaps/sitemap-uk-topics.xml
-12. https://www.bbc.co.uk/ideas/sitemap.xml
-13. https://www.bbc.co.uk/tiny-happy-people/sitemap/sitemapindex.xml
-
-==== Parsing main sitemap (with depth limit) ====
-Found 29349 URLs in 10.71 seconds
-Found 17968 news URLs
-
-==== Sample of news URLs ====
-- https://www.bbc.co.uk/news/topics/c4y26wwj72zt
-- https://www.bbc.co.uk/news/topics/czm9g685xgzt
-- https://www.bbc.co.uk/news/topics/cp29jzed52et
-- https://www.bbc.co.uk/news/topics/cerlz4j51w7t
-- https://www.bbc.co.uk/news/topics/c27968gy256t
-
-==== Testing domain whitelisting ====
-Attempting to access image without whitelisting...
-2025-03-14 04:36:54,743 - ethicrawl.https_www_bbc_co_uk - WARNING - Domain not allowed: ichef.bbci.co.uk
-Expected error: Domain not allowed: ichef.bbci.co.uk
-
-Whitelisting image domain...
-2025-03-14 04:36:54,752 - ethicrawl.https_ichef_bbci_co_uk.robots - INFO - Fetching robots.txt: https://ichef.bbci.co.uk/robots.txt
-2025-03-14 04:36:54,901 - ethicrawl.https_ichef_bbci_co_uk.robots - INFO - Successfully parsed https://ichef.bbci.co.uk/robots.txt
-2025-03-14 04:36:54,902 - ethicrawl.https_ichef_bbci_co_uk.robots - INFO - No sitemaps found in https://ichef.bbci.co.uk/robots.txt
-2025-03-14 04:36:54,902 - ethicrawl.https_www_bbc_co_uk - INFO - Whitelisted domain: ichef.bbci.co.uk
-Attempting to access image after whitelisting...
-Success! Got 33100 bytes of image data
-
-==== Using Chromium for JavaScript-heavy sites ====
-To use a Chromium client:
-crawler.unbind()
-chromium_client = client.with_chromium(headless=True)
-crawler.bind('https://example.com', chromium_client)
-# Now the crawler will render JavaScript before processing
-
-==== Cleaning up ====
-Crawler unbound and resources released
-(venv) ➜  ethicrawl git:(develop) ✗ sudo tail /var/log/squid/access.log
-1741926903.160   1367 127.0.0.1 TCP_TUNNEL/200 40235 CONNECT ichef.bbci.co.uk:443 - HIER_DIRECT/23.219.196.111 -
-1741926903.160  13328 127.0.0.1 TCP_TUNNEL/200 2760721 CONNECT www.bbc.co.uk:443 - HIER_DIRECT/212.58.235.129 -
-1741926951.625   1227 127.0.0.1 TCP_TUNNEL/200 40235 CONNECT ichef.bbci.co.uk:443 - HIER_DIRECT/23.219.196.111 -
-1741926951.626  12746 127.0.0.1 TCP_TUNNEL/200 2760573 CONNECT www.bbc.co.uk:443 - HIER_DIRECT/212.58.235.129 -
-1741927016.147   1393 127.0.0.1 TCP_TUNNEL/200 40246 CONNECT ichef.bbci.co.uk:443 - HIER_DIRECT/95.100.244.116 -
-1741927016.147  12212 127.0.0.1 TCP_TUNNEL/200 2760607 CONNECT www.bbc.co.uk:443 - HIER_DIRECT/212.58.235.129 -
-"""
