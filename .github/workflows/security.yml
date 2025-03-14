@@ -44,7 +44,7 @@ jobs:
 
       # Upload scan results as artifacts
       - name: Upload security scan results
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: security-scan-results
           path: |
