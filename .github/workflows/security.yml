@@ -32,7 +32,7 @@ jobs:
 
       # Dependency vulnerability scanning with pip-audit
       - name: Run pip-audit
-        run: pip-audit -o json -f pip-audit-results.json
+        run: pip-audit -f json -o pip-audit-results.json
         continue-on-error: true
 
       # Advanced code scanning with Semgrep
