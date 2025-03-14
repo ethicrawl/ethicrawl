@@ -35,3 +35,4 @@ htmlcov/
 # Security Scans
 bandit-results.json
 pip-audit-results.json
+semgrep-results.json

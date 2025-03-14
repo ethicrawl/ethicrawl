@@ -22,13 +22,12 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install bandit pip-audit semgrep
+          pip install --upgrade bandit pip-audit semgrep
           pip install -e .
 
       # Static code analysis with Bandit
       - name: Run Bandit
         run: bandit -r ethicrawl -f json -o bandit-results.json
-        # Remove continue-on-error to make workflow fail on issues
 
       # Dependency vulnerability scanning with pip-audit
       # PYSEC-2022-43012: old version of setuptools on the runners, irrelevant
@@ -38,10 +37,7 @@ jobs:
 
       # Advanced code scanning with Semgrep
       - name: Run Semgrep
-        uses: semgrep/semgrep-action@v1
-        with:
-          config: p/python
-          output: semgrep-results.json
+        run: semgrep scan --json ethicrawl -o semgrep-results.json
 
       # Upload scan results as artifacts
       - name: Upload security scan results
