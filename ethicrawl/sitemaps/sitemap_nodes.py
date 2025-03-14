@@ -2,8 +2,10 @@ from typing import List
 
 
 from lxml import etree
-import lxml
-import lxml.etree
+
+# import lxml
+# import lxml.etree
+
 
 from ethicrawl.sitemaps.sitemap_entries import IndexEntry, UrlsetEntry
 from ethicrawl.sitemaps.sitemap_util import SitemapError, SitemapHelper, SitemapType
@@ -20,15 +22,22 @@ class SitemapNode:
         self._logger = self._context.logger("sitemap.node")
         self._entries = []
         self._type = SitemapType.UNDEFINED
+        self._parser = etree.XMLParser(
+            resolve_entities=False,  # Prevent XXE attacks
+            no_network=True,  # Prevent external resource loading
+            dtd_validation=False,  # Don't validate DTDs
+            load_dtd=False,  # Don't load DTDs at all
+            huge_tree=False,  # Prevent XML bomb attacks
+        )
         if document is not None:
             self._root = self._validate(document)
 
-    def _validate(self, document: str) -> lxml.etree._Element:
+    def _validate(self, document: str) -> etree._Element:
         document = SitemapHelper.escape_unescaped_ampersands(
             document
         )  # TODO: might want to move this to the HttpClient
         try:
-            _element = etree.fromstring(document.encode("utf-8"))
+            _element = etree.fromstring(document.encode("utf-8"), parser=self._parser)
             if _element.nsmap[None] != SitemapNode.SITEMAP_NS:
                 self._logger.error(
                     f"Required default namespace not found: {SitemapNode.SITEMAP_NS}"
@@ -37,7 +46,7 @@ class SitemapNode:
                     f"Required default namespace not found: {SitemapNode.SITEMAP_NS}"
                 )
             try:
-                _ = lxml.etree.QName(_element.tag).localname
+                _ = etree.QName(_element.tag).localname
             except:
                 raise SitemapError(f"Root tag does not have a name")
             return _element
@@ -58,7 +67,7 @@ class IndexNode(SitemapNode):
     def __init__(self, context: Context, document: str = None) -> None:
         super().__init__(context, document)
         if document is not None:
-            _localname = lxml.etree.QName(self._root.tag).localname
+            _localname = etree.QName(self._root.tag).localname
             if _localname != SitemapType.INDEX.value:
                 raise ValueError(
                     f"Expected a root {SitemapType.INDEX.value} got {_localname}"
@@ -71,7 +80,7 @@ class IndexNode(SitemapNode):
         sitemaps = []
 
         nsmap = {None: self.SITEMAP_NS}
-        _root = etree.fromstring(document.encode("utf-8"))
+        _root = etree.fromstring(document.encode("utf-8"), parser=self._parser)
 
         # Find all sitemap elements
         for sitemap_elem in _root.findall(".//sitemap", namespaces=nsmap):
@@ -123,7 +132,7 @@ class UrlsetNode(SitemapNode):
     def __init__(self, context: Context, document: str = None) -> None:
         super().__init__(context, document)
         if document is not None:
-            _localname = lxml.etree.QName(self._root.tag).localname
+            _localname = etree.QName(self._root.tag).localname
             if _localname != SitemapType.URLSET.value:
                 raise ValueError(
                     f"Expected a root {SitemapType.URLSET.value} got {_localname}"
@@ -136,7 +145,7 @@ class UrlsetNode(SitemapNode):
         urlset = []
 
         nsmap = {None: self.SITEMAP_NS}
-        _root = etree.fromstring(document.encode("utf-8"))
+        _root = etree.fromstring(document.encode("utf-8"), parser=self._parser)
 
         # Find all sitemap elements
         for url_elem in _root.findall(".//url", namespaces=nsmap):

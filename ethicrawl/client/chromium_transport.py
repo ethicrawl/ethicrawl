@@ -14,7 +14,7 @@ import json
 
 # import html
 import lxml
-from lxml import html
+from lxml import html, etree
 
 
 class ChromiumTransport(Transport):
@@ -211,14 +211,15 @@ class ChromiumTransport(Transport):
             # Check if this is a browser-rendered XML page
             if '<div id="webkit-xml-viewer-source-xml">' in content_str:
                 # Parse HTML
-                root = html.fromstring(content_str)
+                parser = etree.HTMLParser(huge_tree=False)
+                root = html.fromstring(content_str, parser=parser)
 
                 # Extract content from the XML viewer div
                 xml_div = root.xpath('//div[@id="webkit-xml-viewer-source-xml"]')
                 if xml_div and len(xml_div) > 0:
                     # Get the XML content as string
                     xml_content = "".join(
-                        lxml.etree.tostring(child, encoding="unicode")
+                        etree.tostring(child, encoding="unicode")
                         for child in xml_div[0].getchildren()
                     )
                     return xml_content.encode("utf-8")

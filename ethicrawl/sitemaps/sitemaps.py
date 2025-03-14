@@ -9,6 +9,7 @@ from ethicrawl.config import Config
 
 
 import lxml
+from lxml import etree
 
 
 class Sitemaps:
@@ -37,8 +38,15 @@ class Sitemaps:
 
             # Quick check of the XML root element name
             try:
-                root = lxml.etree.fromstring(document.encode("utf-8"))
-                root_tag = lxml.etree.QName(root.tag).localname
+                parser = etree.XMLParser(
+                    resolve_entities=False,  # Prevent XXE attacks
+                    no_network=True,  # Prevent external resource loading
+                    dtd_validation=False,  # Don't validate DTDs
+                    load_dtd=False,  # Don't load DTDs at all
+                    huge_tree=False,  # Prevent XML bomb attacks
+                )
+                root = etree.fromstring(document.encode("utf-8"), parser)
+                root_tag = etree.QName(root.tag).localname
                 self._logger.debug(f"Root tag: {root_tag}")
 
                 if root_tag == SitemapType.INDEX.value:

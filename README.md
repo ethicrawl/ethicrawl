@@ -1,8 +1,8 @@
 # Ethicrawl
 
-[![Python Tests](https://github.com/ethicrawl/ethicrawl/actions/workflows/python-tests.yml/badge.svg)](https://github.com/ethicrawl/ethicrawl/actions/workflows/python-tests.yml)
+[![pytest](https://github.com/ethicrawl/ethicrawl/actions/workflows/python-tests.yml/badge.svg)](https://github.com/ethicrawl/ethicrawl/actions/workflows/python-tests.yml)
 [![codecov](https://codecov.io/gh/ethicrawl/ethicrawl/branch/main/graph/badge.svg)](https://codecov.io/gh/ethicrawl/ethicrawl)
-[![Security Scan](https://github.com/ethicrawl/ethicrawl/actions/workflows/security.yml/badge.svg)](https://github.com/ethicrawl/ethicrawl/actions/workflows/security.yml)
+[![Security](https://github.com/ethicrawl/ethicrawl/actions/workflows/security.yml/badge.svg)](https://github.com/ethicrawl/ethicrawl/actions/workflows/security.yml)
 [![Python Version](https://img.shields.io/badge/python-3.10+-blue)](https://github.com/ethicrawl/ethicrawl)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 
