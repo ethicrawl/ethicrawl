@@ -1,5 +1,5 @@
 import time
-import random
+import secrets
 from .requests_transport import RequestsTransport
 from .chromium_transport import ChromiumTransport
 from ethicrawl.core.context import Context
@@ -156,7 +156,7 @@ class HttpClient:
             # Calculate delay with optional jitter
             delay = self.min_interval - elapsed
             if self.jitter > 0:
-                delay += random.random() * self.jitter
+                delay += secrets.random() * self.jitter
 
             self._logger.debug(f"Rate limiting - sleeping for {delay:.2f}s")
             time.sleep(delay)
