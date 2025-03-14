@@ -45,12 +45,12 @@ def main():
     """Main demonstration function"""
     setup_logging()
     config = configure_crawler()
+    # config.http.set_all_proxies("http://localhost:3128")
 
     print("\n==== Creating crawler and HTTP client ====")
-    # Create a client with custom timeout
-    config.http.set_all_proxies("http://localhost:3128")
 
-    client = HttpClient(timeout=20).with_chromium(headless=False)
+    # Create a client with custom timeout
+    client = HttpClient(timeout=20)  # .with_chromium(headless=False)
 
     # Create and bind the crawler
     crawler = Ethicrawl()
