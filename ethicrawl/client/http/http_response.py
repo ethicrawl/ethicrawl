@@ -1,10 +1,15 @@
+# FIXME: remove comment, imports sorted
+
 from dataclasses import dataclass, field
 from typing import Dict
-from ethicrawl.client.http_request import HttpRequest
+
+from ethicrawl.client.response import Response
+
+from .http_request import HttpRequest
 
 
 @dataclass
-class HttpResponse:
+class HttpResponse(Response):
     """
     Standardized HTTP response object that's independent of the underlying HTTP library.
     Contains the response data and reference to the original request.

@@ -1,32 +1,20 @@
-import urllib.parse
-import socket
+# FIXME: remove comment, imports sorted
+from urllib import parse
+from socket import gaierror, gethostbyname
 from typing import Dict, Any, Union
-
 from functools import wraps
 
 
 def http_only(func):
     """Decorator to restrict property access to HTTP/HTTPS URLs only."""
-    if isinstance(func, property):
-        # If already a property, wrap its getter
-        original_getter = func.fget
 
-        @wraps(original_getter)
-        def new_getter(self):
-            if self._parsed.scheme not in ["http", "https"]:
-                raise ValueError("Only valid for HTTP and HTTPS urls")
-            return original_getter(self)
+    @wraps(func)
+    def wrapper(self, *args, **kwargs):
+        if self._parsed.scheme not in ["http", "https"]:
+            raise ValueError("Only valid for HTTP and HTTPS urls")
+        return func(self, *args, **kwargs)
 
-        return property(new_getter, func.fset, func.fdel)
-    else:
-        # Normal function/method wrapper
-        @wraps(func)
-        def wrapper(self, *args, **kwargs):
-            if self._parsed.scheme not in ["http", "https"]:
-                raise ValueError("Only valid for HTTP and HTTPS urls")
-            return func(self, *args, **kwargs)
-
-        return wrapper
+    return wrapper
 
 
 class Url:
@@ -86,7 +74,7 @@ class Url:
         if isinstance(url, Url):
             url = str(url)
 
-        self._parsed = urllib.parse.urlparse(url)
+        self._parsed = parse.urlparse(url)
 
         # Basic validation
         if self._parsed.scheme not in ["file", "http", "https"]:
@@ -103,8 +91,8 @@ class Url:
         # Domain resolution validation (for HTTP/HTTPS only)
         if validate and self._parsed.scheme in ["http", "https"]:
             try:
-                socket.gethostbyname(self._parsed.hostname)
-            except socket.gaierror:
+                gethostbyname(self._parsed.hostname)
+            except gaierror:
                 raise ValueError(f"Cannot resolve hostname: {self._parsed.hostname}")
 
     @property
@@ -163,7 +151,7 @@ class Url:
         Raises:
             ValueError: If used on a file:// URL
         """
-        return dict(urllib.parse.parse_qsl(self._parsed.query))
+        return dict(parse.parse_qsl(self._parsed.query))
 
     @property
     @http_only
@@ -193,7 +181,7 @@ class Url:
         current_params = self.query_params
         current_params.update(params)
 
-        query_string = urllib.parse.urlencode(current_params)
+        query_string = parse.urlencode(current_params)
 
         # Create new URL with updated query string
         base_url = f"{self.scheme}://{self.netloc}{self.path}"
@@ -211,28 +199,32 @@ class Url:
 
     def _extend_with_path(self, path: str) -> "Url":
         """Add path component to URL."""
+        # Set location based on scheme
         if self.scheme == "file":
-            if path.startswith("/"):
-                # Replace path for file URLs
-                return Url(f"file://{path}")
-            else:
-                # Join with existing path
-                current = self.path
-                if current and not current.endswith("/"):
-                    current += "/"
-                return Url(f"file://{current}{path}")
+            loc = ""  # Empty for file URLs
         else:
-            # HTTP(S) path extension
-            if path.startswith("/"):
-                return Url(f"{self.scheme}://{self.netloc}{path}")
+            loc = self.netloc  # Use netloc for HTTP(S)
+
+        # Handle path joining logic uniformly
+        if path.startswith("/"):
+            # Path has leading slash
+            if self.path.endswith("/"):
+                # Remove duplicate slash if base path ends with slash
+                new_path = self.path + path[1:]
             else:
-                current = self.path
-                # If path is empty, ensure we add a leading slash before the new path
-                if not current:
-                    current = "/"
-                elif not current.endswith("/"):
-                    current += "/"
-                return Url(f"{self.scheme}://{self.netloc}{current}{path}")
+                # Keep the leading slash
+                new_path = self.path + path
+        else:
+            # No leading slash in path
+            if not self.path:
+                new_path = "/" + path
+            elif self.path.endswith("/"):
+                new_path = self.path + path
+            else:
+                new_path = self.path + "/" + path
+
+        # Unified URL construction
+        return Url(f"{self.scheme}://{loc}{new_path}")
 
     def extend(self, *args, **kwargs) -> "Url":
         """

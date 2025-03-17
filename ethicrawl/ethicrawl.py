@@ -1,15 +1,13 @@
-from typing import Union
-from ethicrawl.core.context import Context
-from ethicrawl.robots.robots_handler import RobotsHandler
-from ethicrawl.client.http_client import HttpClient
-from ethicrawl.core.url import Url
-from ethicrawl.core.resource import Resource
-from ethicrawl.config.config import Config
-from ethicrawl.sitemaps.sitemaps import Sitemaps
-import logging
-from ethicrawl.client.http_response import HttpResponse
-
 from functools import wraps
+from logging import Logger as logging_Logger
+from typing import Union
+
+from ethicrawl.context import Context
+from ethicrawl.robots import RobotsHandler
+from ethicrawl.client.http import HttpClient, HttpResponse
+from ethicrawl.core import Resource, Url
+from ethicrawl.config import Config
+from ethicrawl.sitemaps import Sitemaps
 
 
 def ensure_bound(func):
@@ -155,7 +153,7 @@ class Ethicrawl:
 
     @property
     @ensure_bound
-    def logger(self) -> logging.Logger:
+    def logger(self) -> logging_Logger:
         if not hasattr(self, "_logger"):
             self._logger = self._context.logger("")
         return self._logger

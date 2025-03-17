@@ -1,9 +1,9 @@
 from protego import Protego
-from ethicrawl.sitemaps.sitemap_entries import IndexEntry
-from ethicrawl.core.context import Context
-from ethicrawl.core.resource import Resource
-from ethicrawl.core.url import Url
-from ethicrawl.core.resource_list import ResourceList
+from ethicrawl.sitemaps import IndexEntry
+from ethicrawl.context import Context
+from ethicrawl.core import Resource
+from ethicrawl.core import Url
+from ethicrawl.core import ResourceList
 from typing import Union
 
 

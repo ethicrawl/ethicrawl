@@ -3,6 +3,7 @@ import copy
 import json
 from dataclasses import dataclass, field
 from typing import Dict, Any
+
 from .http_config import HttpConfig
 from .logger_config import LoggerConfig
 from .sitemap_config import SitemapConfig
