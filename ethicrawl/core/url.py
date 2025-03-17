@@ -6,7 +6,22 @@ from functools import wraps
 
 
 def http_only(func):
-    """Decorator to restrict property access to HTTP/HTTPS URLs only."""
+    """
+    Decorator to restrict property access to HTTP/HTTPS URLs only.
+
+    This decorator ensures that the decorated method is only called if the URL scheme
+    is either 'http' or 'https'. If the URL scheme is not 'http' or 'https', a ValueError
+    is raised.
+
+    Args:
+        func (function): The function to be decorated.
+
+    Returns:
+        function: The wrapped function that includes the URL scheme check.
+
+    Raises:
+        ValueError: If the URL scheme is not 'http' or 'https'.
+    """
 
     @wraps(func)
     def wrapper(self, *args, **kwargs):

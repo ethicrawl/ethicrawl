@@ -53,6 +53,7 @@ class TestConfig:
             Config().update(d)
 
     def test_weird_edge_cases(self):
+        # These are guarded against in the code; shouldn't normally occur
         Config().__dict__["foo"] = 1
         Config().__dict__["_foo"] = 1
         Config().__dict__["http"].__dict__["_a"] = 1
