@@ -13,7 +13,7 @@ class HttpConfig:
     _rate_limit: Optional[float] = field(default=0.5, repr=False)
     _jitter: float = field(default=0.2, repr=False)
     _user_agent: str = field(default="Ethicrawl/1.0", repr=False)
-    headers: Dict[str, str] = field(default_factory=dict)  # Not using property for this
+    _headers: Dict[str, str] = field(default_factory=dict, repr=False)
     _proxies: Dict[str, str] = field(
         default_factory=dict, repr=False
     )  # New proxies attribute
@@ -110,6 +110,18 @@ class HttpConfig:
         self._user_agent = value
 
     @property
+    def headers(self) -> dict:
+        """Get request headers."""
+        return self._headers.copy()  # Return a copy to prevent mutation
+
+    @headers.setter
+    def headers(self, value: dict):
+        """Set request headers."""
+        if not isinstance(value, dict):
+            raise TypeError("Headers must be a dictionary")
+        self._headers = value.copy()
+
+    @property
     def proxies(self) -> dict:
         """Get proxy settings."""
         return self._proxies.copy()
@@ -130,7 +142,7 @@ class HttpConfig:
             "max_retries": self._max_retries,
             "retry_delay": self._retry_delay,
             "user_agent": self._user_agent,
-            "headers": self.headers,
+            "headers": self._headers,
             "proxies": self._proxies,
         }
 

@@ -1,4 +1,5 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
+from typing import Optional
 
 
 @dataclass
@@ -16,7 +17,63 @@ class SitemapConfig:
         timeout (int): Specific timeout for sitemap requests
     """
 
-    max_depth: int = 5
-    follow_external: bool = False
-    validate_urls: bool = True
-    timeout: int = 30  # Specific timeout for sitemap requests which can be large
+    # Private fields for property implementation
+    _max_depth: int = field(default=5, repr=False)
+    _follow_external: bool = field(default=False, repr=False)
+    _validate_urls: bool = field(default=True, repr=False)
+    _timeout: int = field(default=30, repr=False)
+
+    def __post_init__(self):
+        # Validate initial values by calling setters
+        self.max_depth = self._max_depth
+        self.follow_external = self._follow_external
+        self.validate_urls = self._validate_urls
+        self.timeout = self._timeout
+
+    @property
+    def max_depth(self) -> int:
+        """Maximum recursion depth for nested sitemaps"""
+        return self._max_depth
+
+    @max_depth.setter
+    def max_depth(self, value: int):
+        if not isinstance(value, int):
+            raise TypeError("max_depth must be an integer")
+        if value < 1:
+            raise ValueError("max_depth must be at least 1")
+        self._max_depth = value
+
+    @property
+    def follow_external(self) -> bool:
+        """Whether to follow sitemap links to external domains"""
+        return self._follow_external
+
+    @follow_external.setter
+    def follow_external(self, value: bool):
+        if not isinstance(value, bool):
+            raise TypeError("follow_external must be a boolean")
+        self._follow_external = value
+
+    @property
+    def validate_urls(self) -> bool:
+        """Whether to validate URLs before adding them to results"""
+        return self._validate_urls
+
+    @validate_urls.setter
+    def validate_urls(self, value: bool):
+        if not isinstance(value, bool):
+            raise TypeError("validate_urls must be a boolean")
+        self._validate_urls = value
+
+    @property
+    def timeout(self) -> int:
+        """Specific timeout for sitemap requests"""
+        return self._timeout
+
+    @timeout.setter
+    def timeout(self, value: int):
+        if not isinstance(value, (int, float)):
+            raise TypeError("timeout must be a number")
+        if value <= 0:
+            raise ValueError("timeout must be positive")
+        self._timeout = int(value)

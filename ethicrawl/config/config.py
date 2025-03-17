@@ -128,7 +128,7 @@ class Config(metaclass=SingletonMeta):
 
                         try:
                             setattr(section_obj, k, v)
-                        except AttributeError as e:
+                        except AttributeError as e:  # pragma: no cover
                             # Provide a more helpful error message
                             raise AttributeError(
                                 f"Failed to set '{k}' on {section_name} config: {e}"
