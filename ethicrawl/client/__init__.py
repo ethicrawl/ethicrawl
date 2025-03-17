@@ -1,11 +1,14 @@
 """HTTP client components for making web requests."""
 
-from ethicrawl.client.http_client import HttpClient
-from ethicrawl.client.http_response import HttpResponse
-from ethicrawl.client.http_request import HttpRequest
+from .client import Client, NoneClient
+from .request import Request
+from .response import Response
+from .transport import Transport
 
 __all__ = [
-    "HttpClient",
-    "HttpResponse",
-    "HttpRequest",
+    "Client",
+    "NoneClient",
+    "Request",
+    "Response",
+    "Transport",
 ]

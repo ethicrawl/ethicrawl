@@ -1,28 +1,30 @@
+# FIXME: remove comment, imports sorted
+
+from json import loads
+from time import sleep
+
+from lxml import html, etree
+
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
-from .transport import Transport
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
 
-from ethicrawl.core.context import Context
+from ethicrawl.config import Config
+from ethicrawl.context import Context
+from ethicrawl.client import Transport
 
 from .http_response import HttpResponse
 from .http_request import HttpRequest
-import time
-import json
-
-# import html
-import lxml
-from lxml import html, etree
 
 
-class ChromiumTransport(Transport):
-    """Transport implementation using Chromium for JavaScript-rendered content."""
+class ChromeTransport(Transport):
+    """Transport implementation using Chrome for JavaScript-rendered content."""
 
     def __init__(self, context: Context, headless=True, wait_time=3):
         """
-        Initialize Chromium transport.
+        Initialize Chrome transport.
 
         Args:
             context (Context): The application context
@@ -30,7 +32,7 @@ class ChromiumTransport(Transport):
             wait_time (int): Time to wait for JavaScript to execute in seconds
         """
         self._context = context
-        self._logger = self._context.logger("client.chromium")
+        self._logger = self._context.logger("client.chrome")
         self._wait_time = wait_time
         self._user_agent = None  # Will be populated after first request
 
@@ -44,9 +46,7 @@ class ChromiumTransport(Transport):
         options.add_argument("--disable-gpu")
         options.add_argument("--window-size=1920,1080")
 
-        # Set up proxy if configured
-        from ethicrawl.config import Config
-
+        # Set up proxy if configured TODO: document this
         if hasattr(Config().http, "proxies") and Config().http.proxies:
             proxies = Config().http.proxies
 
@@ -71,7 +71,7 @@ class ChromiumTransport(Transport):
     @property
     def user_agent(self):
         """
-        Get the User-Agent string used by Chromium.
+        Get the User-Agent string used by Chrome.
 
         Returns:
             str: The User-Agent string
@@ -94,22 +94,22 @@ class ChromiumTransport(Transport):
     @user_agent.setter
     def user_agent(self, agent):
         """
-        Set the User-Agent string for Chromium.
+        Set the User-Agent string for Chrome.
         This is a passive operation - it only records what was passed,
         but doesn't actually modify the browser's User-Agent.
 
         Args:
             agent (str): The User-Agent string that was requested
         """
-        # For Chromium, we just record that this was requested but don't modify
+        # For Chrome, we just record that this was requested but don't modify
         # the browser's actual User-Agent to maintain authenticity
         print(
-            f"Note: User-Agent override requested to '{agent}' but Chromium uses browser's native User-Agent"
+            f"Note: User-Agent override requested to '{agent}' but Chrome uses browser's native User-Agent"
         )
 
     def get(self, request: HttpRequest) -> HttpResponse:
         """
-        Make a GET request using Chromium with full network information capture.
+        Make a GET request using Chrome with full network information capture.
 
         Args:
             url (str): The URL to request
@@ -141,7 +141,7 @@ class ChromiumTransport(Transport):
                 # Just log that headers were requested but can't be fully applied
                 header_names = ", ".join(request.headers.keys())
                 print(
-                    f"Note: Headers requested ({header_names}) but Chromium has limited header support"
+                    f"Note: Headers requested ({header_names}) but Chrome has limited header support"
                 )
 
             # Update user agent information
@@ -157,7 +157,7 @@ class ChromiumTransport(Transport):
 
             # Additional wait for dynamic content if specified
             if self._wait_time:
-                time.sleep(self._wait_time)
+                sleep(self._wait_time)
 
             # Get page source and final URL
             page_source = self.driver.page_source
@@ -195,11 +195,11 @@ class ChromiumTransport(Transport):
             return response
 
         except Exception as e:
-            raise IOError(f"Error fetching {url} with Chromium: {e}")
+            raise IOError(f"Error fetching {url} with Chrome: {e}")
 
     def _extract_xml_content(self, content_str: str) -> bytes:
         """
-        Extract XML content when Chrome/Chromium renders XML as HTML.
+        Extract XML content when Chrome renders XML as HTML.
 
         Args:
             content_str: Page source as string
@@ -217,7 +217,7 @@ class ChromiumTransport(Transport):
                 # Extract content from the XML viewer div
                 xml_div = root.xpath('//div[@id="webkit-xml-viewer-source-xml"]')
                 if xml_div and len(xml_div) > 0:
-                    # Get the XML content as string
+                    # Get the XML content as string - TODO: should we do a custom parser here? see implementation in sitemaps
                     xml_content = "".join(
                         etree.tostring(child, encoding="unicode")
                         for child in xml_div[0].getchildren()
@@ -245,7 +245,7 @@ class ChromiumTransport(Transport):
             # First try to find exact URL match
             for entry in logs:
                 try:
-                    log_data = json.loads(entry["message"])["message"]
+                    log_data = loads(entry["message"])["message"]
                     if log_data["method"] != "Network.responseReceived":
                         continue
 
@@ -270,7 +270,7 @@ class ChromiumTransport(Transport):
             # If no exact match, look for main document response
             for entry in logs:
                 try:
-                    log_data = json.loads(entry["message"])["message"]
+                    log_data = loads(entry["message"])["message"]
                     if log_data["method"] != "Network.responseReceived":
                         continue
 
@@ -308,3 +308,5 @@ class ChromiumTransport(Transport):
             # Use the logger if it exists, otherwise we can't log during cleanup
             if hasattr(self, "_logger"):
                 self._logger.debug(f"Error closing browser during cleanup: {e}")
+            else:
+                raise e

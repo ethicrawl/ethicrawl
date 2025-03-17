@@ -1,7 +1,10 @@
+# FIXME: remove comment, imports sorted
+
 from dataclasses import dataclass, field
-from ethicrawl.core.resource import Resource
 from typing import Dict
+
 from ethicrawl.config import Config
+from ethicrawl.core.resource import Resource
 
 
 class Headers(dict):

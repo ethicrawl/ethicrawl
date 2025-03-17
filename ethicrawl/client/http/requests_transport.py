@@ -1,9 +1,13 @@
-from .transport import Transport
-from .http_response import HttpResponse
-from ethicrawl.core.context import Context
+# FIXME: remove comment, imports sorted
+
 import requests
-from ethicrawl.config.config import Config
-from ethicrawl.client.http_request import HttpRequest
+
+from ethicrawl.context import Context
+from ethicrawl.config import Config
+from ethicrawl.client.transport import Transport
+
+from .http_request import HttpRequest
+from .http_response import HttpResponse
 
 
 class RequestsTransport(Transport):

@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import Optional, Dict, List, Union
+from typing import Optional, Dict, Union
 import logging
 
 
@@ -37,26 +37,7 @@ class LoggerConfig:
 
     @level.setter
     def level(self, value: Union[int, str]):
-        # Boolean is a subclass of int, so we need to check for it explicitly
-        if isinstance(value, bool) or not isinstance(value, (int, str)):
-            raise TypeError("Log level must be an integer or level name string")
-
-        # Convert string level names to integers
-        if isinstance(value, str):
-            level_map = {
-                "DEBUG": logging.DEBUG,
-                "INFO": logging.INFO,
-                "WARNING": logging.WARNING,
-                "ERROR": logging.ERROR,
-                "CRITICAL": logging.CRITICAL,
-            }
-            if value.upper() in level_map:
-                value = level_map[value.upper()]
-            else:
-                raise ValueError(f"Unknown log level: {value}")
-
-        # Value should now be an integer
-        self._level = value
+        self._level = self._validate_log_level(value)
 
     @property
     def console_enabled(self) -> bool:
@@ -132,11 +113,28 @@ class LoggerConfig:
             TypeError: If level is not an integer or string
             ValueError: If string level name is not valid
         """
-        # Boolean is a subclass of int in Python, so check for it explicitly
-        if isinstance(level, bool) or not isinstance(level, (int, str)):
+        validated_level = self._validate_log_level(level)
+        self._component_levels[component_name] = validated_level
+
+    def _validate_log_level(self, level: Union[int, str]) -> int:
+        """
+        Validate and convert a log level value.
+
+        Args:
+            level: The log level (can be int or level name string)
+
+        Returns:
+            int: The validated integer log level
+
+        Raises:
+            TypeError: If level is not an integer or string
+            ValueError: If the level is invalid
+        """
+        # Check type
+        if not isinstance(level, (int, str)):
             raise TypeError("Log level must be an integer or level name string")
 
-        # Convert string level names to integers
+        # Handle string conversion
         if isinstance(level, str):
             level_map = {
                 "DEBUG": logging.DEBUG,
@@ -150,5 +148,14 @@ class LoggerConfig:
             else:
                 raise ValueError(f"Unknown log level: {level}")
 
-        # Value should now be an integer
-        self._component_levels[component_name] = level
+        # Validate integer value
+        elif level not in [
+            logging.DEBUG,
+            logging.INFO,
+            logging.WARNING,
+            logging.ERROR,
+            logging.CRITICAL,
+        ]:
+            raise ValueError(f"Invalid integer log level: {level}")
+
+        return level

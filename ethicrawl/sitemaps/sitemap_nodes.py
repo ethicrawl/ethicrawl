@@ -1,17 +1,12 @@
 from typing import List
 
-
 from lxml import etree
 
-# import lxml
-# import lxml.etree
+from ethicrawl.context import Context
+from ethicrawl.core import Url
 
-
-from ethicrawl.sitemaps.sitemap_entries import IndexEntry, UrlsetEntry
-from ethicrawl.sitemaps.sitemap_util import SitemapError, SitemapHelper, SitemapType
-
-from ethicrawl.core.context import Context
-from ethicrawl.core.url import Url
+from .sitemap_entries import IndexEntry, UrlsetEntry
+from .sitemap_util import SitemapError, SitemapHelper, SitemapType
 
 
 class SitemapNode:

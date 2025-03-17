@@ -1,13 +1,12 @@
 from abc import ABC, abstractmethod
-from ethicrawl.client.http_response import HttpResponse
-from ethicrawl.config.config import Config
+from ethicrawl.client.response import Response
 
 
 class Transport(ABC):
     """Abstract base class for HTTP transport implementations."""
 
     @abstractmethod
-    def get(self, request) -> HttpResponse:
+    def get(self, request) -> Response:
         """
         Make a GET request using the provided request object.
 
@@ -19,19 +18,19 @@ class Transport(ABC):
         """
         pass
 
-    def head(self, request) -> HttpResponse:
+    def head(self, request) -> Response:
         """
         Make a HEAD request (optional implementation). TODO: have a look at this and other verbs if they make sense.
         """
         raise NotImplementedError("This transport does not support HEAD requests")
 
     @property
-    def user_agent(self):
+    def user_agent(self) -> str:
         """
         Get the User-Agent string used by this transport.
         Default implementation returns a standard string.
         """
-        return Config().http.user_agent
+        return None
 
     @user_agent.setter
     def user_agent(self, agent):

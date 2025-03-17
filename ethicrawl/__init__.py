@@ -5,8 +5,8 @@ This package provides tools for crawling websites in an ethical manner,
 following robots.txt rules and maintaining reasonable request rates.
 """
 
-from ethicrawl.core.ethicrawl import Ethicrawl
-from ethicrawl.client.http_client import HttpClient
+from .ethicrawl import Ethicrawl
+from ethicrawl.client.http import HttpClient
 from ethicrawl.core.url import Url
 from ethicrawl.core.resource import Resource
 from ethicrawl.core.resource_list import ResourceList

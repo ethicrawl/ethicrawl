@@ -1,5 +1,7 @@
+# FIXME: remove comment, imports sorted
 from dataclasses import dataclass
-from ethicrawl.core.url import Url
+
+from .url import Url
 
 
 @dataclass

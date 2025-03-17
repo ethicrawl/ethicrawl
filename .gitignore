@@ -27,6 +27,10 @@ Thumbs.db
 # Local configuration
 .env
 
+# IDE
+.vscode
+.vscode/
+
 # Coverage reports
 .coverage
 coverage/

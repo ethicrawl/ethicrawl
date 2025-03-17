@@ -1,5 +1,8 @@
-import re
+# FIXME: remove comment, imports sorted
+
+from re import compile
 from typing import List, TypeVar, Generic, Union, Pattern, Iterator
+
 from ethicrawl.core.resource import Resource
 
 T = TypeVar("T", bound=Resource)
@@ -44,8 +47,10 @@ class ResourceList(Generic[T]):
             items (List[Resource], optional): Initial resources to add
         """
         self._items: List[T] = []
-        if items:
+        if items and isinstance(items, list):
             self.extend(items)
+        elif items:
+            raise TypeError(f"Expected list got {type(items)}")
 
     def __iter__(self) -> Iterator[T]:
         return iter(self._items)
@@ -121,7 +126,7 @@ class ResourceList(Generic[T]):
             1
         """
         if isinstance(pattern, str):
-            pattern = re.compile(pattern)
+            pattern = compile(pattern)
 
         result = ResourceList()
         for item in self._items:

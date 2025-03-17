@@ -1,11 +1,16 @@
-import logging
-import re
-import os
+# import logging
+
+from logging import getLogger, Formatter, FileHandler, StreamHandler, WARNING
+from logging import Logger as LoggingLogger
+from os import makedirs, path
+from re import sub
+from sys import stdout
 from typing import Optional
-import sys
-from ethicrawl.config.config import Config
-from ethicrawl.logger.formatter import ColorFormatter
-from ethicrawl.core.resource import Resource
+
+from ethicrawl.config import Config
+from ethicrawl.core import Resource
+
+from .formatter import ColorFormatter
 
 
 class Logger:
@@ -31,8 +36,8 @@ class Logger:
         log_config = config.logger
 
         # Configure root logger
-        root_logger = logging.getLogger()
-        root_logger.setLevel(logging.WARNING)  # Default level for non-app loggers
+        root_logger = getLogger()
+        root_logger.setLevel(WARNING)  # Default level for non-app loggers
 
         # Remove existing handlers to avoid duplicates on re-initialization
         for handler in root_logger.handlers[:]:
@@ -42,13 +47,13 @@ class Logger:
         if log_config.use_colors:
             console_formatter = ColorFormatter(log_config.format)
         else:
-            console_formatter = logging.Formatter(log_config.format)
+            console_formatter = Formatter(log_config.format)
 
-        file_formatter = logging.Formatter(log_config.format)
+        file_formatter = Formatter(log_config.format)
 
         # Set up console logging if enabled
         if log_config.console_enabled:
-            console = logging.StreamHandler(sys.stdout)
+            console = StreamHandler(stdout)
             console.setFormatter(console_formatter)
             root_logger.addHandler(console)
             Logger._console_handler = console
@@ -56,25 +61,23 @@ class Logger:
         # Set up file logging if enabled
         if log_config.file_enabled and log_config.file_path:
             # Ensure directory exists
-            log_dir = os.path.dirname(log_config.file_path)
-            if log_dir and not os.path.exists(log_dir):
-                os.makedirs(log_dir)
+            log_dir = path.dirname(log_config.file_path)
+            if log_dir and not path.exists(log_dir):
+                makedirs(log_dir)
 
-            file_handler = logging.FileHandler(log_config.file_path)
+            file_handler = FileHandler(log_config.file_path)
             file_handler.setFormatter(file_formatter)
             root_logger.addHandler(file_handler)
             Logger._file_handler = file_handler
 
         # Configure the main application logger
-        app_logger = logging.getLogger(__name__.split(".")[0])  # 'ethicrawl'
+        app_logger = getLogger(__name__.split(".")[0])  # 'ethicrawl'
         app_logger.setLevel(log_config.level)
         app_logger.propagate = True
 
         # Apply component-specific log levels
         for component, level in log_config.component_levels.items():
-            component_logger = logging.getLogger(
-                f"{__name__.split('.')[0]}.*.{component}"
-            )
+            component_logger = getLogger(f"{__name__.split('.')[0]}.*.{component}")
             component_logger.setLevel(level)
 
         Logger._initialized = True
@@ -83,17 +86,17 @@ class Logger:
     def _clean_name(name: str) -> str:
         """Clean a string to make it suitable as a logger name."""
         # Replace invalid characters with underscores
-        name = re.sub(r"[^a-zA-Z0-9_\-\.]", "_", name)
+        name = sub(r"[^a-zA-Z0-9_\-\.]", "_", name)
         # Replace consecutive dots with a single dot
-        name = re.sub(r"\.{2,}", ".", name)
+        name = sub(r"\.{2,}", ".", name)
         # Replace consecutive underscores with a single underscore
-        name = re.sub(r"\_{2,}", "_", name)
+        name = sub(r"\_{2,}", "_", name)
         # Remove leading and trailing dots
-        name = re.sub(r"^\.|\.$", "", name)
+        name = sub(r"^\.|\.$", "", name)
         return name or "unnamed"
 
     @staticmethod
-    def logger(resource: Resource, component: Optional[str] = None) -> logging.Logger:
+    def logger(resource: Resource, component: Optional[str] = None) -> LoggingLogger:
         """
         Get a logger for the specified URL, optionally with a component name.
 
@@ -122,7 +125,7 @@ class Logger:
         logger_name = Logger._clean_name(logger_name)
 
         # Get or create the logger
-        logger = logging.getLogger(logger_name)
+        logger = getLogger(logger_name)
 
         # Apply component-specific log level if applicable
         config = Config()
@@ -139,6 +142,6 @@ class Logger:
         Logger._file_handler = None
 
         # Reset the root logger
-        root = logging.getLogger()
+        root = getLogger()
         for handler in root.handlers[:]:
             root.removeHandler(handler)

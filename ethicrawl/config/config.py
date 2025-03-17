@@ -3,6 +3,7 @@ import copy
 import json
 from dataclasses import dataclass, field
 from typing import Dict, Any
+
 from .http_config import HttpConfig
 from .logger_config import LoggerConfig
 from .sitemap_config import SitemapConfig
@@ -127,7 +128,7 @@ class Config(metaclass=SingletonMeta):
 
                         try:
                             setattr(section_obj, k, v)
-                        except AttributeError as e:
+                        except AttributeError as e:  # pragma: no cover
                             # Provide a more helpful error message
                             raise AttributeError(
                                 f"Failed to set '{k}' on {section_name} config: {e}"
