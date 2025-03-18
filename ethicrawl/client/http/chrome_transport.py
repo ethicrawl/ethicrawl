@@ -186,6 +186,7 @@ class ChromeTransport(Transport):
 
             # Create the response with text properly decoded from content
             response = HttpResponse(
+                url=final_url or request.url,
                 request=request,
                 status_code=status_code or 200,
                 text=content_bytes.decode("utf-8", errors="replace"),
