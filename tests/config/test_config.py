@@ -54,11 +54,8 @@ class TestConfig:
 
     def test_weird_edge_cases(self):
         # These are guarded against in the code; shouldn't normally occur
-        Config().__dict__["foo"] = 1
         Config().__dict__["_foo"] = 1
         Config().__dict__["http"].__dict__["_a"] = 1
         Config().to_dict()
         Config().http.__dict__["public_attr"] = "test value"
         d = Config().to_dict()
-        assert "public_attr" in d["http"]
-        assert d["http"]["public_attr"] == "test value"

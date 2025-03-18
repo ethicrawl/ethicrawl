@@ -129,6 +129,7 @@ class RobotsHandler:
 
         try:
             # Use our HTTP client to fetch robots.txt
+
             response = self._context.client.get(robots)
 
             # Store the status code directly without conversion

@@ -46,19 +46,20 @@ class ChromeTransport(Transport):
         options.add_argument("--disable-gpu")
         options.add_argument("--window-size=1920,1080")
 
-        # Set up proxy if configured TODO: document this
-        if hasattr(Config().http, "proxies") and Config().http.proxies:
-            proxies = Config().http.proxies
+        # Set up proxy if configured
+        http_proxy = Config().http.proxies.http
+        https_proxy = Config().http.proxies.https
 
+        if http_proxy or https_proxy:
             # If both HTTP and HTTPS use the same proxy (common case)
-            if proxies.get("http") == proxies.get("https") and proxies.get("http"):
-                options.add_argument(f'--proxy-server={proxies["http"]}')
+            if http_proxy and https_proxy and str(http_proxy) == str(https_proxy):
+                options.add_argument(f"--proxy-server={http_proxy}")
             else:
                 # Handle case when HTTP and HTTPS proxies are different
-                if proxies.get("http"):
-                    options.add_argument(f'--proxy-server=http={proxies["http"]}')
-                if proxies.get("https"):
-                    options.add_argument(f'--proxy-server=https={proxies["https"]}')
+                if http_proxy:
+                    options.add_argument(f"--proxy-server=http={http_proxy}")
+                if https_proxy:
+                    options.add_argument(f"--proxy-server=https={https_proxy}")
 
         # Enable performance logging - critical for getting network details
         options.set_capability(

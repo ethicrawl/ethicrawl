@@ -3,24 +3,14 @@
 from dataclasses import dataclass, field
 from typing import Dict
 
-from ethicrawl.config import Config
-from ethicrawl.core.resource import Resource
-
-
-class Headers(dict):
-    """Custom dictionary for HTTP headers that removes keys when value is None"""
-
-    def __setitem__(self, key, value):
-        if value is None:
-            self.pop(key, None)  # Remove the key if value is None
-        else:
-            super().__setitem__(key, value)
+from ethicrawl.config import Config, HttpConfig
+from ethicrawl.core import Headers, Resource
 
 
 @dataclass
 class HttpRequest(Resource):
     _timeout: float = Config().http.timeout or 30.0
-    headers: Dict = field(default_factory=Headers)
+    headers: Headers = field(default_factory=Headers)
 
     @property
     def timeout(self) -> float:
@@ -30,17 +20,20 @@ class HttpRequest(Resource):
     @timeout.setter
     def timeout(self, value: float):
         """Set the request timeout with validation."""
-        if not isinstance(value, (int, float)):
-            raise TypeError("timeout must be a number")
-        if value <= 0:
-            raise ValueError("timeout must be positive")
+        temp_config = HttpConfig()
+        # This will raise the appropriate exceptions if invalid
+        temp_config.timeout = value
+        # If we get here, the value passed validation
         self._timeout = float(value)
 
     def __post_init__(self):
         super().__post_init__()
 
-        for header, value in Config().http.headers.items():
-            self.headers[header] = value
-
+        # Ensure self.headers is a Headers instance
         if not isinstance(self.headers, Headers):
             self.headers = Headers(self.headers)
+
+        # Apply Config headers, NOT overriding existing ones
+        for header, value in Config().http.headers.items():
+            if header not in self.headers:
+                self.headers[header] = value

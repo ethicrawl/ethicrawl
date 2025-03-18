@@ -62,9 +62,14 @@ class RequestsTransport(Transport):
             # Prepare request kwargs
             kwargs = {"timeout": timeout, "headers": merged_headers}
 
-            # Apply proxies at request level, avoiding environmental proxy issues
-            if hasattr(Config().http, "proxies") and Config().http.proxies:
-                kwargs["proxies"] = Config().http.proxies
+            proxies = {}
+            if Config().http.proxies.http:
+                proxies["http"] = str(Config().http.proxies.http)
+            if Config().http.proxies.https:
+                proxies["https"] = str(Config().http.proxies.https)
+
+            if proxies:  # Only add if we have proxy settings
+                kwargs["proxies"] = proxies
 
             # Make the request with merged headers
             response = self.session.get(url, **kwargs)

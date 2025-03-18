@@ -162,12 +162,6 @@ class Config(metaclass=SingletonMeta):
 
         Returns:
             dict: Dictionary representation of the configuration
-
-        Example:
-            >>> config = Config()
-            >>> config.http.timeout = 60
-            >>> config_dict = config.to_dict()
-            >>> config_dict['http']['timeout']  # 60
         """
         result = {}
 
@@ -177,30 +171,8 @@ class Config(metaclass=SingletonMeta):
             if section_name.startswith("_"):
                 continue
 
-            # Handle config sections
-            if hasattr(section_value, "__dict__") or hasattr(
-                section_value.__class__, "__dataclass_fields__"
-            ):
-                section_dict = {}
-
-                # Get normal instance attributes
-                for key, value in section_value.__dict__.items():
-                    if not key.startswith("_"):
-                        section_dict[key] = value
-
-                # Get property values by inspecting the class
-                for prop_name in dir(section_value.__class__):
-                    if not prop_name.startswith("_") and isinstance(
-                        getattr(section_value.__class__, prop_name), property
-                    ):
-                        # Dont use try except, be explicit
-                        if hasattr(section_value, prop_name):
-                            section_dict[prop_name] = getattr(section_value, prop_name)
-
-                result[section_name] = section_dict
-            else:
-                # Handle simple values
-                result[section_name] = section_value
+            # All sections should have to_dict() method
+            result[section_name] = section_value.to_dict()
 
         return result
 

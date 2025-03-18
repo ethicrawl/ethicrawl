@@ -187,7 +187,6 @@ class HttpClient(Client):
             IOError: If the request fails due to network issues or other errors
             TypeError: If resource is not a Resource object
         """
-        from ethicrawl.core import Resource
 
         # First validate that resource is the correct type
         if not isinstance(resource, Resource):
