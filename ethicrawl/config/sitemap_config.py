@@ -15,21 +15,18 @@ class SitemapConfig(BaseConfig):
         max_depth (int): Maximum recursion depth for nested sitemaps
         follow_external (bool): Whether to follow sitemap links to external domains
         validate_urls (bool): Whether to validate URLs before adding them to results
-        timeout (int): Specific timeout for sitemap requests
     """
 
     # Private fields for property implementation
     _max_depth: int = field(default=5, repr=False)
     _follow_external: bool = field(default=False, repr=False)
     _validate_urls: bool = field(default=True, repr=False)
-    _timeout: int = field(default=30, repr=False)
 
     def __post_init__(self):
         # Validate initial values by calling setters
         self.max_depth = self._max_depth
         self.follow_external = self._follow_external
         self.validate_urls = self._validate_urls
-        self.timeout = self._timeout
 
     @property
     def max_depth(self) -> int:
@@ -66,24 +63,10 @@ class SitemapConfig(BaseConfig):
             raise TypeError("validate_urls must be a boolean")
         self._validate_urls = value
 
-    @property
-    def timeout(self) -> int:
-        """Specific timeout for sitemap requests"""
-        return self._timeout
-
-    @timeout.setter
-    def timeout(self, value: int):
-        if not isinstance(value, (int, float)):
-            raise TypeError("timeout must be a number")
-        if value <= 0:
-            raise ValueError("timeout must be positive")
-        self._timeout = int(value)
-
     def to_dict(self) -> dict:
         """Convert configuration to a dictionary."""
         return {
             "max_depth": self._max_depth,
             "follow_external": self._follow_external,
             "validate_urls": self._validate_urls,
-            "timeout": self._timeout,
         }

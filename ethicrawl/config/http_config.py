@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field
-from typing import Optional, Dict, Union
+from typing import Optional, Union
 
-from ethicrawl.core import Url
+from ethicrawl.core import Headers
 
 from .base_config import BaseConfig
 from .http_proxy_config import HttpProxyConfig
@@ -18,7 +18,7 @@ class HttpConfig(BaseConfig):
     _rate_limit: Optional[float] = field(default=0.5, repr=False)
     _jitter: float = field(default=0.2, repr=False)
     _user_agent: str = field(default="Ethicrawl/1.0", repr=False)
-    _headers: Dict[str, str] = field(default_factory=dict, repr=False)
+    _headers: Headers[str, str] = field(default_factory=Headers, repr=False)
     _proxies: HttpProxyConfig = field(default_factory=HttpProxyConfig, repr=False)
 
     def __post_init__(self):
@@ -116,24 +116,20 @@ class HttpConfig(BaseConfig):
         self._user_agent = value
 
     @property
-    def headers(self) -> dict:
+    def headers(self) -> Headers:
         """Get request headers."""
-        return self._headers.copy()  # Return a copy to prevent mutation
+        return self._headers
 
     @headers.setter
-    def headers(self, value: dict):
+    def headers(self, value: Union[Headers, dict]):
         """Set request headers."""
-        if not isinstance(value, dict):
-            raise TypeError("Headers must be a dictionary")
-
-        # Validate all keys and values are strings
-        for k, v in value.items():
-            if not isinstance(k, str):
-                raise TypeError(f"Header key must be a string, got {type(k)}")
-            if not isinstance(v, str):
-                raise TypeError(f"Header value must be a string, got {type(v)}")
-
-        self._headers = value.copy()  # Keep only this one
+        if isinstance(value, Headers):
+            self._headers = value.copy()
+        elif isinstance(value, dict):
+            # Let the Headers constructor handle validation
+            self._headers = Headers(value)
+        else:
+            raise TypeError("headers must be a Headers instance or dictionary")
 
     @property
     def proxies(self) -> HttpProxyConfig:
