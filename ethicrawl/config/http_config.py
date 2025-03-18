@@ -18,15 +18,8 @@ class HttpConfig(BaseConfig):
     _rate_limit: Optional[float] = field(default=0.5, repr=False)
     _jitter: float = field(default=0.2, repr=False)
     _user_agent: str = field(default="Ethicrawl/1.0", repr=False)
-<<<<<<< HEAD
     _headers: Headers[str, str] = field(default_factory=Headers, repr=False)
     _proxies: HttpProxyConfig = field(default_factory=HttpProxyConfig, repr=False)
-=======
-    _headers: Dict[str, str] = field(default_factory=dict, repr=False)
-    _proxies: Dict[str, str] = field(
-        default_factory=dict, repr=False
-    )  # New proxies attribute
->>>>>>> main
 
     def __post_init__(self):
         # Validate initial values by calling setters

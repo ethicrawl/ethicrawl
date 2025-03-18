@@ -1,10 +1,6 @@
 from dataclasses import dataclass, field
-<<<<<<< HEAD
 
 from .base_config import BaseConfig
-=======
-from typing import Optional
->>>>>>> main
 
 
 @dataclass
@@ -25,10 +21,6 @@ class SitemapConfig(BaseConfig):
     _max_depth: int = field(default=5, repr=False)
     _follow_external: bool = field(default=False, repr=False)
     _validate_urls: bool = field(default=True, repr=False)
-<<<<<<< HEAD
-=======
-    _timeout: int = field(default=30, repr=False)
->>>>>>> main
 
     def __post_init__(self):
         # Validate initial values by calling setters
