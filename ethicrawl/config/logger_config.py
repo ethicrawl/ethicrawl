@@ -2,9 +2,11 @@ from dataclasses import dataclass, field
 from typing import Optional, Dict, Union
 import logging
 
+from .base_config import BaseConfig
+
 
 @dataclass
-class LoggerConfig:
+class LoggerConfig(BaseConfig):
     """Logging configuration for Ethicrawl"""
 
     # Private fields for property implementation
@@ -159,3 +161,15 @@ class LoggerConfig:
             raise ValueError(f"Invalid integer log level: {level}")
 
         return level
+
+    def to_dict(self) -> dict:
+        """Convert logger configuration to a dictionary."""
+        return {
+            "level": self._level,
+            "console_enabled": self._console_enabled,
+            "file_enabled": self._file_enabled,
+            "file_path": self._file_path,
+            "use_colors": self._use_colors,
+            "format": self._format,
+            "component_levels": self._component_levels.copy(),  # Return a copy to prevent direct mutation
+        }

@@ -1,9 +1,14 @@
 from dataclasses import dataclass, field
-from typing import Optional, Dict
+from typing import Optional, Dict, Union
+
+from ethicrawl.core import Url
+
+from .base_config import BaseConfig
+from .http_proxy_config import HttpProxyConfig
 
 
 @dataclass
-class HttpConfig:
+class HttpConfig(BaseConfig):
     """HTTP client configuration"""
 
     # Private fields for property implementation
@@ -14,9 +19,7 @@ class HttpConfig:
     _jitter: float = field(default=0.2, repr=False)
     _user_agent: str = field(default="Ethicrawl/1.0", repr=False)
     _headers: Dict[str, str] = field(default_factory=dict, repr=False)
-    _proxies: Dict[str, str] = field(
-        default_factory=dict, repr=False
-    )  # New proxies attribute
+    _proxies: HttpProxyConfig = field(default_factory=HttpProxyConfig, repr=False)
 
     def __post_init__(self):
         # Validate initial values by calling setters
@@ -39,6 +42,8 @@ class HttpConfig:
             raise TypeError("timeout must be a number")
         if value <= 0:
             raise ValueError("timeout must be positive")
+        if value > 300:
+            raise ValueError("maximum timeout is 300 seconds")
         self._timeout = float(value)
 
     @property
@@ -52,6 +57,8 @@ class HttpConfig:
             raise TypeError("max_retries must be an integer")
         if value < 0:
             raise ValueError("max_retries cannot be negative")
+        if value > 10:
+            raise ValueError("max_retries cannot be more than 10")
         self._max_retries = value
 
     @property
@@ -65,6 +72,8 @@ class HttpConfig:
             raise TypeError("retry_delay must be a number")
         if value < 0:
             raise ValueError("retry_delay cannot be negative")
+        if value > 60:
+            raise ValueError("retry_delay cannot be more than 60")
         self._retry_delay = float(value)
 
     @property
@@ -74,14 +83,11 @@ class HttpConfig:
 
     @rate_limit.setter
     def rate_limit(self, value: Optional[float]):
-        if value is not None:
-            if not isinstance(value, (int, float)):
-                raise TypeError("rate_limit must be a number or None")
-            if value <= 0:
-                raise ValueError("rate_limit must be positive or None")
-            self._rate_limit = float(value)
-        else:
-            self._rate_limit = None
+        if not isinstance(value, (int, float)):
+            raise TypeError("rate_limit must be a number")
+        if value <= 0:
+            raise ValueError("rate_limit must be positive")
+        self._rate_limit = float(value)
 
     @property
     def jitter(self) -> float:
@@ -119,19 +125,39 @@ class HttpConfig:
         """Set request headers."""
         if not isinstance(value, dict):
             raise TypeError("Headers must be a dictionary")
-        self._headers = value.copy()
+
+        # Validate all keys and values are strings
+        for k, v in value.items():
+            if not isinstance(k, str):
+                raise TypeError(f"Header key must be a string, got {type(k)}")
+            if not isinstance(v, str):
+                raise TypeError(f"Header value must be a string, got {type(v)}")
+
+        self._headers = value.copy()  # Keep only this one
 
     @property
-    def proxies(self) -> dict:
-        """Get proxy settings."""
-        return self._proxies.copy()
+    def proxies(self) -> HttpProxyConfig:
+        """Get proxy configuration."""
+        return self._proxies
 
     @proxies.setter
-    def proxies(self, value: dict):
-        """Set proxy settings."""
-        if not isinstance(value, dict):
-            raise TypeError("Proxies must be a dictionary")
-        self._proxies = value.copy()
+    def proxies(self, value: Union[HttpProxyConfig, dict]):
+        """Set proxy configuration."""
+        if isinstance(value, HttpProxyConfig):
+            self._proxies = value
+        elif isinstance(value, dict):
+            # Create a new proxy config instance
+            proxy_config = HttpProxyConfig()
+
+            # Set the http and https values if present
+            if "http" in value:
+                proxy_config.http = value["http"]
+            if "https" in value:
+                proxy_config.https = value["https"]
+
+            self._proxies = proxy_config
+        else:
+            raise TypeError("proxies must be a HttpProxyConfig instance or dictionary")
 
     def to_dict(self) -> dict:
         """Convert config to dictionary."""
@@ -143,19 +169,5 @@ class HttpConfig:
             "retry_delay": self._retry_delay,
             "user_agent": self._user_agent,
             "headers": self._headers,
-            "proxies": self._proxies,
+            "proxies": self._proxies.to_dict(),
         }
-
-    # Convenience methods for common proxy configurations
-    def set_http_proxy(self, proxy_url: str):
-        """Set HTTP proxy."""
-        self._proxies["http"] = proxy_url
-
-    def set_https_proxy(self, proxy_url: str):
-        """Set HTTPS proxy."""
-        self._proxies["https"] = proxy_url
-
-    def set_all_proxies(self, proxy_url: str):
-        """Set proxy for all protocols."""
-        self._proxies["http"] = proxy_url
-        self._proxies["https"] = proxy_url

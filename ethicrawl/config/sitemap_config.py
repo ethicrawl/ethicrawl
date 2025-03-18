@@ -1,9 +1,10 @@
 from dataclasses import dataclass, field
-from typing import Optional
+
+from .base_config import BaseConfig
 
 
 @dataclass
-class SitemapConfig:
+class SitemapConfig(BaseConfig):
     """
     Configuration for sitemap parsing and traversal.
 
@@ -77,3 +78,12 @@ class SitemapConfig:
         if value <= 0:
             raise ValueError("timeout must be positive")
         self._timeout = int(value)
+
+    def to_dict(self) -> dict:
+        """Convert configuration to a dictionary."""
+        return {
+            "max_depth": self._max_depth,
+            "follow_external": self._follow_external,
+            "validate_urls": self._validate_urls,
+            "timeout": self._timeout,
+        }
