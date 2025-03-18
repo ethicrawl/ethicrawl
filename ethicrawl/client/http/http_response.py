@@ -4,6 +4,7 @@ from dataclasses import dataclass, field
 from typing import Dict
 
 from ethicrawl.client.response import Response
+from ethicrawl.core import Headers
 
 from .http_request import HttpRequest
 
@@ -17,13 +18,33 @@ class HttpResponse(Response):
 
     status_code: int
     request: HttpRequest
-    headers: Dict = field(default_factory=dict)
+    headers: Headers = field(default_factory=Headers)
     content: bytes = None  # Raw binary content
     text: str = None  # Only populated for text content
 
-    def __bool__(self):
-        """Allow response to be used in boolean context - True if we got any response"""
-        return self.status_code is not None
+    def __post_init__(self):
+        # Call parent's post_init if it exists
+        super().__post_init__()
+
+        # Validate status code
+        if not isinstance(self.status_code, int):
+            raise TypeError("status_code must be an integer")
+        if self.status_code < 100 or self.status_code > 599:
+            raise ValueError(
+                f"Invalid HTTP status code: {self.status_code}. Must be between 100 and 599."
+            )
+
+        # Validate request
+        if not isinstance(self.request, HttpRequest):
+            raise TypeError(
+                f"request must be an HttpRequest instance, got {type(self.request).__name__}"
+            )
+
+        # Validate content and text consistency
+        if self.content is not None and not isinstance(self.content, bytes):
+            raise TypeError("content must be bytes or None")
+        if self.text is not None and not isinstance(self.text, str):
+            raise TypeError("text must be a string or None")
 
     def __str__(self):
         """
@@ -31,7 +52,13 @@ class HttpResponse(Response):
         Truncates binary content for readability.
         """
         status_line = f"HTTP {self.status_code}"
-        url_line = f"URL: {self.request.url}"
+        url_line = f"URL: {self.url}"
+        request_url_line = f"Request URL: {self.request.url}"  # Only if they differ
+        url_display = (
+            f"{url_line}\n{request_url_line}"
+            if str(self.url) != str(self.request.url)
+            else url_line
+        )
 
         # Format the headers nicely
         headers_str = "\n".join(f"{k}: {v}" for k, v in self.headers.items())
@@ -70,4 +97,4 @@ class HttpResponse(Response):
             # Format with proper line breaks
             text_section = f"\n\nText: '{text_preview}'"
 
-        return f"{status_line}\n{url_line}\n\nHeaders:\n{headers_str}\n\nContent: {content_summary}{text_section}"
+        return f"{status_line}\n{url_display}\n\nHeaders:\n{headers_str}\n\nContent: {content_summary}{text_section}"

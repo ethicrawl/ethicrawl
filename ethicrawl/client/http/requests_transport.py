@@ -76,6 +76,7 @@ class RequestsTransport(Transport):
 
             # Convert requests.Response to our HttpResponse
             return HttpResponse(
+                url=response.url or str(request.url),
                 status_code=response.status_code,
                 request=request,
                 text=response.text,
