@@ -1,7 +1,11 @@
 """Robots.txt handling functionality."""
 
-from ethicrawl.robots.robots_handler import RobotsHandler
+from ethicrawl.robots.robot import Robot
+from ethicrawl.robots.robot_factory import RobotFactory
+from ethicrawl.robots.robot_error import RobotDisallowedError
 
 __all__ = [
-    "RobotsHandler",
+    "Robot",
+    "RobotDisallowedError",
+    "RobotFactory",
 ]

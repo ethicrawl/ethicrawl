@@ -21,7 +21,7 @@ site = "https://www.bbc.co.uk"
 
 ec.bind(site, client)
 
-sitemaps = ec.robots.sitemaps.filter(r"https://www.bbc.co.uk/sitemap.xml")
+sitemaps = ec.robot.sitemaps.filter(r"https://www.bbc.co.uk/sitemap.xml")
 links = ec.sitemaps.parse(sitemaps)
 
 print(len(links))

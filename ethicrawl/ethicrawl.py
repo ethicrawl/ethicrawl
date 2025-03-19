@@ -3,7 +3,7 @@ from logging import Logger as logging_Logger
 from typing import Union
 
 from ethicrawl.context import Context
-from ethicrawl.robots import RobotsHandler
+from ethicrawl.robots import Robot, RobotFactory
 from ethicrawl.client.http import HttpClient, HttpResponse
 from ethicrawl.core import Resource, Url
 from ethicrawl.config import Config
@@ -128,7 +128,8 @@ class Ethicrawl:
         domain = url.netloc
         context = Context(Resource(url), client or self._context.client)
         try:
-            robots_handler = RobotsHandler(context)
+            # robots_handler = RobotsHandler(context)
+            robots_handler = RobotFactory.robot(context)
         except Exception as e:
             self.logger.warning(f"Failed to load robots.txt for {domain}: {e}")
             # Still create a permissive handler or use None
@@ -160,11 +161,11 @@ class Ethicrawl:
 
     @property
     @ensure_bound
-    def robots(self) -> RobotsHandler:
+    def robot(self) -> Robot:
         # lazy load robots
         if not hasattr(self, "_robots"):
-            self._robots = RobotsHandler(self._context)
-        return self._robots
+            self._robot = RobotFactory.robot(self._context)
+        return self._robot
 
     @property
     @ensure_bound
@@ -204,7 +205,7 @@ class Ethicrawl:
         if target_domain == self._context.resource.url.netloc:
             # This is the main domain
             context = self._context
-            robots_handler = self.robots
+            robots_handler = self.robot
         elif hasattr(self, "_whitelist") and target_domain in self._whitelist:
             # This is a whitelisted domain
             context = self._whitelist[target_domain]["context"]

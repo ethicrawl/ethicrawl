@@ -62,14 +62,17 @@ def main():
     print("\n==== Checking robots.txt rules ====")
     # Check if certain paths are allowed
     article_url = "https://www.bbc.co.uk/news/uk-northern-ireland-31591567"
-    print(f"Can fetch article: {crawler.robots.can_fetch(article_url)}")
+    print(f"Can fetch article: {crawler.robot.can_fetch(article_url)}")
 
-    search_url = "https://www.bbc.co.uk/cbeebies/search?q=test"
-    print(f"Can fetch search: {crawler.robots.can_fetch(search_url)}")
+    try:
+        search_url = "https://www.bbc.co.uk/cbeebies/search?q=test"
+        print(f"Can fetch search: {crawler.robot.can_fetch(search_url)}")
+    except Exception as e:
+        print((f"Can fetch search: {search_url}"), e)
 
     # Get all the sitemaps from robots.txt
     print("\n==== Listing sitemaps from robots.txt ====")
-    sitemap_urls = crawler.robots.sitemaps
+    sitemap_urls = crawler.robot.sitemaps
     print(f"Found {len(sitemap_urls)} sitemaps:")
     for i, url in enumerate(sitemap_urls, 1):
         print(f"{i}. {url}")
@@ -77,7 +80,7 @@ def main():
     # Process just the main sitemap with depth limit
     print("\n==== Parsing main sitemap (with depth limit) ====")
     # Filter to just the main sitemap
-    main_sitemap = crawler.robots.sitemaps.filter(r"https://www.bbc.co.uk/sitemap.xml")
+    main_sitemap = crawler.robot.sitemaps.filter(r"https://www.bbc.co.uk/sitemap.xml")
 
     start_time = time.time()
     urls = crawler.sitemaps.parse(main_sitemap)
@@ -131,3 +134,94 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+# (venv) ➜  ethicrawl git:(develop) ✗ python usage.py
+# Configuration: {
+#   "http": {
+#     "timeout": 15.0,
+#     "rate_limit": 1.0,
+#     "jitter": 0.2,
+#     "max_retries": 3,
+#     "retry_delay": 1.0,
+#     "user_agent": "Ethicrawl/1.0",
+#     "headers": {},
+#     "proxies": {
+#       "http": null,
+#       "https": null
+#     }
+#   },
+#   "logger": {
+#     "level": 20,
+#     "console_enabled": true,
+#     "file_enabled": false,
+#     "file_path": null,
+#     "use_colors": true,
+#     "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+#     "component_levels": {}
+#   },
+#   "sitemap": {
+#     "max_depth": 2,
+#     "follow_external": false,
+#     "validate_urls": true
+#   }
+# }
+
+# ==== Creating crawler and HTTP client ====
+# Binding crawler to BBC website...
+
+# ==== Checking robots.txt rules ====
+# 2025-03-19 14:07:54,033 - ethicrawl.https_www_bbc_co_uk.robots - INFO - Server returned 200 - using robots.txt
+# Can fetch article: True
+# 2025-03-19 14:07:59,218 - ethicrawl.https_www_bbc_co_uk.robots - INFO - Server returned 200 - using robots.txt
+# 2025-03-19 14:07:59,218 - ethicrawl.https_www_bbc_co_uk.robots - WARNING - Permission check for https://www.bbc.co.uk/cbeebies/search?q=test: denied
+# Can fetch search: https://www.bbc.co.uk/cbeebies/search?q=test Permission check for https://www.bbc.co.uk/cbeebies/search?q=test: denied
+
+# ==== Listing sitemaps from robots.txt ====
+# 2025-03-19 14:08:04,305 - ethicrawl.https_www_bbc_co_uk.robots - INFO - Server returned 200 - using robots.txt
+# Found 13 sitemaps:
+# 1. https://www.bbc.co.uk/sitemap.xml
+# 2. https://www.bbc.co.uk/sitemaps/https-index-uk-archive.xml
+# 3. https://www.bbc.co.uk/sitemaps/https-index-uk-news.xml
+# 4. https://www.bbc.co.uk/food/sitemap.xml
+# 5. https://www.bbc.co.uk/bitesize/sitemap/sitemapindex.xml
+# 6. https://www.bbc.co.uk/teach/sitemap/sitemapindex.xml
+# 7. https://www.bbc.co.uk/sitemaps/https-index-uk-archive_video.xml
+# 8. https://www.bbc.co.uk/sitemaps/https-index-uk-video.xml
+# 9. https://www.bbc.co.uk/sitemaps/sitemap-uk-ws-topics.xml
+# 10. https://www.bbc.co.uk/sport/sitemap.xml
+# 11. https://www.bbc.co.uk/sitemaps/sitemap-uk-topics.xml
+# 12. https://www.bbc.co.uk/ideas/sitemap.xml
+# 13. https://www.bbc.co.uk/tiny-happy-people/sitemap/sitemapindex.xml
+
+# ==== Parsing main sitemap (with depth limit) ====
+# 2025-03-19 14:08:09,638 - ethicrawl.https_www_bbc_co_uk.robots - INFO - Server returned 200 - using robots.txt
+# Found 29352 URLs in 47.79 seconds
+# Found 17968 news URLs
+
+# ==== Sample of news URLs ====
+# - https://www.bbc.co.uk/news/topics/c4y26wwj72zt
+# - https://www.bbc.co.uk/news/topics/czm9g685xgzt
+# - https://www.bbc.co.uk/news/topics/cp29jzed52et
+# - https://www.bbc.co.uk/news/topics/cerlz4j51w7t
+# - https://www.bbc.co.uk/news/topics/c27968gy256t
+
+# ==== Testing domain whitelisting ====
+# Attempting to access image without whitelisting...
+# 2025-03-19 14:08:57,497 - ethicrawl.https_www_bbc_co_uk - WARNING - Domain not allowed: ichef.bbci.co.uk
+# Expected error: Domain not allowed: ichef.bbci.co.uk
+
+# Whitelisting image domain...
+# 2025-03-19 14:09:01,688 - ethicrawl.https_ichef_bbci_co_uk.robots - INFO - Server returned 200 - using robots.txt
+# 2025-03-19 14:09:01,689 - ethicrawl.https_www_bbc_co_uk - INFO - Whitelisted domain: ichef.bbci.co.uk
+# Attempting to access image after whitelisting...
+# Success! Got 489 bytes of image data
+
+# ==== Using Chromium for JavaScript-heavy sites ====
+# To use a Chromium client:
+# crawler.unbind()
+# chromium_client = client.with_chromium(headless=True)
+# crawler.bind('https://example.com', chromium_client)
+# # Now the crawler will render JavaScript before processing
+
+# ==== Cleaning up ====
+# Crawler unbound and resources released

@@ -2,5 +2,5 @@
 
 test:
 	coverage run -m pytest
-	# coverage report
+	coverage report > coverage.txt
 	coverage html
