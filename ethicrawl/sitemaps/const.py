@@ -1,0 +1,2 @@
+URLSET = "urlset"
+SITEMAPINDEX = "sitemapindex"

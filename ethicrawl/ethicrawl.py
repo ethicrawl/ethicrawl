@@ -7,7 +7,7 @@ from ethicrawl.robots import RobotsHandler
 from ethicrawl.client.http import HttpClient, HttpResponse
 from ethicrawl.core import Resource, Url
 from ethicrawl.config import Config
-from ethicrawl.sitemaps import Sitemaps
+from ethicrawl.sitemaps import SitemapParser
 
 
 def ensure_bound(func):
@@ -50,7 +50,7 @@ class Ethicrawl:
 
     Attributes:
         robots (RobotsHandler): Handler for robots.txt rules (available after binding)
-        sitemaps (Sitemaps): Parser and handler for XML sitemaps (available after binding)
+        sitemaps (SitemapParser): Parser and handler for XML sitemaps (available after binding)
         logger (Logger): Logger for this crawler instance (available after binding)
         bound (bool): Whether the crawler is currently bound to a site
     """
@@ -168,9 +168,9 @@ class Ethicrawl:
 
     @property
     @ensure_bound
-    def sitemaps(self) -> Sitemaps:
+    def sitemaps(self) -> SitemapParser:
         if not hasattr(self, "_sitemaps"):
-            self._sitemaps = Sitemaps(self._context)
+            self._sitemaps = SitemapParser(self._context)
         return self._sitemaps
 
     @ensure_bound

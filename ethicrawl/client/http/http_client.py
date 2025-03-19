@@ -14,6 +14,7 @@ from .http_response import HttpResponse
 
 
 class HttpClient(Client):
+    # TODO: implement retries
     """
     HTTP client for making web requests with rate limiting and jitter.
 
@@ -213,6 +214,6 @@ class HttpClient(Client):
             self.last_request_time = time()
 
             return response
-        except Exception as e:
+        except Exception as e:  # pragma: no cover
             # Re-raise with clear error
             raise IOError(f"HTTP request failed: {e}")

@@ -83,5 +83,5 @@ class RequestsTransport(Transport):
                 headers=dict(response.headers),
                 content=response.content,
             )
-        except Exception as e:
+        except Exception as e:  # pragma: no cover
             raise IOError(f"Error fetching {url}: {e}")
