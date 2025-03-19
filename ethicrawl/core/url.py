@@ -32,6 +32,10 @@ def http_only(func):
     return wrapper
 
 
+# TODO: think about how to handle username and passwords
+# We do need access to the password presumeably in some contexts; but also want to make sure it gets masked in stdout / logs
+
+
 class Url:
     """
     URL handling and parsing.

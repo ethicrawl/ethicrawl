@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="17" failures="0" skipped="0" tests="17" time="0.356" timestamp="2025-03-18T12:48:12.194421+00:00" hostname="sldbox"><testcase classname="" name="tests.client.http.test_http_request" file="tests/client/http/test_http_request.py" time="0.000"><error message="collection failure">ImportError while importing test module '/home/kris/code/ethicrawl/tests/client/http/test_http_request.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+../../.pyenv/versions/3.10.16/lib/python3.10/importlib/__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+tests/client/http/test_http_request.py:3: in &lt;module&gt;
+    from ethicrawl.config import Config
+E   ModuleNotFoundError: No module named 'ethicrawl'</error></testcase><testcase classname="" name="tests.client.http.test_http_response" file="tests/client/http/test_http_response.py" time="0.000"><error message="collection failure">ImportError while importing test module '/home/kris/code/ethicrawl/tests/client/http/test_http_response.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+../../.pyenv/versions/3.10.16/lib/python3.10/importlib/__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+tests/client/http/test_http_response.py:3: in &lt;module&gt;
+    from ethicrawl.core import Headers
+E   ModuleNotFoundError: No module named 'ethicrawl'</error></testcase><testcase classname="" name="tests.client.test_client" file="tests/client/test_client.py" time="0.000"><error message="collection failure">ImportError while importing test module '/home/kris/code/ethicrawl/tests/client/test_client.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+../../.pyenv/versions/3.10.16/lib/python3.10/importlib/__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+tests/client/test_client.py:1: in &lt;module&gt;
+    from ethicrawl.client import Client, NoneClient
+E   ModuleNotFoundError: No module named 'ethicrawl'</error></testcase><testcase classname="" name="tests.client.test_transport" file="tests/client/test_transport.py" time="0.000"><error message="collection failure">ImportError while importing test module '/home/kris/code/ethicrawl/tests/client/test_transport.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+../../.pyenv/versions/3.10.16/lib/python3.10/importlib/__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+tests/client/test_transport.py:3: in &lt;module&gt;
+    from ethicrawl.client import Request, Response, Transport
+E   ModuleNotFoundError: No module named 'ethicrawl'</error></testcase><testcase classname="" name="tests.config.test_base_config" file="tests/config/test_base_config.py" time="0.000"><error message="collection failure">ImportError while importing test module '/home/kris/code/ethicrawl/tests/config/test_base_config.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+../../.pyenv/versions/3.10.16/lib/python3.10/importlib/__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+tests/config/test_base_config.py:1: in &lt;module&gt;
+    from ethicrawl.config import BaseConfig
+E   ModuleNotFoundError: No module named 'ethicrawl'</error></testcase><testcase classname="" name="tests.config.test_config" file="tests/config/test_config.py" time="0.000"><error message="collection failure">ImportError while importing test module '/home/kris/code/ethicrawl/tests/config/test_config.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+../../.pyenv/versions/3.10.16/lib/python3.10/importlib/__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+tests/config/test_config.py:4: in &lt;module&gt;
+    from ethicrawl.config import Config
+E   ModuleNotFoundError: No module named 'ethicrawl'</error></testcase><testcase classname="" name="tests.config.test_http_config" file="tests/config/test_http_config.py" time="0.000"><error message="collection failure">ImportError while importing test module '/home/kris/code/ethicrawl/tests/config/test_http_config.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+../../.pyenv/versions/3.10.16/lib/python3.10/importlib/__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+tests/config/test_http_config.py:3: in &lt;module&gt;
+    from ethicrawl.config import HttpConfig, HttpProxyConfig
+E   ModuleNotFoundError: No module named 'ethicrawl'</error></testcase><testcase classname="" name="tests.config.test_http_proxy_config" file="tests/config/test_http_proxy_config.py" time="0.000"><error message="collection failure">ImportError while importing test module '/home/kris/code/ethicrawl/tests/config/test_http_proxy_config.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+../../.pyenv/versions/3.10.16/lib/python3.10/importlib/__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+tests/config/test_http_proxy_config.py:4: in &lt;module&gt;
+    from ethicrawl.core import Url
+E   ModuleNotFoundError: No module named 'ethicrawl'</error></testcase><testcase classname="" name="tests.config.test_logger_config" file="tests/config/test_logger_config.py" time="0.000"><error message="collection failure">ImportError while importing test module '/home/kris/code/ethicrawl/tests/config/test_logger_config.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+../../.pyenv/versions/3.10.16/lib/python3.10/importlib/__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+tests/config/test_logger_config.py:4: in &lt;module&gt;
+    from ethicrawl.config import LoggerConfig
+E   ModuleNotFoundError: No module named 'ethicrawl'</error></testcase><testcase classname="" name="tests.config.test_sitemap_config" file="tests/config/test_sitemap_config.py" time="0.000"><error message="collection failure">ImportError while importing test module '/home/kris/code/ethicrawl/tests/config/test_sitemap_config.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+../../.pyenv/versions/3.10.16/lib/python3.10/importlib/__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+tests/config/test_sitemap_config.py:3: in &lt;module&gt;
+    from ethicrawl.config import SitemapConfig
+E   ModuleNotFoundError: No module named 'ethicrawl'</error></testcase><testcase classname="" name="tests.context.test_context" file="tests/context/test_context.py" time="0.000"><error message="collection failure">ImportError while importing test module '/home/kris/code/ethicrawl/tests/context/test_context.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+../../.pyenv/versions/3.10.16/lib/python3.10/importlib/__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+tests/context/test_context.py:4: in &lt;module&gt;
+    from ethicrawl.context import Context
+E   ModuleNotFoundError: No module named 'ethicrawl'</error></testcase><testcase classname="" name="tests.core.test_headers" file="tests/core/test_headers.py" time="0.000"><error message="collection failure">ImportError while importing test module '/home/kris/code/ethicrawl/tests/core/test_headers.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+../../.pyenv/versions/3.10.16/lib/python3.10/importlib/__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+tests/core/test_headers.py:3: in &lt;module&gt;
+    from ethicrawl.core import Headers
+E   ModuleNotFoundError: No module named 'ethicrawl'</error></testcase><testcase classname="" name="tests.core.test_resource" file="tests/core/test_resource.py" time="0.000"><error message="collection failure">ImportError while importing test module '/home/kris/code/ethicrawl/tests/core/test_resource.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+../../.pyenv/versions/3.10.16/lib/python3.10/importlib/__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+tests/core/test_resource.py:4: in &lt;module&gt;
+    from ethicrawl.core import Resource, Url
+E   ModuleNotFoundError: No module named 'ethicrawl'</error></testcase><testcase classname="" name="tests.core.test_resource_list" file="tests/core/test_resource_list.py" time="0.000"><error message="collection failure">ImportError while importing test module '/home/kris/code/ethicrawl/tests/core/test_resource_list.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+../../.pyenv/versions/3.10.16/lib/python3.10/importlib/__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+tests/core/test_resource_list.py:3: in &lt;module&gt;
+    from ethicrawl.core import Resource, ResourceList
+E   ModuleNotFoundError: No module named 'ethicrawl'</error></testcase><testcase classname="" name="tests.core.test_url" file="tests/core/test_url.py" time="0.000"><error message="collection failure">ImportError while importing test module '/home/kris/code/ethicrawl/tests/core/test_url.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+../../.pyenv/versions/3.10.16/lib/python3.10/importlib/__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+tests/core/test_url.py:4: in &lt;module&gt;
+    from ethicrawl.core import Url
+E   ModuleNotFoundError: No module named 'ethicrawl'</error></testcase><testcase classname="" name="tests.logger.test_formatter" file="tests/logger/test_formatter.py" time="0.000"><error message="collection failure">ImportError while importing test module '/home/kris/code/ethicrawl/tests/logger/test_formatter.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+../../.pyenv/versions/3.10.16/lib/python3.10/importlib/__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+tests/logger/test_formatter.py:6: in &lt;module&gt;
+    from ethicrawl.logger.formatter import ColorFormatter
+E   ModuleNotFoundError: No module named 'ethicrawl'</error></testcase><testcase classname="" name="tests.logger.test_logger" file="tests/logger/test_logger.py" time="0.000"><error message="collection failure">ImportError while importing test module '/home/kris/code/ethicrawl/tests/logger/test_logger.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+../../.pyenv/versions/3.10.16/lib/python3.10/importlib/__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+tests/logger/test_logger.py:4: in &lt;module&gt;
+    from ethicrawl.core import Resource
+E   ModuleNotFoundError: No module named 'ethicrawl'</error></testcase></testsuite></testsuites>

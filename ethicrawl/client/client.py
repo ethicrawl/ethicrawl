@@ -23,4 +23,4 @@ class Client(ABC):
 
 class NoneClient(Client):
     def get(self, resource: Resource) -> Response:
-        return Response()
+        return Response(resource.url)

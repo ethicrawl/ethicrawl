@@ -1,0 +1,2 @@
+class EthicrawlError(Exception):
+    pass
