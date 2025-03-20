@@ -9,7 +9,7 @@ from ethicrawl.sitemaps import (
     UrlsetNode,
     UrlsetEntry,
 )
-from ethicrawl.sitemaps.sitemap_error import SitemapError
+from ethicrawl.error import SitemapError
 
 
 html_doc = """

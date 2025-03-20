@@ -1,4 +1,4 @@
-from ethicrawl.core import EthicrawlError
+from .ethicrawl_error import EthicrawlError
 
 
 class SitemapError(EthicrawlError):

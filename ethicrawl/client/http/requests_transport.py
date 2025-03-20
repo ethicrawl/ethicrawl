@@ -1,5 +1,3 @@
-# FIXME: remove comment, imports sorted
-
 import requests
 
 from ethicrawl.context import Context
@@ -19,7 +17,7 @@ class RequestsTransport(Transport):
         self.session.headers.update({"User-Agent": self._default_user_agent})
 
     @property
-    def user_agent(self):
+    def user_agent(self) -> str:
         """
         Get the User-Agent string used by requests.
 
@@ -29,7 +27,7 @@ class RequestsTransport(Transport):
         return self.session.headers.get("User-Agent", self._default_user_agent)
 
     @user_agent.setter
-    def user_agent(self, agent):
+    def user_agent(self, agent: str):
         """
         Set the User-Agent string for requests.
 

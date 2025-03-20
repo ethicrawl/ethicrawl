@@ -1,8 +1,6 @@
-# FIXME: remove comment, imports sorted
-
 from json import loads
 from time import sleep
-from typing import Dict, Tuple, Optional, Any, Union, List
+from typing import Dict, Tuple, Optional, Any
 
 from lxml import html, etree
 
@@ -71,7 +69,7 @@ class ChromeTransport(Transport):
         self.driver = webdriver.Chrome(options=options)
 
     @property
-    def user_agent(self):
+    def user_agent(self) -> str:
         """
         Get the User-Agent string used by Chrome.
 
@@ -94,7 +92,7 @@ class ChromeTransport(Transport):
             return "Mozilla/5.0 (Unknown) Chrome/Unknown Safari/Unknown"
 
     @user_agent.setter
-    def user_agent(self, agent):
+    def user_agent(self, agent: str):
         """
         Set the User-Agent string for Chrome.
         This is a passive operation - it only records what was passed,

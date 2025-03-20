@@ -1,5 +1,3 @@
-# FIXME: remove comment, imports sorted
-
 from re import compile
 from typing import List, TypeVar, Generic, Union, Pattern, Iterator
 

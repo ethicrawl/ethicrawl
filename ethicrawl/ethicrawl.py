@@ -156,7 +156,7 @@ class Ethicrawl:
 
     @property
     @ensure_bound
-    def robot(self) -> Robot:
+    def robots(self) -> Robot:
         # lazy load robots
         if not hasattr(self, "_robots"):
             self._robot = RobotFactory.robot(self._context)
@@ -164,7 +164,7 @@ class Ethicrawl:
 
     @property
     @ensure_bound
-    def sitemap(self) -> SitemapParser:
+    def sitemaps(self) -> SitemapParser:
         if not hasattr(self, "_sitemap"):
             self._sitemap = SitemapParser(self._context)
         return self._sitemap
@@ -205,7 +205,7 @@ class Ethicrawl:
         if target_domain == self._context.resource.url.netloc:
             # This is the main domain
             context = self._context
-            robots_handler = self.robot
+            robots_handler = self.robots
         elif hasattr(self, "_whitelist") and target_domain in self._whitelist:
             # This is a whitelisted domain
             context = self._whitelist[target_domain]["context"]

@@ -5,9 +5,8 @@ from protego import Protego
 
 from ethicrawl.context import Context
 from ethicrawl.core import Resource, ResourceList, Url
+from ethicrawl.error import RobotDisallowedError
 from ethicrawl.sitemaps import IndexEntry
-
-from .robot_error import RobotDisallowedError
 
 
 @dataclass

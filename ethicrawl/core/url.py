@@ -1,4 +1,3 @@
-# FIXME: remove comment, imports sorted
 from urllib import parse
 from socket import gaierror, gethostbyname
 from typing import Dict, Any, Union

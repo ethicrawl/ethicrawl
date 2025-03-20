@@ -3,7 +3,6 @@
 from .index_entry import IndexEntry
 from .index_node import IndexNode
 from .sitemap_entry import SitemapEntry
-from .sitemap_error import SitemapError
 from .sitemap_node import SitemapNode
 from .sitemap_parser import SitemapParser
 from .urlset_entry import UrlsetEntry
@@ -17,7 +16,6 @@ __all__ = [
     "IndexEntry",
     "IndexNode",
     "SitemapEntry",
-    "SitemapError",
     "SitemapNode",
     "SitemapParser",
     "SitemapType",

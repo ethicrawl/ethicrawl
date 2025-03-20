@@ -1,5 +1,3 @@
-# FIXME: remove comment, imports sorted
-
 from typing import Any, Optional
 
 from ethicrawl.client import Client, NoneClient

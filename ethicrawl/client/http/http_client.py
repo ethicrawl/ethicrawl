@@ -1,5 +1,3 @@
-# FIXME: remove comment, imports sorted
-
 from random import random
 from time import time, sleep
 
@@ -120,7 +118,7 @@ class HttpClient(Client):
         timeout=30,
         rate_limit=0.5,
         jitter=0.3,
-    ):
+    ) -> "HttpClient":
         """
         Create a new client that uses a Chrome-powered transport.
 

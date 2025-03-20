@@ -5,7 +5,8 @@ from logging import Logger as logging_Logger
 from unittest.mock import Mock
 
 from ethicrawl import Ethicrawl, Resource, Config, Url, HttpClient
-from ethicrawl.robots import Robot, RobotDisallowedError
+from ethicrawl.robots import Robot
+from ethicrawl.error import RobotDisallowedError
 from ethicrawl.sitemaps import SitemapParser
 
 
@@ -64,12 +65,12 @@ class TestEthicrawl:
     def test_robot(self):
         crawler = Ethicrawl()
         crawler.bind("https://example.com")
-        assert isinstance(crawler.robot, Robot)
+        assert isinstance(crawler.robots, Robot)
 
     def test_sitemap(self):
         crawler = Ethicrawl()
         crawler.bind("https://example.com")
-        assert isinstance(crawler.sitemap, SitemapParser)
+        assert isinstance(crawler.sitemaps, SitemapParser)
 
     def test_invalid_get(self):
         crawler = Ethicrawl()
@@ -109,11 +110,10 @@ class TestEthicrawl:
             assert "<html>" in result.text
 
         # Test the robots.txt was properly fetched
-        assert crawler.robot is not None
+        assert crawler.robots is not None
 
     def test_robot_disallowed(self, test_server):
         """Test that robots.txt disallowed paths are enforced"""
-        from ethicrawl.robots.robot_error import RobotDisallowedError
 
         crawler = Ethicrawl()
         base_url = test_server
@@ -126,7 +126,7 @@ class TestEthicrawl:
         crawler.bind(base_url, client=client)
 
         # Force robot initialization and print rules for debugging
-        robot = crawler.robot
+        robot = crawler.robots
         print(f"User agent: {client.user_agent}")
 
         # Allowed path for BadBot should work
@@ -191,7 +191,6 @@ class TestEthicrawl:
 
     def test_headers_and_user_agent(self, test_server):
         """Test that request headers and user-agent handling works properly"""
-        from ethicrawl.robots.robot_error import RobotDisallowedError
         from ethicrawl.core.headers import Headers
 
         crawler = Ethicrawl()

@@ -1,4 +1,4 @@
-.PHONY: test test-fast
+.PHONY: test test-fast lint check-types check-docs
 
 test:
 	coverage run -m pytest
@@ -7,3 +7,12 @@ test:
 
 test-fast:
 	coverage run -m pytest -x -v
+
+lint:
+	pylint ethicrawl
+
+check-types:
+	mypy ethicrawl
+
+check-docs:
+	interrogate -v ethicrawl

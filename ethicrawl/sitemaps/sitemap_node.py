@@ -4,9 +4,9 @@ from typing import List
 from lxml import etree
 
 from ethicrawl.context import Context
+from ethicrawl.error import SitemapError
 
 from .const import SITEMAPINDEX, URLSET
-from .sitemap_error import SitemapError
 
 
 class SitemapNode:

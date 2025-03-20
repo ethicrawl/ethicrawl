@@ -5,10 +5,10 @@ from ethicrawl.sitemaps import (
     IndexEntry,
     UrlsetNode,
     SitemapParser,
-    SitemapError,
 )
 from ethicrawl.context import Context
 from ethicrawl.core import Resource, ResourceList
+from ethicrawl.error import SitemapError
 
 urlset_doc = """
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.sitemaps.org/schemas/sitemap/0.9">

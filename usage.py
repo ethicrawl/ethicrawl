@@ -62,17 +62,17 @@ def main():
     print("\n==== Checking robots.txt rules ====")
     # Check if certain paths are allowed
     article_url = "https://www.bbc.co.uk/news/uk-northern-ireland-31591567"
-    print(f"Can fetch article: {crawler.robot.can_fetch(article_url)}")
+    print(f"Can fetch article: {crawler.robots.can_fetch(article_url)}")
 
     try:
         search_url = "https://www.bbc.co.uk/cbeebies/search?q=test"
-        print(f"Can fetch search: {crawler.robot.can_fetch(search_url)}")
+        print(f"Can fetch search: {crawler.robots.can_fetch(search_url)}")
     except Exception as e:
         print((f"Can fetch search: {search_url}"), e)
 
     # Get all the sitemaps from robots.txt
     print("\n==== Listing sitemaps from robots.txt ====")
-    sitemap_urls = crawler.robot.sitemaps
+    sitemap_urls = crawler.robots.sitemaps
     print(f"Found {len(sitemap_urls)} sitemaps:")
     for i, url in enumerate(sitemap_urls, 1):
         print(f"{i}. {url}")
@@ -80,7 +80,7 @@ def main():
     # Process just the main sitemap with depth limit
     print("\n==== Parsing main sitemap (with depth limit) ====")
     # Filter to just the main sitemap
-    main_sitemap = crawler.robot.sitemaps.filter(r"https://www.bbc.co.uk/sitemap.xml")
+    main_sitemap = crawler.robots.sitemaps.filter(r"https://www.bbc.co.uk/sitemap.xml")
 
     start_time = time.time()
     urls = crawler.sitemaps.parse(main_sitemap)
