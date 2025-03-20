@@ -38,12 +38,16 @@ class Robot(Resource):
     def context(self) -> Context:
         return self._context
 
-    def can_fetch(self, resource: Union[Resource, Url, str]) -> bool:
+    def can_fetch(
+        self, resource: Union[Resource, Url, str], user_agent: str = None
+    ) -> bool:
         """
         Check if a URL can be fetched according to robots.txt rules.
 
         Args:
             resource: URL to check (as str, Url, or Resource)
+            user_agent: Optional User-Agent to check permissions for.
+                       If None, uses the client's default User-Agent.
 
         Returns:
             bool: True if allowed by robots.txt
@@ -56,15 +60,28 @@ class Robot(Resource):
         if isinstance(resource, (str, Url)):
             resource = Resource(Url(resource))
         if not isinstance(resource, Resource):
-            raise TypeError(f"Expected string, Url, or Resource, got {type(resource)}")
-        user_agent = self._context.client.user_agent
+            raise TypeError(
+                f"Expected string, Url, or Resource, got {type(resource).__name__}"
+            )
+
+        # Use provided User-Agent or fall back to client's default
+        if user_agent is None:
+            user_agent = self._context.client.user_agent
+
         can_fetch = self._parser.can_fetch(str(resource.url), user_agent)
-        # Log the decision
+
+        # Log the decision with the used User-Agent for better debugging
         if can_fetch:
-            self._logger.debug(f"Permission check for {resource.url}: allowed")
+            self._logger.debug(
+                f"Permission check for {resource.url} with User-Agent '{user_agent}': allowed"
+            )
         else:
-            self._logger.warning(f"Permission check for {resource.url}: denied")
-            raise RobotDisallowedError(f"Permission check for {resource.url}: denied")
+            self._logger.warning(
+                f"Permission check for {resource.url} with User-Agent '{user_agent}': denied"
+            )
+            raise RobotDisallowedError(
+                f"Permission denied by robots.txt for User-Agent '{user_agent}' at URL '{resource.url}'"
+            )
 
         return can_fetch
 

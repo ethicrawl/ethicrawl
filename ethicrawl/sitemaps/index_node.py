@@ -62,11 +62,11 @@ class IndexNode(SitemapNode):
             sitemaps: List of sitemap URLs
         """
         if not isinstance(entries, list):
-            raise TypeError(f"Expected a list, got {type(entries)}")
+            raise TypeError(f"Expected a list, got {type(entries).__name__}")
 
         # Validate all items are of correct type
         for entry in entries:
             if not isinstance(entry, IndexEntry):
-                raise TypeError(f"Expected IndexEntry, got {type(entry)}")
+                raise TypeError(f"Expected IndexEntry, got {type(entry).__name__}")
 
         self._entries = entries

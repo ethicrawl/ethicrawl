@@ -12,7 +12,7 @@ class BaseConfig(ABC):
     """
 
     @abstractmethod
-    def to_dict(self) -> Dict[str, Any]:  # pragma: no cover
+    def to_dict(self) -> Dict[str, Any]:
         """
         Convert configuration to a dictionary representation.
 

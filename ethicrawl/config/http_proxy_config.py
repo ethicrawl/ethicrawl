@@ -31,7 +31,9 @@ class HttpProxyConfig(BaseConfig):
         elif isinstance(url, str):
             self._http = Url(url, validate=True)
         else:
-            raise TypeError("url must be Url, string, or None")
+            raise TypeError(
+                f"url must be Url, string, or None, got {type(url).__name__}"
+            )
 
     @property
     def https(self) -> Optional[Url]:
@@ -46,7 +48,9 @@ class HttpProxyConfig(BaseConfig):
         elif isinstance(url, str):
             self._https = Url(url, validate=True)
         else:
-            raise TypeError("url must be Url, string, or None")
+            raise TypeError(
+                f"url must be Url, string, or None, got {type(url).__name__}"
+            )
 
     def to_dict(self) -> dict:
         """Convert config to dictionary."""

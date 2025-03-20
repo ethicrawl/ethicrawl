@@ -73,9 +73,7 @@ class UrlsetEntry(SitemapEntry):
             return None
 
         if not isinstance(value, str):
-            raise TypeError(
-                f"Change frequency must be a string, got {type(value).__name__}"
-            )
+            raise TypeError(f"changefreq must be a string, got {type(value).__name__}")
 
         # Normalize: strip and lowercase
         normalized = value.strip().lower()

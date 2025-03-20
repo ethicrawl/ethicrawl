@@ -24,13 +24,13 @@ class TestContext:
     def test_initialize_with_junk(self):
         with pytest.raises(
             TypeError,
-            match=f"resource must be a Resource instance, got {type(int(1))}",
+            match=f"resource must be a Resource instance, got int",
         ):
             c = Context(1)
         r = Resource("https://www.example.com")
         with pytest.raises(
             TypeError,
-            match=f"client must be a Client instance or None, got {type(int(1))}",
+            match=f"client must be a Client instance or None, got int",
         ):
             c = Context(r, 1)
 
@@ -40,7 +40,7 @@ class TestContext:
         c.resource = r
         with pytest.raises(
             TypeError,
-            match=f"resource must be a Resource instance, got {type(int(1))}",
+            match=f"resource must be a Resource instance, got int",
         ):
             c.resource = 1
 
@@ -50,7 +50,7 @@ class TestContext:
         c.client = NoneClient()
         with pytest.raises(
             TypeError,
-            match=f"client must be a Client instance or None, got {type(int(1))}",
+            match=f"client must be a Client instance or None, got int",
         ):
             c.client = 1
 

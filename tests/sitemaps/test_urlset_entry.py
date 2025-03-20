@@ -25,7 +25,7 @@ class TestUrlsetEntry:
         for freq in invalid_change_freq_types:
             with pytest.raises(
                 TypeError,
-                match=f"Change frequency must be a string, got {type(freq).__name__}",
+                match=f"changefreq must be a string, got {type(freq).__name__}",
             ):
                 UrlsetEntry(url, changefreq=freq)
         with pytest.raises(

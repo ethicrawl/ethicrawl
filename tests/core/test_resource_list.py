@@ -21,13 +21,15 @@ class TestResourceList:
             "a",
         ]
         for junk in invalid:
-            with pytest.raises(TypeError, match=f"Expected list got {type(junk)}"):
+            with pytest.raises(
+                TypeError, match=f"Expected list got {type(junk).__name__}"
+            ):
                 ResourceList(junk)
 
     def test_invalid_resource_list_initialisation(self):
         with pytest.raises(
             TypeError,
-            match=f"Only Resource objects can be added, got <class 'int'>",
+            match=f"Expected Resource, got int",
         ):
             ResourceList([Resource("https://www.example.com"), 1])
 

@@ -19,7 +19,7 @@ class Context:
             client = NoneClient()
         if not isinstance(client, Client):
             raise TypeError(
-                f"client must be a Client instance or None, got {type(client)}"
+                f"client must be a Client instance or None, got {type(client).__name__}"
             )
         return client
 
@@ -27,7 +27,7 @@ class Context:
         """Validate resource is a Resource instance."""
         if not isinstance(resource, Resource):
             raise TypeError(
-                f"resource must be a Resource instance, got {type(resource)}"
+                f"resource must be a Resource instance, got {type(resource).__name__}"
             )
         return resource
 

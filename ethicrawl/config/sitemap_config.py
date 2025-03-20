@@ -36,7 +36,7 @@ class SitemapConfig(BaseConfig):
     @max_depth.setter
     def max_depth(self, value: int):
         if not isinstance(value, int):
-            raise TypeError("max_depth must be an integer")
+            raise TypeError(f"max_depth must be an integer, got {type(value).__name__}")
         if value < 1:
             raise ValueError("max_depth must be at least 1")
         self._max_depth = value
@@ -49,7 +49,9 @@ class SitemapConfig(BaseConfig):
     @follow_external.setter
     def follow_external(self, value: bool):
         if not isinstance(value, bool):
-            raise TypeError("follow_external must be a boolean")
+            raise TypeError(
+                f"follow_external must be a boolean, got {type(value).__name__}"
+            )
         self._follow_external = value
 
     @property
@@ -60,7 +62,9 @@ class SitemapConfig(BaseConfig):
     @validate_urls.setter
     def validate_urls(self, value: bool):
         if not isinstance(value, bool):
-            raise TypeError("validate_urls must be a boolean")
+            raise TypeError(
+                f"validate_urls must be a boolean, got {type(value).__name__}"
+            )
         self._validate_urls = value
 
     def to_dict(self) -> dict:

@@ -21,4 +21,5 @@ __all__ = [
     "Resource",  # Resource abstraction
     "ResourceList",  # Resources
     "Config",  # Global configuration
+    "Robto",
 ]

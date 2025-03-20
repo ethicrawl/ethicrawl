@@ -29,7 +29,7 @@ class SitemapEntry(Resource):
             return None
 
         if not isinstance(value, str):
-            raise TypeError("expected lastmod to be str")
+            raise TypeError(f"expected lastmod to be str, got {type(value).__name__}")
 
         # Strip whitespace
         value = value.strip()
