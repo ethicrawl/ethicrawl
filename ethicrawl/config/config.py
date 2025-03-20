@@ -1,8 +1,8 @@
-import threading
 import copy
 import json
+import threading
 from dataclasses import dataclass, field
-from typing import Dict, Any
+from typing import Any, Dict
 
 from .http_config import HttpConfig
 from .logger_config import LoggerConfig

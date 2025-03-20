@@ -1,7 +1,7 @@
-from urllib import parse
-from socket import gaierror, gethostbyname
-from typing import Dict, Any, Union
 from functools import wraps
+from socket import gaierror, gethostbyname
+from typing import Any, Dict, Union
+from urllib import parse
 
 
 def http_only(func):
@@ -109,7 +109,7 @@ class Url:
         # Domain resolution validation (for HTTP/HTTPS only)
         if validate and self._parsed.scheme in ["http", "https"]:
             try:
-                gethostbyname(self._parsed.hostname)
+                gethostbyname(str(self._parsed.hostname))
             except gaierror:
                 raise ValueError(f"Cannot resolve hostname: {self._parsed.hostname}")
 
@@ -135,7 +135,7 @@ class Url:
     @http_only
     def hostname(self) -> str:
         """Get just the hostname part."""
-        return self._parsed.hostname
+        return str(self._parsed.hostname)
 
     @property
     def path(self) -> str:

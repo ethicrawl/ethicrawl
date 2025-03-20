@@ -2,11 +2,12 @@ from functools import wraps
 from logging import Logger as logging_Logger
 from typing import Union
 
-from ethicrawl.context import Context
-from ethicrawl.robots import Robot, RobotFactory
+from ethicrawl.client import Response
 from ethicrawl.client.http import HttpClient, HttpResponse
-from ethicrawl.core import Headers, Resource, Url
 from ethicrawl.config import Config
+from ethicrawl.context import Context
+from ethicrawl.core import Headers, Resource, Url
+from ethicrawl.robots import Robot, RobotFactory
 from ethicrawl.sitemaps import SitemapParser
 
 
@@ -174,7 +175,7 @@ class Ethicrawl:
         self,
         url: Union[str, Url, Resource],
         headers: Union[Headers, dict] | None = None,
-    ) -> HttpResponse:
+    ) -> Union[Response | HttpResponse]:
         """
         Make an HTTP GET request to the specified URL, respecting robots.txt rules
         and domain whitelisting.

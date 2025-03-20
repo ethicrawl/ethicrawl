@@ -1,14 +1,14 @@
 from random import random
-from time import time, sleep
+from time import sleep, time
 
 from ethicrawl.client import Client
-from ethicrawl.core import Headers, Resource, Url
 from ethicrawl.context import Context
+from ethicrawl.core import Headers, Resource, Url
 
-from .requests_transport import RequestsTransport
 from .chrome_transport import ChromeTransport
 from .http_request import HttpRequest
 from .http_response import HttpResponse
+from .requests_transport import RequestsTransport
 
 
 class HttpClient(Client):
@@ -177,7 +177,10 @@ class HttpClient(Client):
         self.last_request_time = time()
 
     def get(
-        self, resource: Resource, timeout: int | None = None, headers: dict | None = None
+        self,
+        resource: Resource,
+        timeout: int | None = None,
+        headers: dict | None = None,
     ) -> HttpResponse:
         """
         Make a GET request to the specified URL with rate limiting.

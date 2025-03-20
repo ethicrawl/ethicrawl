@@ -1,5 +1,5 @@
 from re import compile
-from typing import List, TypeVar, Generic, Union, Pattern, Iterator
+from typing import Generic, Iterator, List, Pattern, TypeVar, Union
 
 from ethicrawl.core.resource import Resource
 
@@ -126,7 +126,7 @@ class ResourceList(Generic[T]):
         if isinstance(pattern, str):
             pattern = compile(pattern)
 
-        result = ResourceList()
+        result: ResourceList[T] = ResourceList()
         for item in self._items:
             if pattern.search(str(item.url)):
                 result.append(item)

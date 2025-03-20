@@ -7,9 +7,8 @@ from ethicrawl.core import Url
 
 from .const import URLSET
 from .index_entry import IndexEntry
-from .urlset_entry import UrlsetEntry
-
 from .sitemap_node import SitemapNode
+from .urlset_entry import UrlsetEntry
 
 
 class UrlsetNode(SitemapNode):

@@ -129,5 +129,3 @@ class UrlsetEntry(SitemapEntry):
             f"SitemapUrlsetEntry(url='{str(self.url)}', lastmod={repr(self.lastmod)}, "
             f"changefreq={repr(self.changefreq)}, priority={repr(self.priority)})"
         )
-
-    __hash__ = SitemapEntry.__hash__

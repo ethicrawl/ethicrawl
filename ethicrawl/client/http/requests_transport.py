@@ -1,8 +1,8 @@
 import requests
 
-from ethicrawl.context import Context
-from ethicrawl.config import Config
 from ethicrawl.client.transport import Transport
+from ethicrawl.config import Config
+from ethicrawl.context import Context
 
 from .http_request import HttpRequest
 from .http_response import HttpResponse

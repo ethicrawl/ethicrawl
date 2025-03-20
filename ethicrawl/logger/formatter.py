@@ -1,4 +1,5 @@
 import logging
+
 from colorama import Fore, Style, init
 
 # Initialize colorama (this handles Windows terminals properly)

@@ -5,7 +5,6 @@ from .resource import Resource
 from .resource_list import ResourceList
 from .url import Url
 
-
 __all__ = [
     "Headers",
     "Resource",

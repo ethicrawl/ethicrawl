@@ -12,5 +12,3 @@ class IndexEntry(SitemapEntry):
     def __repr__(self) -> str:
         """Detailed representation for debugging"""
         return f"SitemapIndexEntry(url='{str(self.url)}', lastmod={repr(self.lastmod)})"
-
-    __hash__ = SitemapEntry.__hash__

@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from json import dumps
-from typing import Dict, Any
+from typing import Any, Dict
 
 
 class BaseConfig(ABC):

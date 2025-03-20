@@ -1,6 +1,6 @@
 from dataclasses import dataclass
-from typing import Optional
 from datetime import datetime
+from typing import Optional
 
 from ethicrawl.core.resource import Resource
 
@@ -66,5 +66,3 @@ class SitemapEntry(Resource):
         if self.lastmod:
             return f"{str(self.url)} (last modified: {self.lastmod})"
         return f"{str(self.url)}"
-
-    __hash__ = Resource.__hash__

@@ -1,21 +1,20 @@
 from json import loads
 from time import sleep
-from typing import Dict, Tuple, Optional, Any
+from typing import Any, Dict, Optional, Tuple
 
-from lxml import html, etree
-
+from lxml import etree, html
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
+from ethicrawl.client import Transport
 from ethicrawl.config import Config
 from ethicrawl.context import Context
-from ethicrawl.client import Transport
 
-from .http_response import HttpResponse
 from .http_request import HttpRequest
+from .http_response import HttpResponse
 
 
 class ChromeTransport(Transport):

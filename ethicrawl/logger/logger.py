@@ -1,7 +1,8 @@
 # import logging
 
-from logging import getLogger, Formatter, FileHandler, StreamHandler, WARNING
+from logging import WARNING, FileHandler, Formatter
 from logging import Logger as LoggingLogger
+from logging import StreamHandler, getLogger
 from os import makedirs, path
 from re import sub
 from sys import stdout

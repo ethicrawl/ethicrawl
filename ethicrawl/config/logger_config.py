@@ -1,6 +1,6 @@
-from dataclasses import dataclass, field
-from typing import Optional, Dict, Union
 import logging
+from dataclasses import dataclass, field
+from typing import Dict, Optional, Union
 
 from .base_config import BaseConfig
 

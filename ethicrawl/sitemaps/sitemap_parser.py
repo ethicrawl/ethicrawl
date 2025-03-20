@@ -1,15 +1,15 @@
 from typing import List, Union
 
+from ethicrawl.config import Config
 from ethicrawl.context import Context
 from ethicrawl.core import Resource, ResourceList
-from ethicrawl.config import Config
 from ethicrawl.error import SitemapError
 
-from .const import URLSET, SITEMAPINDEX
+from .const import SITEMAPINDEX, URLSET
 from .index_entry import IndexEntry
 from .index_node import IndexNode
-from .urlset_node import UrlsetNode
 from .sitemap_node import SitemapNode
+from .urlset_node import UrlsetNode
 
 
 class SitemapParser:
