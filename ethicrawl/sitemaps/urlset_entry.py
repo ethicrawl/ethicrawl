@@ -21,9 +21,7 @@ class UrlsetEntry(SitemapEntry):
     ]
 
     @staticmethod
-    def _validate_priority(
-        value: str | float | int | None = None,
-    ) -> float | None:
+    def _validate_priority(value: str | float | int | None = None) -> float | None:
         """
         Validate and convert priority value.
 
@@ -58,10 +56,7 @@ class UrlsetEntry(SitemapEntry):
         return value
 
     @staticmethod
-    def _validate_changefreq(value: str | None) -> str | None:
-    def _validate_changefreq(
-        value: Optional[str],
-    ) -> Optional[str]:
+    def _validate_changefreq(value: str | None = None) -> str | None:
         """
         Validate and normalize change frequency value.
 
