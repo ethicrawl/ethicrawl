@@ -1,6 +1,5 @@
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Optional
 
 from ethicrawl.core.resource import Resource
 
@@ -9,10 +8,10 @@ from ethicrawl.core.resource import Resource
 class SitemapEntry(Resource):
     """Base class for entries in sitemaps"""
 
-    lastmod: Optional[str] = None
+    lastmod: str | None = None
 
     @staticmethod
-    def _validate_lastmod(value: Optional[str]) -> Optional[str]:
+    def _validate_lastmod(value: str | None) -> str | None:
         """
         Validate lastmod date format using standard datetime.
 

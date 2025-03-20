@@ -17,7 +17,6 @@ class Transport(ABC):
         Returns:
             HttpResponse: The response from the server
         """
-        pass
 
     def head(self, request) -> Response:
         """

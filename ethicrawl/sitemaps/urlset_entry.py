@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from typing import Optional, Union
 
 from .sitemap_entry import SitemapEntry
 
@@ -59,6 +58,7 @@ class UrlsetEntry(SitemapEntry):
         return value
 
     @staticmethod
+    def _validate_changefreq(value: str | None) -> str | None:
     def _validate_changefreq(
         value: Optional[str],
     ) -> Optional[str]:

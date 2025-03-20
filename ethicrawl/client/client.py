@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from ethicrawl.core import Headers, Resource
+from ethicrawl.core import Resource
 
 from .response import Response
 
@@ -19,7 +19,6 @@ class Client(ABC):
         resource: Resource,
     ) -> Response:
         """Fetch a resource."""
-        pass
 
 
 class NoneClient(Client):

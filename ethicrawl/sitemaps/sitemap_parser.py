@@ -1,4 +1,3 @@
-from typing import List, Union
 
 from ethicrawl.config import Config
 from ethicrawl.context import Context
@@ -19,7 +18,7 @@ class SitemapParser:
 
     def parse(
         self,
-        root: Union[IndexNode, ResourceList, List[Resource]] | None = None,
+        root: IndexNode | ResourceList | list[Resource] | None = None,
     ) -> ResourceList:
         if isinstance(root, IndexNode):
             document = root

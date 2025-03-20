@@ -1,6 +1,6 @@
 from json import loads
 from time import sleep
-from typing import Any, Dict, Optional, Tuple
+from typing import Any
 
 from lxml import etree, html
 from selenium import webdriver
@@ -233,8 +233,8 @@ class ChromeTransport(Transport):
         return content_str.encode("utf-8")
 
     def _extract_response_info_from_log_entry(
-        self, entry: Dict[str, Any]
-    ) -> Optional[Tuple[Dict[str, Any], Dict[str, Any]]]:
+        self, entry: dict[str, Any]
+    ) -> tuple[dict[str, Any], dict[str, Any]] | None:
         """Process a single performance log entry and extract response data."""
         try:
             log_data = loads(entry["message"])["message"]
@@ -249,8 +249,8 @@ class ChromeTransport(Transport):
             return None
 
     def _extract_response_info_from_response(
-        self, response: Dict[str, Any]
-    ) -> Tuple[Optional[int], Dict[str, str], Optional[str]]:
+        self, response: dict[str, Any]
+    ) -> tuple[int | None, dict[str, str], str | None]:
         """Extract status, headers and MIME type from a response."""
         try:
             status_code = response.get("status")
@@ -267,10 +267,10 @@ class ChromeTransport(Transport):
 
     def _get_response_information(
         self, requested_url: str, final_url: str
-    ) -> Tuple[Optional[int], Dict[str, str], Optional[str]]:
+    ) -> tuple[int | None, dict[str, str], str | None]:
         # Default values if we can't find anything
         default_status = 200  # Most browsers show content even without status
-        default_headers: Dict[str, str] = {}
+        default_headers: dict[str, str] = {}
         default_mime = "text/html"  # Assume HTML if not specified
         try:
             logs = self.driver.get_log("performance")
