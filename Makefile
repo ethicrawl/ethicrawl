@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 .PHONY: test test-fast lint check-types check-docs
-=======
-.PHONY: test test-fast
->>>>>>> main
 
 test:
 	coverage run -m pytest
@@ -10,7 +6,6 @@ test:
 	coverage html
 
 test-fast:
-<<<<<<< HEAD
 	coverage run -m pytest -x -v
 
 lint:
@@ -21,6 +16,3 @@ check-types:
 
 check-docs:
 	interrogate -v ethicrawl
-=======
-	coverage run -m pytest -x -v
->>>>>>> main
