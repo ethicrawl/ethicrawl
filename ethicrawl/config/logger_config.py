@@ -145,18 +145,22 @@ class LoggerConfig(BaseConfig):
             )
 
         # Handle string conversion
+        level_map = {
+            "DEBUG": logging.DEBUG,
+            "INFO": logging.INFO,
+            "WARNING": logging.WARNING,
+            "ERROR": logging.ERROR,
+            "CRITICAL": logging.CRITICAL,
+        }
+        valid_levels = ", ".join(level_map.keys())
         if isinstance(level, str):
-            level_map = {
-                "DEBUG": logging.DEBUG,
-                "INFO": logging.INFO,
-                "WARNING": logging.WARNING,
-                "ERROR": logging.ERROR,
-                "CRITICAL": logging.CRITICAL,
-            }
+
             if level.upper() in level_map:
                 level = level_map[level.upper()]
             else:
-                raise ValueError(f"Unknown log level: {level}")
+                raise ValueError(
+                    f"Invalid log level name: '{level}'. Valid levels are: {valid_levels}"
+                )
 
         # Validate integer value
         elif level not in [
@@ -166,7 +170,12 @@ class LoggerConfig(BaseConfig):
             logging.ERROR,
             logging.CRITICAL,
         ]:
-            raise ValueError(f"Invalid integer log level: {level}")
+            valid_values = ", ".join(
+                [f"{name} ({value})" for value, name in level_map.items()]
+            )
+            raise ValueError(
+                f"Invalid integer log level: {level}. Valid values are: {valid_values}"
+            )
 
         return level
 

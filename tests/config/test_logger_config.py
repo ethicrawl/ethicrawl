@@ -21,7 +21,10 @@ class TestLoggerConfig:
         for level in lc_strings:
             lc.level = level
 
-        with pytest.raises(ValueError, match="Unknown log level: foo"):
+        with pytest.raises(
+            ValueError,
+            match="Invalid log level name: 'foo'. Valid levels are: DEBUG, INFO, WARNING, ERROR, CRITICAL",
+        ):
             lc.level = "foo"
 
         with pytest.raises(ValueError, match="Invalid integer log level: 0"):

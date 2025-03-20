@@ -41,13 +41,13 @@ class Resource:
         Automatically converts string URLs to Url objects.
 
         Raises:
-            ValueError: If url is neither a string nor a Url object
+            TypeError: If url is neither a string nor a Url object
         """
         if isinstance(self.url, str):  # user provided a str; cast to Url
             self.url = Url(self.url)
         if not isinstance(self.url, Url):
-            raise ValueError(
-                f"Error creating resource, got type {type(self.url)} expected str or Url"
+            raise TypeError(
+                f"Error creating resource, got {type(self.url).__name__} expected str or Url"
             )
 
     def __hash__(self):

@@ -101,7 +101,7 @@ class HttpConfig(BaseConfig):
         if not isinstance(value, (int, float)):
             raise TypeError(f"jitter must be a number, got {type(value).__name__}")
         if value < 0 or value >= 1:
-            raise ValueError("jitter must be between 0 and 1")
+            raise ValueError("jitter must be between 0.0 and 1.0")
         self._jitter = float(value)
 
     @property

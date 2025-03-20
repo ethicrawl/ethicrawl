@@ -47,9 +47,9 @@ class TestHttpConfig:
         hc = HttpConfig()
         with pytest.raises(TypeError, match="jitter must be a number"):
             hc.jitter = "foo"
-        with pytest.raises(ValueError, match="jitter must be between 0 and 1"):
+        with pytest.raises(ValueError, match="jitter must be between 0.0 and 1.0"):
             hc.jitter = -0.1
-        with pytest.raises(ValueError, match="jitter must be between 0 and 1"):
+        with pytest.raises(ValueError, match="jitter must be between 0.0 and 1.0"):
             hc.jitter = 1.1
         hc.jitter = 0.5
         assert hc.jitter == 0.5

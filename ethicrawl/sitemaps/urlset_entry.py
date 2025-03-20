@@ -43,7 +43,9 @@ class UrlsetEntry(SitemapEntry):
             try:
                 value = float(value)
             except ValueError:
-                raise ValueError(f"Priority must be a number, got '{value}'")
+                raise TypeError(
+                    f"Priority must be a number, got '{type(value).__name__}'"
+                )
 
         # Always convert to float (handles integers)
         value = float(value)
