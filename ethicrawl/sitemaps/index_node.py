@@ -16,15 +16,14 @@ class IndexNode(SitemapNode):
         if document is not None:
             _localname = etree.QName(self._root.tag).localname
             if _localname != SITEMAPINDEX:
-                raise ValueError(
-                    f"Expected a root {SITEMAPINDEX} got {_localname}")
+                raise ValueError(f"Expected a root {SITEMAPINDEX} got {_localname}")
             self._entries = self._parse_index_sitemap(document)
 
     def _parse_index_sitemap(self, document) -> List[IndexEntry]:
         """Parse sitemap references from a sitemap index."""
         sitemaps = []
 
-        nsmap = {None: self.SITEMAP_NS}
+        nsmap = {"": self.SITEMAP_NS}
         _root = etree.fromstring(document.encode("utf-8"), parser=self._parser)
 
         # Find all sitemap elements
@@ -68,7 +67,6 @@ class IndexNode(SitemapNode):
         # Validate all items are of correct type
         for entry in entries:
             if not isinstance(entry, IndexEntry):
-                raise TypeError(
-                    f"Expected IndexEntry, got {type(entry).__name__}")
+                raise TypeError(f"Expected IndexEntry, got {type(entry).__name__}")
 
         self._entries = entries

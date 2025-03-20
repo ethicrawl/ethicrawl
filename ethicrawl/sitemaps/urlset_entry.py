@@ -8,8 +8,8 @@ from .sitemap_entry import SitemapEntry
 class UrlsetEntry(SitemapEntry):
     """Represents an entry in a sitemap urlset file"""
 
-    changefreq: Optional[str] = None
-    priority: Optional[float] = None
+    changefreq: str | None = None
+    priority: float | str | None = None
 
     _valid_change_freqs = [
         "always",
@@ -22,7 +22,9 @@ class UrlsetEntry(SitemapEntry):
     ]
 
     @staticmethod
-    def _validate_priority(value: Union[str, float, int, None]) -> Optional[float]:
+    def _validate_priority(
+        value: str | float | int | None = None,
+    ) -> float | None:
         """
         Validate and convert priority value.
 
@@ -52,13 +54,14 @@ class UrlsetEntry(SitemapEntry):
 
         # Validate range
         if not (0.0 <= value <= 1.0):
-            raise ValueError(
-                f"Priority must be between 0.0 and 1.0, got {value}")
+            raise ValueError(f"Priority must be between 0.0 and 1.0, got {value}")
 
         return value
 
     @staticmethod
-    def _validate_changefreq(value: Optional[str]) -> Optional[str]:
+    def _validate_changefreq(
+        value: Optional[str],
+    ) -> Optional[str]:
         """
         Validate and normalize change frequency value.
 
@@ -76,8 +79,7 @@ class UrlsetEntry(SitemapEntry):
             return None
 
         if not isinstance(value, str):
-            raise TypeError(
-                f"changefreq must be a string, got {type(value).__name__}")
+            raise TypeError(f"changefreq must be a string, got {type(value).__name__}")
 
         # Normalize: strip and lowercase
         normalized = value.strip().lower()

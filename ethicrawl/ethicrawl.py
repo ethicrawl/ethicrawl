@@ -135,8 +135,7 @@ class Ethicrawl:
 
         robots_handler = RobotFactory.robot(context)
 
-        self._whitelist[domain] = {
-            "context": context, "robots_handler": robots_handler}
+        self._whitelist[domain] = {"context": context, "robots_handler": robots_handler}
         self.logger.info(f"Whitelisted domain: {domain}")
         return True
 
@@ -239,4 +238,7 @@ class Ethicrawl:
             raise e
 
         # Use the domain's context to get its client
-        return context.client.get(resource, headers=headers)
+        if isinstance(context.client, HttpClient):
+            return context.client.get(resource, headers=headers)
+        else:
+            return context.client.get(resource)

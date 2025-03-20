@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import Union
 
-from protego import Protego
+from protego import Protego  # type: ignore  # No type stubs available for this package
 
 from ethicrawl.context import Context
 from ethicrawl.core import Resource, ResourceList, Url
@@ -28,12 +28,10 @@ class Robot(Resource):
             self._logger.info(f"Server returned {status_code} - allowing all")
         elif status_code == 200:  # there's a robots.txt to use
             self._parser = Protego.parse(response.text)
-            self._logger.info(
-                f"Server returned {status_code} - using robots.txt")
+            self._logger.info(f"Server returned {status_code} - using robots.txt")
         else:
             self._parser = Protego.parse("User-agent: *\nDisallow: /")
-            self._logger.warning(
-                f"Server returned {status_code} - denying all")
+            self._logger.warning(f"Server returned {status_code} - denying all")
 
     @property
     def context(self) -> Context:

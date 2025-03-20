@@ -17,7 +17,6 @@ class Client(ABC):
     def get(
         self,
         resource: Resource,
-        headers: Headers,
     ) -> Response:
         """Fetch a resource."""
         pass

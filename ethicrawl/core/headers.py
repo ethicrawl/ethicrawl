@@ -6,10 +6,9 @@ class Headers(dict):
     representations. Values of None remove the header.
     """
 
-    def __setitem__(self, key, value):
+    def __setitem__(self, key: str, value: str | None) -> None:
         if not isinstance(key, str):
-            raise TypeError(
-                f"Header keys must be strings, got {type(key).__name__}")
+            raise TypeError(f"Header keys must be strings, got {type(key).__name__}")
 
         if value is None:
             self.pop(key, None)  # Remove the key if value is None
@@ -19,13 +18,19 @@ class Headers(dict):
                 value = str(value)
             super().__setitem__(key, value)
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, headers=None, **kwargs):
         super().__init__()  # Start with empty dict
 
-        # Handle dictionary initialization
-        if args and isinstance(args[0], dict):
-            for k, v in args[0].items():
-                self[k] = v  # Use our __setitem__ for validation
+        # Handle dictionary or dict-like initialization
+        if headers is not None:
+            try:
+                # This will work for both dict and dict-like objects with items()
+                for k, v in headers.items():
+                    self[k] = v  # Use our __setitem__ for validation
+            except AttributeError:
+                # If it doesn't have .items() method, try converting to dict first
+                for k, v in dict(headers).items():
+                    self[k] = v
 
         # Handle keyword arguments
         for k, v in kwargs.items():
