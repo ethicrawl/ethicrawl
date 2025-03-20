@@ -19,7 +19,8 @@ class HttpConfig(BaseConfig):
     _jitter: float = field(default=0.2, repr=False)
     _user_agent: str = field(default="Ethicrawl/1.0", repr=False)
     _headers: Headers[str, str] = field(default_factory=Headers, repr=False)
-    _proxies: HttpProxyConfig = field(default_factory=HttpProxyConfig, repr=False)
+    _proxies: HttpProxyConfig = field(
+        default_factory=HttpProxyConfig, repr=False)
 
     def __post_init__(self):
         # Validate initial values by calling setters
@@ -39,7 +40,8 @@ class HttpConfig(BaseConfig):
     @timeout.setter
     def timeout(self, value: float):
         if not isinstance(value, (int, float)):
-            raise TypeError(f"timeout must be a number, got {type(value).__name__}")
+            raise TypeError(
+                f"timeout must be a number, got {type(value).__name__}")
         if value <= 0:
             raise ValueError("timeout must be positive")
         if value > 300:
@@ -71,7 +73,8 @@ class HttpConfig(BaseConfig):
     @retry_delay.setter
     def retry_delay(self, value: float):
         if not isinstance(value, (int, float)):
-            raise TypeError(f"retry_delay must be a number, got {type(value).__name__}")
+            raise TypeError(
+                f"retry_delay must be a number, got {type(value).__name__}")
         if value < 0:
             raise ValueError("retry_delay cannot be negative")
         if value > 60:
@@ -86,7 +89,8 @@ class HttpConfig(BaseConfig):
     @rate_limit.setter
     def rate_limit(self, value: Optional[float]):
         if not isinstance(value, (int, float)):
-            raise TypeError(f"rate_limit must be a number, got {type(value).__name__}")
+            raise TypeError(
+                f"rate_limit must be a number, got {type(value).__name__}")
         if value <= 0:
             raise ValueError("rate_limit must be positive")
         self._rate_limit = float(value)
@@ -99,7 +103,8 @@ class HttpConfig(BaseConfig):
     @jitter.setter
     def jitter(self, value: float):
         if not isinstance(value, (int, float)):
-            raise TypeError(f"jitter must be a number, got {type(value).__name__}")
+            raise TypeError(
+                f"jitter must be a number, got {type(value).__name__}")
         if value < 0 or value >= 1:
             raise ValueError("jitter must be between 0.0 and 1.0")
         self._jitter = float(value)
@@ -112,7 +117,8 @@ class HttpConfig(BaseConfig):
     @user_agent.setter
     def user_agent(self, value: str):
         if not isinstance(value, str):
-            raise TypeError(f"user_agent must be a string, got {type(value).__name__}")
+            raise TypeError(
+                f"user_agent must be a string, got {type(value).__name__}")
         if not value.strip():
             raise ValueError("user_agent cannot be empty")
         self._user_agent = value

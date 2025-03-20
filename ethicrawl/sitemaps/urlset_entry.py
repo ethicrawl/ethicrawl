@@ -52,7 +52,8 @@ class UrlsetEntry(SitemapEntry):
 
         # Validate range
         if not (0.0 <= value <= 1.0):
-            raise ValueError(f"Priority must be between 0.0 and 1.0, got {value}")
+            raise ValueError(
+                f"Priority must be between 0.0 and 1.0, got {value}")
 
         return value
 
@@ -75,7 +76,8 @@ class UrlsetEntry(SitemapEntry):
             return None
 
         if not isinstance(value, str):
-            raise TypeError(f"changefreq must be a string, got {type(value).__name__}")
+            raise TypeError(
+                f"changefreq must be a string, got {type(value).__name__}")
 
         # Normalize: strip and lowercase
         normalized = value.strip().lower()

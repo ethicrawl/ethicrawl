@@ -62,7 +62,8 @@ class HttpClient(Client):
                 (headless, wait_time, chrome_driver_path)
         """
         if not isinstance(context, Context):
-            context = Context(Resource(Url("http://www.example.com/")))  # dummy url
+            context = Context(
+                Resource(Url("http://www.example.com/")))  # dummy url
         self._context = context
         self._logger = self._context.logger("client")
 
@@ -82,7 +83,8 @@ class HttpClient(Client):
         # Rate limiting parameters
         self.min_interval = 1.0 / rate_limit if rate_limit > 0 else 0
         self.jitter = jitter
-        self.last_request_time = None  # Initialize last_request_time to None to indicate no previous requests
+        # Initialize last_request_time to None to indicate no previous requests
+        self.last_request_time = None
 
     @property
     def user_agent(self) -> str:
@@ -200,7 +202,8 @@ class HttpClient(Client):
 
         # First validate that resource is the correct type
         if not isinstance(resource, Resource):
-            raise TypeError(f"Expected Resource object, got {type(resource).__name__}")
+            raise TypeError(
+                f"Expected Resource object, got {type(resource).__name__}")
 
         try:
             # Apply rate limiting before making request

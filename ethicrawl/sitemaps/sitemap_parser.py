@@ -46,8 +46,10 @@ class SitemapParser:
         elif node.type == SITEMAPINDEX:
             return IndexNode(self._context, document)
         else:
-            self._logger.warning(f"Unknown sitemap type with root element: {node.type}")
-            raise SitemapError(f"Unknown sitemap type with root element: {node.type}")
+            self._logger.warning(
+                f"Unknown sitemap type with root element: {node.type}")
+            raise SitemapError(
+                f"Unknown sitemap type with root element: {node.type}")
 
     def _traverse(self, node: IndexNode, depth: int = 0, visited=None) -> ResourceList:
         # Collection of all found URLs
@@ -102,7 +104,8 @@ class SitemapParser:
             )
             return self._traverse(document, depth + 1, visited)
         elif document.type == URLSET:
-            self._logger.debug(f"Found urlset with {len(document.entries)} URLs")
+            self._logger.debug(
+                f"Found urlset with {len(document.entries)} URLs")
             return document.entries
 
         # Empty list for any unhandled cases

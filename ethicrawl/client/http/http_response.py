@@ -25,7 +25,8 @@ class HttpResponse(Response):
 
         # Validate status code
         if not isinstance(self.status_code, int):
-            raise TypeError(f"Expected int, got {type(self.status_code).__name__}")
+            raise TypeError(
+                f"Expected int, got {type(self.status_code).__name__}")
         if self.status_code < 100 or self.status_code > 599:
             raise ValueError(
                 f"Invalid HTTP status code: {self.status_code}. Must be between 100 and 599."
@@ -54,7 +55,8 @@ class HttpResponse(Response):
         """
         status_line = f"HTTP {self.status_code}"
         url_line = f"URL: {self.url}"
-        request_url_line = f"Request URL: {self.request.url}"  # Only if they differ
+        # Only if they differ
+        request_url_line = f"Request URL: {self.request.url}"
         url_display = (
             f"{url_line}\n{request_url_line}"
             if str(self.url) != str(self.request.url)

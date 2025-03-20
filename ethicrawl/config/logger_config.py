@@ -88,7 +88,8 @@ class LoggerConfig(BaseConfig):
     @use_colors.setter
     def use_colors(self, value: bool):
         if not isinstance(value, bool):
-            raise TypeError(f"use_colors must be a boolean, got {type(value).__name__}")
+            raise TypeError(
+                f"use_colors must be a boolean, got {type(value).__name__}")
         self._use_colors = value
 
     @property
@@ -99,7 +100,8 @@ class LoggerConfig(BaseConfig):
     @format.setter
     def format(self, value: str):
         if not isinstance(value, str):
-            raise TypeError(f"format must be a string, got {type(value).__name__}")
+            raise TypeError(
+                f"format must be a string, got {type(value).__name__}")
         if not value:
             raise ValueError("format string cannot be empty")
         self._format = value
@@ -188,5 +190,6 @@ class LoggerConfig(BaseConfig):
             "file_path": self._file_path,
             "use_colors": self._use_colors,
             "format": self._format,
-            "component_levels": self._component_levels.copy(),  # Return a copy to prevent direct mutation
+            # Return a copy to prevent direct mutation
+            "component_levels": self._component_levels.copy(),
         }

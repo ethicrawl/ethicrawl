@@ -23,7 +23,8 @@ class Transport(ABC):
         """
         Make a HEAD request (optional implementation). TODO: have a look at this and other verbs if they make sense.
         """
-        raise NotImplementedError("This transport does not support HEAD requests")
+        raise NotImplementedError(
+            "This transport does not support HEAD requests")
 
     @property
     def user_agent(self) -> str:

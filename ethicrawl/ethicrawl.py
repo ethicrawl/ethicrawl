@@ -135,7 +135,8 @@ class Ethicrawl:
 
         robots_handler = RobotFactory.robot(context)
 
-        self._whitelist[domain] = {"context": context, "robots_handler": robots_handler}
+        self._whitelist[domain] = {
+            "context": context, "robots_handler": robots_handler}
         self.logger.info(f"Whitelisted domain: {domain}")
         return True
 

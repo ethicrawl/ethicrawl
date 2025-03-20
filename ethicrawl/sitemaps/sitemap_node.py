@@ -36,7 +36,8 @@ class SitemapNode:
             document
         )  # TODO: might want to move this to the HttpClient
         try:
-            _element = etree.fromstring(document.encode("utf-8"), parser=self._parser)
+            _element = etree.fromstring(
+                document.encode("utf-8"), parser=self._parser)
             if _element.nsmap[None] != SitemapNode.SITEMAP_NS:
                 self._logger.error(
                     f"Required default namespace not found: {SitemapNode.SITEMAP_NS}"

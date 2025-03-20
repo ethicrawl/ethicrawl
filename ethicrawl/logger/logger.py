@@ -78,7 +78,8 @@ class Logger:
 
         # Apply component-specific log levels
         for component, level in log_config.component_levels.items():
-            component_logger = getLogger(f"{__name__.split('.')[0]}.*.{component}")
+            component_logger = getLogger(
+                f"{__name__.split('.')[0]}.*.{component}")
             component_logger.setLevel(level)
 
         Logger._initialized = True

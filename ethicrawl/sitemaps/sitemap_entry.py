@@ -29,7 +29,8 @@ class SitemapEntry(Resource):
             return None
 
         if not isinstance(value, str):
-            raise TypeError(f"expected lastmod to be str, got {type(value).__name__}")
+            raise TypeError(
+                f"expected lastmod to be str, got {type(value).__name__}")
 
         # Strip whitespace
         value = value.strip()
@@ -41,8 +42,10 @@ class SitemapEntry(Resource):
             "%Y-%m-%dT%H:%M:%SZ",  # YYYY-MM-DDThh:mm:ssZ
             "%Y-%m-%dT%H:%M:%S%z",  # YYYY-MM-DDThh:mm:ss+hh:mm (no colon)
             "%Y-%m-%dT%H:%M:%S%:z",  # YYYY-MM-DDThh:mm:ss+hh:mm (with colon)
-            "%Y-%m-%dT%H:%M:%S.%fZ",  # YYYY-MM-DDThh:mm:ss.ssssssZ (with microseconds)
-            "%Y-%m-%dT%H:%M:%S.%f",  # YYYY-MM-DDThh:mm:ss.ssssss (with microseconds, no Z)
+            # YYYY-MM-DDThh:mm:ss.ssssssZ (with microseconds)
+            "%Y-%m-%dT%H:%M:%S.%fZ",
+            # YYYY-MM-DDThh:mm:ss.ssssss (with microseconds, no Z)
+            "%Y-%m-%dT%H:%M:%S.%f",
         ]
 
         # Try each format

@@ -84,7 +84,8 @@ class ChromeTransport(Transport):
             # Navigate to a simple page to avoid external requests
             self.driver.get("about:blank")
             # Execute JavaScript to get the user agent
-            self._user_agent = self.driver.execute_script("return navigator.userAgent;")
+            self._user_agent = self.driver.execute_script(
+                "return navigator.userAgent;")
             return self._user_agent
         except Exception as e:
             # Return a default value if we can't determine it yet
@@ -144,7 +145,8 @@ class ChromeTransport(Transport):
                 )
 
             # Update user agent information
-            self._user_agent = self.driver.execute_script("return navigator.userAgent;")
+            self._user_agent = self.driver.execute_script(
+                "return navigator.userAgent;")
 
             # Wait for page to load
             try:
@@ -152,7 +154,8 @@ class ChromeTransport(Transport):
                     EC.presence_of_element_located((By.TAG_NAME, "body"))
                 )
             except Exception as e:  # pragma: no cover
-                self._logger.debug(f"Page load wait timed out (continuing anyway): {e}")
+                self._logger.debug(
+                    f"Page load wait timed out (continuing anyway): {e}")
 
             # Additional wait for dynamic content if specified
             if self._wait_time:
@@ -215,7 +218,8 @@ class ChromeTransport(Transport):
                 root = html.fromstring(content_str, parser=parser)
 
                 # Extract content from the XML viewer div
-                xml_div = root.xpath('//div[@id="webkit-xml-viewer-source-xml"]')
+                xml_div = root.xpath(
+                    '//div[@id="webkit-xml-viewer-source-xml"]')
                 if xml_div and len(xml_div) > 0:
                     # Get the XML content as string - TODO: should we do a custom parser here? see implementation in sitemaps
                     xml_content = "".join(
@@ -308,6 +312,7 @@ class ChromeTransport(Transport):
         except Exception as e:  # pragma: no cover
             # Use the logger if it exists, otherwise we can't log during cleanup
             if hasattr(self, "_logger"):
-                self._logger.debug(f"Error closing browser during cleanup: {e}")
+                self._logger.debug(
+                    f"Error closing browser during cleanup: {e}")
             else:
                 raise e

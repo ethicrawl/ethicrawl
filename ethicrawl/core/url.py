@@ -111,7 +111,8 @@ class Url:
             try:
                 gethostbyname(str(self._parsed.hostname))
             except gaierror:
-                raise ValueError(f"Cannot resolve hostname: {self._parsed.hostname}")
+                raise ValueError(
+                    f"Cannot resolve hostname: {self._parsed.hostname}")
 
     @property
     def base(self) -> str:
@@ -299,5 +300,6 @@ class Url:
             if self.scheme == "file" and (
                 len(args) == 1 and isinstance(args[0], dict) or len(args) == 2
             ):
-                raise ValueError("Query parameters are not supported for file:// URLs")
+                raise ValueError(
+                    "Query parameters are not supported for file:// URLs")
             raise ValueError("Invalid arguments for extend()")

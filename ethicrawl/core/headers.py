@@ -8,7 +8,8 @@ class Headers(dict):
 
     def __setitem__(self, key, value):
         if not isinstance(key, str):
-            raise TypeError(f"Header keys must be strings, got {type(key).__name__}")
+            raise TypeError(
+                f"Header keys must be strings, got {type(key).__name__}")
 
         if value is None:
             self.pop(key, None)  # Remove the key if value is None
