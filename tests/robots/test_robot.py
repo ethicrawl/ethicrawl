@@ -1,10 +1,17 @@
 import pytest
 from unittest.mock import Mock
 
+<<<<<<< HEAD
 from ethicrawl.robots import Robot, RobotFactory
 from ethicrawl.robots.robotochan import RobotoChan
 from ethicrawl.context import Context
 from ethicrawl.error import RobotDisallowedError
+=======
+from ethicrawl.robots import Robot, RobotFactory, RobotDisallowedError
+
+from ethicrawl.robots.robotochan import RobotoChan
+from ethicrawl.context import Context
+>>>>>>> main
 from ethicrawl.core import Url, Resource
 from ethicrawl.client import Client
 

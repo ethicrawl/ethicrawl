@@ -5,8 +5,12 @@ from logging import Logger as logging_Logger
 from unittest.mock import Mock
 
 from ethicrawl import Ethicrawl, Resource, Config, Url, HttpClient
+<<<<<<< HEAD
 from ethicrawl.robots import Robot
 from ethicrawl.error import RobotDisallowedError
+=======
+from ethicrawl.robots import Robot, RobotDisallowedError
+>>>>>>> main
 from ethicrawl.sitemaps import SitemapParser
 
 
@@ -65,12 +69,20 @@ class TestEthicrawl:
     def test_robot(self):
         crawler = Ethicrawl()
         crawler.bind("https://example.com")
+<<<<<<< HEAD
         assert isinstance(crawler.robots, Robot)
+=======
+        assert isinstance(crawler.robot, Robot)
+>>>>>>> main
 
     def test_sitemap(self):
         crawler = Ethicrawl()
         crawler.bind("https://example.com")
+<<<<<<< HEAD
         assert isinstance(crawler.sitemaps, SitemapParser)
+=======
+        assert isinstance(crawler.sitemap, SitemapParser)
+>>>>>>> main
 
     def test_invalid_get(self):
         crawler = Ethicrawl()
@@ -110,10 +122,18 @@ class TestEthicrawl:
             assert "<html>" in result.text
 
         # Test the robots.txt was properly fetched
+<<<<<<< HEAD
         assert crawler.robots is not None
 
     def test_robot_disallowed(self, test_server):
         """Test that robots.txt disallowed paths are enforced"""
+=======
+        assert crawler.robot is not None
+
+    def test_robot_disallowed(self, test_server):
+        """Test that robots.txt disallowed paths are enforced"""
+        from ethicrawl.robots.robot_error import RobotDisallowedError
+>>>>>>> main
 
         crawler = Ethicrawl()
         base_url = test_server
@@ -126,7 +146,11 @@ class TestEthicrawl:
         crawler.bind(base_url, client=client)
 
         # Force robot initialization and print rules for debugging
+<<<<<<< HEAD
         robot = crawler.robots
+=======
+        robot = crawler.robot
+>>>>>>> main
         print(f"User agent: {client.user_agent}")
 
         # Allowed path for BadBot should work
@@ -191,6 +215,10 @@ class TestEthicrawl:
 
     def test_headers_and_user_agent(self, test_server):
         """Test that request headers and user-agent handling works properly"""
+<<<<<<< HEAD
+=======
+        from ethicrawl.robots.robot_error import RobotDisallowedError
+>>>>>>> main
         from ethicrawl.core.headers import Headers
 
         crawler = Ethicrawl()

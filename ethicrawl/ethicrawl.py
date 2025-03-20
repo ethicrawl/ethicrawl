@@ -58,7 +58,11 @@ class Ethicrawl:
     def __init__(self):
         pass
 
+<<<<<<< HEAD
     def bind(self, url: Union[str, Url, Resource], client: HttpClient | None = None):
+=======
+    def bind(self, url: Union[str, Url, Resource], client: HttpClient = None):
+>>>>>>> main
         """
         Bind the crawler to a specific website domain.
 
@@ -156,7 +160,11 @@ class Ethicrawl:
 
     @property
     @ensure_bound
+<<<<<<< HEAD
     def robots(self) -> Robot:
+=======
+    def robot(self) -> Robot:
+>>>>>>> main
         # lazy load robots
         if not hasattr(self, "_robots"):
             self._robot = RobotFactory.robot(self._context)
@@ -164,14 +172,22 @@ class Ethicrawl:
 
     @property
     @ensure_bound
+<<<<<<< HEAD
     def sitemaps(self) -> SitemapParser:
+=======
+    def sitemap(self) -> SitemapParser:
+>>>>>>> main
         if not hasattr(self, "_sitemap"):
             self._sitemap = SitemapParser(self._context)
         return self._sitemap
 
     @ensure_bound
     def get(
+<<<<<<< HEAD
         self, url: Union[str, Url, Resource], headers: Union[Headers, dict] | None = None
+=======
+        self, url: Union[str, Url, Resource], headers: Union[Headers, dict] = None
+>>>>>>> main
     ) -> HttpResponse:
         """
         Make an HTTP GET request to the specified URL, respecting robots.txt rules
@@ -205,7 +221,7 @@ class Ethicrawl:
         if target_domain == self._context.resource.url.netloc:
             # This is the main domain
             context = self._context
-            robots_handler = self.robots
+            robots_handler = self.robot
         elif hasattr(self, "_whitelist") and target_domain in self._whitelist:
             # This is a whitelisted domain
             context = self._whitelist[target_domain]["context"]
