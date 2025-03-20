@@ -1,12 +1,12 @@
 from functools import wraps
 from logging import Logger as logging_Logger
-from typing import Union
 
-from ethicrawl.context import Context
-from ethicrawl.robots import Robot, RobotFactory
+from ethicrawl.client import Response
 from ethicrawl.client.http import HttpClient, HttpResponse
-from ethicrawl.core import Headers, Resource, Url
 from ethicrawl.config import Config
+from ethicrawl.context import Context
+from ethicrawl.core import Headers, Resource, Url
+from ethicrawl.robots import Robot, RobotFactory
 from ethicrawl.sitemaps import SitemapParser
 
 
@@ -58,7 +58,7 @@ class Ethicrawl:
     def __init__(self):
         pass
 
-    def bind(self, url: Union[str, Url, Resource], client: HttpClient = None):
+    def bind(self, url: str | Url | Resource, client: HttpClient | None = None):
         """
         Bind the crawler to a specific website domain.
 
@@ -105,7 +105,7 @@ class Ethicrawl:
         return not hasattr(self, "_context")
 
     @ensure_bound
-    def whitelist(self, url: Union[str, Url], client: HttpClient = None) -> bool:
+    def whitelist(self, url: str | Url, client: HttpClient | None = None) -> bool:
         """
         Whitelist an additional domain for crawling.
 
@@ -156,7 +156,7 @@ class Ethicrawl:
 
     @property
     @ensure_bound
-    def robot(self) -> Robot:
+    def robots(self) -> Robot:
         # lazy load robots
         if not hasattr(self, "_robots"):
             self._robot = RobotFactory.robot(self._context)
@@ -164,15 +164,17 @@ class Ethicrawl:
 
     @property
     @ensure_bound
-    def sitemap(self) -> SitemapParser:
+    def sitemaps(self) -> SitemapParser:
         if not hasattr(self, "_sitemap"):
             self._sitemap = SitemapParser(self._context)
         return self._sitemap
 
     @ensure_bound
     def get(
-        self, url: Union[str, Url, Resource], headers: Union[Headers, dict] = None
-    ) -> HttpResponse:
+        self,
+        url: str | Url | Resource,
+        headers: Headers | dict | None = None,
+    ) -> Response | HttpResponse:
         """
         Make an HTTP GET request to the specified URL, respecting robots.txt rules
         and domain whitelisting.
@@ -205,7 +207,7 @@ class Ethicrawl:
         if target_domain == self._context.resource.url.netloc:
             # This is the main domain
             context = self._context
-            robots_handler = self.robot
+            robots_handler = self.robots
         elif hasattr(self, "_whitelist") and target_domain in self._whitelist:
             # This is a whitelisted domain
             context = self._whitelist[target_domain]["context"]
@@ -235,4 +237,7 @@ class Ethicrawl:
             raise e
 
         # Use the domain's context to get its client
-        return context.client.get(resource, headers=headers)
+        if isinstance(context.client, HttpClient):
+            return context.client.get(resource, headers=headers)
+        else:
+            return context.client.get(resource)

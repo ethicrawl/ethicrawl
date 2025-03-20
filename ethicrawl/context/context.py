@@ -1,6 +1,4 @@
-# FIXME: remove comment, imports sorted
-
-from typing import Any, Optional
+from typing import Any
 
 from ethicrawl.client import Client, NoneClient
 from ethicrawl.core import Resource
@@ -8,7 +6,7 @@ from ethicrawl.logger import Logger
 
 
 class Context:
-    def __init__(self, resource: Resource, client: Optional[Client] = None) -> None:
+    def __init__(self, resource: Resource, client: Client | None = None) -> None:
         self._resource = self._validate_resource(resource)
         self._client = self._validate_client(client)
         self._logger = Logger.logger(self._resource, "core")
@@ -44,7 +42,7 @@ class Context:
         return self._client
 
     @client.setter
-    def client(self, client: Optional[Client]):
+    def client(self, client: Client | None):
         self._client = self._validate_client(client)
 
     def logger(self, component: str):

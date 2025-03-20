@@ -1,23 +1,20 @@
-# FIXME: remove comment, imports sorted
-
 from json import loads
 from time import sleep
-from typing import Dict, Tuple, Optional, Any, Union, List
+from typing import Any
 
-from lxml import html, etree
-
+from lxml import etree, html
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
+from ethicrawl.client import Transport
 from ethicrawl.config import Config
 from ethicrawl.context import Context
-from ethicrawl.client import Transport
 
-from .http_response import HttpResponse
 from .http_request import HttpRequest
+from .http_response import HttpResponse
 
 
 class ChromeTransport(Transport):
@@ -71,7 +68,7 @@ class ChromeTransport(Transport):
         self.driver = webdriver.Chrome(options=options)
 
     @property
-    def user_agent(self):
+    def user_agent(self) -> str:
         """
         Get the User-Agent string used by Chrome.
 
@@ -94,7 +91,7 @@ class ChromeTransport(Transport):
             return "Mozilla/5.0 (Unknown) Chrome/Unknown Safari/Unknown"
 
     @user_agent.setter
-    def user_agent(self, agent):
+    def user_agent(self, agent: str):
         """
         Set the User-Agent string for Chrome.
         This is a passive operation - it only records what was passed,
@@ -219,22 +216,25 @@ class ChromeTransport(Transport):
 
                 # Extract content from the XML viewer div
                 xml_div = root.xpath('//div[@id="webkit-xml-viewer-source-xml"]')
-                if xml_div and len(xml_div) > 0:
-                    # Get the XML content as string - TODO: should we do a custom parser here? see implementation in sitemaps
+
+                if isinstance(xml_div, list) and xml_div:
+                    first_div = xml_div[0]
+
                     xml_content = "".join(
-                        etree.tostring(child, encoding="unicode")
-                        for child in xml_div[0].getchildren()
+                        etree.tostring(child, encoding="unicode")  # type: ignore
+                        for child in list(first_div)
                     )
                     return xml_content.encode("utf-8")
+
         except Exception as e:  # pragma: no cover
-            print(f"Warning: Failed to extract XML from browser response: {e}")
+            self._logger.warning(f"Failed to extract XML from browser response: {e}")
 
         # Return original content encoded as bytes if extraction failed
         return content_str.encode("utf-8")
 
     def _extract_response_info_from_log_entry(
-        self, entry: Dict[str, Any]
-    ) -> Optional[Tuple[Dict[str, Any], Dict[str, Any]]]:
+        self, entry: dict[str, Any]
+    ) -> tuple[dict[str, Any], dict[str, Any]] | None:
         """Process a single performance log entry and extract response data."""
         try:
             log_data = loads(entry["message"])["message"]
@@ -249,8 +249,8 @@ class ChromeTransport(Transport):
             return None
 
     def _extract_response_info_from_response(
-        self, response: Dict[str, Any]
-    ) -> Tuple[Optional[int], Dict[str, str], Optional[str]]:
+        self, response: dict[str, Any]
+    ) -> tuple[int | None, dict[str, str], str | None]:
         """Extract status, headers and MIME type from a response."""
         try:
             status_code = response.get("status")
@@ -267,10 +267,10 @@ class ChromeTransport(Transport):
 
     def _get_response_information(
         self, requested_url: str, final_url: str
-    ) -> Tuple[Optional[int], Dict[str, str], Optional[str]]:
+    ) -> tuple[int | None, dict[str, str], str | None]:
         # Default values if we can't find anything
         default_status = 200  # Most browsers show content even without status
-        default_headers: Dict[str, str] = {}
+        default_headers: dict[str, str] = {}
         default_mime = "text/html"  # Assume HTML if not specified
         try:
             logs = self.driver.get_log("performance")

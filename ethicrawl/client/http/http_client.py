@@ -1,16 +1,14 @@
-# FIXME: remove comment, imports sorted
-
 from random import random
-from time import time, sleep
+from time import sleep, time
 
 from ethicrawl.client import Client
-from ethicrawl.core import Headers, Resource, Url
 from ethicrawl.context import Context
+from ethicrawl.core import Headers, Resource, Url
 
-from .requests_transport import RequestsTransport
 from .chrome_transport import ChromeTransport
 from .http_request import HttpRequest
 from .http_response import HttpResponse
+from .requests_transport import RequestsTransport
 
 
 class HttpClient(Client):
@@ -64,7 +62,8 @@ class HttpClient(Client):
                 (headless, wait_time, chrome_driver_path)
         """
         if not isinstance(context, Context):
-            context = Context(Resource(Url("http://www.example.com/")))  # dummy url
+            context = Context(
+                Resource(Url("http://www.example.com/")))  # dummy url
         self._context = context
         self._logger = self._context.logger("client")
 
@@ -84,7 +83,8 @@ class HttpClient(Client):
         # Rate limiting parameters
         self.min_interval = 1.0 / rate_limit if rate_limit > 0 else 0
         self.jitter = jitter
-        self.last_request_time = None  # Initialize last_request_time to None to indicate no previous requests
+        # Initialize last_request_time to None to indicate no previous requests
+        self.last_request_time = None
 
     @property
     def user_agent(self) -> str:
@@ -120,7 +120,7 @@ class HttpClient(Client):
         timeout=30,
         rate_limit=0.5,
         jitter=0.3,
-    ):
+    ) -> "HttpClient":
         """
         Create a new client that uses a Chrome-powered transport.
 
@@ -179,7 +179,10 @@ class HttpClient(Client):
         self.last_request_time = time()
 
     def get(
-        self, resource: Resource, timeout: int = None, headers: dict = None
+        self,
+        resource: Resource,
+        timeout: int | None = None,
+        headers: dict | None = None,
     ) -> HttpResponse:
         """
         Make a GET request to the specified URL with rate limiting.
@@ -199,7 +202,8 @@ class HttpClient(Client):
 
         # First validate that resource is the correct type
         if not isinstance(resource, Resource):
-            raise TypeError(f"Expected Resource object, got {type(resource).__name__}")
+            raise TypeError(
+                f"Expected Resource object, got {type(resource).__name__}")
 
         try:
             # Apply rate limiting before making request

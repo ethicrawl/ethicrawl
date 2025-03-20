@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+
 from ethicrawl.client.response import Response
 
 
@@ -16,13 +17,13 @@ class Transport(ABC):
         Returns:
             HttpResponse: The response from the server
         """
-        pass
 
     def head(self, request) -> Response:
         """
         Make a HEAD request (optional implementation). TODO: have a look at this and other verbs if they make sense.
         """
-        raise NotImplementedError("This transport does not support HEAD requests")
+        raise NotImplementedError(
+            "This transport does not support HEAD requests")
 
     @property
     def user_agent(self) -> str:

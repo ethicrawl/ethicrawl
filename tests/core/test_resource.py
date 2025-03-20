@@ -15,10 +15,8 @@ class TestResource:
 
     def test_resource_initialisation_with_junk(self):
         with pytest.raises(
-            ValueError,
-            match=re.escape(
-                f"Error creating resource, got type {type(1)} expected str or Url"
-            ),
+            TypeError,
+            match=re.escape(f"Error creating resource, got int expected str or Url"),
         ):
             Resource(1).url
 

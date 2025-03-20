@@ -1,8 +1,7 @@
-# FIXME: remove comment, imports sorted
-from urllib import parse
-from socket import gaierror, gethostbyname
-from typing import Dict, Any, Union
 from functools import wraps
+from socket import gaierror, gethostbyname
+from typing import Any, Union
+from urllib import parse
 
 
 def http_only(func):
@@ -110,9 +109,10 @@ class Url:
         # Domain resolution validation (for HTTP/HTTPS only)
         if validate and self._parsed.scheme in ["http", "https"]:
             try:
-                gethostbyname(self._parsed.hostname)
+                gethostbyname(str(self._parsed.hostname))
             except gaierror:
-                raise ValueError(f"Cannot resolve hostname: {self._parsed.hostname}")
+                raise ValueError(
+                    f"Cannot resolve hostname: {self._parsed.hostname}")
 
     @property
     def base(self) -> str:
@@ -136,7 +136,7 @@ class Url:
     @http_only
     def hostname(self) -> str:
         """Get just the hostname part."""
-        return self._parsed.hostname
+        return str(self._parsed.hostname)
 
     @property
     def path(self) -> str:
@@ -157,7 +157,7 @@ class Url:
 
     @property
     @http_only
-    def query_params(self) -> Dict[str, Any]:
+    def query_params(self) -> dict[str, Any]:
         """
         Get parsed query parameters as a dictionary.
 
@@ -195,7 +195,7 @@ class Url:
         return hash(str(self))
 
     @http_only
-    def _extend_with_params(self, params: Dict[str, Any]) -> "Url":
+    def _extend_with_params(self, params: dict[str, Any]) -> "Url":
         """Add query parameters to URL."""
         current_params = self.query_params
         current_params.update(params)
@@ -300,5 +300,6 @@ class Url:
             if self.scheme == "file" and (
                 len(args) == 1 and isinstance(args[0], dict) or len(args) == 2
             ):
-                raise ValueError("Query parameters are not supported for file:// URLs")
+                raise ValueError(
+                    "Query parameters are not supported for file:// URLs")
             raise ValueError("Invalid arguments for extend()")

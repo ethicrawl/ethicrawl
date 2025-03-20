@@ -1,6 +1,5 @@
-from dataclasses import dataclass, field
-from typing import Optional, Dict, Union
 import logging
+from dataclasses import dataclass, field
 
 from .base_config import BaseConfig
 
@@ -13,9 +12,9 @@ class LoggerConfig(BaseConfig):
     _level: int = field(default=logging.INFO, repr=False)
     _console_enabled: bool = field(default=True, repr=False)
     _file_enabled: bool = field(default=False, repr=False)
-    _file_path: Optional[str] = field(default=None, repr=False)
+    _file_path: str | None = field(default=None, repr=False)
     _use_colors: bool = field(default=True, repr=False)
-    _component_levels: Dict[str, int] = field(default_factory=dict, repr=False)
+    _component_levels: dict[str, int] = field(default_factory=dict, repr=False)
     _format: str = field(
         default="%(asctime)s - %(name)s - %(levelname)s - %(message)s", repr=False
     )
@@ -38,7 +37,7 @@ class LoggerConfig(BaseConfig):
         return self._level
 
     @level.setter
-    def level(self, value: Union[int, str]):
+    def level(self, value: int | str):
         self._level = self._validate_log_level(value)
 
     @property
@@ -68,12 +67,12 @@ class LoggerConfig(BaseConfig):
         self._file_enabled = value
 
     @property
-    def file_path(self) -> Optional[str]:
+    def file_path(self) -> str | None:
         """Path to log file (None = no file logging)"""
         return self._file_path
 
     @file_path.setter
-    def file_path(self, value: Optional[str]):
+    def file_path(self, value: str | None):
         if value is not None and not isinstance(value, str):
             raise TypeError(
                 f"file_path must be a string or None, got {type(value).__name__}"
@@ -88,7 +87,8 @@ class LoggerConfig(BaseConfig):
     @use_colors.setter
     def use_colors(self, value: bool):
         if not isinstance(value, bool):
-            raise TypeError(f"use_colors must be a boolean, got {type(value).__name__}")
+            raise TypeError(
+                f"use_colors must be a boolean, got {type(value).__name__}")
         self._use_colors = value
 
     @property
@@ -99,17 +99,18 @@ class LoggerConfig(BaseConfig):
     @format.setter
     def format(self, value: str):
         if not isinstance(value, str):
-            raise TypeError(f"format must be a string, got {type(value).__name__}")
+            raise TypeError(
+                f"format must be a string, got {type(value).__name__}")
         if not value:
             raise ValueError("format string cannot be empty")
         self._format = value
 
     @property
-    def component_levels(self) -> Dict[str, int]:
+    def component_levels(self) -> dict[str, int]:
         """Special log levels for specific components"""
         return self._component_levels.copy()  # Return a copy to prevent direct mutation
 
-    def set_component_level(self, component_name: str, level: Union[int, str]) -> None:
+    def set_component_level(self, component_name: str, level: int | str) -> None:
         """
         Set a specific log level for a component
 
@@ -124,7 +125,7 @@ class LoggerConfig(BaseConfig):
         validated_level = self._validate_log_level(level)
         self._component_levels[component_name] = validated_level
 
-    def _validate_log_level(self, level: Union[int, str]) -> int:
+    def _validate_log_level(self, level: int | str) -> int:
         """
         Validate and convert a log level value.
 
@@ -145,18 +146,22 @@ class LoggerConfig(BaseConfig):
             )
 
         # Handle string conversion
+        level_map = {
+            "DEBUG": logging.DEBUG,
+            "INFO": logging.INFO,
+            "WARNING": logging.WARNING,
+            "ERROR": logging.ERROR,
+            "CRITICAL": logging.CRITICAL,
+        }
+        valid_levels = ", ".join(level_map.keys())
         if isinstance(level, str):
-            level_map = {
-                "DEBUG": logging.DEBUG,
-                "INFO": logging.INFO,
-                "WARNING": logging.WARNING,
-                "ERROR": logging.ERROR,
-                "CRITICAL": logging.CRITICAL,
-            }
+
             if level.upper() in level_map:
                 level = level_map[level.upper()]
             else:
-                raise ValueError(f"Unknown log level: {level}")
+                raise ValueError(
+                    f"Invalid log level name: '{level}'. Valid levels are: {valid_levels}"
+                )
 
         # Validate integer value
         elif level not in [
@@ -166,7 +171,12 @@ class LoggerConfig(BaseConfig):
             logging.ERROR,
             logging.CRITICAL,
         ]:
-            raise ValueError(f"Invalid integer log level: {level}")
+            valid_values = ", ".join(
+                [f"{name} ({value})" for value, name in level_map.items()]
+            )
+            raise ValueError(
+                f"Invalid integer log level: {level}. Valid values are: {valid_values}"
+            )
 
         return level
 
@@ -179,5 +189,6 @@ class LoggerConfig(BaseConfig):
             "file_path": self._file_path,
             "use_colors": self._use_colors,
             "format": self._format,
-            "component_levels": self._component_levels.copy(),  # Return a copy to prevent direct mutation
+            # Return a copy to prevent direct mutation
+            "component_levels": self._component_levels.copy(),
         }

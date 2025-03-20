@@ -1,18 +1,17 @@
 from re import sub
-from typing import List
 
 from lxml import etree
 
 from ethicrawl.context import Context
+from ethicrawl.error import SitemapError
 
 from .const import SITEMAPINDEX, URLSET
-from .sitemap_error import SitemapError
 
 
 class SitemapNode:
     SITEMAP_NS = "http://www.sitemaps.org/schemas/sitemap/0.9"
 
-    def __init__(self, context: Context, document: str = None) -> None:
+    def __init__(self, context: Context, document: str | None = None) -> None:
         self._context = context
         self._logger = self._context.logger("sitemap.node")
         self._entries = []
@@ -50,7 +49,7 @@ class SitemapNode:
             raise SitemapError(f"Invalid XML syntax: {str(e)}")
 
     @property
-    def entries(self) -> List:
+    def entries(self) -> list:
         return self._entries
 
     @property

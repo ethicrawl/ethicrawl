@@ -1,7 +1,5 @@
-# FIXME: remove comment, imports sorted
-
 from re import compile
-from typing import List, TypeVar, Generic, Union, Pattern, Iterator
+from typing import Generic, Iterator, Pattern, TypeVar
 
 from ethicrawl.core.resource import Resource
 
@@ -39,14 +37,14 @@ class ResourceList(Generic[T]):
         _items (List[Resource]): Internal list of resources
     """
 
-    def __init__(self, items: List[T] = None):
+    def __init__(self, items: list[T] | None = None):
         """
         Initialize with optional list of Resource objects.
 
         Args:
             items (List[Resource], optional): Initial resources to add
         """
-        self._items: List[T] = []
+        self._items: list[T] = []
         if items and isinstance(items, list):
             self.extend(items)
         elif items:
@@ -55,7 +53,7 @@ class ResourceList(Generic[T]):
     def __iter__(self) -> Iterator[T]:
         return iter(self._items)
 
-    def __getitem__(self, index) -> Union[T, List[T]]:
+    def __getitem__(self, index) -> T | list[T]:
         return self._items[index]
 
     def __len__(self) -> int:
@@ -85,7 +83,7 @@ class ResourceList(Generic[T]):
         self._items.append(item)
         return self
 
-    def extend(self, items: List[T]) -> "ResourceList[T]":
+    def extend(self, items: list[T]) -> "ResourceList[T]":
         """
         Add multiple Resources to the list with type checking.
 
@@ -102,7 +100,7 @@ class ResourceList(Generic[T]):
             self.append(item)
         return self
 
-    def filter(self, pattern: Union[str, Pattern]) -> "ResourceList[T]":
+    def filter(self, pattern: str | Pattern) -> "ResourceList[T]":
         """
         Filter resources by regex pattern matching against their URLs.
 
@@ -128,13 +126,13 @@ class ResourceList(Generic[T]):
         if isinstance(pattern, str):
             pattern = compile(pattern)
 
-        result = ResourceList()
+        result: ResourceList[T] = ResourceList()
         for item in self._items:
             if pattern.search(str(item.url)):
                 result.append(item)
         return result
 
-    def to_list(self) -> List[T]:
+    def to_list(self) -> list[T]:
         """
         Convert to a plain Python list.
 

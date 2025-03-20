@@ -1,15 +1,14 @@
-from typing import List, Union
 
+from ethicrawl.config import Config
 from ethicrawl.context import Context
 from ethicrawl.core import Resource, ResourceList
-from ethicrawl.config import Config
+from ethicrawl.error import SitemapError
 
-from .const import URLSET, SITEMAPINDEX
+from .const import SITEMAPINDEX, URLSET
 from .index_entry import IndexEntry
 from .index_node import IndexNode
-from .urlset_node import UrlsetNode
 from .sitemap_node import SitemapNode
-from .sitemap_error import SitemapError
+from .urlset_node import UrlsetNode
 
 
 class SitemapParser:
@@ -19,7 +18,7 @@ class SitemapParser:
 
     def parse(
         self,
-        root: Union[IndexNode, ResourceList, List[Resource]] = None,
+        root: IndexNode | ResourceList | list[Resource] | None = None,
     ) -> ResourceList:
         if isinstance(root, IndexNode):
             document = root
@@ -38,7 +37,7 @@ class SitemapParser:
 
         return self._traverse(document, 0)
 
-    def _get(self, resource: Resource) -> SitemapNode:
+    def _get(self, resource: Resource) -> IndexNode | SitemapNode:
         document = self._context.client.get(resource).text
         node = SitemapNode(self._context, document)
         if node.type == URLSET:
@@ -49,8 +48,12 @@ class SitemapParser:
             self._logger.warning(f"Unknown sitemap type with root element: {node.type}")
             raise SitemapError(f"Unknown sitemap type with root element: {node.type}")
 
-    def _traverse(self, node: IndexNode, depth: int = 0, visited=None) -> ResourceList:
+    def _traverse(
+        self, node: IndexNode | SitemapNode, depth: int = 0, visited=None
+    ) -> ResourceList:
         # Collection of all found URLs
+        if not isinstance(node, IndexNode):  # we shouldn't be here
+            return
         max_depth = Config().sitemap.max_depth
         all_urls = ResourceList([])
 

@@ -1,4 +1,3 @@
-from typing import List
 
 from lxml import etree
 
@@ -11,7 +10,7 @@ from .sitemap_node import SitemapNode
 
 
 class IndexNode(SitemapNode):
-    def __init__(self, context: Context, document: str = None) -> None:
+    def __init__(self, context: Context, document: str | None = None) -> None:
         super().__init__(context, document)
         if document is not None:
             _localname = etree.QName(self._root.tag).localname
@@ -19,11 +18,11 @@ class IndexNode(SitemapNode):
                 raise ValueError(f"Expected a root {SITEMAPINDEX} got {_localname}")
             self._entries = self._parse_index_sitemap(document)
 
-    def _parse_index_sitemap(self, document) -> List[IndexEntry]:
+    def _parse_index_sitemap(self, document) -> list[IndexEntry]:
         """Parse sitemap references from a sitemap index."""
         sitemaps = []
 
-        nsmap = {None: self.SITEMAP_NS}
+        nsmap = {"": self.SITEMAP_NS}
         _root = etree.fromstring(document.encode("utf-8"), parser=self._parser)
 
         # Find all sitemap elements
@@ -49,12 +48,12 @@ class IndexNode(SitemapNode):
         return sitemaps
 
     @property
-    def entries(self) -> List[IndexEntry]:
+    def entries(self) -> list[IndexEntry]:
         """Get the sitemaps in this index."""
         return self._entries
 
     @entries.setter
-    def entries(self, entries: List[IndexEntry]) -> None:
+    def entries(self, entries: list[IndexEntry]) -> None:
         """
         Set the sitemaps in this index.
 

@@ -37,6 +37,9 @@ coverage/
 htmlcov/
 coverage.txt
 
+# reports
+reports/
+
 # Security Scans
 bandit-results.json
 pip-audit-results.json

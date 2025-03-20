@@ -1,8 +1,8 @@
-import threading
 import copy
 import json
+import threading
 from dataclasses import dataclass, field
-from typing import Dict, Any
+from typing import Any
 
 from .http_config import HttpConfig
 from .logger_config import LoggerConfig
@@ -12,7 +12,7 @@ from .sitemap_config import SitemapConfig
 class SingletonMeta(type):
     """Metaclass to implement the Singleton pattern."""
 
-    _instances: Dict = {}
+    _instances: dict = {}
     _lock = threading.RLock()  # Reentrant lock for thread safety
 
     def __call__(cls, *args, **kwargs):
@@ -82,7 +82,7 @@ class Config(metaclass=SingletonMeta):
         with self._lock:
             return copy.deepcopy(self)
 
-    def update(self, config_dict: Dict[str, Any]) -> None:
+    def update(self, config_dict: dict[str, Any]) -> None:
         """
         Update configuration from a dictionary.
 

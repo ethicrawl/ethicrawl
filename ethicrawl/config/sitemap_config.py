@@ -36,7 +36,8 @@ class SitemapConfig(BaseConfig):
     @max_depth.setter
     def max_depth(self, value: int):
         if not isinstance(value, int):
-            raise TypeError(f"max_depth must be an integer, got {type(value).__name__}")
+            raise TypeError(
+                f"max_depth must be an integer, got {type(value).__name__}")
         if value < 1:
             raise ValueError("max_depth must be at least 1")
         self._max_depth = value

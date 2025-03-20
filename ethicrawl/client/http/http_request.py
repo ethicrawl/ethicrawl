@@ -1,7 +1,4 @@
-# FIXME: remove comment, imports sorted
-
 from dataclasses import dataclass, field
-from typing import Dict
 
 from ethicrawl.config import Config, HttpConfig
 from ethicrawl.core import Headers, Resource

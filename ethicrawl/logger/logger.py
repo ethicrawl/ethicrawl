@@ -1,11 +1,11 @@
 # import logging
 
-from logging import getLogger, Formatter, FileHandler, StreamHandler, WARNING
+from logging import WARNING, FileHandler, Formatter
 from logging import Logger as LoggingLogger
+from logging import StreamHandler, getLogger
 from os import makedirs, path
 from re import sub
 from sys import stdout
-from typing import Optional
 
 from ethicrawl.config import Config
 from ethicrawl.core import Resource
@@ -77,7 +77,8 @@ class Logger:
 
         # Apply component-specific log levels
         for component, level in log_config.component_levels.items():
-            component_logger = getLogger(f"{__name__.split('.')[0]}.*.{component}")
+            component_logger = getLogger(
+                f"{__name__.split('.')[0]}.*.{component}")
             component_logger.setLevel(level)
 
         Logger._initialized = True
@@ -96,7 +97,7 @@ class Logger:
         return name or "unnamed"
 
     @staticmethod
-    def logger(resource: Resource, component: Optional[str] = None) -> LoggingLogger:
+    def logger(resource: Resource, component: str | None = None) -> LoggingLogger:
         """
         Get a logger for the specified URL, optionally with a component name.
 

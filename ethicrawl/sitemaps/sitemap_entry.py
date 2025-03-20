@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from typing import Optional
 from datetime import datetime
 
 from ethicrawl.core.resource import Resource
@@ -9,10 +8,10 @@ from ethicrawl.core.resource import Resource
 class SitemapEntry(Resource):
     """Base class for entries in sitemaps"""
 
-    lastmod: Optional[str] = None
+    lastmod: str | None = None
 
     @staticmethod
-    def _validate_lastmod(value: Optional[str]) -> Optional[str]:
+    def _validate_lastmod(value: str | None) -> str | None:
         """
         Validate lastmod date format using standard datetime.
 
@@ -29,7 +28,8 @@ class SitemapEntry(Resource):
             return None
 
         if not isinstance(value, str):
-            raise TypeError(f"expected lastmod to be str, got {type(value).__name__}")
+            raise TypeError(
+                f"expected lastmod to be str, got {type(value).__name__}")
 
         # Strip whitespace
         value = value.strip()
@@ -41,8 +41,10 @@ class SitemapEntry(Resource):
             "%Y-%m-%dT%H:%M:%SZ",  # YYYY-MM-DDThh:mm:ssZ
             "%Y-%m-%dT%H:%M:%S%z",  # YYYY-MM-DDThh:mm:ss+hh:mm (no colon)
             "%Y-%m-%dT%H:%M:%S%:z",  # YYYY-MM-DDThh:mm:ss+hh:mm (with colon)
-            "%Y-%m-%dT%H:%M:%S.%fZ",  # YYYY-MM-DDThh:mm:ss.ssssssZ (with microseconds)
-            "%Y-%m-%dT%H:%M:%S.%f",  # YYYY-MM-DDThh:mm:ss.ssssss (with microseconds, no Z)
+            # YYYY-MM-DDThh:mm:ss.ssssssZ (with microseconds)
+            "%Y-%m-%dT%H:%M:%S.%fZ",
+            # YYYY-MM-DDThh:mm:ss.ssssss (with microseconds, no Z)
+            "%Y-%m-%dT%H:%M:%S.%f",
         ]
 
         # Try each format
@@ -66,5 +68,3 @@ class SitemapEntry(Resource):
         if self.lastmod:
             return f"{str(self.url)} (last modified: {self.lastmod})"
         return f"{str(self.url)}"
-
-    __hash__ = Resource.__hash__

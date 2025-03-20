@@ -86,7 +86,10 @@ class TestUrlsetEntry:
         ]
 
         for priority in invalid_strings:
-            with pytest.raises(ValueError, match=r"Priority must be a number"):
+            with pytest.raises(
+                TypeError,
+                match=f"Priority must be a number, got 'str'",
+            ):
                 UrlsetEntry(url, priority=priority)
 
     def test_none_priority_handling(self):

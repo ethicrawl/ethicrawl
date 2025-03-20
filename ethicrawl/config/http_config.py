@@ -1,5 +1,4 @@
 from dataclasses import dataclass, field
-from typing import Optional, Union
 
 from ethicrawl.core import Headers
 
@@ -15,10 +14,10 @@ class HttpConfig(BaseConfig):
     _timeout: float = field(default=30.0, repr=False)
     _max_retries: int = field(default=3, repr=False)
     _retry_delay: float = field(default=1.0, repr=False)
-    _rate_limit: Optional[float] = field(default=0.5, repr=False)
+    _rate_limit: float | None = field(default=0.5, repr=False)
     _jitter: float = field(default=0.2, repr=False)
     _user_agent: str = field(default="Ethicrawl/1.0", repr=False)
-    _headers: Headers[str, str] = field(default_factory=Headers, repr=False)
+    _headers: Headers = field(default_factory=Headers, repr=False)
     _proxies: HttpProxyConfig = field(default_factory=HttpProxyConfig, repr=False)
 
     def __post_init__(self):
@@ -79,12 +78,12 @@ class HttpConfig(BaseConfig):
         self._retry_delay = float(value)
 
     @property
-    def rate_limit(self) -> Optional[float]:
+    def rate_limit(self) -> float | None:
         """Requests per second (None=unlimited)"""
         return self._rate_limit
 
     @rate_limit.setter
-    def rate_limit(self, value: Optional[float]):
+    def rate_limit(self, value: float | None):
         if not isinstance(value, (int, float)):
             raise TypeError(f"rate_limit must be a number, got {type(value).__name__}")
         if value <= 0:
@@ -101,7 +100,7 @@ class HttpConfig(BaseConfig):
         if not isinstance(value, (int, float)):
             raise TypeError(f"jitter must be a number, got {type(value).__name__}")
         if value < 0 or value >= 1:
-            raise ValueError("jitter must be between 0 and 1")
+            raise ValueError("jitter must be between 0.0 and 1.0")
         self._jitter = float(value)
 
     @property
@@ -123,10 +122,10 @@ class HttpConfig(BaseConfig):
         return self._headers
 
     @headers.setter
-    def headers(self, value: Union[Headers, dict]):
+    def headers(self, value: Headers | dict):
         """Set request headers."""
         if isinstance(value, Headers):
-            self._headers = value.copy()
+            self._headers = value
         elif isinstance(value, dict):
             # Let the Headers constructor handle validation
             self._headers = Headers(value)
@@ -141,7 +140,7 @@ class HttpConfig(BaseConfig):
         return self._proxies
 
     @proxies.setter
-    def proxies(self, value: Union[HttpProxyConfig, dict]):
+    def proxies(self, value: HttpProxyConfig | dict):
         """Set proxy configuration."""
         if isinstance(value, HttpProxyConfig):
             self._proxies = value

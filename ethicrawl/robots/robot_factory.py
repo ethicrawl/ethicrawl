@@ -14,5 +14,6 @@ class RobotFactory:
     @staticmethod
     def robot(context: Context) -> Robot:
         if not isinstance(context, Context):
-            raise TypeError(f"Expected Context object, got {type(context).__name__}")
+            raise TypeError(
+                f"Expected Context object, got {type(context).__name__}")
         return Robot(RobotFactory.robotify(context.resource.url), context)

@@ -1,13 +1,11 @@
 from dataclasses import dataclass
-from typing import Union
 
-from protego import Protego
+from protego import Protego  # type: ignore  # No type stubs available for this package
 
 from ethicrawl.context import Context
 from ethicrawl.core import Resource, ResourceList, Url
+from ethicrawl.error import RobotDisallowedError
 from ethicrawl.sitemaps import IndexEntry
-
-from .robot_error import RobotDisallowedError
 
 
 @dataclass
@@ -39,7 +37,7 @@ class Robot(Resource):
         return self._context
 
     def can_fetch(
-        self, resource: Union[Resource, Url, str], user_agent: str = None
+        self, resource: Resource | Url | str, user_agent: str | None = None
     ) -> bool:
         """
         Check if a URL can be fetched according to robots.txt rules.
