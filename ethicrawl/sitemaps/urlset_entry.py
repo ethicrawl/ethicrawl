@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from typing import Optional, Union
 
 from .sitemap_entry import SitemapEntry
 
@@ -8,8 +7,8 @@ from .sitemap_entry import SitemapEntry
 class UrlsetEntry(SitemapEntry):
     """Represents an entry in a sitemap urlset file"""
 
-    changefreq: Optional[str] = None
-    priority: Optional[float] = None
+    changefreq: str | None = None
+    priority: float | None = None
 
     _valid_change_freqs = [
         "always",
@@ -22,7 +21,7 @@ class UrlsetEntry(SitemapEntry):
     ]
 
     @staticmethod
-    def _validate_priority(value: Union[str, float, int, None]) -> Optional[float]:
+    def _validate_priority(value: str | float | int | None) -> float | None:
         """
         Validate and convert priority value.
 
@@ -58,7 +57,7 @@ class UrlsetEntry(SitemapEntry):
         return value
 
     @staticmethod
-    def _validate_changefreq(value: Optional[str]) -> Optional[str]:
+    def _validate_changefreq(value: str | None) -> str | None:
         """
         Validate and normalize change frequency value.
 

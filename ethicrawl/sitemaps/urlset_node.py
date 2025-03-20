@@ -1,4 +1,3 @@
-from typing import List
 
 from lxml import etree
 
@@ -20,7 +19,7 @@ class UrlsetNode(SitemapNode):
                 raise ValueError(f"Expected a root {URLSET} got {_localname}")
             self._entries = self._parse_urlset_sitemap(document)
 
-    def _parse_urlset_sitemap(self, document) -> List[IndexEntry]:
+    def _parse_urlset_sitemap(self, document) -> list[IndexEntry]:
         """Parse sitemap references from a sitemap index."""
         urlset = []
 

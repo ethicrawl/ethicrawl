@@ -1,6 +1,6 @@
 from functools import wraps
 from socket import gaierror, gethostbyname
-from typing import Any, Dict, Union
+from typing import Any, Union
 from urllib import parse
 
 
@@ -157,7 +157,7 @@ class Url:
 
     @property
     @http_only
-    def query_params(self) -> Dict[str, Any]:
+    def query_params(self) -> dict[str, Any]:
         """
         Get parsed query parameters as a dictionary.
 
@@ -195,7 +195,7 @@ class Url:
         return hash(str(self))
 
     @http_only
-    def _extend_with_params(self, params: Dict[str, Any]) -> "Url":
+    def _extend_with_params(self, params: dict[str, Any]) -> "Url":
         """Add query parameters to URL."""
         current_params = self.query_params
         current_params.update(params)

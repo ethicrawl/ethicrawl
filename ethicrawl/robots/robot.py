@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from typing import Union
 
 from protego import Protego
 
@@ -40,7 +39,7 @@ class Robot(Resource):
         return self._context
 
     def can_fetch(
-        self, resource: Union[Resource, Url, str], user_agent: str | None = None
+        self, resource: Resource | Url | str, user_agent: str | None = None
     ) -> bool:
         """
         Check if a URL can be fetched according to robots.txt rules.

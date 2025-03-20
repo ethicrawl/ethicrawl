@@ -1,5 +1,4 @@
 from re import sub
-from typing import List
 
 from lxml import etree
 
@@ -51,7 +50,7 @@ class SitemapNode:
             raise SitemapError(f"Invalid XML syntax: {str(e)}")
 
     @property
-    def entries(self) -> List:
+    def entries(self) -> list:
         return self._entries
 
     @property

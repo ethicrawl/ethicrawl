@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from json import dumps
-from typing import Any, Dict
+from typing import Any
 
 
 class BaseConfig(ABC):
@@ -12,7 +12,7 @@ class BaseConfig(ABC):
     """
 
     @abstractmethod
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """
         Convert configuration to a dictionary representation.
 
@@ -20,7 +20,6 @@ class BaseConfig(ABC):
             Dict[str, Any]: Dictionary representation of the configuration.
                 The dictionary should be JSON-serializable.
         """
-        pass
 
     def __repr__(self) -> str:
         """Default string representation showing config values."""

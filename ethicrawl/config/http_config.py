@@ -1,5 +1,4 @@
 from dataclasses import dataclass, field
-from typing import Optional, Union
 
 from ethicrawl.core import Headers
 
@@ -15,7 +14,7 @@ class HttpConfig(BaseConfig):
     _timeout: float = field(default=30.0, repr=False)
     _max_retries: int = field(default=3, repr=False)
     _retry_delay: float = field(default=1.0, repr=False)
-    _rate_limit: Optional[float] = field(default=0.5, repr=False)
+    _rate_limit: float | None = field(default=0.5, repr=False)
     _jitter: float = field(default=0.2, repr=False)
     _user_agent: str = field(default="Ethicrawl/1.0", repr=False)
     _headers: Headers[str, str] = field(default_factory=Headers, repr=False)
@@ -82,12 +81,12 @@ class HttpConfig(BaseConfig):
         self._retry_delay = float(value)
 
     @property
-    def rate_limit(self) -> Optional[float]:
+    def rate_limit(self) -> float | None:
         """Requests per second (None=unlimited)"""
         return self._rate_limit
 
     @rate_limit.setter
-    def rate_limit(self, value: Optional[float]):
+    def rate_limit(self, value: float | None):
         if not isinstance(value, (int, float)):
             raise TypeError(
                 f"rate_limit must be a number, got {type(value).__name__}")
@@ -129,7 +128,7 @@ class HttpConfig(BaseConfig):
         return self._headers
 
     @headers.setter
-    def headers(self, value: Union[Headers, dict]):
+    def headers(self, value: Headers | dict):
         """Set request headers."""
         if isinstance(value, Headers):
             self._headers = value.copy()
@@ -147,7 +146,7 @@ class HttpConfig(BaseConfig):
         return self._proxies
 
     @proxies.setter
-    def proxies(self, value: Union[HttpProxyConfig, dict]):
+    def proxies(self, value: HttpProxyConfig | dict):
         """Set proxy configuration."""
         if isinstance(value, HttpProxyConfig):
             self._proxies = value

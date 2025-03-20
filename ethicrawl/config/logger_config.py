@@ -1,6 +1,5 @@
 import logging
 from dataclasses import dataclass, field
-from typing import Dict, Optional, Union
 
 from .base_config import BaseConfig
 
@@ -13,9 +12,9 @@ class LoggerConfig(BaseConfig):
     _level: int = field(default=logging.INFO, repr=False)
     _console_enabled: bool = field(default=True, repr=False)
     _file_enabled: bool = field(default=False, repr=False)
-    _file_path: Optional[str] = field(default=None, repr=False)
+    _file_path: str | None = field(default=None, repr=False)
     _use_colors: bool = field(default=True, repr=False)
-    _component_levels: Dict[str, int] = field(default_factory=dict, repr=False)
+    _component_levels: dict[str, int] = field(default_factory=dict, repr=False)
     _format: str = field(
         default="%(asctime)s - %(name)s - %(levelname)s - %(message)s", repr=False
     )
@@ -38,7 +37,7 @@ class LoggerConfig(BaseConfig):
         return self._level
 
     @level.setter
-    def level(self, value: Union[int, str]):
+    def level(self, value: int | str):
         self._level = self._validate_log_level(value)
 
     @property
@@ -68,12 +67,12 @@ class LoggerConfig(BaseConfig):
         self._file_enabled = value
 
     @property
-    def file_path(self) -> Optional[str]:
+    def file_path(self) -> str | None:
         """Path to log file (None = no file logging)"""
         return self._file_path
 
     @file_path.setter
-    def file_path(self, value: Optional[str]):
+    def file_path(self, value: str | None):
         if value is not None and not isinstance(value, str):
             raise TypeError(
                 f"file_path must be a string or None, got {type(value).__name__}"
@@ -107,11 +106,11 @@ class LoggerConfig(BaseConfig):
         self._format = value
 
     @property
-    def component_levels(self) -> Dict[str, int]:
+    def component_levels(self) -> dict[str, int]:
         """Special log levels for specific components"""
         return self._component_levels.copy()  # Return a copy to prevent direct mutation
 
-    def set_component_level(self, component_name: str, level: Union[int, str]) -> None:
+    def set_component_level(self, component_name: str, level: int | str) -> None:
         """
         Set a specific log level for a component
 
@@ -126,7 +125,7 @@ class LoggerConfig(BaseConfig):
         validated_level = self._validate_log_level(level)
         self._component_levels[component_name] = validated_level
 
-    def _validate_log_level(self, level: Union[int, str]) -> int:
+    def _validate_log_level(self, level: int | str) -> int:
         """
         Validate and convert a log level value.
 

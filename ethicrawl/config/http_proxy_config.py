@@ -1,5 +1,4 @@
 from dataclasses import dataclass, field
-from typing import Optional, Union
 
 from ethicrawl.core import Url
 
@@ -8,8 +7,8 @@ from .base_config import BaseConfig
 
 @dataclass
 class HttpProxyConfig(BaseConfig):
-    _http: Optional[Url] = field(default=None, repr=False)
-    _https: Optional[Url] = field(default=None, repr=False)
+    _http: Url | None = field(default=None, repr=False)
+    _https: Url | None = field(default=None, repr=False)
 
     def __post_init__(self):
         # Validate initial values
@@ -19,11 +18,11 @@ class HttpProxyConfig(BaseConfig):
             self.https = self._https
 
     @property
-    def http(self) -> Optional[Url]:
+    def http(self) -> Url | None:
         return self._http
 
     @http.setter
-    def http(self, url: Union[Url, str, None]):
+    def http(self, url: Url | str | None):
         if url is None:
             self._http = None
         elif isinstance(url, Url):
@@ -36,11 +35,11 @@ class HttpProxyConfig(BaseConfig):
             )
 
     @property
-    def https(self) -> Optional[Url]:
+    def https(self) -> Url | None:
         return self._https
 
     @https.setter
-    def https(self, url: Union[Url, str, None]):
+    def https(self, url: Url | str | None):
         if url is None:
             self._https = None
         elif isinstance(url, Url):
