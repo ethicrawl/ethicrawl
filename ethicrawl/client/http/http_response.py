@@ -28,7 +28,7 @@ class HttpResponse(Response):
 
         # Validate status code
         if not isinstance(self.status_code, int):
-            raise TypeError("status_code must be an integer")
+            raise TypeError(f"Expected int, got {type(self.status_code).__name__}")
         if self.status_code < 100 or self.status_code > 599:
             raise ValueError(
                 f"Invalid HTTP status code: {self.status_code}. Must be between 100 and 599."
@@ -42,9 +42,13 @@ class HttpResponse(Response):
 
         # Validate content and text consistency
         if self.content is not None and not isinstance(self.content, bytes):
-            raise TypeError("content must be bytes or None")
+            raise TypeError(
+                f"content must be bytes or None, got {type(self.content).__name__}"
+            )
         if self.text is not None and not isinstance(self.text, str):
-            raise TypeError("text must be a string or None")
+            raise TypeError(
+                f"text must be a string or None, got {type(self.text).__name__}"
+            )
 
     def __str__(self):
         """

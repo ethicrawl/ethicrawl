@@ -22,7 +22,7 @@ class TestHttpResponse:
             HttpResponse(url, 600, HttpRequest(url))
         with pytest.raises(
             TypeError,
-            match="status_code must be an integer",
+            match="Expected int, got float",
         ):
             HttpResponse(url, 1.0, HttpRequest(url))
         with pytest.raises(

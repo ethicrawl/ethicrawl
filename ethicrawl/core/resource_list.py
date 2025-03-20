@@ -50,7 +50,7 @@ class ResourceList(Generic[T]):
         if items and isinstance(items, list):
             self.extend(items)
         elif items:
-            raise TypeError(f"Expected list got {type(items)}")
+            raise TypeError(f"Expected list got {type(items).__name__}")
 
     def __iter__(self) -> Iterator[T]:
         return iter(self._items)
@@ -81,7 +81,7 @@ class ResourceList(Generic[T]):
             TypeError: If item is not a Resource object
         """
         if not isinstance(item, Resource):
-            raise TypeError(f"Only Resource objects can be added, got {type(item)}")
+            raise TypeError(f"Expected Resource, got {type(item).__name__}")
         self._items.append(item)
         return self
 

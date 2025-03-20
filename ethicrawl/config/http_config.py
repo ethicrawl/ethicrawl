@@ -39,7 +39,7 @@ class HttpConfig(BaseConfig):
     @timeout.setter
     def timeout(self, value: float):
         if not isinstance(value, (int, float)):
-            raise TypeError("timeout must be a number")
+            raise TypeError(f"timeout must be a number, got {type(value).__name__}")
         if value <= 0:
             raise ValueError("timeout must be positive")
         if value > 300:
@@ -54,7 +54,9 @@ class HttpConfig(BaseConfig):
     @max_retries.setter
     def max_retries(self, value: int):
         if not isinstance(value, int):
-            raise TypeError("max_retries must be an integer")
+            raise TypeError(
+                f"max_retries must be an integer, got {type(value).__name__}"
+            )
         if value < 0:
             raise ValueError("max_retries cannot be negative")
         if value > 10:
@@ -69,7 +71,7 @@ class HttpConfig(BaseConfig):
     @retry_delay.setter
     def retry_delay(self, value: float):
         if not isinstance(value, (int, float)):
-            raise TypeError("retry_delay must be a number")
+            raise TypeError(f"retry_delay must be a number, got {type(value).__name__}")
         if value < 0:
             raise ValueError("retry_delay cannot be negative")
         if value > 60:
@@ -84,7 +86,7 @@ class HttpConfig(BaseConfig):
     @rate_limit.setter
     def rate_limit(self, value: Optional[float]):
         if not isinstance(value, (int, float)):
-            raise TypeError("rate_limit must be a number")
+            raise TypeError(f"rate_limit must be a number, got {type(value).__name__}")
         if value <= 0:
             raise ValueError("rate_limit must be positive")
         self._rate_limit = float(value)
@@ -97,7 +99,7 @@ class HttpConfig(BaseConfig):
     @jitter.setter
     def jitter(self, value: float):
         if not isinstance(value, (int, float)):
-            raise TypeError("jitter must be a number")
+            raise TypeError(f"jitter must be a number, got {type(value).__name__}")
         if value < 0 or value >= 1:
             raise ValueError("jitter must be between 0 and 1")
         self._jitter = float(value)
@@ -110,7 +112,7 @@ class HttpConfig(BaseConfig):
     @user_agent.setter
     def user_agent(self, value: str):
         if not isinstance(value, str):
-            raise TypeError("user_agent must be a string")
+            raise TypeError(f"user_agent must be a string, got {type(value).__name__}")
         if not value.strip():
             raise ValueError("user_agent cannot be empty")
         self._user_agent = value
@@ -129,7 +131,9 @@ class HttpConfig(BaseConfig):
             # Let the Headers constructor handle validation
             self._headers = Headers(value)
         else:
-            raise TypeError("headers must be a Headers instance or dictionary")
+            raise TypeError(
+                f"headers must be a Headers instance or dictionary, got {type(value).__name__}"
+            )
 
     @property
     def proxies(self) -> HttpProxyConfig:
@@ -153,7 +157,9 @@ class HttpConfig(BaseConfig):
 
             self._proxies = proxy_config
         else:
-            raise TypeError("proxies must be a HttpProxyConfig instance or dictionary")
+            raise TypeError(
+                f"proxies must be a HttpProxyConfig instance or dictionary, got {type(value).__name__}"
+            )
 
     def to_dict(self) -> dict:
         """Convert config to dictionary."""

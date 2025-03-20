@@ -2,6 +2,7 @@
 
 from json import loads
 from time import sleep
+from typing import Dict, Tuple, Optional, Any, Union, List
 
 from lxml import html, etree
 
@@ -104,7 +105,7 @@ class ChromeTransport(Transport):
         """
         # For Chrome, we just record that this was requested but don't modify
         # the browser's actual User-Agent to maintain authenticity
-        print(
+        self._logger.debug(
             f"Note: User-Agent override requested to '{agent}' but Chrome uses browser's native User-Agent"
         )
 
@@ -141,7 +142,7 @@ class ChromeTransport(Transport):
             if request.headers:
                 # Just log that headers were requested but can't be fully applied
                 header_names = ", ".join(request.headers.keys())
-                print(
+                self._logger.debug(
                     f"Note: Headers requested ({header_names}) but Chrome has limited header support"
                 )
 
@@ -150,10 +151,10 @@ class ChromeTransport(Transport):
 
             # Wait for page to load
             try:
-                WebDriverWait(self.driver, timeout or 10).until(
+                WebDriverWait(self.driver, timeout or Config().http.timeout).until(
                     EC.presence_of_element_located((By.TAG_NAME, "body"))
                 )
-            except Exception as e:
+            except Exception as e:  # pragma: no cover
                 self._logger.debug(f"Page load wait timed out (continuing anyway): {e}")
 
             # Additional wait for dynamic content if specified
@@ -165,7 +166,7 @@ class ChromeTransport(Transport):
             final_url = self.driver.current_url
 
             # Extract network information from performance logs
-            status_code, response_headers, mime_type = self._extract_network_info(
+            status_code, response_headers, mime_type = self._get_response_information(
                 url, final_url
             )
 
@@ -196,7 +197,7 @@ class ChromeTransport(Transport):
 
             return response
 
-        except Exception as e:
+        except Exception as e:  # pragma: no cover
             raise IOError(f"Error fetching {url} with Chrome: {e}")
 
     def _extract_xml_content(self, content_str: str) -> bytes:
@@ -225,88 +226,89 @@ class ChromeTransport(Transport):
                         for child in xml_div[0].getchildren()
                     )
                     return xml_content.encode("utf-8")
-        except Exception as e:
+        except Exception as e:  # pragma: no cover
             print(f"Warning: Failed to extract XML from browser response: {e}")
 
         # Return original content encoded as bytes if extraction failed
         return content_str.encode("utf-8")
 
-    def _extract_network_info(self, requested_url, final_url):
-        """
-        Extract network information from performance logs.
+    def _extract_response_info_from_log_entry(
+        self, entry: Dict[str, Any]
+    ) -> Optional[Tuple[Dict[str, Any], Dict[str, Any]]]:
+        """Process a single performance log entry and extract response data."""
+        try:
+            log_data = loads(entry["message"])["message"]
+            if log_data["method"] != "Network.responseReceived":
+                return None
 
-        Returns:
-            tuple: (status_code, response_headers, mime_type)
-        """
+            params = log_data.get("params", {})
+            response = params.get("response", {})
+            return params, response
+        except Exception as e:
+            self._logger.debug(f"Error processing log entry: {e}")
+            return None
+
+    def _extract_response_info_from_response(
+        self, response: Dict[str, Any]
+    ) -> Tuple[Optional[int], Dict[str, str], Optional[str]]:
+        """Extract status, headers and MIME type from a response."""
+        try:
+            status_code = response.get("status")
+            mime_type = response.get("mimeType")
+
+            # Extract headers
+            headers = {}
+            for key, value in response.get("headers", {}).items():
+                headers[key] = value
+            return status_code, headers, mime_type
+        except Exception as e:
+            self._logger.debug(f"Error processing log entry: {e}")
+            return None, {}, None  # Return 3-tuple with default values
+
+    def _get_response_information(
+        self, requested_url: str, final_url: str
+    ) -> Tuple[Optional[int], Dict[str, str], Optional[str]]:
+        # Default values if we can't find anything
+        default_status = 200  # Most browsers show content even without status
+        default_headers: Dict[str, str] = {}
+        default_mime = "text/html"  # Assume HTML if not specified
         try:
             logs = self.driver.get_log("performance")
-            status_code = None
-            headers = {}
-            mime_type = None
-
-            # First try to find exact URL match
+            document_response = None
             for entry in logs:
-                try:
-                    log_data = loads(entry["message"])["message"]
-                    if log_data["method"] != "Network.responseReceived":
-                        continue
-
-                    response = log_data.get("params", {}).get("response", {})
-                    url = response.get("url", "")
-
-                    # Check for both the requested URL and final URL (after redirects)
-                    if url == requested_url or url == final_url:
-                        status_code = response.get("status")
-                        mime_type = response.get("mimeType")
-
-                        # Get headers if available
-                        for key, value in response.get("headers", {}).items():
-                            headers[key] = value
-
-                        # If we found an exact match, return immediately
-                        return status_code, headers, mime_type
-                except Exception as e:
-                    self._logger.debug(f"Error processing network log entry: {e}")
+                result = self._extract_response_info_from_log_entry(entry)
+                if not result:
+                    # Skip non-response entries
                     continue
 
-            # If no exact match, look for main document response
-            for entry in logs:
-                try:
-                    log_data = loads(entry["message"])["message"]
-                    if log_data["method"] != "Network.responseReceived":
-                        continue
+                params, response = result
+                url = response.get("url", "")
 
-                    params = log_data.get("params", {})
-                    resource_type = params.get("type")
+                # First priority: exact URL match
+                if url == requested_url or url == final_url:
+                    return self._extract_response_info_from_response(response)
 
-                    # Find the main document response
-                    if resource_type == "Document":
-                        response = params.get("response", {})
-                        status_code = response.get("status")
-                        mime_type = response.get("mimeType")
+                # Second priority: document response (save for fallback)
+                if params.get("type") == "Document" and not document_response:
+                    document_response = response
 
-                        # Get headers
-                        for key, value in response.get("headers", {}).items():
-                            headers[key] = value
+            # If we found a document response, use it as fallback
+            if document_response:
+                return self._extract_response_info_from_response(document_response)
 
-                        return status_code, headers, mime_type
-                except Exception as e:
-                    self._logger.debug(f"Error processing document response log: {e}")
-                    continue
+            # Default fallback if no matching response found
+            return default_status, default_headers, default_mime
 
-            # Default fallback
-            return status_code, headers, mime_type
-
-        except Exception as e:
-            print(f"Error extracting network info: {e}")
-            return None, {}, None
+        except Exception as e:  # pragma: no cover
+            self._logger.debug(f"Error extracting network info: {e}")
+            return default_status, default_headers, default_mime
 
     def __del__(self):
         """Close browser when transport is garbage collected."""
         try:
             if hasattr(self, "driver") and self.driver:
                 self.driver.quit()
-        except Exception as e:
+        except Exception as e:  # pragma: no cover
             # Use the logger if it exists, otherwise we can't log during cleanup
             if hasattr(self, "_logger"):
                 self._logger.debug(f"Error closing browser during cleanup: {e}")

@@ -49,7 +49,9 @@ class LoggerConfig(BaseConfig):
     @console_enabled.setter
     def console_enabled(self, value: bool):
         if not isinstance(value, bool):
-            raise TypeError("console_enabled must be a boolean")
+            raise TypeError(
+                f"console_enabled must be a boolean, got {type(value).__name__}"
+            )
         self._console_enabled = value
 
     @property
@@ -60,7 +62,9 @@ class LoggerConfig(BaseConfig):
     @file_enabled.setter
     def file_enabled(self, value: bool):
         if not isinstance(value, bool):
-            raise TypeError("file_enabled must be a boolean")
+            raise TypeError(
+                f"file_enabled must be a boolean, got {type(value).__name__}"
+            )
         self._file_enabled = value
 
     @property
@@ -71,7 +75,9 @@ class LoggerConfig(BaseConfig):
     @file_path.setter
     def file_path(self, value: Optional[str]):
         if value is not None and not isinstance(value, str):
-            raise TypeError("file_path must be a string or None")
+            raise TypeError(
+                f"file_path must be a string or None, got {type(value).__name__}"
+            )
         self._file_path = value
 
     @property
@@ -82,7 +88,7 @@ class LoggerConfig(BaseConfig):
     @use_colors.setter
     def use_colors(self, value: bool):
         if not isinstance(value, bool):
-            raise TypeError("use_colors must be a boolean")
+            raise TypeError(f"use_colors must be a boolean, got {type(value).__name__}")
         self._use_colors = value
 
     @property
@@ -93,7 +99,7 @@ class LoggerConfig(BaseConfig):
     @format.setter
     def format(self, value: str):
         if not isinstance(value, str):
-            raise TypeError("format must be a string")
+            raise TypeError(f"format must be a string, got {type(value).__name__}")
         if not value:
             raise ValueError("format string cannot be empty")
         self._format = value
@@ -134,7 +140,9 @@ class LoggerConfig(BaseConfig):
         """
         # Check type
         if not isinstance(level, (int, str)):
-            raise TypeError("Log level must be an integer or level name string")
+            raise TypeError(
+                f"Log level must be an integer or level name string, got {type(level).__name__}"
+            )
 
         # Handle string conversion
         if isinstance(level, str):

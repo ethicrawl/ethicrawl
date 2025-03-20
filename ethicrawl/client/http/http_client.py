@@ -4,7 +4,7 @@ from random import random
 from time import time, sleep
 
 from ethicrawl.client import Client
-from ethicrawl.core import Resource, Url
+from ethicrawl.core import Headers, Resource, Url
 from ethicrawl.context import Context
 
 from .requests_transport import RequestsTransport
@@ -46,6 +46,7 @@ class HttpClient(Client):
         timeout=10,
         rate_limit=1,
         jitter=0.5,
+        headers=None,
         chrome_params=None,
     ):
         """
@@ -78,7 +79,7 @@ class HttpClient(Client):
         else:
             self.transport = RequestsTransport(context)
 
-        self.headers = {}
+        self.headers = Headers(headers or {})
 
         # Rate limiting parameters
         self.min_interval = 1.0 / rate_limit if rate_limit > 0 else 0
@@ -86,23 +87,30 @@ class HttpClient(Client):
         self.last_request_time = None  # Initialize last_request_time to None to indicate no previous requests
 
     @property
-    def user_agent(self):
+    def user_agent(self) -> str:
         """
-        Get the User-Agent from the underlying transport.
+        Get the User-Agent from the headers or underlying transport.
 
         Returns:
             str: The current User-Agent string
         """
+        # First check if we have a User-Agent header
+        if "User-Agent" in self.headers:
+            return self.headers["User-Agent"]
+        # Otherwise get from transport
         return self.transport.user_agent
 
     @user_agent.setter
     def user_agent(self, agent):
         """
-        Set the User-Agent on the underlying transport.
+        Set the User-Agent on both headers and the underlying transport.
 
         Args:
             agent (str): The User-Agent string to use for requests
         """
+        # Set in our headers
+        self.headers["User-Agent"] = agent
+        # Also set on transport for consistency
         self.transport.user_agent = agent
 
     def with_chrome(
@@ -204,9 +212,15 @@ class HttpClient(Client):
             if timeout is not None:
                 request.timeout = timeout
 
+            request_headers = Headers(self.headers)
+
+            # Add request-specific headers, which will override client headers
             if headers:
                 for header, value in headers.items():
-                    request.headers[header] = value
+                    request_headers[header] = value
+
+            # Set the combined headers on the request
+            request.headers = request_headers
 
             response = self.transport.get(request)
 

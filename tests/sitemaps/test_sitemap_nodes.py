@@ -119,9 +119,9 @@ class TestIndexNode(TestSitemapNode):
     def test_index_setter(self):
         node = IndexNode(self.get_context())
         entry = IndexEntry("https://www.example.com/sport/sitemap.xml")
-        with pytest.raises(TypeError, match="Expected a list, got <class 'int'>"):
+        with pytest.raises(TypeError, match="Expected a list, got int"):
             node.entries = 1
-        with pytest.raises(TypeError, match="Expected IndexEntry, got <class 'int'>"):
+        with pytest.raises(TypeError, match="Expected IndexEntry, got int"):
             node.entries = [entry, 1]
         node.entries = [entry]
         assert node.entries[-1].url == "https://www.example.com/sport/sitemap.xml"

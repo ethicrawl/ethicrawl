@@ -35,6 +35,7 @@ Thumbs.db
 .coverage
 coverage/
 htmlcov/
+coverage.txt
 
 # Security Scans
 bandit-results.json

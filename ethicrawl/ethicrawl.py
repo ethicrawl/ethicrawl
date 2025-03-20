@@ -3,9 +3,9 @@ from logging import Logger as logging_Logger
 from typing import Union
 
 from ethicrawl.context import Context
-from ethicrawl.robots import RobotsHandler
+from ethicrawl.robots import Robot, RobotFactory
 from ethicrawl.client.http import HttpClient, HttpResponse
-from ethicrawl.core import Resource, Url
+from ethicrawl.core import Headers, Resource, Url
 from ethicrawl.config import Config
 from ethicrawl.sitemaps import SitemapParser
 
@@ -50,7 +50,7 @@ class Ethicrawl:
 
     Attributes:
         robots (RobotsHandler): Handler for robots.txt rules (available after binding)
-        sitemaps (SitemapParser): Parser and handler for XML sitemaps (available after binding)
+        sitemap (SitemapParser): Parser and handler for XML sitemap (available after binding)
         logger (Logger): Logger for this crawler instance (available after binding)
         bound (bool): Whether the crawler is currently bound to a site
     """
@@ -58,7 +58,7 @@ class Ethicrawl:
     def __init__(self):
         pass
 
-    def bind(self, url: Union[str, Url], client: HttpClient = None):
+    def bind(self, url: Union[str, Url, Resource], client: HttpClient = None):
         """
         Bind the crawler to a specific website domain.
 
@@ -73,6 +73,10 @@ class Ethicrawl:
         Raises:
             ValueError: If URL is invalid
         """
+        if self.bound:
+            raise RuntimeError(
+                f"Already bound to {self._context.resource.url} - unbind() first"
+            )
         if isinstance(url, Resource):
             url = url.url
         url = Url(str(url), validate=True)
@@ -127,12 +131,8 @@ class Ethicrawl:
 
         domain = url.netloc
         context = Context(Resource(url), client or self._context.client)
-        try:
-            robots_handler = RobotsHandler(context)
-        except Exception as e:
-            self.logger.warning(f"Failed to load robots.txt for {domain}: {e}")
-            # Still create a permissive handler or use None
-            robots_handler = None  # Or a permissive fallback
+
+        robots_handler = RobotFactory.robot(context)
 
         self._whitelist[domain] = {"context": context, "robots_handler": robots_handler}
         self.logger.info(f"Whitelisted domain: {domain}")
@@ -147,10 +147,6 @@ class Ethicrawl:
     def config(self) -> Config:
         return Config()
 
-    @config.setter
-    def config(self, config: Config):
-        Config.update(config.to_dict())
-
     @property
     @ensure_bound
     def logger(self) -> logging_Logger:
@@ -160,27 +156,30 @@ class Ethicrawl:
 
     @property
     @ensure_bound
-    def robots(self) -> RobotsHandler:
+    def robot(self) -> Robot:
         # lazy load robots
         if not hasattr(self, "_robots"):
-            self._robots = RobotsHandler(self._context)
-        return self._robots
+            self._robot = RobotFactory.robot(self._context)
+        return self._robot
 
     @property
     @ensure_bound
-    def sitemaps(self) -> SitemapParser:
-        if not hasattr(self, "_sitemaps"):
-            self._sitemaps = SitemapParser(self._context)
-        return self._sitemaps
+    def sitemap(self) -> SitemapParser:
+        if not hasattr(self, "_sitemap"):
+            self._sitemap = SitemapParser(self._context)
+        return self._sitemap
 
     @ensure_bound
-    def get(self, url: Union[str, Url, Resource]) -> HttpResponse:
+    def get(
+        self, url: Union[str, Url, Resource], headers: Union[Headers, dict] = None
+    ) -> HttpResponse:
         """
         Make an HTTP GET request to the specified URL, respecting robots.txt rules
         and domain whitelisting.
 
         Args:
             url (str, Url, or Resource): URL to fetch
+            headers (dict, optional): Additional headers for this request
 
         Returns:
             HttpResponse: The response from the server
@@ -195,7 +194,9 @@ class Ethicrawl:
         elif isinstance(url, (str, Url)):
             resource = Resource(Url(str(url)))
         else:
-            raise TypeError(f"Expected string, Url, or Resource, got {type(url)}")
+            raise TypeError(
+                f"Expected string, Url, or Resource, got {type(url).__name__}"
+            )
 
         # Get domain from URL
         target_domain = resource.url.netloc
@@ -204,7 +205,7 @@ class Ethicrawl:
         if target_domain == self._context.resource.url.netloc:
             # This is the main domain
             context = self._context
-            robots_handler = self.robots
+            robots_handler = self.robot
         elif hasattr(self, "_whitelist") and target_domain in self._whitelist:
             # This is a whitelisted domain
             context = self._whitelist[target_domain]["context"]
@@ -214,12 +215,24 @@ class Ethicrawl:
             self.logger.warning(f"Domain not allowed: {target_domain}")
             raise ValueError(f"Domain not allowed: {target_domain}")
 
-        # Check robots.txt rules if we have a handler
-        if robots_handler:
-            is_allowed = robots_handler.can_fetch(resource)
-            if not is_allowed:
-                # This is already logged as WARNING in the robots handler,
-                raise ValueError(f"URL disallowed by robots.txt: {resource.url}")
+        # Extract User-Agent from headers if present (for robots.txt checking)
+        user_agent = None
+        if headers:
+            # Handle both Headers object and regular dict
+            if isinstance(headers, Headers):
+                user_agent = headers.get("User-Agent")
+            else:
+                # Case-insensitive search for User-Agent in dict
+                for key in headers:
+                    if key.lower() == "user-agent":
+                        user_agent = headers[key]
+                        break
+
+        # See if we can fetch the resource
+        try:
+            robots_handler.can_fetch(resource, user_agent=user_agent)
+        except Exception as e:
+            raise e
 
         # Use the domain's context to get its client
-        return context.client.get(resource)
+        return context.client.get(resource, headers=headers)
