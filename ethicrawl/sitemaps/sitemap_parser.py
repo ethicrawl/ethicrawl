@@ -19,7 +19,7 @@ class SitemapParser:
 
     def parse(
         self,
-        root: Union[IndexNode, ResourceList, List[Resource]] = None,
+        root: Union[IndexNode, ResourceList, List[Resource]] | None = None,
     ) -> ResourceList:
         if isinstance(root, IndexNode):
             document = root

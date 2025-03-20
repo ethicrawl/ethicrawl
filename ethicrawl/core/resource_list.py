@@ -37,7 +37,7 @@ class ResourceList(Generic[T]):
         _items (List[Resource]): Internal list of resources
     """
 
-    def __init__(self, items: List[T] = None):
+    def __init__(self, items: List[T] | None = None):
         """
         Initialize with optional list of Resource objects.
 

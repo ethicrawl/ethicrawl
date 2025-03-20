@@ -38,7 +38,7 @@ class Robot(Resource):
         return self._context
 
     def can_fetch(
-        self, resource: Union[Resource, Url, str], user_agent: str = None
+        self, resource: Union[Resource, Url, str], user_agent: str | None = None
     ) -> bool:
         """
         Check if a URL can be fetched according to robots.txt rules.

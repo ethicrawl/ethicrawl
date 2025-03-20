@@ -177,7 +177,7 @@ class HttpClient(Client):
         self.last_request_time = time()
 
     def get(
-        self, resource: Resource, timeout: int = None, headers: dict = None
+        self, resource: Resource, timeout: int | None = None, headers: dict | None = None
     ) -> HttpResponse:
         """
         Make a GET request to the specified URL with rate limiting.

@@ -58,7 +58,7 @@ class Ethicrawl:
     def __init__(self):
         pass
 
-    def bind(self, url: Union[str, Url, Resource], client: HttpClient = None):
+    def bind(self, url: Union[str, Url, Resource], client: HttpClient | None = None):
         """
         Bind the crawler to a specific website domain.
 
@@ -105,7 +105,7 @@ class Ethicrawl:
         return not hasattr(self, "_context")
 
     @ensure_bound
-    def whitelist(self, url: Union[str, Url], client: HttpClient = None) -> bool:
+    def whitelist(self, url: Union[str, Url], client: HttpClient | None = None) -> bool:
         """
         Whitelist an additional domain for crawling.
 
@@ -171,7 +171,7 @@ class Ethicrawl:
 
     @ensure_bound
     def get(
-        self, url: Union[str, Url, Resource], headers: Union[Headers, dict] = None
+        self, url: Union[str, Url, Resource], headers: Union[Headers, dict] | None = None
     ) -> HttpResponse:
         """
         Make an HTTP GET request to the specified URL, respecting robots.txt rules

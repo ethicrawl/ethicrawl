@@ -12,7 +12,7 @@ from .const import SITEMAPINDEX, URLSET
 class SitemapNode:
     SITEMAP_NS = "http://www.sitemaps.org/schemas/sitemap/0.9"
 
-    def __init__(self, context: Context, document: str = None) -> None:
+    def __init__(self, context: Context, document: str | None = None) -> None:
         self._context = context
         self._logger = self._context.logger("sitemap.node")
         self._entries = []

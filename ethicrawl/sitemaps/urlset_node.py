@@ -13,7 +13,7 @@ from .sitemap_node import SitemapNode
 
 
 class UrlsetNode(SitemapNode):
-    def __init__(self, context: Context, document: str = None) -> None:
+    def __init__(self, context: Context, document: str | None = None) -> None:
         super().__init__(context, document)
         if document is not None:
             _localname = etree.QName(self._root.tag).localname
