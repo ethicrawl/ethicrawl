@@ -190,9 +190,9 @@ class TestChromeTransport:
                         if "Headers requested" in str(call)
                     ]
                     assert len(headers_call) == 1
-                    assert "User-Agent" in str(headers_call[0])
-                    assert "Accept" in str(headers_call[0])
-                    assert "X-Custom-Header" in str(headers_call[0])
+                    assert "User-Agent".lower() in str(headers_call[0])
+                    assert "Accept".lower() in str(headers_call[0])
+                    assert "X-Custom-Header".lower() in str(headers_call[0])
 
                     # Verify request was still made successfully
                     mock_webdriver.get.assert_called_once_with(url)

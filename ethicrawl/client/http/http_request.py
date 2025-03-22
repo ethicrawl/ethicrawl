@@ -1,11 +1,12 @@
 from dataclasses import dataclass, field
 
 from ethicrawl.config import Config, HttpConfig
-from ethicrawl.core import Headers, Resource
+from ethicrawl.core import Headers
+from ethicrawl.client import Request
 
 
 @dataclass
-class HttpRequest(Resource):
+class HttpRequest(Request):
     _timeout: float = Config().http.timeout or 30.0
     headers: Headers = field(default_factory=Headers)
 

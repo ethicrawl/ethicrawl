@@ -1,7 +1,7 @@
 import pytest
 
 from ethicrawl.context import Context
-from ethicrawl.core import Resource
+from ethicrawl.core import Resource, ResourceList
 from ethicrawl.sitemaps import (
     IndexNode,
     IndexEntry,
@@ -119,11 +119,11 @@ class TestIndexNode(TestSitemapNode):
     def test_index_setter(self):
         node = IndexNode(self.get_context())
         entry = IndexEntry("https://www.example.com/sport/sitemap.xml")
-        with pytest.raises(TypeError, match="Expected a list, got int"):
+        with pytest.raises(TypeError, match="Expected a ResourceList, got int"):
             node.entries = 1
-        with pytest.raises(TypeError, match="Expected IndexEntry, got int"):
+        with pytest.raises(TypeError, match="Expected a ResourceList, got list"):
             node.entries = [entry, 1]
-        node.entries = [entry]
+        node.entries = ResourceList([entry])
         assert node.entries[-1].url == "https://www.example.com/sport/sitemap.xml"
 
 

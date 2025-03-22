@@ -30,7 +30,9 @@ class TestHttpRequest:
             Config().http.headers["User-Agent"] = "foo"
 
             # Verify config headers are set correctly
-            assert "User-Agent" in Config().http.headers, "Header not set in Config"
+            assert (
+                "User-Agent".lower() in Config().http.headers
+            ), "Header not set in Config"
 
             # Create request
             hr = HttpRequest(url)
@@ -39,7 +41,9 @@ class TestHttpRequest:
             # print(f"Config headers: {dict(Config().http.headers)}")
             # print(f"Request headers: {dict(hr.headers)}")
 
-            assert "User-Agent" in hr.headers, "User-Agent not copied from Config"
+            assert (
+                "User-Agent".lower() in hr.headers
+            ), "User-Agent not copied from Config"
             assert hr.headers["User-Agent"] == "foo"
 
             # Test custom headers override

@@ -1,8 +1,7 @@
-
 from lxml import etree
 
 from ethicrawl.context import Context
-from ethicrawl.core import Url
+from ethicrawl.core import Url, ResourceList
 
 from .const import SITEMAPINDEX
 from .index_entry import IndexEntry
@@ -12,21 +11,31 @@ from .sitemap_node import SitemapNode
 class IndexNode(SitemapNode):
     def __init__(self, context: Context, document: str | None = None) -> None:
         super().__init__(context, document)
+        self._logger.debug("Creating IndexNode instance")
+
         if document is not None:
             _localname = etree.QName(self._root.tag).localname
             if _localname != SITEMAPINDEX:
                 raise ValueError(f"Expected a root {SITEMAPINDEX} got {_localname}")
             self._entries = self._parse_index_sitemap(document)
+            self._logger.debug(
+                "Parsed sitemap index with %d entries", len(self._entries)
+            )
 
-    def _parse_index_sitemap(self, document) -> list[IndexEntry]:
+    def _parse_index_sitemap(self, document) -> ResourceList:
         """Parse sitemap references from a sitemap index."""
-        sitemaps = []
+        sitemaps: ResourceList = ResourceList()
 
         nsmap = {"": self.SITEMAP_NS}
         _root = etree.fromstring(document.encode("utf-8"), parser=self._parser)
 
         # Find all sitemap elements
-        for sitemap_elem in _root.findall(".//sitemap", namespaces=nsmap):
+        sitemap_elements = _root.findall(".//sitemap", namespaces=nsmap)
+        self._logger.debug(
+            "Found %d sitemap references in index", len(sitemap_elements)
+        )
+
+        for sitemap_elem in sitemap_elements:
             try:
                 # Get the required loc element
                 loc_elem = sitemap_elem.find("loc", namespaces=nsmap)
@@ -43,29 +52,30 @@ class IndexNode(SitemapNode):
                 )
 
                 sitemaps.append(index)
-            except ValueError as e:  # pragma: no cover
-                self._logger.warning(f"Error parsing sitemap reference: {e}")
+            except ValueError as exc:  # pragma: no cover
+                self._logger.warning("Error parsing sitemap reference: %s", exc)
         return sitemaps
 
     @property
-    def entries(self) -> list[IndexEntry]:
+    def entries(self) -> ResourceList:
         """Get the sitemaps in this index."""
         return self._entries
 
     @entries.setter
-    def entries(self, entries: list[IndexEntry]) -> None:
+    def entries(self, entries: ResourceList) -> None:
         """
         Set the sitemaps in this index.
 
         Args:
             sitemaps: List of sitemap URLs
         """
-        if not isinstance(entries, list):
-            raise TypeError(f"Expected a list, got {type(entries).__name__}")
+        if not isinstance(entries, ResourceList):
+            raise TypeError(f"Expected a ResourceList, got {type(entries).__name__}")
 
         # Validate all items are of correct type
         for entry in entries:
             if not isinstance(entry, IndexEntry):
                 raise TypeError(f"Expected IndexEntry, got {type(entry).__name__}")
 
+        self._logger.debug("Setting %d entries in sitemap index", len(entries))
         self._entries = entries

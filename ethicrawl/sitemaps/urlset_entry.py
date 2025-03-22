@@ -41,10 +41,10 @@ class UrlsetEntry(SitemapEntry):
         if isinstance(value, str):
             try:
                 value = float(value)
-            except ValueError:
+            except ValueError as exc:
                 raise TypeError(
                     f"Priority must be a number, got '{type(value).__name__}'"
-                )
+                ) from exc
 
         # Always convert to float (handles integers)
         value = float(value)

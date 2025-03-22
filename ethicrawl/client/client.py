@@ -3,6 +3,7 @@ from abc import ABC, abstractmethod
 from ethicrawl.core import Resource
 
 from .response import Response
+from .request import Request
 
 
 class Client(ABC):
@@ -23,4 +24,4 @@ class Client(ABC):
 
 class NoneClient(Client):
     def get(self, resource: Resource) -> Response:
-        return Response(resource.url)
+        return Response(resource.url, Request(resource.url))

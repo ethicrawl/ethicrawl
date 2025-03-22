@@ -28,12 +28,18 @@ class TestHttpClient:
     def test_rate_limiting(self):
         # Create mocks
         mock_transport = MagicMock()
-        mock_transport.get.return_value = MagicMock(spec=HttpResponse)
+        mock_response = MagicMock(spec=HttpResponse)
+
+        # Configure mock response with realistic properties
+        mock_response.status_code = 200  # Set a numeric status code
+        mock_response.content = b"Test content"  # Add some content
+
+        mock_transport.get.return_value = mock_response
 
         # Create test resource
         resource = Resource("https://example.com")
 
-        # Create client with aggressive rate limiting (max 1 request per 0.5 seconds)
+        # Create client with aggressive rate limiting
         client = HttpClient(
             context=Context(resource),
             rate_limit=10.0,  # 10 requests per second max
@@ -54,6 +60,11 @@ class TestHttpClient:
         # Create mocks
         mock_transport = MagicMock()
         mock_response = MagicMock(spec=HttpResponse)
+
+        # Configure mock response with realistic properties
+        mock_response.status_code = 200  # Set a numeric status code
+        mock_response.content = b"Test content"  # Add some content
+
         mock_transport.get.return_value = mock_response
 
         # Create test resource
@@ -73,7 +84,7 @@ class TestHttpClient:
         request_arg = mock_transport.get.call_args[0][0]
         assert isinstance(request_arg, HttpRequest)
         assert str(request_arg.url) == "https://example.com"
-        assert "Custom" in request_arg.headers
+        assert "Custom".lower() in request_arg.headers
         assert request_arg.headers["Custom"] == "Header"
 
         # Verify we got the expected response

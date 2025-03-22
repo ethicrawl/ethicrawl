@@ -42,7 +42,7 @@ class HttpClient(Client):
         context=None,
         transport=None,
         timeout=10,
-        rate_limit=1,
+        rate_limit=1.0,
         jitter=0.5,
         headers=None,
         chrome_params=None,
@@ -62,8 +62,7 @@ class HttpClient(Client):
                 (headless, wait_time, chrome_driver_path)
         """
         if not isinstance(context, Context):
-            context = Context(
-                Resource(Url("http://www.example.com/")))  # dummy url
+            context = Context(Resource(Url("http://www.example.com/")))  # dummy url
         self._context = context
         self._logger = self._context.logger("client")
 
@@ -77,6 +76,13 @@ class HttpClient(Client):
         # elif Gecko TODO: for expansion
         else:
             self.transport = RequestsTransport(context)
+
+        self._logger.debug(
+            "Initialized with %s transport (timeout: %d, rate limit: %.2f/sec)",
+            self.transport.__class__.__name__,
+            self.timeout,
+            rate_limit if rate_limit > 0 else float("inf"),
+        )
 
         self.headers = Headers(headers or {})
 
@@ -95,8 +101,8 @@ class HttpClient(Client):
             str: The current User-Agent string
         """
         # First check if we have a User-Agent header
-        if "User-Agent" in self.headers:
-            return self.headers["User-Agent"]
+        if "user-agent" in self.headers:
+            return self.headers["user-agent"]
         # Otherwise get from transport
         return self.transport.user_agent
 
@@ -109,7 +115,7 @@ class HttpClient(Client):
             agent (str): The User-Agent string to use for requests
         """
         # Set in our headers
-        self.headers["User-Agent"] = agent
+        self.headers["user-agent"] = agent
         # Also set on transport for consistency
         self.transport.user_agent = agent
 
@@ -172,7 +178,7 @@ class HttpClient(Client):
                 # this is not a cryptographic key
                 delay += random() * self.jitter  # nosec
 
-            self._logger.debug(f"Rate limiting - sleeping for {delay:.2f}s")
+            self._logger.debug("Rate limiting - sleeping for %.2fs", delay)
             sleep(delay)
 
         # Update the last request time
@@ -202,14 +208,13 @@ class HttpClient(Client):
 
         # First validate that resource is the correct type
         if not isinstance(resource, Resource):
-            raise TypeError(
-                f"Expected Resource object, got {type(resource).__name__}")
+            raise TypeError(f"Expected Resource object, got {type(resource).__name__}")
 
         try:
             # Apply rate limiting before making request
             self._apply_rate_limiting()
 
-            self._logger.debug(f"fetching {resource.url}")
+            self._logger.debug("fetching  %s", resource.url)
 
             request = HttpRequest(resource.url)
 
@@ -228,10 +233,33 @@ class HttpClient(Client):
 
             response = self.transport.get(request)
 
+            # After getting the response
+            if 200 <= response.status_code < 300:
+                self._logger.debug(
+                    "Successfully fetched %s: HTTP %d (%d bytes)",
+                    resource.url,
+                    response.status_code,
+                    len(response.content),
+                )
+            elif 400 <= response.status_code < 500:
+                self._logger.warning(
+                    "Client error fetching %s: HTTP %d",
+                    resource.url,
+                    response.status_code,
+                )
+            elif response.status_code >= 500:
+                self._logger.error(
+                    "Server error fetching %s: HTTP %d",
+                    resource.url,
+                    response.status_code,
+                )
+
             # Update last request time after successful request
             self.last_request_time = time()
 
             return response
-        except Exception as e:  # pragma: no cover
+        except Exception as exc:  # pragma: no cover
+            # Log error before re-raising
+            self._logger.error("Request failed for %s: %s", resource.url, exc)
             # Re-raise with clear error
-            raise IOError(f"HTTP request failed: {e}")
+            raise IOError(f"HTTP request failed: {exc}") from exc

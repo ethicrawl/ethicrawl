@@ -44,6 +44,7 @@ class Logger:
             root_logger.removeHandler(handler)
 
         # Create formatters
+        console_formatter: Formatter
         if log_config.use_colors:
             console_formatter = ColorFormatter(log_config.format)
         else:
@@ -77,8 +78,7 @@ class Logger:
 
         # Apply component-specific log levels
         for component, level in log_config.component_levels.items():
-            component_logger = getLogger(
-                f"{__name__.split('.')[0]}.*.{component}")
+            component_logger = getLogger(f"{__name__.split('.')[0]}.*.{component}")
             component_logger.setLevel(level)
 
         Logger._initialized = True

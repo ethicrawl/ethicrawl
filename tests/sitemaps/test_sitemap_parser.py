@@ -61,7 +61,9 @@ class TestSitemapParser:
     def test_get_method(self):
         context = self.context()
         sp = SitemapParser(context)
-        r = str(context.resource.url)
+
+        # Use Resource object instead of string
+        r = Resource(context.resource.url)
 
         with patch.object(context.client, "get") as mock_get:
             mock_response = MagicMock()
@@ -300,11 +302,13 @@ class TestSitemapParser:
 
         # Create a node with specifically ordered entries
         node = IndexNode(context)
-        node.entries = [
-            IndexEntry("https://www.example.com/first"),
-            IndexEntry("https://www.example.com/second"),
-            IndexEntry("https://www.example.com/third"),
-        ]
+        node.entries = ResourceList(
+            [
+                IndexEntry("https://www.example.com/first"),
+                IndexEntry("https://www.example.com/second"),
+                IndexEntry("https://www.example.com/third"),
+            ]
+        )
 
         # Track the exact order of entries processed and the accumulated results
         processed_entries = []

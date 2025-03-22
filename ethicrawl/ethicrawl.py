@@ -6,8 +6,10 @@ from ethicrawl.client.http import HttpClient, HttpResponse
 from ethicrawl.config import Config
 from ethicrawl.context import Context
 from ethicrawl.core import Headers, Resource, Url
-from ethicrawl.robots import Robot, RobotFactory
+from ethicrawl.robots import Robot
 from ethicrawl.sitemaps import SitemapParser
+
+from .domain_context import DomainContext
 
 
 def ensure_bound(func):
@@ -55,10 +57,7 @@ class Ethicrawl:
         bound (bool): Whether the crawler is currently bound to a site
     """
 
-    def __init__(self):
-        pass
-
-    def bind(self, url: str | Url | Resource, client: HttpClient | None = None):
+    def bind(self, url: str | Url | Resource, client: HttpClient | None = None) -> bool:
         """
         Bind the crawler to a specific website domain.
 
@@ -74,18 +73,27 @@ class Ethicrawl:
             ValueError: If URL is invalid
         """
         if self.bound:
+            assert self._root_domain is not None
             raise RuntimeError(
-                f"Already bound to {self._context.resource.url} - unbind() first"
+                f"Already bound to {self._root_domain.context.resource.url} - unbind() first"
             )
+
+        self._root_domain: DomainContext | None = None
+        self._whitelist: dict[str, DomainContext] = {}
+
         if isinstance(url, Resource):
             url = url.url
         url = Url(str(url), validate=True)
         resource = Resource(url)
         client = client or HttpClient()
-        self._context = Context(resource, client)
-        return True if self._context is not None else False
+        context = Context(resource, client)
 
-    def unbind(self):
+        # Use DomainContext for the root domain
+        self._root_domain = DomainContext(context=context)
+        self.logger.info("Successfully bound to %s", url)
+        return True
+
+    def unbind(self) -> bool:
         """
         Unbind the crawler from its current site.
 
@@ -95,6 +103,11 @@ class Ethicrawl:
             Ethicrawl: Self for method chaining
         """
         # Find all instance attributes starting with underscore
+        if self.bound:
+            assert self._root_domain is not None
+            domain = self._root_domain.context.resource.url.netloc
+            self.logger.info("Unbinding from %s", domain)
+
         private_attrs = [attr for attr in vars(self) if attr.startswith("_")]
 
         # Delete each private attribute
@@ -102,7 +115,7 @@ class Ethicrawl:
             delattr(self, attr)
 
         # Verify unbinding was successful
-        return not hasattr(self, "_context")
+        return not hasattr(self, "_root_domain")
 
     @ensure_bound
     def whitelist(self, url: str | Url, client: HttpClient | None = None) -> bool:
@@ -126,22 +139,18 @@ class Ethicrawl:
             url = url.url
         url = Url(str(url), validate=True)
 
-        if not hasattr(self, "_whitelist"):
-            self._whitelist = {}
-
         domain = url.netloc
-        context = Context(Resource(url), client or self._context.client)
+        assert self._root_domain is not None
+        context = Context(Resource(url), client or self._root_domain.context.client)
 
-        robots_handler = RobotFactory.robot(context)
-
-        self._whitelist[domain] = {"context": context, "robots_handler": robots_handler}
-        self.logger.info(f"Whitelisted domain: {domain}")
+        self._whitelist[domain] = DomainContext(context=context)
+        self.logger.info("Whitelisted domain: %s", domain)
         return True
 
     @property
     def bound(self) -> bool:
         """Check if currently bound to a site."""
-        return hasattr(self, "_context")
+        return hasattr(self, "_root_domain") and self._root_domain is not None
 
     @property
     def config(self) -> Config:
@@ -150,23 +159,23 @@ class Ethicrawl:
     @property
     @ensure_bound
     def logger(self) -> logging_Logger:
-        if not hasattr(self, "_logger"):
-            self._logger = self._context.logger("")
-        return self._logger
+        # Use the context from the root domain
+        assert self._root_domain is not None
+        return self._root_domain.context.logger("")
 
     @property
     @ensure_bound
     def robots(self) -> Robot:
-        # lazy load robots
-        if not hasattr(self, "_robots"):
-            self._robot = RobotFactory.robot(self._context)
-        return self._robot
+        # Use the robot from the root domain
+        assert self._root_domain is not None
+        return self._root_domain.robot
 
     @property
     @ensure_bound
     def sitemaps(self) -> SitemapParser:
         if not hasattr(self, "_sitemap"):
-            self._sitemap = SitemapParser(self._context)
+            assert self._root_domain is not None
+            self._sitemap = SitemapParser(self._root_domain.context)
         return self._sitemap
 
     @ensure_bound
@@ -200,44 +209,40 @@ class Ethicrawl:
                 f"Expected string, Url, or Resource, got {type(url).__name__}"
             )
 
+        self.logger.debug("Preparing to fetch %s", resource.url)
+
         # Get domain from URL
         target_domain = resource.url.netloc
 
         # Check if domain is allowed
-        if target_domain == self._context.resource.url.netloc:
-            # This is the main domain
-            context = self._context
-            robots_handler = self.robots
-        elif hasattr(self, "_whitelist") and target_domain in self._whitelist:
-            # This is a whitelisted domain
-            context = self._whitelist[target_domain]["context"]
-            robots_handler = self._whitelist[target_domain]["robots_handler"]
-        else:
-            # Log at WARNING level instead of just raising the exception
-            self.logger.warning(f"Domain not allowed: {target_domain}")
+        assert self._root_domain is not None
+        domain_ctx = (
+            self._root_domain
+            if target_domain == self._root_domain.context.resource.url.netloc
+            else self._whitelist.get(target_domain)
+        )
+
+        if domain_ctx is None:
+            # Fix incorrect curly brace string formatting
+            self.logger.warning("Domain not allowed: %s", target_domain)
             raise ValueError(f"Domain not allowed: {target_domain}")
+        else:
+            self.logger.debug("Using domain context for %s", target_domain)
+
+        context = domain_ctx.context
+        robot = domain_ctx.robot
 
         # Extract User-Agent from headers if present (for robots.txt checking)
         user_agent = None
         if headers:
-            # Handle both Headers object and regular dict
-            if isinstance(headers, Headers):
-                user_agent = headers.get("User-Agent")
-            else:
-                # Case-insensitive search for User-Agent in dict
-                for key in headers:
-                    if key.lower() == "user-agent":
-                        user_agent = headers[key]
-                        break
+            headers = Headers(headers)
+            user_agent = headers.get("User-Agent")
 
         # See if we can fetch the resource
-        try:
-            robots_handler.can_fetch(resource, user_agent=user_agent)
-        except Exception as e:
-            raise e
+        if robot.can_fetch(resource, user_agent=user_agent):
+            self.logger.debug("Request permitted by robots.txt policy")
 
         # Use the domain's context to get its client
         if isinstance(context.client, HttpClient):
             return context.client.get(resource, headers=headers)
-        else:
-            return context.client.get(resource)
+        return context.client.get(resource)

@@ -3,6 +3,7 @@ from re import sub
 from lxml import etree
 
 from ethicrawl.context import Context
+from ethicrawl.core import ResourceList
 from ethicrawl.error import SitemapError
 
 from .const import SITEMAPINDEX, URLSET
@@ -14,7 +15,9 @@ class SitemapNode:
     def __init__(self, context: Context, document: str | None = None) -> None:
         self._context = context
         self._logger = self._context.logger("sitemap.node")
-        self._entries = []
+        # Add debug logging
+        self._logger.debug("Creating new SitemapNode instance")
+        self._entries: ResourceList = ResourceList()
         self._parser = etree.XMLParser(
             resolve_entities=False,  # Prevent XXE attacks
             no_network=True,  # Prevent external resource loading
@@ -38,28 +41,30 @@ class SitemapNode:
             _element = etree.fromstring(document.encode("utf-8"), parser=self._parser)
             if _element.nsmap[None] != SitemapNode.SITEMAP_NS:
                 self._logger.error(
-                    f"Required default namespace not found: {SitemapNode.SITEMAP_NS}"
+                    "Required default namespace not found: %s", SitemapNode.SITEMAP_NS
                 )
                 raise SitemapError(
                     f"Required default namespace not found: {SitemapNode.SITEMAP_NS}"
                 )
             return _element
         except Exception as e:
-            self._logger.error(f"Invalid XML syntax: {str(e)}")
-            raise SitemapError(f"Invalid XML syntax: {str(e)}")
+            self._logger.error("Invalid XML syntax: %s", e)
+            raise SitemapError(f"Invalid XML syntax: {str(e)}") from e
 
     @property
-    def entries(self) -> list:
+    def entries(self) -> ResourceList:
         return self._entries
 
     @property
     def type(self) -> str:
-        """Return the local name of the root element (e.g., 'urlset', 'sitemapindex')."""
+        """Return the local name of the root element."""
         if not hasattr(self, "_root"):  # pragma: no cover
-            raise SitemapError(
-                "No root name"
-            )  # I dont think this would ever happen due to validation rules
-        if etree.QName(self._root.tag).localname in [SITEMAPINDEX, URLSET]:
-            return etree.QName(self._root.tag).localname
-        else:
-            return "unsupported"
+            raise SitemapError("No root name")
+
+        localname = etree.QName(self._root.tag).localname
+        if localname in [SITEMAPINDEX, URLSET]:
+            self._logger.debug("Identified sitemap type: %s", localname)
+            return localname
+
+        self._logger.warning("Unsupported sitemap node type: %s", localname)
+        return "unsupported"

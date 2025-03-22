@@ -13,20 +13,23 @@ class HttpResponse(Response):
     Contains the response data and reference to the original request.
     """
 
-    status_code: int
-    request: HttpRequest
-    headers: Headers = field(default_factory=Headers)
-    content: bytes = None  # Raw binary content
-    text: str = None  # Only populated for text content
+    request: HttpRequest  # pyright: ignore[reportIncompatibleVariableOverride]
+    # OSError: HTTP request failed: Error fetching https://www.bbc.co.uk/robots.txt: request must be an Request instance, got HttpRequest
+    # content is already in the parent
 
-    def __post_init__(self):
+    status_code: int = 200
+    headers: Headers = field(default_factory=Headers)
+    text: str = str()  # Only populated for text content
+
+    def __post_init__(self) -> None:
         # Call parent's post_init if it exists
+        if self.request is None:
+            raise TypeError("request must be an HttpRequest instance, got NoneType")
         super().__post_init__()
 
         # Validate status code
         if not isinstance(self.status_code, int):
-            raise TypeError(
-                f"Expected int, got {type(self.status_code).__name__}")
+            raise TypeError(f"Expected int, got {type(self.status_code).__name__}")
         if self.status_code < 100 or self.status_code > 599:
             raise ValueError(
                 f"Invalid HTTP status code: {self.status_code}. Must be between 100 and 599."
@@ -48,11 +51,12 @@ class HttpResponse(Response):
                 f"text must be a string or None, got {type(self.text).__name__}"
             )
 
-    def __str__(self):
+    def __str__(self) -> str:
         """
         Return a human-readable string representation of the response.
         Truncates binary content for readability.
         """
+
         status_line = f"HTTP {self.status_code}"
         url_line = f"URL: {self.url}"
         # Only if they differ
@@ -69,7 +73,8 @@ class HttpResponse(Response):
         # Handle content display - summarize if binary
         content_summary = "None"
         if self.content:
-            if self.headers.get("Content-Type", "").startswith("text/"):
+            content_type: str = self.headers.get("Content-Type", "") or ""
+            if content_type.startswith("text/"):
                 # For text content, show a preview
                 preview = self.text[:200] if self.text else ""
                 if self.text and len(self.text) > 200:
@@ -80,7 +85,7 @@ class HttpResponse(Response):
                 content_summary = f"{len(self.content)} bytes"
 
         # Check if it's a text content type before showing text preview
-        content_type = self.headers.get("Content-Type", "").lower()
+        content_type = self.headers.get("Content-Type", "") or ""
         is_text = (
             content_type.startswith("text/")
             or "json" in content_type

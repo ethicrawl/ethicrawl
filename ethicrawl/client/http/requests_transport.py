@@ -13,6 +13,8 @@ class RequestsTransport(Transport):
     """Transport implementation using the requests library."""
 
     def __init__(self, context: Context):
+        self._context = context
+        self._logger = self._context.logger("client.requests")
         self.session = requests.Session()
         self._default_user_agent = Config().http.user_agent
         self.session.headers.update({"User-Agent": self._default_user_agent})
@@ -25,7 +27,7 @@ class RequestsTransport(Transport):
         Returns:
             str: The User-Agent string
         """
-        return self.session.headers.get("User-Agent", self._default_user_agent)
+        return str(self.session.headers.get("User-Agent", self._default_user_agent))
 
     @user_agent.setter
     def user_agent(self, agent: str):
@@ -47,8 +49,10 @@ class RequestsTransport(Transport):
         Returns:
             HttpResponse: Standardized response object
         """
+        url = ""
         try:
             url = str(request.url)
+            self._logger.debug("Making GET request to %s", url)
 
             timeout = request.timeout
 
@@ -64,7 +68,6 @@ class RequestsTransport(Transport):
             if Config().http.proxies.https:
                 proxies["https"] = str(Config().http.proxies.https)
 
-            # Make the request with merged headers
             if proxies:
                 response = self.session.get(
                     url, timeout=timeout, headers=merged_headers, proxies=proxies
@@ -72,6 +75,24 @@ class RequestsTransport(Transport):
             else:
                 response = self.session.get(
                     url, timeout=timeout, headers=merged_headers
+                )
+
+            # Log response info
+            self._logger.debug(
+                "Received response from %s: HTTP %s, %s bytes",
+                url,
+                response.status_code,
+                len(response.content),
+            )
+
+            # Log non-success status codes at appropriate level
+            if 400 <= response.status_code < 500:
+                self._logger.warning(
+                    "Client error: HTTP %s for %s", response.status_code, url
+                )
+            elif response.status_code >= 500:
+                self._logger.error(
+                    "Server error: HTTP %s for %s", response.status_code, url
                 )
 
             # Convert requests.Response to our HttpResponse
@@ -83,5 +104,6 @@ class RequestsTransport(Transport):
                 headers=Headers(response.headers),
                 content=response.content,
             )
-        except Exception as e:  # pragma: no cover
-            raise IOError(f"Error fetching {url}: {e}")
+        except Exception as exc:  # pragma: no cover
+            self._logger.error("Failed to fetch %s: %s", url, exc)
+            raise IOError(f"Error fetching {url}: {exc}") from exc

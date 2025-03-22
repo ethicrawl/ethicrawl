@@ -18,7 +18,6 @@ __all__ = [
     "SitemapEntry",
     "SitemapNode",
     "SitemapParser",
-    "SitemapType",
     "UrlsetEntry",
     "UrlsetNode",
 ]

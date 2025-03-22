@@ -1,5 +1,5 @@
-from re import compile
-from typing import Generic, Iterator, Pattern, TypeVar
+from re import compile as re_compile
+from typing import Generic, Iterable, Iterator, Pattern, TypeVar
 
 from ethicrawl.core.resource import Resource
 
@@ -83,7 +83,7 @@ class ResourceList(Generic[T]):
         self._items.append(item)
         return self
 
-    def extend(self, items: list[T]) -> "ResourceList[T]":
+    def extend(self, items: Iterable[T]) -> "ResourceList[T]":
         """
         Add multiple Resources to the list with type checking.
 
@@ -124,7 +124,7 @@ class ResourceList(Generic[T]):
             1
         """
         if isinstance(pattern, str):
-            pattern = compile(pattern)
+            pattern = re_compile(pattern)
 
         result: ResourceList[T] = ResourceList()
         for item in self._items:

@@ -12,6 +12,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from ethicrawl.client import Transport
 from ethicrawl.config import Config
 from ethicrawl.context import Context
+from ethicrawl.core import Headers, Url
 
 from .http_request import HttpRequest
 from .http_response import HttpResponse
@@ -85,7 +86,7 @@ class ChromeTransport(Transport):
             self.driver.get("about:blank")
             # Execute JavaScript to get the user agent
             self._user_agent = self.driver.execute_script("return navigator.userAgent;")
-            return self._user_agent
+            return str(self._user_agent)
         except Exception as e:
             # Return a default value if we can't determine it yet
             return "Mozilla/5.0 (Unknown) Chrome/Unknown Safari/Unknown"
@@ -103,7 +104,8 @@ class ChromeTransport(Transport):
         # For Chrome, we just record that this was requested but don't modify
         # the browser's actual User-Agent to maintain authenticity
         self._logger.debug(
-            f"Note: User-Agent override requested to '{agent}' but Chrome uses browser's native User-Agent"
+            "Note: User-Agent override requested to %s but Chrome uses browser's native User-Agent",
+            agent,
         )
 
     def get(self, request: HttpRequest) -> HttpResponse:
@@ -118,6 +120,9 @@ class ChromeTransport(Transport):
         Returns:
             HttpResponse: Standardized response object
         """
+
+        url = "unknown"
+
         try:
 
             # Extract parameters from request object
@@ -140,7 +145,8 @@ class ChromeTransport(Transport):
                 # Just log that headers were requested but can't be fully applied
                 header_names = ", ".join(request.headers.keys())
                 self._logger.debug(
-                    f"Note: Headers requested ({header_names}) but Chrome has limited header support"
+                    "Note: Headers requested (%s) but Chrome has limited header support",
+                    header_names,
                 )
 
             # Update user agent information
@@ -151,8 +157,10 @@ class ChromeTransport(Transport):
                 WebDriverWait(self.driver, timeout or Config().http.timeout).until(
                     EC.presence_of_element_located((By.TAG_NAME, "body"))
                 )
-            except Exception as e:  # pragma: no cover
-                self._logger.debug(f"Page load wait timed out (continuing anyway): {e}")
+            except Exception as exc:  # pragma: no cover
+                self._logger.warning(
+                    "Page load wait timed out (continuing anyway): %s", exc
+                )
 
             # Additional wait for dynamic content if specified
             if self._wait_time:
@@ -184,11 +192,11 @@ class ChromeTransport(Transport):
 
             # Create the response with text properly decoded from content
             response = HttpResponse(
-                url=final_url or request.url,
+                url=Url(final_url) or request.url,
                 request=request,
                 status_code=status_code or 200,
                 text=content_bytes.decode("utf-8", errors="replace"),
-                headers=headers,
+                headers=Headers(headers),
                 content=content_bytes,
             )
 
@@ -215,7 +223,9 @@ class ChromeTransport(Transport):
                 root = html.fromstring(content_str, parser=parser)
 
                 # Extract content from the XML viewer div
-                xml_div = root.xpath('//div[@id="webkit-xml-viewer-source-xml"]')
+                xml_div = root.xpath(
+                    '//div[@id="webkit-xml-viewer-source-xml"]',
+                )
 
                 if isinstance(xml_div, list) and xml_div:
                     first_div = xml_div[0]
@@ -226,8 +236,11 @@ class ChromeTransport(Transport):
                     )
                     return xml_content.encode("utf-8")
 
-        except Exception as e:  # pragma: no cover
-            self._logger.warning(f"Failed to extract XML from browser response: {e}")
+        except Exception as exc:  # pragma: no cover
+            self._logger.warning(
+                "Failed to extract XML from browser response: %s",
+                exc,
+            )
 
         # Return original content encoded as bytes if extraction failed
         return content_str.encode("utf-8")
@@ -244,8 +257,11 @@ class ChromeTransport(Transport):
             params = log_data.get("params", {})
             response = params.get("response", {})
             return params, response
-        except Exception as e:
-            self._logger.debug(f"Error processing log entry: {e}")
+        except Exception as exc:
+            self._logger.debug(
+                "Error processing log entry: %s",
+                exc,
+            )
             return None
 
     def _extract_response_info_from_response(
@@ -261,8 +277,8 @@ class ChromeTransport(Transport):
             for key, value in response.get("headers", {}).items():
                 headers[key] = value
             return status_code, headers, mime_type
-        except Exception as e:
-            self._logger.debug(f"Error processing log entry: {e}")
+        except Exception as exc:
+            self._logger.debug("Error processing log entry: %s", exc)
             return None, {}, None  # Return 3-tuple with default values
 
     def _get_response_information(
@@ -285,7 +301,7 @@ class ChromeTransport(Transport):
                 url = response.get("url", "")
 
                 # First priority: exact URL match
-                if url == requested_url or url == final_url:
+                if url in (requested_url, final_url):
                     return self._extract_response_info_from_response(response)
 
                 # Second priority: document response (save for fallback)
@@ -299,8 +315,8 @@ class ChromeTransport(Transport):
             # Default fallback if no matching response found
             return default_status, default_headers, default_mime
 
-        except Exception as e:  # pragma: no cover
-            self._logger.debug(f"Error extracting network info: {e}")
+        except Exception as exc:  # pragma: no cover
+            self._logger.warning("Error extracting network info: %s", exc)
             return default_status, default_headers, default_mime
 
     def __del__(self):
@@ -308,9 +324,9 @@ class ChromeTransport(Transport):
         try:
             if hasattr(self, "driver") and self.driver:
                 self.driver.quit()
-        except Exception as e:  # pragma: no cover
+        except Exception as exc:  # pragma: no cover
             # Use the logger if it exists, otherwise we can't log during cleanup
             if hasattr(self, "_logger"):
-                self._logger.debug(f"Error closing browser during cleanup: {e}")
+                self._logger.debug("Error closing browser during cleanup: %s", exc)
             else:
-                raise e
+                raise exc

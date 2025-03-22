@@ -21,7 +21,7 @@ class TestEthicrawl:
         # Test binding
         assert crawler.bind("https://example.com")
         assert crawler.bound
-        assert hasattr(crawler, "_context")
+        assert hasattr(crawler, "_root_domain")
 
         # Test double binding
         with pytest.raises(
@@ -33,7 +33,7 @@ class TestEthicrawl:
         # Test unbinding
         assert crawler.unbind()
         assert not crawler.bound
-        assert not hasattr(crawler, "_context")
+        assert not hasattr(crawler, "_root_domain")
 
         # Test binding with a Url
         assert crawler.bind(Url("https://example.com"))
@@ -173,8 +173,10 @@ class TestEthicrawl:
         # Verify whitelist internals
         assert hasattr(crawler, "_whitelist")
         assert f"127.0.0.1:{port}" in crawler._whitelist
-        assert "context" in crawler._whitelist[f"127.0.0.1:{port}"]
-        assert "robots_handler" in crawler._whitelist[f"127.0.0.1:{port}"]
+        assert hasattr(crawler._whitelist[f"127.0.0.1:{port}"], "context")
+        # Check robot property accessor works
+        robot = crawler._whitelist[f"127.0.0.1:{port}"].robot
+        assert robot is not None
 
         # Test that whitelist information is cleared on unbind
         crawler.unbind()
@@ -182,7 +184,7 @@ class TestEthicrawl:
 
         # Test that re-binding starts with clean whitelist
         crawler.bind(primary_url)
-        assert not hasattr(crawler, "_whitelist")
+        assert hasattr(crawler, "_whitelist")
 
     def test_whitelist_resource(self):
         crawler = Ethicrawl()

@@ -110,9 +110,10 @@ class Url:
         if validate and self._parsed.scheme in ["http", "https"]:
             try:
                 gethostbyname(str(self._parsed.hostname))
-            except gaierror:
+            except gaierror as exc:
                 raise ValueError(
-                    f"Cannot resolve hostname: {self._parsed.hostname}")
+                    f"Cannot resolve hostname: {self._parsed.hostname}"
+                ) from exc
 
     @property
     def base(self) -> str:
@@ -245,7 +246,7 @@ class Url:
         # Unified URL construction
         return Url(f"{self.scheme}://{loc}{new_path}")
 
-    def extend(self, *args, **kwargs) -> "Url":
+    def extend(self, *args) -> "Url":
         """
         Extend the URL with path components or query parameters.
 
@@ -300,6 +301,5 @@ class Url:
             if self.scheme == "file" and (
                 len(args) == 1 and isinstance(args[0], dict) or len(args) == 2
             ):
-                raise ValueError(
-                    "Query parameters are not supported for file:// URLs")
+                raise ValueError("Query parameters are not supported for file:// URLs")
             raise ValueError("Invalid arguments for extend()")

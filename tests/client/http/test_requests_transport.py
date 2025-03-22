@@ -44,6 +44,6 @@ class TestRequestsTransport:
             assert response.status_code == 200
             assert str(response.url) == "https://example.com/redirected"
             assert response.text == "Hello, World!"
-            assert "Content-Type" in response.headers
+            assert "Content-Type".lower() in response.headers
 
         Config().reset()

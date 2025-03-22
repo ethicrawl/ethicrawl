@@ -1,8 +1,8 @@
-
 from ethicrawl.config import Config
 from ethicrawl.context import Context
 from ethicrawl.core import Resource, ResourceList
 from ethicrawl.error import SitemapError
+from ethicrawl.client import Client
 
 from .const import SITEMAPINDEX, URLSET
 from .index_entry import IndexEntry
@@ -20,7 +20,10 @@ class SitemapParser:
         self,
         root: IndexNode | ResourceList | list[Resource] | None = None,
     ) -> ResourceList:
+        self._logger.debug("Starting sitemap parsing")
+
         if isinstance(root, IndexNode):
+            self._logger.debug("Parsing from provided IndexNode")
             document = root
         else:
             # Handle different input types properly
@@ -38,24 +41,40 @@ class SitemapParser:
         return self._traverse(document, 0)
 
     def _get(self, resource: Resource) -> IndexNode | SitemapNode:
-        document = self._context.client.get(resource).text
+        assert isinstance(self._context.client, Client)
+        self._logger.debug("Fetching sitemap from %s", resource.url)
+        response = self._context.client.get(resource)
+
+        # Handle different response types
+        if hasattr(response, "text"):
+            self._logger.debug("Using text attribute from response")
+            document = response.text  # pyright: ignore[reportAttributeAccessIssue]
+        elif hasattr(response, "content") and isinstance(response.content, str):
+            self._logger.debug("Using string content attribute from response")
+            document = response.content
+        elif hasattr(response, "content"):
+            # Content attribute that needs decoding
+            document = response.content.decode("utf-8")
+        else:
+            # Fallback - convert response to string
+            document = str(response)
+
         node = SitemapNode(self._context, document)
         if node.type == URLSET:
             return UrlsetNode(self._context, document)
         elif node.type == SITEMAPINDEX:
             return IndexNode(self._context, document)
-        else:
-            self._logger.warning(f"Unknown sitemap type with root element: {node.type}")
-            raise SitemapError(f"Unknown sitemap type with root element: {node.type}")
+        self._logger.warning("Unknown sitemap type with root element: %s", node.type)
+        raise SitemapError(f"Unknown sitemap type with root element: {node.type}")
 
     def _traverse(
         self, node: IndexNode | SitemapNode, depth: int = 0, visited=None
     ) -> ResourceList:
         # Collection of all found URLs
         if not isinstance(node, IndexNode):  # we shouldn't be here
-            return
+            return ResourceList()
         max_depth = Config().sitemap.max_depth
-        all_urls = ResourceList([])
+        all_urls: ResourceList = ResourceList([])
 
         # Initialize visited set if this is the first call
         if visited is None:
@@ -64,13 +83,13 @@ class SitemapParser:
         # Check if we've reached maximum depth
         if depth >= max_depth:
             self._logger.warning(
-                f"Maximum recursion depth ({max_depth}) reached, stopping traversal"
+                "Maximum recursion depth (%d) reached, stopping traversal", max_depth
             )
             # Return empty ResourceList instead of None
             return ResourceList()
 
         self._logger.debug(
-            f"Traversing IndexNode at depth {depth}, has {len(node.entries)} items"
+            "Traversing IndexNode at depth %d, has %d items", depth, len(node.entries)
         )
 
         for item in node.entries:
@@ -89,11 +108,11 @@ class SitemapParser:
         # Check for cycles - skip if we've seen this URL before
         if url_str in visited:
             self._logger.warning(
-                f"Cycle detected: {url_str} has already been processed"
+                "Cycle detected: %s has already been processed", url_str
             )
             return ResourceList()
 
-        self._logger.debug(f"Processing item: {item.url}")
+        self._logger.debug("Processing item: %s", item.url)
         document = self._get(Resource(item.url))
 
         # Mark this URL as visited
@@ -101,11 +120,11 @@ class SitemapParser:
 
         if document.type == SITEMAPINDEX:
             self._logger.debug(
-                f"Found index sitemap with {len(document.entries)} items"
+                "Found index sitemap with %d items", len(document.entries)
             )
             return self._traverse(document, depth + 1, visited)
         elif document.type == URLSET:
-            self._logger.debug(f"Found urlset with {len(document.entries)} URLs")
+            self._logger.debug("Found urlset with %d URLs", len(document.entries))
             return document.entries
 
         # Empty list for any unhandled cases

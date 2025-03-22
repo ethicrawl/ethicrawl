@@ -1,5 +1,5 @@
 import logging
-
+from typing import Literal
 from colorama import Fore, Style, init
 
 # Initialize colorama (this handles Windows terminals properly)
@@ -20,7 +20,13 @@ class ColorFormatter(logging.Formatter):
         "CRITICAL": Fore.RED + Style.BRIGHT,
     }
 
-    def __init__(self, fmt=None, datefmt=None, style="%", use_colors=True):
+    def __init__(
+        self,
+        fmt=None,
+        datefmt=None,
+        style: Literal["%", "{", "$"] = "%",
+        use_colors=True,
+    ):
         super().__init__(fmt, datefmt, style)
         self.use_colors = use_colors
 
