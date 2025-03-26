@@ -13,6 +13,10 @@
       
       
       
+        <link rel="prev" href="..">
+      
+      
+        <link rel="next" href="../documentation/">
       
       
       <link rel="icon" href="../assets/images/favicon.png">
@@ -20,7 +24,7 @@
     
     
       
-        <title>Coding Standards - Ethicrawl</title>
+        <title>Code Standards - Ethicrawl</title>
       
     
     
@@ -108,7 +112,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Coding Standards
+              Code Standards
             
           </span>
         </div>
@@ -248,58 +252,298 @@
       
   
   
+    
   
   
-    
-    
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
       
         
       
-        
       
-    
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
+        <label class="md-nav__link md-nav__link--active" for="__toc">
           
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
-        
-          
-          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
-            
   
   <span class="md-ellipsis">
-    User Guide
+    Code Standards
     
   </span>
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2">
-            <span class="md-nav__icon md-icon"></span>
-            User Guide
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
+  
+  <span class="md-ellipsis">
+    Code Standards
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#python-code-standards" class="md-nav__link">
+    <span class="md-ellipsis">
+      Python Code Standards
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Python Code Standards">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#general-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      General Requirements
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#code-formatting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Code Formatting
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#import-organization" class="md-nav__link">
+    <span class="md-ellipsis">
+      Import Organization
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#type-hints" class="md-nav__link">
+    <span class="md-ellipsis">
+      Type Hints
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Type Hints">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#methodfunction-docstrings" class="md-nav__link">
+    <span class="md-ellipsis">
+      Method/Function Docstrings
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#error-handling-style-guide-for-ethicrawl" class="md-nav__link">
+    <span class="md-ellipsis">
+      Error Handling Style Guide for Ethicrawl
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Error Handling Style Guide for Ethicrawl">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#general-principles" class="md-nav__link">
+    <span class="md-ellipsis">
+      General Principles
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#standard-exception-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      Standard Exception Types
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Standard Exception Types">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#typeerror" class="md-nav__link">
+    <span class="md-ellipsis">
+      TypeError
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="TypeError">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#format" class="md-nav__link">
+    <span class="md-ellipsis">
+      Format:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      Examples:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#valueerror" class="md-nav__link">
+    <span class="md-ellipsis">
+      ValueError
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ValueError">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#format_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Format:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#examples_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Examples:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#domain-specific-exceptions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Domain-Specific Exceptions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Domain-Specific Exceptions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#error-message-guidelines" class="md-nav__link">
+    <span class="md-ellipsis">
+      Error Message Guidelines
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#documenting-exceptions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Documenting Exceptions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#error-assertions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Error Assertions
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
   
   
   
   
     <li class="md-nav__item">
-      <a href="../guide/getting-started/" class="md-nav__link">
+      <a href="../documentation/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Getting Started
+    Documentation Standards
     
   </span>
   
@@ -308,272 +552,24 @@
     </li>
   
 
-              
-            
-              
-                
+    
+      
+      
   
   
   
   
     <li class="md-nav__item">
-      <a href="../guide/core-concepts/" class="md-nav__link">
+      <a href="../logging/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Core Concepts
+    Logging Standards
     
   </span>
   
 
       </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    
-    
-      
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-    
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
-        
-          
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
-            
-  
-  <span class="md-ellipsis">
-    API Reference
-    
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_3">
-            <span class="md-nav__icon md-icon"></span>
-            API Reference
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../api/client/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Client
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../api/context/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Context
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../api/core/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Core
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../api/robots/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Robots
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../api/sitemaps/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Sitemaps
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../api/config/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Config
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../api/error/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Error
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../api/logger/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Logger
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
     </li>
   
 

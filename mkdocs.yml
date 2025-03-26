@@ -47,15 +47,6 @@ plugins:
 # Navigation structure
 nav:
   - Home: index.md
-  - User Guide:
-      - Getting Started: guide/getting-started.md
-      - Core Concepts: guide/core-concepts.md
-  - API Reference:
-      - Client: api/client.md
-      - Context: api/context.md
-      - Core: api/core.md
-      - Robots: api/robots.md
-      - Sitemaps: api/sitemaps.md
-      - Config: api/config.md
-      - Error: api/error.md
-      - Logger: api/logger.md
+  - Code Standards: standards.md
+  - Documentation Standards: documentation.md
+  - Logging Standards: logging.md

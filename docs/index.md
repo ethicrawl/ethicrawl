@@ -53,35 +53,33 @@ Our examples directory contains practical demonstrations of Ethicrawl's features
 7. **[Configuration](/examples/07_config.py)**: Configuring Ethicrawl
 8. **[Logging](/examples/08_logging.py)**: Using the logging system
 
+## API Reference
+
+- **[Ethicrawl](/docs/ethicrawl/ethicrawl.html)**: Main class and package documentation
+- **[Core](/docs/ethicrawl/core/index.html)**: Resource, ResourceList, Url, and other fundamental abstractions
+- **[Context](/docs/ethicrawl/context/index.html)**: Context management for crawling operations
+- **[Client](/docs/ethicrawl/client/index.html)**: HTTP and Chrome client implementations
+- **[Config](/docs/ethicrawl/config/index.html)**: Configuration system and singleton
+- **[Robots](/docs/ethicrawl/robots/index.html)**: Robots.txt parsing and enforcement
+- **[Sitemaps](/docs/ethicrawl/sitemaps/index.html)**: Sitemap parsing and URL extraction
+- **[Logger](/docs/ethicrawl/logger/index.html)**: Logging system and hierarchical loggers
+
 ## Documentation Guides
 
-- **[Standards](/docs/standards.md)**: Ethical crawling standards enforced by Ethicrawl
+- **[Standards](/docs/standards.md)**: Coding standards and style guide for Ethicrawl development
 - **[Logging](/docs/logging.md)**: Detailed guide to Ethicrawl's logging system
 - **[Documentation](/docs/documentation.md)**: Guidelines for contributing to these docs
 
-## API Reference
-
-The API Reference provides comprehensive documentation of all Ethicrawl's classes, methods, and functions:
-
-- **Core**: Base classes like Resource, ResourceList, and Url
-- **Client**: HTTP client implementation
-- **Config**: Configuration system
-- **Robots**: Robots.txt parsing and enforcement
-- **Sitemaps**: Sitemap processing
-- **Logger**: Logging system
 
 ## Project Structure
 
 ```
 ethicrawl/
 ├── core/         # Core abstractions (Resource, Url, etc.)
-├── client/       # HTTP client implementation
+├── context/      # Context passed around within the system
+├── client/       # Client implementations
 ├── config/       # Configuration system
 ├── robots/       # Robots.txt parser and enforcer
 ├── sitemaps/     # Sitemap parser
 └── logger/       # Logging system
 ```
-
-## Contributing
-
-Ethicrawl welcomes contributions! Please see our Contribution Guidelines for more information on how to get involved.
