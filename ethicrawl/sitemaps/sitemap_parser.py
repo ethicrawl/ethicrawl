@@ -104,7 +104,10 @@ class SitemapParser:
         Raises:
             SitemapError: If the document cannot be fetched or parsed
         """
-        assert isinstance(self._context.client, Client)
+        if not isinstance(self._context.client, Client):
+            raise TypeError(
+                f"Expected Client instance, got {type(self._context.client).__name__}"
+            )
         self._logger.debug("Fetching sitemap from %s", resource.url)
         response = self._context.client.get(resource)
 
