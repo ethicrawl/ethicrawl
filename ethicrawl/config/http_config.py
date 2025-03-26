@@ -8,7 +8,38 @@ from .http_proxy_config import HttpProxyConfig
 
 @dataclass
 class HttpConfig(BaseConfig):
-    """HTTP client configuration"""
+    """HTTP client configuration settings for Ethicrawl.
+
+    This class manages all HTTP-specific configuration options including
+    timeouts, rate limiting, retries, user agent settings, headers, and
+    proxy configuration. It provides validation for all values to ensure
+    they're within safe and reasonable ranges.
+
+    All setters perform type checking and value validation to prevent
+    invalid configurations. The class integrates with the global Config
+    singleton for system-wide settings.
+
+    Attributes:
+        timeout: Request timeout in seconds (default: 30.0)
+        max_retries: Maximum retry attempts for failed requests (default: 3)
+        retry_delay: Base delay between retries in seconds (default: 1.0)
+        rate_limit: Maximum requests per second (default: 0.5)
+        jitter: Random variation factor for rate limiting (default: 0.2)
+        user_agent: User agent string for requests (default: "Ethicrawl/1.0")
+        headers: Default headers to include with requests
+        proxies: Proxy server configuration
+
+    Example:
+        >>> from ethicrawl.config import Config
+        >>> # Get the global configuration
+        >>> config = Config()
+        >>> # Update HTTP settings
+        >>> config.http.timeout = 60.0
+        >>> config.http.user_agent = "MyCustomCrawler/2.0"
+        >>> config.http.rate_limit = 1.0  # 1 request per second
+        >>> # Configure proxy
+        >>> config.http.proxies = {"http": "http://proxy:8080", "https": "https://proxy:8443"}
+    """
 
     # Private fields for property implementation
     _timeout: float = field(default=30.0, repr=False)
@@ -32,7 +63,17 @@ class HttpConfig(BaseConfig):
 
     @property
     def timeout(self) -> float:
-        """Request timeout in seconds"""
+        """Request timeout in seconds.
+
+        Controls how long to wait for a response before abandoning the request.
+
+        Valid range: 0 < timeout <= 300
+        Default: 30.0
+
+        Raises:
+            TypeError: If value is not a number
+            ValueError: If value is <= 0 or > 300
+        """
         return self._timeout
 
     @timeout.setter
@@ -47,7 +88,18 @@ class HttpConfig(BaseConfig):
 
     @property
     def max_retries(self) -> int:
-        """Maximum number of retry attempts"""
+        """Maximum number of retry attempts for failed requests.
+
+        Controls how many times a failed request should be retried
+        before giving up. Uses exponential backoff between attempts.
+
+        Valid range: 0-10 (0 means no retries)
+        Default: 3
+
+        Raises:
+            TypeError: If value is not an integer
+            ValueError: If value is negative or > 10
+        """
         return self._max_retries
 
     @max_retries.setter
@@ -79,7 +131,20 @@ class HttpConfig(BaseConfig):
 
     @property
     def rate_limit(self) -> float | None:
-        """Requests per second (None=unlimited)"""
+        """Maximum requests per second allowed.
+
+        Controls request frequency to avoid overwhelming servers.
+        Set to None to disable rate limiting (not recommended).
+
+        Example: 0.5 means maximum of one request every 2 seconds
+
+        Valid range: > 0
+        Default: 0.5
+
+        Raises:
+            TypeError: If value is not a number
+            ValueError: If value is <= 0
+        """
         return self._rate_limit
 
     @rate_limit.setter
@@ -92,7 +157,19 @@ class HttpConfig(BaseConfig):
 
     @property
     def jitter(self) -> float:
-        """Random jitter factor for rate limiting"""
+        """Random variation factor for rate limiting.
+
+        Adds randomness to the timing between requests to make
+        crawling patterns less predictable. The random factor
+        is calculated as: delay * (1 + random() * jitter)
+
+        Valid range: 0.0-1.0
+        Default: 0.2
+
+        Raises:
+            TypeError: If value is not a number
+            ValueError: If value outside allowed range
+        """
         return self._jitter
 
     @jitter.setter
@@ -136,7 +213,22 @@ class HttpConfig(BaseConfig):
 
     @property
     def proxies(self) -> HttpProxyConfig:
-        """Get proxy configuration."""
+        """Proxy server configuration for HTTP requests.
+
+        Configures HTTP and HTTPS proxy servers for requests.
+
+        Example:
+            >>> config.http.proxies = {
+            ...    "http": "http://proxy:8080",
+            ...    "https": "https://proxy:8443"
+            ... }
+
+        Returns:
+            HttpProxyConfig object with http and https properties
+
+        Raises:
+            TypeError: If value is not HttpProxyConfig or dict
+        """
         return self._proxies
 
     @proxies.setter

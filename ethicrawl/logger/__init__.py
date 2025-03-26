@@ -1,6 +1,4 @@
 """
-Logging system for Ethicrawl.
-
 Provides structured, configurable logging across the application.
 """
 

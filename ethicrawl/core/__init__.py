@@ -1,4 +1,4 @@
-"""Core components of the Ethicrawl system."""
+"""Core types and utilities for resource identification and handling."""
 
 from .headers import Headers
 from .resource import Resource

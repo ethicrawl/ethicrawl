@@ -25,34 +25,49 @@ class SingletonMeta(type):
 
 @dataclass
 class Config(metaclass=SingletonMeta):
-    """
-    Global configuration for Ethicrawl.
+    """Global configuration singleton for Ethicrawl.
 
-    A thread-safe singleton class that provides application-wide configuration settings.
-    Use this to configure default behavior for HTTP clients, logging, and other components.
+    This class provides a centralized, thread-safe configuration system
+    for all components of Ethicrawl. It implements the Singleton pattern
+    to ensure consistent settings throughout the application.
 
-    Because this is a singleton, all imports of Config() will return the same instance,
-    allowing configuration changes to be visible throughout the application.
+    The configuration is organized into sections (http, logger, sitemap)
+    with each section containing component-specific settings.
 
-    Examples:
-        >>> from ethicrawl import Config
-        >>> config = Config()
-        >>> config.http.timeout = 60  # Set HTTP timeout
-        >>> config.logger.level = "DEBUG"  # Set logging level
+    Thread Safety:
+        All configuration updates are protected by a reentrant lock,
+        ensuring thread-safe operation in multi-threaded crawling scenarios.
 
-        # Configuration changes affect all parts of the application
-        >>> from another_module import get_config
-        >>> other_config = get_config()
-        >>> other_config is config  # True - same instance
-
-        # For thread pools, use snapshots
-        >>> snapshot = config.get_snapshot()
-        >>> config.http.timeout = 30  # Change won't affect snapshot
-        >>> snapshot.http.timeout  # Still 60
+    Integration Features:
+        - Convert to/from dictionaries for integration with external config systems
+        - JSON serialization for storage or transmission
+        - Hierarchical structure matches common config formats
 
     Attributes:
-        http (HttpConfig): HTTP-related configuration
-        logger (LoggerConfig): Logging configuration
+        http: HTTP-specific configuration (user agent, headers, timeout)
+        logger: Logging configuration (levels, format, output)
+        sitemap: Sitemap parsing configuration (limits, defaults)
+
+    Example:
+        >>> from ethicrawl.config import Config
+        >>> config = Config()  # Get the global instance
+        >>> config.http.user_agent = "MyCustomBot/1.0"
+        >>> config.logger.level = "DEBUG"
+        >>>
+        >>> # Thread-safe update of multiple settings at once
+        >>> config.update({
+        ...     "http": {"timeout": 30},
+        ...     "logger": {"component_levels": {"robots": "DEBUG"}}
+        ... })
+        >>>
+        >>> # Get a snapshot for thread-safe reading
+        >>> snapshot = config.get_snapshot()
+        >>> print(snapshot.http.timeout)
+        30
+        >>>
+        >>> # Export config for integration with external systems
+        >>> config_dict = config.to_dict()
+        >>> config_json = str(config)
     """
 
     http: HttpConfig = field(default_factory=HttpConfig)
@@ -63,46 +78,37 @@ class Config(metaclass=SingletonMeta):
     _lock = threading.RLock()
 
     def get_snapshot(self):
-        """
-        Get a deep copy of the current configuration.
-
-        This is useful for thread pools that need a stable configuration
-        that won't change even if the main config is modified.
+        """Create a thread-safe deep copy of the current configuration.
 
         Returns:
-            Config: A deep copy of the configuration (not a singleton)
-
-        Example:
-            >>> config = Config()
-            >>> config.http.timeout = 60
-            >>> snapshot = config.get_snapshot()
-            >>> config.http.timeout = 30
-            >>> snapshot.http.timeout  # Still 60
+            A deep copy of the current Config object
         """
         with self._lock:
             return copy.deepcopy(self)
 
     def update(self, config_dict: dict[str, Any]) -> None:
-        """
-        Update configuration from a dictionary.
+        """Update configuration from a dictionary.
 
-        This method allows bulk updates of configuration settings from
-        a nested dictionary structure. Each top-level key should match
-        a configuration section name.
+        Updates configuration sections based on a nested dictionary structure.
+        The dictionary should have section names as top-level keys and
+        property-value pairs as nested dictionaries.
 
         Args:
-            config_dict (dict): Configuration values to update
-
-        Example:
-            >>> config = Config()
-            >>> config.update({
-            ...     'http': {'timeout': 120, 'rate_limit': 2.0},
-            ...     'logger': {'level': 'INFO'}
-            ... })
-            >>> config.http.timeout  # 120
+            config_dict: Dictionary with configuration settings
 
         Raises:
-            AttributeError: If attempting to set an invalid configuration property
+            AttributeError: If trying to set a property that doesn't exist
+
+        Example:
+            >>> config.update({
+            ...     "http": {
+            ...         "user_agent": "CustomBot/1.0",
+            ...         "timeout": 30
+            ...     },
+            ...     "logger": {
+            ...         "level": "DEBUG"
+            ...     }
+            ... })
         """
         with self._lock:
             for section_name, section_dict in config_dict.items():
@@ -128,40 +134,32 @@ class Config(metaclass=SingletonMeta):
 
                         try:
                             setattr(section_obj, k, v)
-                        except AttributeError as e:  # pragma: no cover
+                        except AttributeError as exc:  # pragma: no cover
                             # Provide a more helpful error message
                             raise AttributeError(
-                                f"Failed to set '{k}' on {section_name} config: {e}"
-                            )
+                                f"Failed to set '{k}' on {section_name} config: {exc}"
+                            ) from exc
 
     @classmethod
     def reset(cls):
-        """
-        Reset configuration to default values.
+        """Reset the singleton instance to default values.
 
-        This removes the singleton instance, causing the next access to
-        create a fresh instance with default values.
+        Removes the existing instance from the singleton registry,
+        causing a new instance to be created on next access.
 
         Example:
-            >>> config = Config()
-            >>> config.http.timeout = 120
-            >>> Config.reset()
-            >>> new_config = Config()
-            >>> new_config.http.timeout  # Back to default (10)
+            >>> Config.reset()  # Reset to defaults
+            >>> config = Config()  # Get fresh instance
         """
         with cls.__class__._lock:
             if cls in cls.__class__._instances:
                 del cls.__class__._instances[cls]
 
     def to_dict(self):
-        """
-        Convert configuration to a dictionary.
-
-        Creates a nested dictionary representation of all configuration
-        settings, suitable for serialization or storage.
+        """Convert the configuration to a dictionary.
 
         Returns:
-            dict: Dictionary representation of the configuration
+            A nested dictionary representing all configuration sections
         """
         result = {}
 
@@ -177,24 +175,9 @@ class Config(metaclass=SingletonMeta):
         return result
 
     def __str__(self):
-        """
-        Return a JSON string representation of the config.
+        """Format the configuration as a JSON string.
 
         Returns:
-            str: JSON string with pretty formatting
-
-        Example:
-            >>> config = Config()
-            >>> print(config)
-            {
-              "http": {
-                "timeout": 10,
-                "rate_limit": 1.0
-              },
-              "logger": {
-                "level": "INFO"
-              }
-            }
+            Formatted JSON representation of the configuration
         """
-
         return json.dumps(self.to_dict(), indent=2)

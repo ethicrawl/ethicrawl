@@ -1,0 +1,414 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.6">
+<title>ethicrawl.client.http.requests_transport API documentation</title>
+<meta name="description" content="">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+/* Collapse source docstrings */
+setTimeout(() => {
+[...document.querySelectorAll('.hljs.language-python > .hljs-string')]
+.filter(el => el.innerHTML.length > 200 && ['"""', "'''"].includes(el.innerHTML.substring(0, 3)))
+.forEach(el => {
+let d = document.createElement('details');
+d.classList.add('hljs-string');
+d.innerHTML = '<summary>"""</summary>' + el.innerHTML.substring(3);
+el.replaceWith(d);
+});
+}, 100);
+})</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>ethicrawl.client.http.requests_transport</code></h1>
+</header>
+<section id="section-intro">
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="ethicrawl.client.http.requests_transport.RequestsTransport"><code class="flex name class">
+<span>class <span class="ident">RequestsTransport</span></span>
+<span>(</span><span>context: <a title="ethicrawl.context.context.Context" href="../../context/context.html#ethicrawl.context.context.Context">Context</a>)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class RequestsTransport(Transport):
+    &#34;&#34;&#34;HTTP transport implementation using the &#39;requests&#39; library.
+
+    This transport implementation handles HTTP requests using Python&#39;s requests
+    library. It manages the underlying session, handles header management,
+    proxy configuration, and converts between requests.Response objects and
+    Ethicrawl&#39;s HttpResponse objects.
+
+    The transport automatically applies configuration settings from the global
+    Config object, including user agent, proxies, and default headers.
+
+    Attributes:
+        session (requests.Session): The underlying requests Session object
+        user_agent (str): User agent string used for requests
+
+    Example:
+        &gt;&gt;&gt; from ethicrawl.context import Context
+        &gt;&gt;&gt; from ethicrawl.client.http import RequestsTransport, HttpRequest
+        &gt;&gt;&gt; from ethicrawl.core import Resource
+        &gt;&gt;&gt; context = Context(Resource(&#34;https://example.com&#34;))
+        &gt;&gt;&gt; transport = RequestsTransport(context)
+        &gt;&gt;&gt; transport.user_agent = &#34;EthiCrawl/1.0&#34;
+        &gt;&gt;&gt; request = HttpRequest(Resource(&#34;https://example.com/page&#34;))
+        &gt;&gt;&gt; response = transport.get(request)
+        &gt;&gt;&gt; print(response.status_code)
+        200
+    &#34;&#34;&#34;
+
+    def __init__(self, context: Context):
+        &#34;&#34;&#34;Initialize the requests transport with a context.
+
+        Sets up the requests.Session object with default headers from config.
+
+        Args:
+            context: The context to use for logging and resource resolution
+        &#34;&#34;&#34;
+        self._context = context
+        self._logger = self._context.logger(&#34;client.requests&#34;)
+        self.session = requests.Session()
+        self._default_user_agent = Config().http.user_agent
+        self.session.headers.update({&#34;User-Agent&#34;: self._default_user_agent})
+
+    @property
+    def user_agent(self) -&gt; str:
+        &#34;&#34;&#34;Get the current user agent string.
+
+        Returns:
+            The user agent string currently set in session headers
+        &#34;&#34;&#34;
+        return str(self.session.headers.get(&#34;User-Agent&#34;, self._default_user_agent))
+
+    @user_agent.setter
+    def user_agent(self, agent: str):
+        &#34;&#34;&#34;Set a new user agent string.
+
+        Args:
+            agent: New user agent string to use for requests
+        &#34;&#34;&#34;
+        self.session.headers.update({&#34;User-Agent&#34;: agent})
+
+    def get(self, request: HttpRequest) -&gt; HttpResponse:
+        &#34;&#34;&#34;Make a GET request using the requests library.
+
+        Handles header merging, proxy configuration, and logging. Converts
+        the requests.Response object to an HttpResponse.
+
+        Args:
+            request: The HttpRequest object containing URL, headers, etc.
+
+        Returns:
+            HttpResponse object with status, content, and headers
+
+        Raises:
+            IOError: If the request fails for any reason (wraps underlying exceptions)
+
+        Example:
+            &gt;&gt;&gt; request = HttpRequest(Resource(&#34;https://example.com&#34;))
+            &gt;&gt;&gt; request.headers[&#34;Accept&#34;] = &#34;text/html&#34;
+            &gt;&gt;&gt; response = transport.get(request)
+            &gt;&gt;&gt; if response.status_code == 200:
+            ...     print(f&#34;Got {len(response.content)} bytes&#34;)
+        &#34;&#34;&#34;
+        url = &#34;&#34;
+        try:
+            url = str(request.url)
+            self._logger.debug(&#34;Making GET request to %s&#34;, url)
+
+            timeout = request.timeout
+
+            merged_headers = Headers(self.session.headers)
+
+            # Merge in request-specific headers (without modifying session)
+            if request.headers:
+                merged_headers.update(request.headers)
+
+            proxies = {}
+            if Config().http.proxies.http:
+                proxies[&#34;http&#34;] = str(Config().http.proxies.http)
+            if Config().http.proxies.https:
+                proxies[&#34;https&#34;] = str(Config().http.proxies.https)
+
+            if proxies:
+                response = self.session.get(
+                    url, timeout=timeout, headers=merged_headers, proxies=proxies
+                )
+            else:
+                response = self.session.get(
+                    url, timeout=timeout, headers=merged_headers
+                )
+
+            # Log response info
+            self._logger.debug(
+                &#34;Received response from %s: HTTP %s, %s bytes&#34;,
+                url,
+                response.status_code,
+                len(response.content),
+            )
+
+            # Log non-success status codes at appropriate level
+            if 400 &lt;= response.status_code &lt; 500:
+                self._logger.warning(
+                    &#34;Client error: HTTP %s for %s&#34;, response.status_code, url
+                )
+            elif response.status_code &gt;= 500:
+                self._logger.error(
+                    &#34;Server error: HTTP %s for %s&#34;, response.status_code, url
+                )
+
+            # Convert requests.Response to our HttpResponse
+            return HttpResponse(
+                url=Url(response.url) or Url(request.url),
+                status_code=response.status_code,
+                request=request,
+                text=response.text,
+                headers=Headers(response.headers),
+                content=response.content,
+            )
+        except Exception as exc:  # pragma: no cover
+            self._logger.error(&#34;Failed to fetch %s: %s&#34;, url, exc)
+            raise IOError(f&#34;Error fetching {url}: {exc}&#34;) from exc</code></pre>
+</details>
+<div class="desc"><p>HTTP transport implementation using the 'requests' library.</p>
+<p>This transport implementation handles HTTP requests using Python's requests
+library. It manages the underlying session, handles header management,
+proxy configuration, and converts between requests.Response objects and
+Ethicrawl's HttpResponse objects.</p>
+<p>The transport automatically applies configuration settings from the global
+Config object, including user agent, proxies, and default headers.</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>session</code></strong> :&ensp;<code>requests.Session</code></dt>
+<dd>The underlying requests Session object</dd>
+<dt><strong><code>user_agent</code></strong> :&ensp;<code>str</code></dt>
+<dd>User agent string used for requests</dd>
+</dl>
+<h2 id="example">Example</h2>
+<pre><code class="language-python-repl">&gt;&gt;&gt; from ethicrawl.context import Context
+&gt;&gt;&gt; from ethicrawl.client.http import RequestsTransport, HttpRequest
+&gt;&gt;&gt; from ethicrawl.core import Resource
+&gt;&gt;&gt; context = Context(Resource(&quot;https://example.com&quot;))
+&gt;&gt;&gt; transport = RequestsTransport(context)
+&gt;&gt;&gt; transport.user_agent = &quot;EthiCrawl/1.0&quot;
+&gt;&gt;&gt; request = HttpRequest(Resource(&quot;https://example.com/page&quot;))
+&gt;&gt;&gt; response = transport.get(request)
+&gt;&gt;&gt; print(response.status_code)
+200
+</code></pre>
+<p>Initialize the requests transport with a context.</p>
+<p>Sets up the requests.Session object with default headers from config.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>context</code></strong></dt>
+<dd>The context to use for logging and resource resolution</dd>
+</dl></div>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="ethicrawl.client.transport.Transport" href="../transport.html#ethicrawl.client.transport.Transport">Transport</a></li>
+<li>abc.ABC</li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="ethicrawl.client.http.requests_transport.RequestsTransport.user_agent"><code class="name">prop <span class="ident">user_agent</span> : str</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def user_agent(self) -&gt; str:
+    &#34;&#34;&#34;Get the current user agent string.
+
+    Returns:
+        The user agent string currently set in session headers
+    &#34;&#34;&#34;
+    return str(self.session.headers.get(&#34;User-Agent&#34;, self._default_user_agent))</code></pre>
+</details>
+<div class="desc"><p>Get the current user agent string.</p>
+<h2 id="returns">Returns</h2>
+<p>The user agent string currently set in session headers</p></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="ethicrawl.client.http.requests_transport.RequestsTransport.get"><code class="name flex">
+<span>def <span class="ident">get</span></span>(<span>self,<br>request: <a title="ethicrawl.client.http.http_request.HttpRequest" href="http_request.html#ethicrawl.client.http.http_request.HttpRequest">HttpRequest</a>) ‑> <a title="ethicrawl.client.http.http_response.HttpResponse" href="http_response.html#ethicrawl.client.http.http_response.HttpResponse">HttpResponse</a></span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get(self, request: HttpRequest) -&gt; HttpResponse:
+    &#34;&#34;&#34;Make a GET request using the requests library.
+
+    Handles header merging, proxy configuration, and logging. Converts
+    the requests.Response object to an HttpResponse.
+
+    Args:
+        request: The HttpRequest object containing URL, headers, etc.
+
+    Returns:
+        HttpResponse object with status, content, and headers
+
+    Raises:
+        IOError: If the request fails for any reason (wraps underlying exceptions)
+
+    Example:
+        &gt;&gt;&gt; request = HttpRequest(Resource(&#34;https://example.com&#34;))
+        &gt;&gt;&gt; request.headers[&#34;Accept&#34;] = &#34;text/html&#34;
+        &gt;&gt;&gt; response = transport.get(request)
+        &gt;&gt;&gt; if response.status_code == 200:
+        ...     print(f&#34;Got {len(response.content)} bytes&#34;)
+    &#34;&#34;&#34;
+    url = &#34;&#34;
+    try:
+        url = str(request.url)
+        self._logger.debug(&#34;Making GET request to %s&#34;, url)
+
+        timeout = request.timeout
+
+        merged_headers = Headers(self.session.headers)
+
+        # Merge in request-specific headers (without modifying session)
+        if request.headers:
+            merged_headers.update(request.headers)
+
+        proxies = {}
+        if Config().http.proxies.http:
+            proxies[&#34;http&#34;] = str(Config().http.proxies.http)
+        if Config().http.proxies.https:
+            proxies[&#34;https&#34;] = str(Config().http.proxies.https)
+
+        if proxies:
+            response = self.session.get(
+                url, timeout=timeout, headers=merged_headers, proxies=proxies
+            )
+        else:
+            response = self.session.get(
+                url, timeout=timeout, headers=merged_headers
+            )
+
+        # Log response info
+        self._logger.debug(
+            &#34;Received response from %s: HTTP %s, %s bytes&#34;,
+            url,
+            response.status_code,
+            len(response.content),
+        )
+
+        # Log non-success status codes at appropriate level
+        if 400 &lt;= response.status_code &lt; 500:
+            self._logger.warning(
+                &#34;Client error: HTTP %s for %s&#34;, response.status_code, url
+            )
+        elif response.status_code &gt;= 500:
+            self._logger.error(
+                &#34;Server error: HTTP %s for %s&#34;, response.status_code, url
+            )
+
+        # Convert requests.Response to our HttpResponse
+        return HttpResponse(
+            url=Url(response.url) or Url(request.url),
+            status_code=response.status_code,
+            request=request,
+            text=response.text,
+            headers=Headers(response.headers),
+            content=response.content,
+        )
+    except Exception as exc:  # pragma: no cover
+        self._logger.error(&#34;Failed to fetch %s: %s&#34;, url, exc)
+        raise IOError(f&#34;Error fetching {url}: {exc}&#34;) from exc</code></pre>
+</details>
+<div class="desc"><p>Make a GET request using the requests library.</p>
+<p>Handles header merging, proxy configuration, and logging. Converts
+the requests.Response object to an HttpResponse.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>request</code></strong></dt>
+<dd>The HttpRequest object containing URL, headers, etc.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>HttpResponse object with status, content, and headers</p>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>IOError</code></dt>
+<dd>If the request fails for any reason (wraps underlying exceptions)</dd>
+</dl>
+<h2 id="example">Example</h2>
+<pre><code class="language-python-repl">&gt;&gt;&gt; request = HttpRequest(Resource(&quot;https://example.com&quot;))
+&gt;&gt;&gt; request.headers[&quot;Accept&quot;] = &quot;text/html&quot;
+&gt;&gt;&gt; response = transport.get(request)
+&gt;&gt;&gt; if response.status_code == 200:
+...     print(f&quot;Got {len(response.content)} bytes&quot;)
+</code></pre></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="ethicrawl.client.transport.Transport" href="../transport.html#ethicrawl.client.transport.Transport">Transport</a></b></code>:
+<ul class="hlist">
+<li><code><a title="ethicrawl.client.transport.Transport.head" href="../transport.html#ethicrawl.client.transport.Transport.head">head</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="ethicrawl.client.http" href="index.html">ethicrawl.client.http</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="ethicrawl.client.http.requests_transport.RequestsTransport" href="#ethicrawl.client.http.requests_transport.RequestsTransport">RequestsTransport</a></code></h4>
+<ul class="">
+<li><code><a title="ethicrawl.client.http.requests_transport.RequestsTransport.get" href="#ethicrawl.client.http.requests_transport.RequestsTransport.get">get</a></code></li>
+<li><code><a title="ethicrawl.client.http.requests_transport.RequestsTransport.user_agent" href="#ethicrawl.client.http.requests_transport.RequestsTransport.user_agent">user_agent</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.6</a>.</p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.6">
+<title>ethicrawl.sitemaps.index_document API documentation</title>
+<meta name="description" content="">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+/* Collapse source docstrings */
+setTimeout(() => {
+[...document.querySelectorAll('.hljs.language-python > .hljs-string')]
+.filter(el => el.innerHTML.length > 200 && ['"""', "'''"].includes(el.innerHTML.substring(0, 3)))
+.forEach(el => {
+let d = document.createElement('details');
+d.classList.add('hljs-string');
+d.innerHTML = '<summary>"""</summary>' + el.innerHTML.substring(3);
+el.replaceWith(d);
+});
+}, 100);
+})</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>ethicrawl.sitemaps.index_document</code></h1>
+</header>
+<section id="section-intro">
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="ethicrawl.sitemaps.index_document.IndexDocument"><code class="flex name class">
+<span>class <span class="ident">IndexDocument</span></span>
+<span>(</span><span>context: <a title="ethicrawl.context.context.Context" href="../context/context.html#ethicrawl.context.context.Context">Context</a>,<br>document: str | None = None)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class IndexDocument(SitemapDocument):
+    &#34;&#34;&#34;Specialized parser for sitemap index documents.
+
+    This class extends the SitemapDocument class to handle sitemap indexes,
+    which are XML documents containing references to other sitemap files.
+    It validates that the document is a proper sitemap index and extracts
+    all sitemap references as IndexEntry objects.
+
+    IndexDocument enforces type safety for its entries collection, ensuring
+    that only IndexEntry objects can be added.
+
+    Attributes:
+        entries: ResourceList of IndexEntry objects representing sitemap references
+
+    Example:
+        &gt;&gt;&gt; from ethicrawl.context import Context
+        &gt;&gt;&gt; from ethicrawl.core import Resource
+        &gt;&gt;&gt; from ethicrawl.sitemaps import IndexDocument
+        &gt;&gt;&gt; context = Context(Resource(&#34;https://example.com&#34;))
+        &gt;&gt;&gt; sitemap_xml = &#39;&#39;&#39;&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;
+        ... &lt;sitemapindex xmlns=&#34;http://www.sitemaps.org/schemas/sitemap/0.9&#34;&gt;
+        ...   &lt;sitemap&gt;
+        ...     &lt;loc&gt;https://example.com/sitemap1.xml&lt;/loc&gt;
+        ...     &lt;lastmod&gt;2023-06-15T14:30:00Z&lt;/lastmod&gt;
+        ...   &lt;/sitemap&gt;
+        ... &lt;/sitemapindex&gt;&#39;&#39;&#39;
+        &gt;&gt;&gt; index = IndexDocument(context, sitemap_xml)
+        &gt;&gt;&gt; len(index.entries)
+        1
+        &gt;&gt;&gt; str(index.entries[0])
+        &#39;https://example.com/sitemap1.xml (last modified: 2023-06-15T14:30:00Z)&#39;
+    &#34;&#34;&#34;
+
+    def __init__(self, context: Context, document: str | None = None) -&gt; None:
+        &#34;&#34;&#34;Initialize a sitemap index document parser.
+
+        Args:
+            context: Context for logging and resource resolution
+            document: Optional XML sitemap index content to parse
+
+        Raises:
+            ValueError: If the document is not a valid sitemap index
+            SitemapError: If the document cannot be parsed
+        &#34;&#34;&#34;
+        super().__init__(context, document)
+        self._logger.debug(&#34;Creating IndexDocument instance&#34;)
+
+        if document is not None:
+            _localname = etree.QName(self._root.tag).localname
+            if _localname != SITEMAPINDEX:
+                raise ValueError(f&#34;Expected a root {SITEMAPINDEX} got {_localname}&#34;)
+            self._entries = self._parse_index_sitemap(document)
+            self._logger.debug(
+                &#34;Parsed sitemap index with %d entries&#34;, len(self._entries)
+            )
+
+    def _parse_index_sitemap(self, document) -&gt; ResourceList:
+        &#34;&#34;&#34;Parse sitemap references from a sitemap index.
+
+        Extracts all &lt;sitemap&gt; elements and their &lt;loc&gt; and &lt;lastmod&gt;
+        children, creating IndexEntry objects for each valid reference.
+
+        Args:
+            document: XML document string to parse
+
+        Returns:
+            ResourceList containing IndexEntry objects for each sitemap reference
+        &#34;&#34;&#34;
+        sitemaps: ResourceList = ResourceList()
+
+        nsmap = {&#34;&#34;: self.SITEMAP_NS}
+        _root = etree.fromstring(document.encode(&#34;utf-8&#34;), parser=self._parser)
+
+        # Find all sitemap elements
+        sitemap_elements = _root.findall(&#34;.//sitemap&#34;, namespaces=nsmap)
+        self._logger.debug(
+            &#34;Found %d sitemap references in index&#34;, len(sitemap_elements)
+        )
+
+        for sitemap_elem in sitemap_elements:
+            try:
+                # Get the required loc element
+                loc_elem = sitemap_elem.find(&#34;loc&#34;, namespaces=nsmap)
+                if loc_elem is None or not loc_elem.text:
+                    continue
+
+                # Get optional lastmod element
+                lastmod_elem = sitemap_elem.find(&#34;lastmod&#34;, namespaces=nsmap)
+
+                # Create IndexEntry object (only loc and lastmod)
+                index = IndexEntry(
+                    url=Url(loc_elem.text),
+                    lastmod=lastmod_elem.text if lastmod_elem is not None else None,
+                )
+
+                sitemaps.append(index)
+            except ValueError as exc:  # pragma: no cover
+                self._logger.warning(&#34;Error parsing sitemap reference: %s&#34;, exc)
+        return sitemaps
+
+    @property
+    def entries(self) -&gt; ResourceList:
+        &#34;&#34;&#34;Get the sitemaps in this index.
+
+        Returns:
+            ResourceList of IndexEntry objects representing sitemap references
+        &#34;&#34;&#34;
+        return self._entries
+
+    @entries.setter
+    def entries(self, entries: ResourceList) -&gt; None:
+        &#34;&#34;&#34;Set the sitemaps in this index.
+
+        Args:
+            entries: List of sitemap references as IndexEntry objects
+
+        Raises:
+            TypeError: If entries is not a ResourceList or contains non-IndexEntry objects
+        &#34;&#34;&#34;
+        if not isinstance(entries, ResourceList):
+            raise TypeError(f&#34;Expected a ResourceList, got {type(entries).__name__}&#34;)
+
+        # Validate all items are of correct type
+        for entry in entries:
+            if not isinstance(entry, IndexEntry):
+                raise TypeError(f&#34;Expected IndexEntry, got {type(entry).__name__}&#34;)
+
+        self._logger.debug(&#34;Setting %d entries in sitemap index&#34;, len(entries))
+        self._entries = entries</code></pre>
+</details>
+<div class="desc"><p>Specialized parser for sitemap index documents.</p>
+<p>This class extends the SitemapDocument class to handle sitemap indexes,
+which are XML documents containing references to other sitemap files.
+It validates that the document is a proper sitemap index and extracts
+all sitemap references as IndexEntry objects.</p>
+<p>IndexDocument enforces type safety for its entries collection, ensuring
+that only IndexEntry objects can be added.</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>entries</code></strong></dt>
+<dd>ResourceList of IndexEntry objects representing sitemap references</dd>
+</dl>
+<h2 id="example">Example</h2>
+<pre><code class="language-python-repl">&gt;&gt;&gt; from ethicrawl.context import Context
+&gt;&gt;&gt; from ethicrawl.core import Resource
+&gt;&gt;&gt; from ethicrawl.sitemaps import IndexDocument
+&gt;&gt;&gt; context = Context(Resource(&quot;https://example.com&quot;))
+&gt;&gt;&gt; sitemap_xml = '''&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+... &lt;sitemapindex xmlns=&quot;http://www.sitemaps.org/schemas/sitemap/0.9&quot;&gt;
+...   &lt;sitemap&gt;
+...     &lt;loc&gt;&lt;https://example.com/sitemap1.xml&lt;/loc&gt;&gt;
+...     &lt;lastmod&gt;2023-06-15T14:30:00Z&lt;/lastmod&gt;
+...   &lt;/sitemap&gt;
+... &lt;/sitemapindex&gt;'''
+&gt;&gt;&gt; index = IndexDocument(context, sitemap_xml)
+&gt;&gt;&gt; len(index.entries)
+1
+&gt;&gt;&gt; str(index.entries[0])
+'https://example.com/sitemap1.xml (last modified: 2023-06-15T14:30:00Z)'
+</code></pre>
+<p>Initialize a sitemap index document parser.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>context</code></strong></dt>
+<dd>Context for logging and resource resolution</dd>
+<dt><strong><code>document</code></strong></dt>
+<dd>Optional XML sitemap index content to parse</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>ValueError</code></dt>
+<dd>If the document is not a valid sitemap index</dd>
+<dt><code>SitemapError</code></dt>
+<dd>If the document cannot be parsed</dd>
+</dl></div>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="ethicrawl.sitemaps.sitemap_document.SitemapDocument" href="sitemap_document.html#ethicrawl.sitemaps.sitemap_document.SitemapDocument">SitemapDocument</a></li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="ethicrawl.sitemaps.index_document.IndexDocument.entries"><code class="name">prop <span class="ident">entries</span> : <a title="ethicrawl.core.resource_list.ResourceList" href="../core/resource_list.html#ethicrawl.core.resource_list.ResourceList">ResourceList</a></code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def entries(self) -&gt; ResourceList:
+    &#34;&#34;&#34;Get the sitemaps in this index.
+
+    Returns:
+        ResourceList of IndexEntry objects representing sitemap references
+    &#34;&#34;&#34;
+    return self._entries</code></pre>
+</details>
+<div class="desc"><p>Get the sitemaps in this index.</p>
+<h2 id="returns">Returns</h2>
+<p>ResourceList of IndexEntry objects representing sitemap references</p></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="ethicrawl.sitemaps.sitemap_document.SitemapDocument" href="sitemap_document.html#ethicrawl.sitemaps.sitemap_document.SitemapDocument">SitemapDocument</a></b></code>:
+<ul class="hlist">
+<li><code><a title="ethicrawl.sitemaps.sitemap_document.SitemapDocument.type" href="sitemap_document.html#ethicrawl.sitemaps.sitemap_document.SitemapDocument.type">type</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="ethicrawl.sitemaps" href="index.html">ethicrawl.sitemaps</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="ethicrawl.sitemaps.index_document.IndexDocument" href="#ethicrawl.sitemaps.index_document.IndexDocument">IndexDocument</a></code></h4>
+<ul class="">
+<li><code><a title="ethicrawl.sitemaps.index_document.IndexDocument.entries" href="#ethicrawl.sitemaps.index_document.IndexDocument.entries">entries</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.6</a>.</p>
+</footer>
+</body>
+</html>

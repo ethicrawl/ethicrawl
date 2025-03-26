@@ -1,5 +1,5 @@
-from re import compile
-from typing import Generic, Iterator, Pattern, TypeVar
+from re import compile as re_compile
+from typing import Generic, Iterable, Iterator, Pattern, TypeVar
 
 from ethicrawl.core.resource import Resource
 
@@ -7,42 +7,35 @@ T = TypeVar("T", bound=Resource)
 
 
 class ResourceList(Generic[T]):
-    """
-    A specialized collection for Resource objects with helpful operations.
+    """Collection of Resource objects with filtering capabilities.
 
-    ResourceList provides a type-safe container for working with collections
-    of Resource objects, with additional functionality like pattern filtering.
-    It implements standard container methods so it can be used like a regular list.
-
-    Examples:
-        >>> from ethicrawl import Resource, ResourceList, Url
-        >>> # Create with initial items
-        >>> resources = ResourceList([
-        ...     Resource("https://example.com/page1"),
-        ...     Resource("https://example.com/page2"),
-        ...     Resource("https://example.com/products/item")
-        ... ])
-        >>>
-        >>> # Filter by pattern
-        >>> product_pages = resources.filter(r"/products/")
-        >>> len(product_pages)
-        1
-        >>>
-        >>> # Use list-like operations
-        >>> resources.append(Resource("https://example.com/contact"))
-        >>> len(resources)
-        4
+    ResourceList provides list-like functionality specialized for managing
+    collections of Resources with additional filtering methods and type safety.
+    The class is generic and can contain any subclass of Resource.
 
     Attributes:
-        _items (List[Resource]): Internal list of resources
+        No public attributes as internal storage is private
+
+    Examples:
+        >>> from ethicrawl.core import Resource, ResourceList
+        >>> resources = ResourceList()
+        >>> resources.append(Resource("https://example.com/page1"))
+        >>> resources.append(Resource("https://example.com/page2"))
+        >>> len(resources)
+        2
+        >>> filtered = resources.filter(r"page1")
+        >>> len(filtered)
+        1
     """
 
     def __init__(self, items: list[T] | None = None):
-        """
-        Initialize with optional list of Resource objects.
+        """Initialize a resource list with optional initial items.
 
         Args:
-            items (List[Resource], optional): Initial resources to add
+            items: Optional list of Resource objects to initialize with
+
+        Raises:
+            TypeError: If items is not a list or contains non-Resource objects
         """
         self._items: list[T] = []
         if items and isinstance(items, list):
@@ -53,7 +46,19 @@ class ResourceList(Generic[T]):
     def __iter__(self) -> Iterator[T]:
         return iter(self._items)
 
-    def __getitem__(self, index) -> T | list[T]:
+    def __getitem__(self, index: int | slice) -> T | "ResourceList[T]":
+        """Get items by index or slice.
+
+        Args:
+            index: Integer index or slice object
+
+        Returns:
+            Single Resource when indexed with integer, ResourceList when sliced
+        """
+        if isinstance(index, slice):
+            result: ResourceList = ResourceList()
+            result.extend(self._items[index])
+            return result
         return self._items[index]
 
     def __len__(self) -> int:
@@ -66,14 +71,13 @@ class ResourceList(Generic[T]):
         return f"ResourceList({repr(self._items)})"
 
     def append(self, item: T) -> "ResourceList[T]":
-        """
-        Add a Resource to the list with type checking.
+        """Add a resource to the list.
 
         Args:
-            item (Resource): Resource to add
+            item: Resource object to add
 
         Returns:
-            ResourceList: Self for method chaining
+            Self for method chaining
 
         Raises:
             TypeError: If item is not a Resource object
@@ -83,15 +87,14 @@ class ResourceList(Generic[T]):
         self._items.append(item)
         return self
 
-    def extend(self, items: list[T]) -> "ResourceList[T]":
-        """
-        Add multiple Resources to the list with type checking.
+    def extend(self, items: Iterable[T]) -> "ResourceList[T]":
+        """Add multiple resources to the list.
 
         Args:
-            items (List[Resource]): Resources to add
+            items: Iterable of Resource objects to add
 
         Returns:
-            ResourceList: Self for method chaining
+            Self for method chaining
 
         Raises:
             TypeError: If any item is not a Resource object
@@ -101,42 +104,27 @@ class ResourceList(Generic[T]):
         return self
 
     def filter(self, pattern: str | Pattern) -> "ResourceList[T]":
-        """
-        Filter resources by regex pattern matching against their URLs.
-
-        This method returns a new ResourceList containing only resources whose
-        URL matches the given pattern.
+        """Filter resources by URL pattern.
 
         Args:
-            pattern (str or re.Pattern): Regular expression pattern to match
-                                       Can be a string or compiled regex pattern
+            pattern: String pattern or compiled regex Pattern to match against URLs
 
         Returns:
-            ResourceList: New list containing only matching resources
-
-        Examples:
-            >>> resources = ResourceList([
-            ...     Resource("https://example.com/product-123"),
-            ...     Resource("https://example.com/about")
-            ... ])
-            >>> product_pages = resources.filter(r"product-[0-9]+")
-            >>> len(product_pages)
-            1
+            New ResourceList containing only matching resources of the same type as original
         """
         if isinstance(pattern, str):
-            pattern = compile(pattern)
+            pattern = re_compile(pattern)
 
-        result: ResourceList[T] = ResourceList()
+        result = ResourceList[T]()  # More explicit generic parameter
         for item in self._items:
             if pattern.search(str(item.url)):
-                result.append(item)
+                result.append(item)  # T is preserved
         return result
 
     def to_list(self) -> list[T]:
-        """
-        Convert to a plain Python list.
+        """Convert to a standard Python list.
 
         Returns:
-            List[Resource]: A standard Python list containing the resources
+            A copy of the internal list of resources
         """
         return self._items.copy()
