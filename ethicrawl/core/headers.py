@@ -1,3 +1,7 @@
+from __future__ import annotations
+from typing import Any, Mapping, TypeVar, cast
+
+
 class Headers(dict):
     """HTTP headers container with case-insensitive key access.
 
@@ -22,26 +26,30 @@ class Headers(dict):
         True
     """
 
-    def __init__(self, headers=None, **kwargs):
+    def __init__(self, headers: "Headers" | Mapping[str, Any] | None = None, **kwargs):
         """Initialize headers from a dictionary, dict-like object, or keyword arguments.
 
         Args:
-            headers: Optional dictionary or dict-like object of headers
+            headers: Optional dictionary, Headers instance, or any dict-like object
             **kwargs: Optional keyword arguments to add as headers
+
+        Raises:
+            TypeError: If headers is not a dict-like object with an items() method
         """
         super().__init__()  # Start with empty dict
 
-        # Handle dictionary or dict-like initialization
+        # Handle dictionary or Headers initialization
         if headers is not None:
-            try:
-                # This will work for both dict and dict-like objects with items()
-                for k, v in headers.items():
-                    self[k] = v
-            except AttributeError:
-                # If it doesn't have .items() method, try converting to dict first
-                for k, v in dict(headers).items():
-                    self[k] = v
+            # Check if it has items() method rather than strict type checking
+            if not hasattr(headers, "items") or not callable(headers.items):
+                raise TypeError(
+                    f"Expected dict-like object, got {type(headers).__name__}"
+                )
 
+            for k, v in headers.items():
+                self[k] = v
+
+        # Add any keyword arguments
         for k, v in kwargs.items():
             self[k] = v
 
@@ -110,7 +118,7 @@ class Headers(dict):
             Header value if it exists, otherwise the default value
         """
         if not isinstance(key, str):
-            return default
+            return default  # need a test here also
         try:
             return self[key]  # Use case-insensitive __getitem__
         except KeyError:

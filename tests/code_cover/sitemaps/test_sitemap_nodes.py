@@ -93,6 +93,10 @@ class TestSitemapDocument:
         ):
             document = SitemapDocument(self.get_context(), malformed_doc)
 
+    def test_items(self):
+        document = SitemapDocument(self.get_context(), index_doc)
+        document.entries
+
 
 class TestIndexDocument(TestSitemapDocument):
     def test_index(self):
@@ -125,6 +129,14 @@ class TestIndexDocument(TestSitemapDocument):
             document.entries = [entry, 1]
         document.entries = ResourceList([entry])
         assert document.entries[-1].url == "https://www.example.com/sport/sitemap.xml"
+
+    def test_entries_setter(self):
+        url = "https://www.example.com/sport/sitemap.xml"
+        entries = ResourceList()
+        entries.append(Resource(url))
+        document = IndexDocument(self.get_context())
+        with pytest.raises(TypeError, match="Expected IndexEntry, got Resource"):
+            document.entries = entries
 
 
 class TestUrlSetDocument(TestSitemapDocument):

@@ -50,6 +50,7 @@ class BaseConfig(ABC):
         Returns:
             String in format ClassName({config values})
         """
+        return str()
 
     def __str__(self) -> str:
         """Human-readable string representation.
@@ -57,3 +58,4 @@ class BaseConfig(ABC):
         Returns:
             Pretty-printed JSON representation of the configuration
         """
+        return str()

@@ -1,6 +1,8 @@
 import pytest
 
-from ethicrawl.sitemaps import UrlsetEntry
+from ethicrawl.sitemaps import UrlsetEntry, UrlsetDocument
+from ethicrawl.core import Resource, ResourceList
+from ethicrawl.context import Context
 
 
 class TestUrlsetEntry:
@@ -130,3 +132,82 @@ class TestUrlsetEntry:
 
         # Verify the representation is reasonably formatted
         # assert "UrlsetEntry" in str_rep, "Class name should be in representation"
+
+    def test_entries_setter(self):
+        """Test the entries setter validation."""
+        # Create a document for testing
+        context = Context(resource=Resource("https://www.example.com"))
+        document = UrlsetDocument(context)
+
+        # Test 1: Valid case - setting a ResourceList of UrlsetEntry objects
+        entries = ResourceList(
+            [
+                UrlsetEntry("https://example.com/page1"),
+                UrlsetEntry("https://example.com/page2", priority=0.8),
+                UrlsetEntry("https://example.com/page3", changefreq="daily"),
+            ]
+        )
+
+        document.entries = entries
+        assert document.entries == entries, "Valid entries should be accepted"
+
+        # Test 2: TypeError when not providing a ResourceList
+        invalid_types = [
+            [],  # Regular list
+            {},  # Dictionary
+            "string",  # String
+            123,  # Integer
+            None,  # None
+        ]
+
+        for invalid in invalid_types:
+            with pytest.raises(TypeError, match="entries must be a ResourceList"):
+                document.entries = invalid
+
+        # Test 3: TypeError when ResourceList contains non-UrlsetEntry objects
+        mixed_entries = ResourceList(
+            [
+                UrlsetEntry("https://example.com/valid"),
+                Resource(
+                    "https://example.com/invalid"
+                ),  # Resource instead of UrlsetEntry
+            ]
+        )
+
+        with pytest.raises(
+            TypeError, match=f"entries must contain only UrlsetEntry objects"
+        ):
+            document.entries = mixed_entries
+
+        # Test 4: Verify original entries remain unchanged after failed validation
+        # First set valid entries
+        valid_entries = ResourceList([UrlsetEntry("https://example.com/original")])
+        document.entries = valid_entries
+
+        # Try invalid set that should fail
+        try:
+            document.entries = "invalid"
+        except TypeError:
+            pass
+
+        # Verify original entries are still there
+        assert (
+            document.entries == valid_entries
+        ), "Failed setter should not alter existing entries"
+
+    # @entries.setter
+    # def entries(self, entries: ResourceList) -> None:
+    #     """Set the URLs in this urlset.
+
+    #     Args:
+    #         entries: List of page URLs as UrlsetEntry objects
+
+    #     Raises:
+    #         TypeError: If entries is not a ResourceList or contains non-UrlsetEntry objects
+    #     """
+    #     if not isinstance(entries, ResourceList):
+    #         raise TypeError("entries must be a ResourceList")
+    #     for entry in entries:
+    #         if not isinstance(entry, UrlsetEntry):
+    #             raise TypeError("entries must contain only UrlsetEntry objects")
+    #     self._entries = entries

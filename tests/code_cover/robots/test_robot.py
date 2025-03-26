@@ -1,5 +1,5 @@
 import pytest
-from unittest.mock import Mock
+from unittest.mock import Mock, patch
 
 from ethicrawl.robots import Robot, RobotFactory
 from ethicrawl.robots.robotochan import RobotoChan
@@ -232,3 +232,38 @@ class TestRobot:
         url = "https://www.example.com"
         context = Context(Resource(Url(url)))
         assert Robot(RobotFactory.robotify(Url(url)), context).context == context
+
+    def test_robotochan_says_gambatte(self):
+        url = "https://www.example.com"
+        context = Context(Resource(Url(url)))
+        r = RobotoChan(url, context)
+        assert str(r) == "頑張ってください!"
+
+    def test_can_fetch_fallback_user_agent(self):
+        """Test fallback to config user agent when client has no user_agent."""
+        url = "https://www.example.com"
+
+        # Create a mock client without a user_agent attribute
+        mock_client = Mock(spec=Client)
+        # Remove user_agent from the mock (unlike other tests)
+        if hasattr(mock_client, "user_agent"):
+            del mock_client.user_agent
+
+        mock_response = Mock()
+        mock_response.status_code = 200
+        mock_response.text = robots_txt
+        mock_client.get.return_value = mock_response
+
+        context = Context(Resource(url), mock_client)
+        robot = Robot(RobotFactory.robotify(Url(url)), context)
+
+        # Patch Config().http.user_agent to return a known value
+        with patch("ethicrawl.config.Config") as mock_config:
+            # Configure the mock to return a value for the user agent
+            mock_config_instance = Mock()
+            mock_config.return_value = mock_config_instance
+            mock_config_instance.http = Mock()
+            mock_config_instance.http.user_agent = "fallback-agent"
+
+            # Call can_fetch (should use the fallback user_agent)
+            assert robot.can_fetch("https://www.example.com/about") is True

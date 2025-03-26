@@ -47,3 +47,36 @@ class TestRequestsTransport:
             assert "Content-Type".lower() in response.headers
 
         Config().reset()
+
+    def test_server_error_response(self):
+        """Test transport handling of 500-level server error responses."""
+        # Create a mock response with a 500-level error
+        mock_response = MagicMock()
+        mock_response.url = "https://example.com/api"
+        mock_response.status_code = 503  # Service Unavailable
+        mock_response.text = "Service Unavailable"
+        mock_response.headers = {"Content-Type": "text/plain", "Retry-After": "120"}
+        mock_response.content = b"Service Unavailable"
+
+        # Create context and request
+        context = Context(Resource("https://example.com"))
+        request = HttpRequest(
+            "https://example.com/api", headers={"User-Agent": "Ethicrawl-Test"}
+        )
+
+        # Mock the session.get method to return our error response
+        with patch("requests.Session.get", return_value=mock_response):
+            # Create transport
+            transport = RequestsTransport(context)
+
+            # Execute the request
+            response = transport.get(request)
+
+            # Verify the response correctly represents the server error
+            assert response.status_code == 503
+            assert str(response.url) == "https://example.com/api"
+            assert response.text == "Service Unavailable"
+            assert "content-type" in response.headers
+            assert "retry-after" in response.headers
+            assert response.headers["retry-after"] == "120"
+            assert response.content == b"Service Unavailable"

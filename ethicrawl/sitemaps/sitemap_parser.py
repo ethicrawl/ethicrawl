@@ -149,7 +149,8 @@ class SitemapParser:
             ResourceList containing all URLs found in the traverse
         """
         # Collection of all found URLs
-        if not isinstance(document, IndexDocument):  # we shouldn't be here
+        if not isinstance(document, IndexDocument):  # pragma: no cover
+            # we shouldn't be here
             return ResourceList()
         max_depth = Config().sitemap.max_depth
         all_urls: ResourceList = ResourceList([])

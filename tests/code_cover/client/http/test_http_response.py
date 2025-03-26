@@ -1,11 +1,11 @@
 import pytest
 
 from ethicrawl.core import Headers
+from ethicrawl.client import Request, Response
 from ethicrawl.client.http import HttpResponse, HttpRequest
 
 
 class TestHttpResponse:
-    pass
 
     def test_creation(self):
         url = "https://www.example.com"
@@ -75,6 +75,17 @@ class TestHttpResponse:
                 text=1,  # Wrong type
             )
 
+        with pytest.raises(
+            TypeError, match="request must be an HttpRequest instance, got Request"
+        ):
+            HttpResponse(
+                url=url,
+                request=Request(url),
+                status_code=200,
+                content=bytes("foo", "utf8"),
+                text=1,  # Wrong type
+            )
+
     def test_str(self):
         url = "https://www.example.com"
         HttpResponse(
@@ -111,3 +122,15 @@ class TestHttpResponse:
                 text=text,
             )
         )
+
+    def test_passing_non_response(self):
+        url = "https://www.example.com"
+        with pytest.raises(
+            TypeError, match="request must be an Request instance, got str"
+        ):
+            HttpResponse(
+                url=url,
+                status_code=200,
+                request=url,
+                text="foo",
+            )

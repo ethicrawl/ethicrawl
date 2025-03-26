@@ -56,7 +56,7 @@ class ResourceList(Generic[T]):
             Single Resource when indexed with integer, ResourceList when sliced
         """
         if isinstance(index, slice):
-            result = ResourceList()
+            result: ResourceList = ResourceList()
             result.extend(self._items[index])
             return result
         return self._items[index]

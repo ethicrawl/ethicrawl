@@ -43,7 +43,7 @@ class HttpResponse(Response):
         True
     """
 
-    request: HttpRequest  # Type override from parent class
+    request: HttpRequest  # type: ignore # Intentional override with more specific type
     status_code: int = 200
     headers: Headers = field(default_factory=Headers)
     text: str = str()  # Only populated for text content
@@ -82,11 +82,7 @@ class HttpResponse(Response):
                 f"request must be an HttpRequest instance, got {type(self.request).__name__}"
             )
 
-        # Validate content and text consistency
-        if self.content is not None and not isinstance(self.content, bytes):
-            raise TypeError(
-                f"content must be bytes or None, got {type(self.content).__name__}"
-            )
+        # Validate text consistency, content is handled by Response
         if self.text is not None and not isinstance(self.text, str):
             raise TypeError(
                 f"text must be a string or None, got {type(self.text).__name__}"

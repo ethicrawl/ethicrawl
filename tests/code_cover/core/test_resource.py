@@ -28,3 +28,8 @@ class TestResource:
         url = "https://www.example.com"
         assert Resource(url) == Resource(url)
         assert Resource(url) != 1
+
+    def test_resource_str_and_repr(self):
+        url = "https://www.example.com"
+        assert str(Resource(url)) == url
+        assert repr(Resource(url)) == f"Resource('{url}')"

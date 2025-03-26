@@ -1,5 +1,5 @@
 import pytest
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock, patch, PropertyMock
 from ethicrawl.sitemaps import (
     IndexDocument,
     IndexEntry,
@@ -358,3 +358,54 @@ class TestSitemapParser:
             assert str(result[0].url) == "https://www.example.com/result1"
             assert str(result[1].url) == "https://www.example.com/result3a"
             assert str(result[2].url) == "https://www.example.com/result3b"
+
+    def test_response_type_handling(self):
+        """Test handling of different response types in _get method."""
+        context = self.context()
+        sp = SitemapParser(context)
+        r = Resource(context.resource.url)
+
+        # Case 1: Response with 'content' attribute that's a string
+        with patch.object(context.client, "get") as mock_get:
+            # Create a custom response class instead of MagicMock
+            class StringContentResponse:
+                def __init__(self):
+                    self.content = urlset_doc
+
+                # No text attribute
+
+            mock_response = StringContentResponse()
+            mock_get.return_value = mock_response
+
+            result = sp._get(r)
+            assert isinstance(result, UrlsetDocument)
+
+        # Case 2: Response with 'content' attribute that's bytes and needs decoding
+        with patch.object(context.client, "get") as mock_get:
+            # Create a custom response class with bytes content
+            class BytesContentResponse:
+                def __init__(self):
+                    self.content = urlset_doc.encode("utf-8")
+
+                # No text attribute
+
+            mock_response = BytesContentResponse()
+            mock_get.return_value = mock_response
+
+            result = sp._get(r)
+            assert isinstance(result, UrlsetDocument)
+
+        # Case 3: Response with neither text nor content attributes (fallback to str)
+        with patch.object(context.client, "get") as mock_get:
+            # Create a custom response class with only __str__
+            class StrResponse:
+                def __str__(self):
+                    return urlset_doc
+
+                # No text or content attributes
+
+            mock_response = StrResponse()
+            mock_get.return_value = mock_response
+
+            result = sp._get(r)
+            assert isinstance(result, UrlsetDocument)

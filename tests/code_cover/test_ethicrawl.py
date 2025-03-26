@@ -235,3 +235,46 @@ class TestEthicrawl:
             f"{base_url}/private/secret.html", headers={"Accept": "text/html"}
         )
         assert result.status_code == 200  # Should still use DefaultBot
+
+    def test_get_root_domain(self):
+        ec = Ethicrawl()
+        with pytest.raises(RuntimeError, match="Root domain not initialized"):
+            ec._get_root_domain()
+
+    def test_get_with_non_http_client(self):
+        """Test the get method with a client that's not an HttpClient."""
+        from ethicrawl.client.client import Client
+
+        # Create a custom client that is not an HttpClient
+        class CustomClient(Client):
+            def __init__(self):
+                self.get_called = False
+                self.headers_passed = False
+
+            def get(self, resource, **kwargs):
+                self.get_called = True
+                # Check if headers was passed (should not be in this case)
+                self.headers_passed = "headers" in kwargs
+                mock_response = Mock()
+                mock_response.status_code = 200
+                mock_response.text = "Custom client response"
+                return mock_response
+
+        crawler = Ethicrawl()
+        custom_client = CustomClient()
+
+        # Bind with custom client
+        crawler.bind("https://example.com", client=custom_client)
+
+        # Make a request - should call the custom client's get method without headers
+        result = crawler.get("https://example.com/page", headers={"Custom": "Header"})
+
+        # Verify the client's get was called
+        assert custom_client.get_called is True
+
+        # Verify that headers were NOT passed to the client's get method
+        assert custom_client.headers_passed is False
+
+        # Verify we got the expected response
+        assert result.status_code == 200
+        assert result.text == "Custom client response"

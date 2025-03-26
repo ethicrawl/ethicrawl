@@ -78,6 +78,7 @@ class ChromeTransport(Transport):
         options.add_argument("--disable-dev-shm-usage")
         options.add_argument("--disable-gpu")
         options.add_argument("--window-size=1920,1080")
+        options.add_argument(f"--user-agent={Config().http.user_agent}")
 
         # Set up proxy if configured
         http_proxy = Config().http.proxies.http
