@@ -5,42 +5,37 @@ from .url import Url
 
 @dataclass
 class Resource:
-    """
-    Resource abstraction for web content.
+    """URL-identified entity within the crawler system.
 
-    Represents a web resource with its URL. Used as the primary object for
-    passing URLs through the system with context.
+    Resource is a generic representation of anything addressable by a URL
+    within the Ethicrawl system. It serves as a common foundation for various
+    components like requests, responses, robots.txt files, sitemap entries, etc.
 
-    Examples:
-        >>> from ethicrawl import Resource, Url
-        >>> resource = Resource(Url("https://example.com/image.jpg"))
-        >>> print(resource.url.path)
-        /image.jpg
-
-        # String URLs are automatically converted to Url objects
-        >>> resource = Resource("https://example.com/image.jpg")
-        >>> isinstance(resource.url, Url)
-        True
-
-        # Resources can be used in sets and as dictionary keys
-        >>> resources = {Resource("https://example.com/a"), Resource("https://example.com/b")}
-        >>> len(resources)
-        2
+    This class provides URL type safety, consistent equality comparison, and
+    proper hashing behavior for all URL-addressable entities.
 
     Attributes:
-        url (Url): The URL of the resource. Can be provided as a string or Url object.
+        url: The Url object identifying this resource. Can be initialized
+            with either a string or Url object.
+
+    Raises:
+        TypeError: When initialized with something other than a string or Url object
+
+    Examples:
+        >>> resource = Resource("https://example.com/robots.txt")
+        >>> resource.url.path
+        '/robots.txt'
+        >>> resource2 = Resource(Url("https://example.com/robots.txt"))
+        >>> resource == resource2
+        True
     """
 
     url: Url
 
     def __post_init__(self):
-        """
-        Validate and normalize the URL.
+        """Validate and normalize the url attribute after initialization.
 
-        Automatically converts string URLs to Url objects.
-
-        Raises:
-            TypeError: If url is neither a string nor a Url object
+        Converts string URLs to Url objects and raises TypeError for invalid types.
         """
         if isinstance(self.url, str):  # user provided a str; cast to Url
             self.url = Url(self.url)
@@ -50,29 +45,32 @@ class Resource:
             )
 
     def __hash__(self):
-        """
-        Make instances hashable based on their URL.
-
-        This allows Resource objects to be used in sets or as dictionary keys.
+        """Generate a hash based on the string representation of the URL.
 
         Returns:
-            int: Hash value based on the string representation of the URL
+            Integer hash value
         """
         return hash(str(self.url))
 
     def __eq__(self, other):
-        """
-        Equality check based on URL and exact type.
+        """Compare resources for equality based on their URLs.
 
-        Two Resource objects are considered equal if they're of the same class
-        and have the same URL.
+        Two resources are considered equal if they have the same URL.
 
         Args:
-            other: Object to compare with
+            other: Another Resource object to compare with
 
         Returns:
-            bool: True if objects are equal, False otherwise
+            True if resources have the same URL, False otherwise
         """
         if not isinstance(other, self.__class__):
             return False
         return str(self.url) == str(other.url)
+
+    def __str__(self) -> str:
+        """Return the URL as a string for better readability."""
+        return str(self.url)
+
+    def __repr__(self) -> str:
+        """Return a developer-friendly representation."""
+        return f"Resource('{self.url}')"

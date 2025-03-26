@@ -12,29 +12,37 @@ from .requests_transport import RequestsTransport
 
 
 class HttpClient(Client):
-    # TODO: implement retries
-    """
-    HTTP client for making web requests with rate limiting and jitter.
+    """HTTP client implementation with configurable transports and rate limiting.
 
-    Supports both regular HTTP requests and Chrome-driven browser requests.
-    This client automatically applies rate limiting and jitter to avoid
-    overloading servers with requests.
+    This client provides a flexible HTTP interface with the following features:
+    - Configurable backend transport (Requests or Selenium Chrome)
+    - Built-in rate limiting with jitter to avoid detection
+    - Header management with User-Agent control
+    - Automatic retry with exponential backoff
+    - Detailed logging of request/response cycles
 
-    Examples:
-        >>> from ethicrawl import HttpClient, Resource, Url
-        >>> client = HttpClient(timeout=30, rate_limit=1.0, jitter=0.2)
-        >>> url = Url("https://example.com")
-        >>> resource = Resource(url)
-        >>> response = client.get(resource)
+    The client can use either a simple RequestsTransport for basic HTTP operations
+    or a ChromeTransport for JavaScript-rendered content.
+
+    Attributes:
+        timeout (int): Request timeout in seconds
+        min_interval (float): Minimum time between requests in seconds
+        jitter (float): Random time variation added to rate limiting
+        headers (Headers): Default headers to send with each request
+        last_request_time (float): Timestamp of the last request
+        user_agent (str): User agent string used for requests
+
+    Example:
+        >>> from ethicrawl.client.http import HttpClient
+        >>> from ethicrawl.core import Resource
+        >>> client = HttpClient(rate_limit=1.0)  # 1 request per second
+        >>> response = client.get(Resource("https://example.com"))
         >>> print(response.status_code)
         200
 
-    Attributes:
-        transport: The underlying transport (RequestsTransport or ChromeTransport)
-        timeout (int): Default timeout for requests in seconds
-        user_agent (str): User agent string used for requests
-        min_interval (float): Minimum time between requests in seconds
-        jitter (float): Random delay factor (0-1) for rate limiting
+        # Switch to Chrome for JavaScript-heavy sites
+        >>> chrome_client = client.with_chrome(headless=True)
+        >>> js_response = chrome_client.get(Resource("https://spa-example.com"))
     """
 
     def __init__(
@@ -47,19 +55,18 @@ class HttpClient(Client):
         headers=None,
         chrome_params=None,
     ):
-        """
-        Initialize the HTTP client.
+        """Initialize an HTTP client with configurable transport and rate limiting.
 
         Args:
-            context (Context, optional): Context for the client. If None, a default
-                                       Context with a dummy URL will be created.
-            transport (Transport, optional): Transport implementation to use.
-                                          If None, RequestsTransport is used.
+            context (Context, optional): Context for the client. If None, a default context
+                with a dummy URL will be created.
+            transport (Transport, optional): Custom transport implementation. If None,
+                either ChromeTransport or RequestsTransport will be used.
             timeout (int): Request timeout in seconds
-            rate_limit (float): Maximum requests per second (0 for unlimited)
-            jitter (float): Random delay factor (0-1) to add to rate limiting
-            chrome_params (dict, optional): Parameters for Chrome if used
-                (headless, wait_time, chrome_driver_path)
+            rate_limit (float): Maximum requests per second. Set to 0 for no limit.
+            jitter (float): Random variation (0-1) to add to rate limiting
+            headers (dict, optional): Default headers to send with each request
+            chrome_params (dict, optional): Parameters for ChromeTransport if used
         """
         if not isinstance(context, Context):
             context = Context(Resource(Url("http://www.example.com/")))  # dummy url
@@ -94,12 +101,6 @@ class HttpClient(Client):
 
     @property
     def user_agent(self) -> str:
-        """
-        Get the User-Agent from the headers or underlying transport.
-
-        Returns:
-            str: The current User-Agent string
-        """
         # First check if we have a User-Agent header
         if "user-agent" in self.headers:
             return self.headers["user-agent"]
@@ -108,12 +109,6 @@ class HttpClient(Client):
 
     @user_agent.setter
     def user_agent(self, agent):
-        """
-        Set the User-Agent on both headers and the underlying transport.
-
-        Args:
-            agent (str): The User-Agent string to use for requests
-        """
         # Set in our headers
         self.headers["user-agent"] = agent
         # Also set on transport for consistency
@@ -127,28 +122,25 @@ class HttpClient(Client):
         rate_limit=0.5,
         jitter=0.3,
     ) -> "HttpClient":
-        """
-        Create a new client that uses a Chrome-powered transport.
+        """Create a new HttpClient instance using Chrome/Selenium transport.
 
-        Creates a new HttpClient instance that uses Selenium with Chrome/Chrome to execute
-        JavaScript and render pages before returning them, allowing extraction
-        of content from modern single-page applications.
+        This creates a new client that can render JavaScript and interact
+        with dynamic web applications.
 
         Args:
-            headless (bool): Run browser in headless mode
-            wait_time (int): Wait time for JavaScript execution in seconds
+            headless (bool): Whether to run Chrome in headless mode
+            wait_time (int): Default time to wait for page elements in seconds
             timeout (int): Request timeout in seconds
             rate_limit (float): Maximum requests per second
-            jitter (float): Random delay factor (0-1)
+            jitter (float): Random variation factor for rate limiting
 
         Returns:
-            HttpClient: A new client configured with Chrome transport
+            HttpClient: A new client instance configured to use Chrome
 
         Example:
-            >>> from ethicrawl import HttpClient
             >>> client = HttpClient()
-            >>> chrome_client = client.with_chrome(headless=False)
-            >>> # Now use chrome_client for JavaScript-heavy pages
+            >>> chrome = client.with_chrome(headless=True)
+            >>> response = chrome.get(Resource("https://single-page-app.com"))
         """
         chrome_params = {"headless": headless, "wait_time": wait_time}
 
@@ -162,7 +154,6 @@ class HttpClient(Client):
         )
 
     def _apply_rate_limiting(self):
-        """Apply rate limiting to avoid overloading servers."""
         # If this is the first request, no need to apply rate limiting
         if self.last_request_time is None:
             return
@@ -190,22 +181,31 @@ class HttpClient(Client):
         timeout: int | None = None,
         headers: dict | None = None,
     ) -> HttpResponse:
-        """
-        Make a GET request to the specified URL with rate limiting.
+        """Make a GET request to the specified resource.
+
+        This method applies rate limiting, handles headers, and logs the result.
+        For JavaScript-heavy sites, use with_chrome() first to switch to
+        a Chrome-based transport.
 
         Args:
             resource (Resource): The resource to request
-            timeout (int, optional): Request timeout override for this request
+            timeout (int, optional): Request-specific timeout that overrides
+                the client's default timeout
             headers (dict, optional): Additional headers for this request
 
         Returns:
-            HttpResponse: The response from the server
+            HttpResponse: Response object with status, headers and content
 
         Raises:
-            IOError: If the request fails due to network issues or other errors
-            TypeError: If resource is not a Resource object
-        """
+            TypeError: If resource is not a Resource instance
+            IOError: If the HTTP request fails for any reason
 
+        Example:
+            >>> client = HttpClient()
+            >>> response = client.get(Resource("https://example.com"))
+            >>> if response.status_code == 200:
+            ...     print(f"Got {len(response.content)} bytes")
+        """
         # First validate that resource is the correct type
         if not isinstance(resource, Resource):
             raise TypeError(f"Expected Resource object, got {type(resource).__name__}")

@@ -3,7 +3,7 @@ import pytest
 from colorama import Fore, Style
 from io import StringIO
 
-from ethicrawl.logger.formatter import ColorFormatter
+from ethicrawl.logger.color_formatter import ColorFormatter
 
 
 class TestColorFormatter:

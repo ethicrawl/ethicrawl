@@ -11,11 +11,44 @@ from ethicrawl.sitemaps import IndexEntry
 
 @dataclass
 class Robot(Resource):
-    _context: (
-        Context  # Do not change this after initialisation as stupid things will happen
-    )
+    """Representation of a site's robots.txt file with permission checking.
+
+    This class handles fetching, parsing, and enforcing robots.txt rules according to
+    the Robots Exclusion Protocol. It follows standard robots.txt behavior:
+    - 404 response: allow all URLs (fail open)
+    - 200 response: parse and enforce rules in the robots.txt file
+    - Other responses (5xx, etc.): deny all URLs (fail closed)
+
+    As a Resource subclass, Robot maintains the URL identity of the robots.txt file
+    while providing methods to check permissions and access sitemap references.
+
+    Attributes:
+        url: URL of the robots.txt file (inherited from Resource)
+        context: Context with client for making requests
+
+    Example:
+        >>> from ethicrawl.context import Context
+        >>> from ethicrawl.core import Resource, Url
+        >>> from ethicrawl.robots import Robot
+        >>> from ethicrawl.client.http import HttpClient
+        >>> client = HttpClient()
+        >>> context = Context(Resource("https://example.com"), client)
+        >>> robot = Robot(Url("https://example.com/robots.txt"), context)
+        >>> robot.can_fetch("https://example.com/allowed")
+        True
+    """
+
+    _context: Context
 
     def __post_init__(self):
+        """Initialize the robot instance and fetch robots.txt.
+
+        Fetches the robots.txt file using the provided context's client,
+        then parses it according to response status:
+        - 404: Create empty ruleset (allow all)
+        - 200: Parse actual robots.txt content
+        - Other: Create restrictive ruleset (deny all)
+        """
         super().__post_init__()
         self._logger = self._context.logger("robots")
         self._logger.debug("Robot instance initialized for %s", self.url)
@@ -40,25 +73,33 @@ class Robot(Resource):
 
     @property
     def context(self) -> Context:
+        """Get the context associated with this robot.
+
+        Returns:
+            The context object containing client and other settings
+        """
         return self._context
 
     def can_fetch(
         self, resource: Resource | Url | str, user_agent: str | None = None
     ) -> bool:
-        """
-        Check if a URL can be fetched according to robots.txt rules.
+        """Check if a URL can be fetched according to robots.txt rules.
 
         Args:
-            resource: URL to check (as str, Url, or Resource)
-            user_agent: Optional User-Agent to check permissions for.
-                       If None, uses the client's default User-Agent.
+            resource: The URL to check against robots.txt rules
+            user_agent: Optional user agent string to use for checking.
+                If not provided, uses client's user_agent or config default.
 
         Returns:
-            bool: True if allowed by robots.txt
+            True if the URL is allowed by robots.txt
 
         Raises:
-            RobotDisallowedError: If the URL is disallowed by robots.txt
             TypeError: If resource is not a string, Url, or Resource
+            RobotDisallowedError: If the URL is disallowed by robots.txt
+
+        Example:
+            >>> if robot.can_fetch("https://example.com/page"):
+            ...     response = client.get(Resource("https://example.com/page"))
         """
         # this is an ingress point, so we should be able to handle Url or str; but normalise to Resource
         if isinstance(resource, (str, Url)):
@@ -100,6 +141,15 @@ class Robot(Resource):
 
     @property
     def sitemaps(self) -> ResourceList:
+        """Get sitemap URLs referenced in robots.txt.
+
+        Returns:
+            ResourceList containing IndexEntry objects for each sitemap URL
+
+        Example:
+            >>> for sitemap in robot.sitemaps:
+            ...     print(f"Found sitemap: {sitemap.url}")
+        """
         # Convert iterator to list first
         sitemap_urls = list(self._parser.sitemaps)
 

@@ -1,12 +1,12 @@
-"""Sitemap parsing and handling."""
+"""XML sitemap parsing and traversal for discovering website structure."""
 
 from .index_entry import IndexEntry
-from .index_node import IndexNode
+from .index_document import IndexDocument
 from .sitemap_entry import SitemapEntry
-from .sitemap_node import SitemapNode
+from .sitemap_document import SitemapDocument
 from .sitemap_parser import SitemapParser
 from .urlset_entry import UrlsetEntry
-from .urlset_node import UrlsetNode
+from .urlset_document import UrlsetDocument
 
 URLSET = "urlset"
 SITEMAPINDEX = "sitemapindex"
@@ -14,10 +14,10 @@ SITEMAPINDEX = "sitemapindex"
 
 __all__ = [
     "IndexEntry",
-    "IndexNode",
+    "IndexDocument",
     "SitemapEntry",
-    "SitemapNode",
+    "SitemapDocument",
     "SitemapParser",
     "UrlsetEntry",
-    "UrlsetNode",
+    "UrlsetDocument",
 ]

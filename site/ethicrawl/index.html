@@ -1,0 +1,2854 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.6">
+<title>ethicrawl API documentation</title>
+<meta name="description" content="Ethicrawl - An ethical web crawler that respects robots.txt and rate limits …">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+/* Collapse source docstrings */
+setTimeout(() => {
+[...document.querySelectorAll('.hljs.language-python > .hljs-string')]
+.filter(el => el.innerHTML.length > 200 && ['"""', "'''"].includes(el.innerHTML.substring(0, 3)))
+.forEach(el => {
+let d = document.createElement('details');
+d.classList.add('hljs-string');
+d.innerHTML = '<summary>"""</summary>' + el.innerHTML.substring(3);
+el.replaceWith(d);
+});
+}, 100);
+})</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Package <code>ethicrawl</code></h1>
+</header>
+<section id="section-intro">
+<p>Ethicrawl - An ethical web crawler that respects robots.txt and rate limits.</p>
+<p>This package provides tools for crawling websites in a respectful manner,
+following robots.txt rules and maintaining reasonable request rates.</p>
+</section>
+<section>
+<h2 class="section-title" id="header-submodules">Sub-modules</h2>
+<dl>
+<dt><code class="name"><a title="ethicrawl.client" href="client/index.html">ethicrawl.client</a></code></dt>
+<dd>
+<div class="desc"><p>Client interfaces for making ethical requests to resources.</p></div>
+</dd>
+<dt><code class="name"><a title="ethicrawl.config" href="config/index.html">ethicrawl.config</a></code></dt>
+<dd>
+<div class="desc"><p>Configuration system for Ethicrawl.</p></div>
+</dd>
+<dt><code class="name"><a title="ethicrawl.context" href="context/index.html">ethicrawl.context</a></code></dt>
+<dd>
+<div class="desc"><p>Context management for sharing state between components.</p></div>
+</dd>
+<dt><code class="name"><a title="ethicrawl.core" href="core/index.html">ethicrawl.core</a></code></dt>
+<dd>
+<div class="desc"><p>Core types and utilities for resource identification and handling.</p></div>
+</dd>
+<dt><code class="name"><a title="ethicrawl.domain_context" href="domain_context.html">ethicrawl.domain_context</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="ethicrawl.error" href="error/index.html">ethicrawl.error</a></code></dt>
+<dd>
+<div class="desc"><p>Exception classes for error handling throughout the Ethicrawl library.</p></div>
+</dd>
+<dt><code class="name"><a title="ethicrawl.ethicrawl" href="ethicrawl.html">ethicrawl.ethicrawl</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="ethicrawl.logger" href="logger/index.html">ethicrawl.logger</a></code></dt>
+<dd>
+<div class="desc"><p>Provides structured, configurable logging across the application.</p></div>
+</dd>
+<dt><code class="name"><a title="ethicrawl.robots" href="robots/index.html">ethicrawl.robots</a></code></dt>
+<dd>
+<div class="desc"><p>Robots.txt parsing and permission checking</p></div>
+</dd>
+<dt><code class="name"><a title="ethicrawl.sitemaps" href="sitemaps/index.html">ethicrawl.sitemaps</a></code></dt>
+<dd>
+<div class="desc"><p>XML sitemap parsing and traversal for discovering website structure.</p></div>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="ethicrawl.Config"><code class="flex name class">
+<span>class <span class="ident">Config</span></span>
+<span>(</span><span>http: <a title="ethicrawl.config.http_config.HttpConfig" href="config/http_config.html#ethicrawl.config.http_config.HttpConfig">HttpConfig</a> = &lt;factory&gt;,<br>logger: <a title="ethicrawl.config.logger_config.LoggerConfig" href="config/logger_config.html#ethicrawl.config.logger_config.LoggerConfig">LoggerConfig</a> = &lt;factory&gt;,<br>sitemap: <a title="ethicrawl.config.sitemap_config.SitemapConfig" href="config/sitemap_config.html#ethicrawl.config.sitemap_config.SitemapConfig">SitemapConfig</a> = &lt;factory&gt;)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass
+class Config(metaclass=SingletonMeta):
+    &#34;&#34;&#34;Global configuration singleton for Ethicrawl.
+
+    This class provides a centralized, thread-safe configuration system
+    for all components of Ethicrawl. It implements the Singleton pattern
+    to ensure consistent settings throughout the application.
+
+    The configuration is organized into sections (http, logger, sitemap)
+    with each section containing component-specific settings.
+
+    Thread Safety:
+        All configuration updates are protected by a reentrant lock,
+        ensuring thread-safe operation in multi-threaded crawling scenarios.
+
+    Integration Features:
+        - Convert to/from dictionaries for integration with external config systems
+        - JSON serialization for storage or transmission
+        - Hierarchical structure matches common config formats
+
+    Attributes:
+        http: HTTP-specific configuration (user agent, headers, timeout)
+        logger: Logging configuration (levels, format, output)
+        sitemap: Sitemap parsing configuration (limits, defaults)
+
+    Example:
+        &gt;&gt;&gt; from ethicrawl.config import Config
+        &gt;&gt;&gt; config = Config()  # Get the global instance
+        &gt;&gt;&gt; config.http.user_agent = &#34;MyCustomBot/1.0&#34;
+        &gt;&gt;&gt; config.logger.level = &#34;DEBUG&#34;
+        &gt;&gt;&gt;
+        &gt;&gt;&gt; # Thread-safe update of multiple settings at once
+        &gt;&gt;&gt; config.update({
+        ...     &#34;http&#34;: {&#34;timeout&#34;: 30},
+        ...     &#34;logger&#34;: {&#34;component_levels&#34;: {&#34;robots&#34;: &#34;DEBUG&#34;}}
+        ... })
+        &gt;&gt;&gt;
+        &gt;&gt;&gt; # Get a snapshot for thread-safe reading
+        &gt;&gt;&gt; snapshot = config.get_snapshot()
+        &gt;&gt;&gt; print(snapshot.http.timeout)
+        30
+        &gt;&gt;&gt;
+        &gt;&gt;&gt; # Export config for integration with external systems
+        &gt;&gt;&gt; config_dict = config.to_dict()
+        &gt;&gt;&gt; config_json = str(config)
+    &#34;&#34;&#34;
+
+    http: HttpConfig = field(default_factory=HttpConfig)
+    logger: LoggerConfig = field(default_factory=LoggerConfig)
+    sitemap: SitemapConfig = field(default_factory=SitemapConfig)
+
+    # Thread safety helpers
+    _lock = threading.RLock()
+
+    def get_snapshot(self):
+        &#34;&#34;&#34;Create a thread-safe deep copy of the current configuration.
+
+        Returns:
+            A deep copy of the current Config object
+        &#34;&#34;&#34;
+        with self._lock:
+            return copy.deepcopy(self)
+
+    def update(self, config_dict: dict[str, Any]) -&gt; None:
+        &#34;&#34;&#34;Update configuration from a dictionary.
+
+        Updates configuration sections based on a nested dictionary structure.
+        The dictionary should have section names as top-level keys and
+        property-value pairs as nested dictionaries.
+
+        Args:
+            config_dict: Dictionary with configuration settings
+
+        Raises:
+            AttributeError: If trying to set a property that doesn&#39;t exist
+
+        Example:
+            &gt;&gt;&gt; config.update({
+            ...     &#34;http&#34;: {
+            ...         &#34;user_agent&#34;: &#34;CustomBot/1.0&#34;,
+            ...         &#34;timeout&#34;: 30
+            ...     },
+            ...     &#34;logger&#34;: {
+            ...         &#34;level&#34;: &#34;DEBUG&#34;
+            ...     }
+            ... })
+        &#34;&#34;&#34;
+        with self._lock:
+            for section_name, section_dict in config_dict.items():
+                if not hasattr(self, section_name):
+                    continue
+
+                section_obj = getattr(self, section_name)
+
+                for k, v in section_dict.items():
+                    # Special handling for component_levels
+                    if section_name == &#34;logger&#34; and k == &#34;component_levels&#34;:
+                        # Use the set_component_level method instead of direct assignment
+                        for component, level in v.items():
+                            section_obj.set_component_level(component, level)
+                    else:
+                        # Check if the attribute exists before trying to set it
+                        if not hasattr(section_obj.__class__, k) or not isinstance(
+                            getattr(section_obj.__class__, k), property
+                        ):
+                            raise AttributeError(
+                                f&#34;No such property: &#39;{k}&#39; on {section_name} config&#34;
+                            )
+
+                        try:
+                            setattr(section_obj, k, v)
+                        except AttributeError as exc:  # pragma: no cover
+                            # Provide a more helpful error message
+                            raise AttributeError(
+                                f&#34;Failed to set &#39;{k}&#39; on {section_name} config: {exc}&#34;
+                            ) from exc
+
+    @classmethod
+    def reset(cls):
+        &#34;&#34;&#34;Reset the singleton instance to default values.
+
+        Removes the existing instance from the singleton registry,
+        causing a new instance to be created on next access.
+
+        Example:
+            &gt;&gt;&gt; Config.reset()  # Reset to defaults
+            &gt;&gt;&gt; config = Config()  # Get fresh instance
+        &#34;&#34;&#34;
+        with cls.__class__._lock:
+            if cls in cls.__class__._instances:
+                del cls.__class__._instances[cls]
+
+    def to_dict(self):
+        &#34;&#34;&#34;Convert the configuration to a dictionary.
+
+        Returns:
+            A nested dictionary representing all configuration sections
+        &#34;&#34;&#34;
+        result = {}
+
+        # Get all public attributes of this object
+        for section_name, section_value in self.__dict__.items():
+            # Skip private attributes
+            if section_name.startswith(&#34;_&#34;):
+                continue
+
+            # All sections should have to_dict() method
+            result[section_name] = section_value.to_dict()
+
+        return result
+
+    def __str__(self):
+        &#34;&#34;&#34;Format the configuration as a JSON string.
+
+        Returns:
+            Formatted JSON representation of the configuration
+        &#34;&#34;&#34;
+        return json.dumps(self.to_dict(), indent=2)</code></pre>
+</details>
+<div class="desc"><p>Global configuration singleton for Ethicrawl.</p>
+<p>This class provides a centralized, thread-safe configuration system
+for all components of Ethicrawl. It implements the Singleton pattern
+to ensure consistent settings throughout the application.</p>
+<p>The configuration is organized into sections (http, logger, sitemap)
+with each section containing component-specific settings.</p>
+<p>Thread Safety:
+All configuration updates are protected by a reentrant lock,
+ensuring thread-safe operation in multi-threaded crawling scenarios.</p>
+<p>Integration Features:
+- Convert to/from dictionaries for integration with external config systems
+- JSON serialization for storage or transmission
+- Hierarchical structure matches common config formats</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>http</code></strong></dt>
+<dd>HTTP-specific configuration (user agent, headers, timeout)</dd>
+<dt><strong><code>logger</code></strong></dt>
+<dd>Logging configuration (levels, format, output)</dd>
+<dt><strong><code>sitemap</code></strong></dt>
+<dd>Sitemap parsing configuration (limits, defaults)</dd>
+</dl>
+<h2 id="example">Example</h2>
+<pre><code class="language-python-repl">&gt;&gt;&gt; from ethicrawl.config import Config
+&gt;&gt;&gt; config = Config()  # Get the global instance
+&gt;&gt;&gt; config.http.user_agent = &quot;MyCustomBot/1.0&quot;
+&gt;&gt;&gt; config.logger.level = &quot;DEBUG&quot;
+&gt;&gt;&gt;
+&gt;&gt;&gt; # Thread-safe update of multiple settings at once
+&gt;&gt;&gt; config.update({
+...     &quot;http&quot;: {&quot;timeout&quot;: 30},
+...     &quot;logger&quot;: {&quot;component_levels&quot;: {&quot;robots&quot;: &quot;DEBUG&quot;}}
+... })
+&gt;&gt;&gt;
+&gt;&gt;&gt; # Get a snapshot for thread-safe reading
+&gt;&gt;&gt; snapshot = config.get_snapshot()
+&gt;&gt;&gt; print(snapshot.http.timeout)
+30
+&gt;&gt;&gt;
+&gt;&gt;&gt; # Export config for integration with external systems
+&gt;&gt;&gt; config_dict = config.to_dict()
+&gt;&gt;&gt; config_json = str(config)
+</code></pre></div>
+<h3>Static methods</h3>
+<dl>
+<dt id="ethicrawl.Config.reset"><code class="name flex">
+<span>def <span class="ident">reset</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Reset the singleton instance to default values.</p>
+<p>Removes the existing instance from the singleton registry,
+causing a new instance to be created on next access.</p>
+<h2 id="example">Example</h2>
+<pre><code class="language-python-repl">&gt;&gt;&gt; Config.reset()  # Reset to defaults
+&gt;&gt;&gt; config = Config()  # Get fresh instance
+</code></pre></div>
+</dd>
+</dl>
+<h3>Instance variables</h3>
+<dl>
+<dt id="ethicrawl.Config.http"><code class="name">var <span class="ident">http</span> : <a title="ethicrawl.config.http_config.HttpConfig" href="config/http_config.html#ethicrawl.config.http_config.HttpConfig">HttpConfig</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="ethicrawl.Config.logger"><code class="name">var <span class="ident">logger</span> : <a title="ethicrawl.config.logger_config.LoggerConfig" href="config/logger_config.html#ethicrawl.config.logger_config.LoggerConfig">LoggerConfig</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="ethicrawl.Config.sitemap"><code class="name">var <span class="ident">sitemap</span> : <a title="ethicrawl.config.sitemap_config.SitemapConfig" href="config/sitemap_config.html#ethicrawl.config.sitemap_config.SitemapConfig">SitemapConfig</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="ethicrawl.Config.get_snapshot"><code class="name flex">
+<span>def <span class="ident">get_snapshot</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_snapshot(self):
+    &#34;&#34;&#34;Create a thread-safe deep copy of the current configuration.
+
+    Returns:
+        A deep copy of the current Config object
+    &#34;&#34;&#34;
+    with self._lock:
+        return copy.deepcopy(self)</code></pre>
+</details>
+<div class="desc"><p>Create a thread-safe deep copy of the current configuration.</p>
+<h2 id="returns">Returns</h2>
+<p>A deep copy of the current Config object</p></div>
+</dd>
+<dt id="ethicrawl.Config.to_dict"><code class="name flex">
+<span>def <span class="ident">to_dict</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def to_dict(self):
+    &#34;&#34;&#34;Convert the configuration to a dictionary.
+
+    Returns:
+        A nested dictionary representing all configuration sections
+    &#34;&#34;&#34;
+    result = {}
+
+    # Get all public attributes of this object
+    for section_name, section_value in self.__dict__.items():
+        # Skip private attributes
+        if section_name.startswith(&#34;_&#34;):
+            continue
+
+        # All sections should have to_dict() method
+        result[section_name] = section_value.to_dict()
+
+    return result</code></pre>
+</details>
+<div class="desc"><p>Convert the configuration to a dictionary.</p>
+<h2 id="returns">Returns</h2>
+<p>A nested dictionary representing all configuration sections</p></div>
+</dd>
+<dt id="ethicrawl.Config.update"><code class="name flex">
+<span>def <span class="ident">update</span></span>(<span>self, config_dict: dict[str, typing.Any]) ‑> None</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def update(self, config_dict: dict[str, Any]) -&gt; None:
+    &#34;&#34;&#34;Update configuration from a dictionary.
+
+    Updates configuration sections based on a nested dictionary structure.
+    The dictionary should have section names as top-level keys and
+    property-value pairs as nested dictionaries.
+
+    Args:
+        config_dict: Dictionary with configuration settings
+
+    Raises:
+        AttributeError: If trying to set a property that doesn&#39;t exist
+
+    Example:
+        &gt;&gt;&gt; config.update({
+        ...     &#34;http&#34;: {
+        ...         &#34;user_agent&#34;: &#34;CustomBot/1.0&#34;,
+        ...         &#34;timeout&#34;: 30
+        ...     },
+        ...     &#34;logger&#34;: {
+        ...         &#34;level&#34;: &#34;DEBUG&#34;
+        ...     }
+        ... })
+    &#34;&#34;&#34;
+    with self._lock:
+        for section_name, section_dict in config_dict.items():
+            if not hasattr(self, section_name):
+                continue
+
+            section_obj = getattr(self, section_name)
+
+            for k, v in section_dict.items():
+                # Special handling for component_levels
+                if section_name == &#34;logger&#34; and k == &#34;component_levels&#34;:
+                    # Use the set_component_level method instead of direct assignment
+                    for component, level in v.items():
+                        section_obj.set_component_level(component, level)
+                else:
+                    # Check if the attribute exists before trying to set it
+                    if not hasattr(section_obj.__class__, k) or not isinstance(
+                        getattr(section_obj.__class__, k), property
+                    ):
+                        raise AttributeError(
+                            f&#34;No such property: &#39;{k}&#39; on {section_name} config&#34;
+                        )
+
+                    try:
+                        setattr(section_obj, k, v)
+                    except AttributeError as exc:  # pragma: no cover
+                        # Provide a more helpful error message
+                        raise AttributeError(
+                            f&#34;Failed to set &#39;{k}&#39; on {section_name} config: {exc}&#34;
+                        ) from exc</code></pre>
+</details>
+<div class="desc"><p>Update configuration from a dictionary.</p>
+<p>Updates configuration sections based on a nested dictionary structure.
+The dictionary should have section names as top-level keys and
+property-value pairs as nested dictionaries.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>config_dict</code></strong></dt>
+<dd>Dictionary with configuration settings</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>AttributeError</code></dt>
+<dd>If trying to set a property that doesn't exist</dd>
+</dl>
+<h2 id="example">Example</h2>
+<pre><code class="language-python-repl">&gt;&gt;&gt; config.update({
+...     &quot;http&quot;: {
+...         &quot;user_agent&quot;: &quot;CustomBot/1.0&quot;,
+...         &quot;timeout&quot;: 30
+...     },
+...     &quot;logger&quot;: {
+...         &quot;level&quot;: &quot;DEBUG&quot;
+...     }
+... })
+</code></pre></div>
+</dd>
+</dl>
+</dd>
+<dt id="ethicrawl.Ethicrawl"><code class="flex name class">
+<span>class <span class="ident">Ethicrawl</span></span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Ethicrawl:
+    &#34;&#34;&#34;Main entry point for ethical web crawling operations.
+
+    This class provides a simplified interface for crawling websites while respecting
+    robots.txt rules, rate limits, and domain boundaries. It manages the lifecycle
+    of crawling operations through binding to domains and provides access to robots.txt
+    and sitemap functionality.
+
+    Attributes:
+        config (Config): Configuration settings for crawling behavior
+        robots (Robot): Handler for robots.txt rules (available after binding)
+        sitemaps (SitemapParser): Parser for XML sitemaps (available after binding)
+        logger (Logger): Logger instance for this crawler (available after binding)
+        bound (bool): Whether the crawler is currently bound to a site
+
+    Example:
+        &gt;&gt;&gt; from ethicrawl import Ethicrawl
+        &gt;&gt;&gt; crawler = Ethicrawl()
+        &gt;&gt;&gt; crawler.bind(&#34;https://example.com&#34;)
+        &gt;&gt;&gt; response = crawler.get(&#34;https://example.com/about&#34;)
+        &gt;&gt;&gt; print(response.status_code)
+        200
+        &gt;&gt;&gt; # Find URLs in sitemap
+        &gt;&gt;&gt; urls = crawler.sitemaps.parse()
+        &gt;&gt;&gt; crawler.unbind()  # Clean up when done
+    &#34;&#34;&#34;
+
+    def _get_root_domain(self) -&gt; DomainContext:
+        &#34;&#34;&#34;Get the root domain context with type safety.
+
+        Returns:
+            The root domain context
+
+        Raises:
+            RuntimeError: If the root domain is not set
+        &#34;&#34;&#34;
+        if not hasattr(self, &#34;_root_domain&#34;) or self._root_domain is None:
+            raise RuntimeError(&#34;Root domain not initialized&#34;)
+        return cast(DomainContext, self._root_domain)
+
+    def bind(self, url: str | Url | Resource, client: HttpClient | None = None) -&gt; bool:
+        &#34;&#34;&#34;Bind the crawler to a specific website domain.
+
+        Binding establishes the primary domain context with its robots.txt handler,
+        client configuration, and sets up logging for operations on this domain.
+
+        Args:
+            url: The base URL of the site to crawl (string, Url, or Resource)
+            client: HTTP client to use for requests. Defaults to a standard HttpClient
+
+        Returns:
+            bool: True if binding was successful
+
+        Raises:
+            ValueError: If URL is invalid
+            RuntimeError: If already bound to a different site
+        &#34;&#34;&#34;
+        if self.bound:
+            root_domain = self._get_root_domain()
+            raise RuntimeError(
+                f&#34;Already bound to {root_domain.context.resource.url} - unbind() first&#34;
+            )
+
+        self._root_domain: DomainContext | None = None
+        self._whitelist: dict[str, DomainContext] = {}
+
+        if isinstance(url, Resource):
+            url = url.url
+        url = Url(str(url), validate=True)
+        resource = Resource(url)
+        client = client or HttpClient()
+        context = Context(resource, client)
+
+        # Use DomainContext for the root domain
+        self._root_domain = DomainContext(context=context)
+        self.logger.info(&#34;Successfully bound to %s&#34;, url)
+        return True
+
+    def unbind(self) -&gt; bool:
+        &#34;&#34;&#34;Unbind the crawler from its current site.
+
+        This releases resources and allows the crawler to be bound to a different site.
+        It removes all domain contexts, cached resources, and resets the crawler state.
+
+        Returns:
+            bool: True if unbinding was successful
+        &#34;&#34;&#34;
+        # Find all instance attributes starting with underscore
+        if self.bound:
+            domain = self._get_root_domain().context.resource.url.netloc
+            self.logger.info(&#34;Unbinding from %s&#34;, domain)
+
+        private_attrs = [attr for attr in vars(self) if attr.startswith(&#34;_&#34;)]
+
+        # Delete each private attribute
+        for attr in private_attrs:
+            delattr(self, attr)
+
+        # Verify unbinding was successful
+        return not hasattr(self, &#34;_root_domain&#34;)
+
+    @ensure_bound
+    def whitelist(self, url: str | Url, client: HttpClient | None = None) -&gt; bool:
+        &#34;&#34;&#34;
+        Whitelist an additional domain for crawling.
+
+        By default, Ethicrawl will only request URLs from the bound domain.
+        Whitelisting allows accessing resources from other domains (like CDNs).
+
+        Args:
+            url (str or Url): URL from the domain to whitelist
+            client (HttpClient, optional): Client to use for this domain
+
+        Returns:
+            bool: True if whitelisting was successful
+
+        Raises:
+            RuntimeError: If not bound to a primary site
+        &#34;&#34;&#34;
+        if isinstance(url, Resource):
+            url = url.url
+        url = Url(str(url), validate=True)
+
+        domain = url.netloc
+        root_domain = self._get_root_domain()
+        context = Context(Resource(url), client or root_domain.context.client)
+
+        self._whitelist[domain] = DomainContext(context=context)
+        self.logger.info(&#34;Whitelisted domain: %s&#34;, domain)
+        return True
+
+    @property
+    def bound(self) -&gt; bool:
+        &#34;&#34;&#34;Check if currently bound to a site.
+
+        Returns:
+            bool: True if the crawler is bound to a domain, False otherwise
+        &#34;&#34;&#34;
+        return hasattr(self, &#34;_root_domain&#34;) and self._root_domain is not None
+
+    @property
+    def config(self) -&gt; Config:
+        &#34;&#34;&#34;Access the configuration settings for this crawler.
+
+        Returns:
+            Config: The configuration object with settings for all crawler components
+        &#34;&#34;&#34;
+        return Config()
+
+    @property
+    @ensure_bound
+    def logger(self) -&gt; logging_Logger:
+        &#34;&#34;&#34;Get the logger for the current bound domain.
+
+        This logger is configured according to the settings in Config.logger.
+
+        Returns:
+            Logger: Configured logger instance
+
+        Raises:
+            RuntimeError: If not bound to a site
+        &#34;&#34;&#34;
+        root_domain = self._get_root_domain()
+        return root_domain.context.logger(&#34;&#34;)
+
+    @property
+    @ensure_bound
+    def robots(self) -&gt; Robot:
+        &#34;&#34;&#34;Access the robots.txt handler for the bound domain.
+
+        The Robot instance manages fetching, parsing, and enforcing
+        robots.txt rules for the current domain.
+
+        Returns:
+            Robot: The robots.txt handler for this domain
+
+        Raises:
+            RuntimeError: If not bound to a site
+        &#34;&#34;&#34;
+        root_domain = self._get_root_domain()
+        return root_domain.robot
+
+    @property
+    @ensure_bound
+    def sitemaps(self) -&gt; SitemapParser:
+        &#34;&#34;&#34;Access the sitemap parser for the bound domain.
+
+        The parser is created on first access and cached for subsequent calls.
+        It provides methods to extract URLs from XML sitemaps.
+
+        Returns:
+            SitemapParser: Parser for handling XML sitemaps
+
+        Raises:
+            RuntimeError: If not bound to a site
+        &#34;&#34;&#34;
+        if not hasattr(self, &#34;_sitemap&#34;):
+            root_domain = self._get_root_domain()
+            self._sitemap = SitemapParser(root_domain.context)
+        return self._sitemap
+
+    @ensure_bound
+    def get(
+        self,
+        url: str | Url | Resource,
+        headers: Headers | dict | None = None,
+    ) -&gt; Response | HttpResponse:
+        &#34;&#34;&#34;Make an HTTP GET request to the specified URL, respecting robots.txt rules
+        and domain whitelisting.
+
+        This method enforces ethical crawling by:
+        - Checking that the domain is allowed (primary or whitelisted)
+        - Verifying the URL is permitted by robots.txt rules
+        - Using the appropriate client for the domain
+
+        Args:
+            url: URL to fetch (string, Url, or Resource)
+            headers: Additional headers for this request
+
+        Returns:
+            Response or HttpResponse: The response from the server
+
+        Raises:
+            ValueError: If URL is from a non-whitelisted domain or disallowed by robots.txt
+            RuntimeError: If not bound to a site
+            TypeError: If url parameter is not a string, Url, or Resource
+        &#34;&#34;&#34;
+        # Handle different types of URL input
+        if isinstance(url, Resource):
+            resource = url
+        elif isinstance(url, (str, Url)):
+            resource = Resource(Url(str(url)))
+        else:
+            raise TypeError(
+                f&#34;Expected string, Url, or Resource, got {type(url).__name__}&#34;
+            )
+
+        self.logger.debug(&#34;Preparing to fetch %s&#34;, resource.url)
+
+        # Get domain from URL
+        target_domain = resource.url.netloc
+
+        # Check if domain is allowed
+        root_domain = self._get_root_domain()
+        domain_ctx = (
+            root_domain
+            if target_domain == root_domain.context.resource.url.netloc
+            else self._whitelist.get(target_domain)
+        )
+
+        if domain_ctx is None:
+            # Fix incorrect curly brace string formatting
+            self.logger.warning(&#34;Domain not allowed: %s&#34;, target_domain)
+            raise ValueError(f&#34;Domain not allowed: {target_domain}&#34;)
+        else:
+            self.logger.debug(&#34;Using domain context for %s&#34;, target_domain)
+
+        context = domain_ctx.context
+        robot = domain_ctx.robot
+
+        # Extract User-Agent from headers if present (for robots.txt checking)
+        user_agent = None
+        if headers:
+            headers = Headers(headers)
+            user_agent = headers.get(&#34;User-Agent&#34;)
+
+        # See if we can fetch the resource
+        if robot.can_fetch(resource, user_agent=user_agent):
+            self.logger.debug(&#34;Request permitted by robots.txt policy&#34;)
+
+        # Use the domain&#39;s context to get its client
+        if isinstance(context.client, HttpClient):
+            return context.client.get(resource, headers=headers)
+        return context.client.get(resource)</code></pre>
+</details>
+<div class="desc"><p>Main entry point for ethical web crawling operations.</p>
+<p>This class provides a simplified interface for crawling websites while respecting
+robots.txt rules, rate limits, and domain boundaries. It manages the lifecycle
+of crawling operations through binding to domains and provides access to robots.txt
+and sitemap functionality.</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>config</code></strong> :&ensp;<code><a title="ethicrawl.Config" href="#ethicrawl.Config">Config</a></code></dt>
+<dd>Configuration settings for crawling behavior</dd>
+<dt><strong><code>robots</code></strong> :&ensp;<code>Robot</code></dt>
+<dd>Handler for robots.txt rules (available after binding)</dd>
+<dt><strong><code>sitemaps</code></strong> :&ensp;<code>SitemapParser</code></dt>
+<dd>Parser for XML sitemaps (available after binding)</dd>
+<dt><strong><code>logger</code></strong> :&ensp;<code>Logger</code></dt>
+<dd>Logger instance for this crawler (available after binding)</dd>
+<dt><strong><code>bound</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Whether the crawler is currently bound to a site</dd>
+</dl>
+<h2 id="example">Example</h2>
+<pre><code class="language-python-repl">&gt;&gt;&gt; from ethicrawl import Ethicrawl
+&gt;&gt;&gt; crawler = Ethicrawl()
+&gt;&gt;&gt; crawler.bind(&quot;https://example.com&quot;)
+&gt;&gt;&gt; response = crawler.get(&quot;https://example.com/about&quot;)
+&gt;&gt;&gt; print(response.status_code)
+200
+&gt;&gt;&gt; # Find URLs in sitemap
+&gt;&gt;&gt; urls = crawler.sitemaps.parse()
+&gt;&gt;&gt; crawler.unbind()  # Clean up when done
+</code></pre></div>
+<h3>Instance variables</h3>
+<dl>
+<dt id="ethicrawl.Ethicrawl.bound"><code class="name">prop <span class="ident">bound</span> : bool</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def bound(self) -&gt; bool:
+    &#34;&#34;&#34;Check if currently bound to a site.
+
+    Returns:
+        bool: True if the crawler is bound to a domain, False otherwise
+    &#34;&#34;&#34;
+    return hasattr(self, &#34;_root_domain&#34;) and self._root_domain is not None</code></pre>
+</details>
+<div class="desc"><p>Check if currently bound to a site.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>bool</code></dt>
+<dd>True if the crawler is bound to a domain, False otherwise</dd>
+</dl></div>
+</dd>
+<dt id="ethicrawl.Ethicrawl.config"><code class="name">prop <span class="ident">config</span> : <a title="ethicrawl.config.config.Config" href="config/config.html#ethicrawl.config.config.Config">Config</a></code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def config(self) -&gt; Config:
+    &#34;&#34;&#34;Access the configuration settings for this crawler.
+
+    Returns:
+        Config: The configuration object with settings for all crawler components
+    &#34;&#34;&#34;
+    return Config()</code></pre>
+</details>
+<div class="desc"><p>Access the configuration settings for this crawler.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="ethicrawl.Config" href="#ethicrawl.Config">Config</a></code></dt>
+<dd>The configuration object with settings for all crawler components</dd>
+</dl></div>
+</dd>
+<dt id="ethicrawl.Ethicrawl.logger"><code class="name">prop <span class="ident">logger</span> : logging.Logger</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+@ensure_bound
+def logger(self) -&gt; logging_Logger:
+    &#34;&#34;&#34;Get the logger for the current bound domain.
+
+    This logger is configured according to the settings in Config.logger.
+
+    Returns:
+        Logger: Configured logger instance
+
+    Raises:
+        RuntimeError: If not bound to a site
+    &#34;&#34;&#34;
+    root_domain = self._get_root_domain()
+    return root_domain.context.logger(&#34;&#34;)</code></pre>
+</details>
+<div class="desc"><p>Get the logger for the current bound domain.</p>
+<p>This logger is configured according to the settings in Config.logger.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Logger</code></dt>
+<dd>Configured logger instance</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>RuntimeError</code></dt>
+<dd>If not bound to a site</dd>
+</dl></div>
+</dd>
+<dt id="ethicrawl.Ethicrawl.robots"><code class="name">prop <span class="ident">robots</span> : <a title="ethicrawl.robots.robot.Robot" href="robots/robot.html#ethicrawl.robots.robot.Robot">Robot</a></code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+@ensure_bound
+def robots(self) -&gt; Robot:
+    &#34;&#34;&#34;Access the robots.txt handler for the bound domain.
+
+    The Robot instance manages fetching, parsing, and enforcing
+    robots.txt rules for the current domain.
+
+    Returns:
+        Robot: The robots.txt handler for this domain
+
+    Raises:
+        RuntimeError: If not bound to a site
+    &#34;&#34;&#34;
+    root_domain = self._get_root_domain()
+    return root_domain.robot</code></pre>
+</details>
+<div class="desc"><p>Access the robots.txt handler for the bound domain.</p>
+<p>The Robot instance manages fetching, parsing, and enforcing
+robots.txt rules for the current domain.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Robot</code></dt>
+<dd>The robots.txt handler for this domain</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>RuntimeError</code></dt>
+<dd>If not bound to a site</dd>
+</dl></div>
+</dd>
+<dt id="ethicrawl.Ethicrawl.sitemaps"><code class="name">prop <span class="ident">sitemaps</span> : <a title="ethicrawl.sitemaps.sitemap_parser.SitemapParser" href="sitemaps/sitemap_parser.html#ethicrawl.sitemaps.sitemap_parser.SitemapParser">SitemapParser</a></code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+@ensure_bound
+def sitemaps(self) -&gt; SitemapParser:
+    &#34;&#34;&#34;Access the sitemap parser for the bound domain.
+
+    The parser is created on first access and cached for subsequent calls.
+    It provides methods to extract URLs from XML sitemaps.
+
+    Returns:
+        SitemapParser: Parser for handling XML sitemaps
+
+    Raises:
+        RuntimeError: If not bound to a site
+    &#34;&#34;&#34;
+    if not hasattr(self, &#34;_sitemap&#34;):
+        root_domain = self._get_root_domain()
+        self._sitemap = SitemapParser(root_domain.context)
+    return self._sitemap</code></pre>
+</details>
+<div class="desc"><p>Access the sitemap parser for the bound domain.</p>
+<p>The parser is created on first access and cached for subsequent calls.
+It provides methods to extract URLs from XML sitemaps.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>SitemapParser</code></dt>
+<dd>Parser for handling XML sitemaps</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>RuntimeError</code></dt>
+<dd>If not bound to a site</dd>
+</dl></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="ethicrawl.Ethicrawl.bind"><code class="name flex">
+<span>def <span class="ident">bind</span></span>(<span>self,<br>url: str | <a title="ethicrawl.core.url.Url" href="core/url.html#ethicrawl.core.url.Url">Url</a> | <a title="ethicrawl.core.resource.Resource" href="core/resource.html#ethicrawl.core.resource.Resource">Resource</a>,<br>client: <a title="ethicrawl.client.http.http_client.HttpClient" href="client/http/http_client.html#ethicrawl.client.http.http_client.HttpClient">HttpClient</a> | None = None) ‑> bool</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def bind(self, url: str | Url | Resource, client: HttpClient | None = None) -&gt; bool:
+    &#34;&#34;&#34;Bind the crawler to a specific website domain.
+
+    Binding establishes the primary domain context with its robots.txt handler,
+    client configuration, and sets up logging for operations on this domain.
+
+    Args:
+        url: The base URL of the site to crawl (string, Url, or Resource)
+        client: HTTP client to use for requests. Defaults to a standard HttpClient
+
+    Returns:
+        bool: True if binding was successful
+
+    Raises:
+        ValueError: If URL is invalid
+        RuntimeError: If already bound to a different site
+    &#34;&#34;&#34;
+    if self.bound:
+        root_domain = self._get_root_domain()
+        raise RuntimeError(
+            f&#34;Already bound to {root_domain.context.resource.url} - unbind() first&#34;
+        )
+
+    self._root_domain: DomainContext | None = None
+    self._whitelist: dict[str, DomainContext] = {}
+
+    if isinstance(url, Resource):
+        url = url.url
+    url = Url(str(url), validate=True)
+    resource = Resource(url)
+    client = client or HttpClient()
+    context = Context(resource, client)
+
+    # Use DomainContext for the root domain
+    self._root_domain = DomainContext(context=context)
+    self.logger.info(&#34;Successfully bound to %s&#34;, url)
+    return True</code></pre>
+</details>
+<div class="desc"><p>Bind the crawler to a specific website domain.</p>
+<p>Binding establishes the primary domain context with its robots.txt handler,
+client configuration, and sets up logging for operations on this domain.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>url</code></strong></dt>
+<dd>The base URL of the site to crawl (string, Url, or Resource)</dd>
+<dt><strong><code>client</code></strong></dt>
+<dd>HTTP client to use for requests. Defaults to a standard HttpClient</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>bool</code></dt>
+<dd>True if binding was successful</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>ValueError</code></dt>
+<dd>If URL is invalid</dd>
+<dt><code>RuntimeError</code></dt>
+<dd>If already bound to a different site</dd>
+</dl></div>
+</dd>
+<dt id="ethicrawl.Ethicrawl.get"><code class="name flex">
+<span>def <span class="ident">get</span></span>(<span>self,<br>url: str | <a title="ethicrawl.core.url.Url" href="core/url.html#ethicrawl.core.url.Url">Url</a> | <a title="ethicrawl.core.resource.Resource" href="core/resource.html#ethicrawl.core.resource.Resource">Resource</a>,<br>headers: <a title="ethicrawl.core.headers.Headers" href="core/headers.html#ethicrawl.core.headers.Headers">Headers</a> | dict | None = None) ‑> <a title="ethicrawl.client.response.Response" href="client/response.html#ethicrawl.client.response.Response">Response</a> | <a title="ethicrawl.client.http.http_response.HttpResponse" href="client/http/http_response.html#ethicrawl.client.http.http_response.HttpResponse">HttpResponse</a></span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@ensure_bound
+def get(
+    self,
+    url: str | Url | Resource,
+    headers: Headers | dict | None = None,
+) -&gt; Response | HttpResponse:
+    &#34;&#34;&#34;Make an HTTP GET request to the specified URL, respecting robots.txt rules
+    and domain whitelisting.
+
+    This method enforces ethical crawling by:
+    - Checking that the domain is allowed (primary or whitelisted)
+    - Verifying the URL is permitted by robots.txt rules
+    - Using the appropriate client for the domain
+
+    Args:
+        url: URL to fetch (string, Url, or Resource)
+        headers: Additional headers for this request
+
+    Returns:
+        Response or HttpResponse: The response from the server
+
+    Raises:
+        ValueError: If URL is from a non-whitelisted domain or disallowed by robots.txt
+        RuntimeError: If not bound to a site
+        TypeError: If url parameter is not a string, Url, or Resource
+    &#34;&#34;&#34;
+    # Handle different types of URL input
+    if isinstance(url, Resource):
+        resource = url
+    elif isinstance(url, (str, Url)):
+        resource = Resource(Url(str(url)))
+    else:
+        raise TypeError(
+            f&#34;Expected string, Url, or Resource, got {type(url).__name__}&#34;
+        )
+
+    self.logger.debug(&#34;Preparing to fetch %s&#34;, resource.url)
+
+    # Get domain from URL
+    target_domain = resource.url.netloc
+
+    # Check if domain is allowed
+    root_domain = self._get_root_domain()
+    domain_ctx = (
+        root_domain
+        if target_domain == root_domain.context.resource.url.netloc
+        else self._whitelist.get(target_domain)
+    )
+
+    if domain_ctx is None:
+        # Fix incorrect curly brace string formatting
+        self.logger.warning(&#34;Domain not allowed: %s&#34;, target_domain)
+        raise ValueError(f&#34;Domain not allowed: {target_domain}&#34;)
+    else:
+        self.logger.debug(&#34;Using domain context for %s&#34;, target_domain)
+
+    context = domain_ctx.context
+    robot = domain_ctx.robot
+
+    # Extract User-Agent from headers if present (for robots.txt checking)
+    user_agent = None
+    if headers:
+        headers = Headers(headers)
+        user_agent = headers.get(&#34;User-Agent&#34;)
+
+    # See if we can fetch the resource
+    if robot.can_fetch(resource, user_agent=user_agent):
+        self.logger.debug(&#34;Request permitted by robots.txt policy&#34;)
+
+    # Use the domain&#39;s context to get its client
+    if isinstance(context.client, HttpClient):
+        return context.client.get(resource, headers=headers)
+    return context.client.get(resource)</code></pre>
+</details>
+<div class="desc"><p>Make an HTTP GET request to the specified URL, respecting robots.txt rules
+and domain whitelisting.</p>
+<p>This method enforces ethical crawling by:
+- Checking that the domain is allowed (primary or whitelisted)
+- Verifying the URL is permitted by robots.txt rules
+- Using the appropriate client for the domain</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>url</code></strong></dt>
+<dd>URL to fetch (string, Url, or Resource)</dd>
+<dt><strong><code>headers</code></strong></dt>
+<dd>Additional headers for this request</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Response</code> or <code>HttpResponse</code></dt>
+<dd>The response from the server</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>ValueError</code></dt>
+<dd>If URL is from a non-whitelisted domain or disallowed by robots.txt</dd>
+<dt><code>RuntimeError</code></dt>
+<dd>If not bound to a site</dd>
+<dt><code>TypeError</code></dt>
+<dd>If url parameter is not a string, Url, or Resource</dd>
+</dl></div>
+</dd>
+<dt id="ethicrawl.Ethicrawl.unbind"><code class="name flex">
+<span>def <span class="ident">unbind</span></span>(<span>self) ‑> bool</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def unbind(self) -&gt; bool:
+    &#34;&#34;&#34;Unbind the crawler from its current site.
+
+    This releases resources and allows the crawler to be bound to a different site.
+    It removes all domain contexts, cached resources, and resets the crawler state.
+
+    Returns:
+        bool: True if unbinding was successful
+    &#34;&#34;&#34;
+    # Find all instance attributes starting with underscore
+    if self.bound:
+        domain = self._get_root_domain().context.resource.url.netloc
+        self.logger.info(&#34;Unbinding from %s&#34;, domain)
+
+    private_attrs = [attr for attr in vars(self) if attr.startswith(&#34;_&#34;)]
+
+    # Delete each private attribute
+    for attr in private_attrs:
+        delattr(self, attr)
+
+    # Verify unbinding was successful
+    return not hasattr(self, &#34;_root_domain&#34;)</code></pre>
+</details>
+<div class="desc"><p>Unbind the crawler from its current site.</p>
+<p>This releases resources and allows the crawler to be bound to a different site.
+It removes all domain contexts, cached resources, and resets the crawler state.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>bool</code></dt>
+<dd>True if unbinding was successful</dd>
+</dl></div>
+</dd>
+<dt id="ethicrawl.Ethicrawl.whitelist"><code class="name flex">
+<span>def <span class="ident">whitelist</span></span>(<span>self,<br>url: str | <a title="ethicrawl.core.url.Url" href="core/url.html#ethicrawl.core.url.Url">Url</a>,<br>client: <a title="ethicrawl.client.http.http_client.HttpClient" href="client/http/http_client.html#ethicrawl.client.http.http_client.HttpClient">HttpClient</a> | None = None) ‑> bool</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@ensure_bound
+def whitelist(self, url: str | Url, client: HttpClient | None = None) -&gt; bool:
+    &#34;&#34;&#34;
+    Whitelist an additional domain for crawling.
+
+    By default, Ethicrawl will only request URLs from the bound domain.
+    Whitelisting allows accessing resources from other domains (like CDNs).
+
+    Args:
+        url (str or Url): URL from the domain to whitelist
+        client (HttpClient, optional): Client to use for this domain
+
+    Returns:
+        bool: True if whitelisting was successful
+
+    Raises:
+        RuntimeError: If not bound to a primary site
+    &#34;&#34;&#34;
+    if isinstance(url, Resource):
+        url = url.url
+    url = Url(str(url), validate=True)
+
+    domain = url.netloc
+    root_domain = self._get_root_domain()
+    context = Context(Resource(url), client or root_domain.context.client)
+
+    self._whitelist[domain] = DomainContext(context=context)
+    self.logger.info(&#34;Whitelisted domain: %s&#34;, domain)
+    return True</code></pre>
+</details>
+<div class="desc"><p>Whitelist an additional domain for crawling.</p>
+<p>By default, Ethicrawl will only request URLs from the bound domain.
+Whitelisting allows accessing resources from other domains (like CDNs).</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>url</code></strong> :&ensp;<code>str</code> or <code><a title="ethicrawl.Url" href="#ethicrawl.Url">Url</a></code></dt>
+<dd>URL from the domain to whitelist</dd>
+<dt><strong><code>client</code></strong> :&ensp;<code><a title="ethicrawl.HttpClient" href="#ethicrawl.HttpClient">HttpClient</a></code>, optional</dt>
+<dd>Client to use for this domain</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>bool</code></dt>
+<dd>True if whitelisting was successful</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>RuntimeError</code></dt>
+<dd>If not bound to a primary site</dd>
+</dl></div>
+</dd>
+</dl>
+</dd>
+<dt id="ethicrawl.HttpClient"><code class="flex name class">
+<span>class <span class="ident">HttpClient</span></span>
+<span>(</span><span>context=None,<br>transport=None,<br>timeout=10,<br>rate_limit=1.0,<br>jitter=0.5,<br>headers=None,<br>chrome_params=None)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class HttpClient(Client):
+    &#34;&#34;&#34;HTTP client implementation with configurable transports and rate limiting.
+
+    This client provides a flexible HTTP interface with the following features:
+    - Configurable backend transport (Requests or Selenium Chrome)
+    - Built-in rate limiting with jitter to avoid detection
+    - Header management with User-Agent control
+    - Automatic retry with exponential backoff
+    - Detailed logging of request/response cycles
+
+    The client can use either a simple RequestsTransport for basic HTTP operations
+    or a ChromeTransport for JavaScript-rendered content.
+
+    Attributes:
+        timeout (int): Request timeout in seconds
+        min_interval (float): Minimum time between requests in seconds
+        jitter (float): Random time variation added to rate limiting
+        headers (Headers): Default headers to send with each request
+        last_request_time (float): Timestamp of the last request
+        user_agent (str): User agent string used for requests
+
+    Example:
+        &gt;&gt;&gt; from ethicrawl.client.http import HttpClient
+        &gt;&gt;&gt; from ethicrawl.core import Resource
+        &gt;&gt;&gt; client = HttpClient(rate_limit=1.0)  # 1 request per second
+        &gt;&gt;&gt; response = client.get(Resource(&#34;https://example.com&#34;))
+        &gt;&gt;&gt; print(response.status_code)
+        200
+
+        # Switch to Chrome for JavaScript-heavy sites
+        &gt;&gt;&gt; chrome_client = client.with_chrome(headless=True)
+        &gt;&gt;&gt; js_response = chrome_client.get(Resource(&#34;https://spa-example.com&#34;))
+    &#34;&#34;&#34;
+
+    def __init__(
+        self,
+        context=None,
+        transport=None,
+        timeout=10,
+        rate_limit=1.0,
+        jitter=0.5,
+        headers=None,
+        chrome_params=None,
+    ):
+        &#34;&#34;&#34;Initialize an HTTP client with configurable transport and rate limiting.
+
+        Args:
+            context (Context, optional): Context for the client. If None, a default context
+                with a dummy URL will be created.
+            transport (Transport, optional): Custom transport implementation. If None,
+                either ChromeTransport or RequestsTransport will be used.
+            timeout (int): Request timeout in seconds
+            rate_limit (float): Maximum requests per second. Set to 0 for no limit.
+            jitter (float): Random variation (0-1) to add to rate limiting
+            headers (dict, optional): Default headers to send with each request
+            chrome_params (dict, optional): Parameters for ChromeTransport if used
+        &#34;&#34;&#34;
+        if not isinstance(context, Context):
+            context = Context(Resource(Url(&#34;http://www.example.com/&#34;)))  # dummy url
+        self._context = context
+        self._logger = self._context.logger(&#34;client&#34;)
+
+        self.timeout = timeout
+
+        # Initialize the appropriate transport
+        if transport:
+            self.transport = transport
+        elif chrome_params:
+            self.transport = ChromeTransport(context, **chrome_params)
+        # elif Gecko TODO: for expansion
+        else:
+            self.transport = RequestsTransport(context)
+
+        self._logger.debug(
+            &#34;Initialized with %s transport (timeout: %d, rate limit: %.2f/sec)&#34;,
+            self.transport.__class__.__name__,
+            self.timeout,
+            rate_limit if rate_limit &gt; 0 else float(&#34;inf&#34;),
+        )
+
+        self.headers = Headers(headers or {})
+
+        # Rate limiting parameters
+        self.min_interval = 1.0 / rate_limit if rate_limit &gt; 0 else 0
+        self.jitter = jitter
+        # Initialize last_request_time to None to indicate no previous requests
+        self.last_request_time = None
+
+    @property
+    def user_agent(self) -&gt; str:
+        # First check if we have a User-Agent header
+        if &#34;user-agent&#34; in self.headers:
+            return self.headers[&#34;user-agent&#34;]
+        # Otherwise get from transport
+        return self.transport.user_agent
+
+    @user_agent.setter
+    def user_agent(self, agent):
+        # Set in our headers
+        self.headers[&#34;user-agent&#34;] = agent
+        # Also set on transport for consistency
+        self.transport.user_agent = agent
+
+    def with_chrome(
+        self,
+        headless=True,
+        wait_time=3,
+        timeout=30,
+        rate_limit=0.5,
+        jitter=0.3,
+    ) -&gt; &#34;HttpClient&#34;:
+        &#34;&#34;&#34;Create a new HttpClient instance using Chrome/Selenium transport.
+
+        This creates a new client that can render JavaScript and interact
+        with dynamic web applications.
+
+        Args:
+            headless (bool): Whether to run Chrome in headless mode
+            wait_time (int): Default time to wait for page elements in seconds
+            timeout (int): Request timeout in seconds
+            rate_limit (float): Maximum requests per second
+            jitter (float): Random variation factor for rate limiting
+
+        Returns:
+            HttpClient: A new client instance configured to use Chrome
+
+        Example:
+            &gt;&gt;&gt; client = HttpClient()
+            &gt;&gt;&gt; chrome = client.with_chrome(headless=True)
+            &gt;&gt;&gt; response = chrome.get(Resource(&#34;https://single-page-app.com&#34;))
+        &#34;&#34;&#34;
+        chrome_params = {&#34;headless&#34;: headless, &#34;wait_time&#34;: wait_time}
+
+        # Create a new instance with the same context but Chrome transport
+        return HttpClient(
+            context=self._context,  # Use this instance&#39;s context
+            chrome_params=chrome_params,
+            timeout=timeout,
+            rate_limit=rate_limit,
+            jitter=jitter,
+        )
+
+    def _apply_rate_limiting(self):
+        # If this is the first request, no need to apply rate limiting
+        if self.last_request_time is None:
+            return
+
+        # Calculate time since last request
+        elapsed = time() - self.last_request_time
+
+        # If we&#39;ve made a request too recently, sleep to maintain rate limit
+        if elapsed &lt; self.min_interval:
+            # Calculate delay with optional jitter
+            delay = self.min_interval - elapsed
+            if self.jitter &gt; 0:
+                # this is not a cryptographic key
+                delay += random() * self.jitter  # nosec
+
+            self._logger.debug(&#34;Rate limiting - sleeping for %.2fs&#34;, delay)
+            sleep(delay)
+
+        # Update the last request time
+        self.last_request_time = time()
+
+    def get(
+        self,
+        resource: Resource,
+        timeout: int | None = None,
+        headers: dict | None = None,
+    ) -&gt; HttpResponse:
+        &#34;&#34;&#34;Make a GET request to the specified resource.
+
+        This method applies rate limiting, handles headers, and logs the result.
+        For JavaScript-heavy sites, use with_chrome() first to switch to
+        a Chrome-based transport.
+
+        Args:
+            resource (Resource): The resource to request
+            timeout (int, optional): Request-specific timeout that overrides
+                the client&#39;s default timeout
+            headers (dict, optional): Additional headers for this request
+
+        Returns:
+            HttpResponse: Response object with status, headers and content
+
+        Raises:
+            TypeError: If resource is not a Resource instance
+            IOError: If the HTTP request fails for any reason
+
+        Example:
+            &gt;&gt;&gt; client = HttpClient()
+            &gt;&gt;&gt; response = client.get(Resource(&#34;https://example.com&#34;))
+            &gt;&gt;&gt; if response.status_code == 200:
+            ...     print(f&#34;Got {len(response.content)} bytes&#34;)
+        &#34;&#34;&#34;
+        # First validate that resource is the correct type
+        if not isinstance(resource, Resource):
+            raise TypeError(f&#34;Expected Resource object, got {type(resource).__name__}&#34;)
+
+        try:
+            # Apply rate limiting before making request
+            self._apply_rate_limiting()
+
+            self._logger.debug(&#34;fetching  %s&#34;, resource.url)
+
+            request = HttpRequest(resource.url)
+
+            if timeout is not None:
+                request.timeout = timeout
+
+            request_headers = Headers(self.headers)
+
+            # Add request-specific headers, which will override client headers
+            if headers:
+                for header, value in headers.items():
+                    request_headers[header] = value
+
+            # Set the combined headers on the request
+            request.headers = request_headers
+
+            response = self.transport.get(request)
+
+            # After getting the response
+            if 200 &lt;= response.status_code &lt; 300:
+                self._logger.debug(
+                    &#34;Successfully fetched %s: HTTP %d (%d bytes)&#34;,
+                    resource.url,
+                    response.status_code,
+                    len(response.content),
+                )
+            elif 400 &lt;= response.status_code &lt; 500:
+                self._logger.warning(
+                    &#34;Client error fetching %s: HTTP %d&#34;,
+                    resource.url,
+                    response.status_code,
+                )
+            elif response.status_code &gt;= 500:
+                self._logger.error(
+                    &#34;Server error fetching %s: HTTP %d&#34;,
+                    resource.url,
+                    response.status_code,
+                )
+
+            # Update last request time after successful request
+            self.last_request_time = time()
+
+            return response
+        except Exception as exc:  # pragma: no cover
+            # Log error before re-raising
+            self._logger.error(&#34;Request failed for %s: %s&#34;, resource.url, exc)
+            # Re-raise with clear error
+            raise IOError(f&#34;HTTP request failed: {exc}&#34;) from exc</code></pre>
+</details>
+<div class="desc"><p>HTTP client implementation with configurable transports and rate limiting.</p>
+<p>This client provides a flexible HTTP interface with the following features:
+- Configurable backend transport (Requests or Selenium Chrome)
+- Built-in rate limiting with jitter to avoid detection
+- Header management with User-Agent control
+- Automatic retry with exponential backoff
+- Detailed logging of request/response cycles</p>
+<p>The client can use either a simple RequestsTransport for basic HTTP operations
+or a ChromeTransport for JavaScript-rendered content.</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>timeout</code></strong> :&ensp;<code>int</code></dt>
+<dd>Request timeout in seconds</dd>
+<dt><strong><code>min_interval</code></strong> :&ensp;<code>float</code></dt>
+<dd>Minimum time between requests in seconds</dd>
+<dt><strong><code>jitter</code></strong> :&ensp;<code>float</code></dt>
+<dd>Random time variation added to rate limiting</dd>
+<dt><strong><code>headers</code></strong> :&ensp;<code>Headers</code></dt>
+<dd>Default headers to send with each request</dd>
+<dt><strong><code>last_request_time</code></strong> :&ensp;<code>float</code></dt>
+<dd>Timestamp of the last request</dd>
+<dt><strong><code>user_agent</code></strong> :&ensp;<code>str</code></dt>
+<dd>User agent string used for requests</dd>
+</dl>
+<h2 id="example">Example</h2>
+<pre><code class="language-python-repl">&gt;&gt;&gt; from ethicrawl.client.http import HttpClient
+&gt;&gt;&gt; from ethicrawl.core import Resource
+&gt;&gt;&gt; client = HttpClient(rate_limit=1.0)  # 1 request per second
+&gt;&gt;&gt; response = client.get(Resource(&quot;https://example.com&quot;))
+&gt;&gt;&gt; print(response.status_code)
+200
+</code></pre>
+<h1 id="switch-to-chrome-for-javascript-heavy-sites">Switch to Chrome for JavaScript-heavy sites</h1>
+<pre><code class="language-python-repl">&gt;&gt;&gt; chrome_client = client.with_chrome(headless=True)
+&gt;&gt;&gt; js_response = chrome_client.get(Resource(&quot;https://spa-example.com&quot;))
+</code></pre>
+<p>Initialize an HTTP client with configurable transport and rate limiting.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>context</code></strong> :&ensp;<code>Context</code>, optional</dt>
+<dd>Context for the client. If None, a default context
+with a dummy URL will be created.</dd>
+<dt><strong><code>transport</code></strong> :&ensp;<code>Transport</code>, optional</dt>
+<dd>Custom transport implementation. If None,
+either ChromeTransport or RequestsTransport will be used.</dd>
+<dt><strong><code>timeout</code></strong> :&ensp;<code>int</code></dt>
+<dd>Request timeout in seconds</dd>
+<dt><strong><code>rate_limit</code></strong> :&ensp;<code>float</code></dt>
+<dd>Maximum requests per second. Set to 0 for no limit.</dd>
+<dt><strong><code>jitter</code></strong> :&ensp;<code>float</code></dt>
+<dd>Random variation (0-1) to add to rate limiting</dd>
+<dt><strong><code>headers</code></strong> :&ensp;<code>dict</code>, optional</dt>
+<dd>Default headers to send with each request</dd>
+<dt><strong><code>chrome_params</code></strong> :&ensp;<code>dict</code>, optional</dt>
+<dd>Parameters for ChromeTransport if used</dd>
+</dl></div>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="ethicrawl.client.client.Client" href="client/client.html#ethicrawl.client.client.Client">Client</a></li>
+<li>abc.ABC</li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="ethicrawl.HttpClient.user_agent"><code class="name">prop <span class="ident">user_agent</span> : str</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def user_agent(self) -&gt; str:
+    # First check if we have a User-Agent header
+    if &#34;user-agent&#34; in self.headers:
+        return self.headers[&#34;user-agent&#34;]
+    # Otherwise get from transport
+    return self.transport.user_agent</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="ethicrawl.HttpClient.get"><code class="name flex">
+<span>def <span class="ident">get</span></span>(<span>self,<br>resource: <a title="ethicrawl.core.resource.Resource" href="core/resource.html#ethicrawl.core.resource.Resource">Resource</a>,<br>timeout: int | None = None,<br>headers: dict | None = None) ‑> <a title="ethicrawl.client.http.http_response.HttpResponse" href="client/http/http_response.html#ethicrawl.client.http.http_response.HttpResponse">HttpResponse</a></span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get(
+    self,
+    resource: Resource,
+    timeout: int | None = None,
+    headers: dict | None = None,
+) -&gt; HttpResponse:
+    &#34;&#34;&#34;Make a GET request to the specified resource.
+
+    This method applies rate limiting, handles headers, and logs the result.
+    For JavaScript-heavy sites, use with_chrome() first to switch to
+    a Chrome-based transport.
+
+    Args:
+        resource (Resource): The resource to request
+        timeout (int, optional): Request-specific timeout that overrides
+            the client&#39;s default timeout
+        headers (dict, optional): Additional headers for this request
+
+    Returns:
+        HttpResponse: Response object with status, headers and content
+
+    Raises:
+        TypeError: If resource is not a Resource instance
+        IOError: If the HTTP request fails for any reason
+
+    Example:
+        &gt;&gt;&gt; client = HttpClient()
+        &gt;&gt;&gt; response = client.get(Resource(&#34;https://example.com&#34;))
+        &gt;&gt;&gt; if response.status_code == 200:
+        ...     print(f&#34;Got {len(response.content)} bytes&#34;)
+    &#34;&#34;&#34;
+    # First validate that resource is the correct type
+    if not isinstance(resource, Resource):
+        raise TypeError(f&#34;Expected Resource object, got {type(resource).__name__}&#34;)
+
+    try:
+        # Apply rate limiting before making request
+        self._apply_rate_limiting()
+
+        self._logger.debug(&#34;fetching  %s&#34;, resource.url)
+
+        request = HttpRequest(resource.url)
+
+        if timeout is not None:
+            request.timeout = timeout
+
+        request_headers = Headers(self.headers)
+
+        # Add request-specific headers, which will override client headers
+        if headers:
+            for header, value in headers.items():
+                request_headers[header] = value
+
+        # Set the combined headers on the request
+        request.headers = request_headers
+
+        response = self.transport.get(request)
+
+        # After getting the response
+        if 200 &lt;= response.status_code &lt; 300:
+            self._logger.debug(
+                &#34;Successfully fetched %s: HTTP %d (%d bytes)&#34;,
+                resource.url,
+                response.status_code,
+                len(response.content),
+            )
+        elif 400 &lt;= response.status_code &lt; 500:
+            self._logger.warning(
+                &#34;Client error fetching %s: HTTP %d&#34;,
+                resource.url,
+                response.status_code,
+            )
+        elif response.status_code &gt;= 500:
+            self._logger.error(
+                &#34;Server error fetching %s: HTTP %d&#34;,
+                resource.url,
+                response.status_code,
+            )
+
+        # Update last request time after successful request
+        self.last_request_time = time()
+
+        return response
+    except Exception as exc:  # pragma: no cover
+        # Log error before re-raising
+        self._logger.error(&#34;Request failed for %s: %s&#34;, resource.url, exc)
+        # Re-raise with clear error
+        raise IOError(f&#34;HTTP request failed: {exc}&#34;) from exc</code></pre>
+</details>
+<div class="desc"><p>Make a GET request to the specified resource.</p>
+<p>This method applies rate limiting, handles headers, and logs the result.
+For JavaScript-heavy sites, use with_chrome() first to switch to
+a Chrome-based transport.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>resource</code></strong> :&ensp;<code><a title="ethicrawl.Resource" href="#ethicrawl.Resource">Resource</a></code></dt>
+<dd>The resource to request</dd>
+<dt><strong><code>timeout</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Request-specific timeout that overrides
+the client's default timeout</dd>
+<dt><strong><code>headers</code></strong> :&ensp;<code>dict</code>, optional</dt>
+<dd>Additional headers for this request</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>HttpResponse</code></dt>
+<dd>Response object with status, headers and content</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>TypeError</code></dt>
+<dd>If resource is not a Resource instance</dd>
+<dt><code>IOError</code></dt>
+<dd>If the HTTP request fails for any reason</dd>
+</dl>
+<h2 id="example">Example</h2>
+<pre><code class="language-python-repl">&gt;&gt;&gt; client = HttpClient()
+&gt;&gt;&gt; response = client.get(Resource(&quot;https://example.com&quot;))
+&gt;&gt;&gt; if response.status_code == 200:
+...     print(f&quot;Got {len(response.content)} bytes&quot;)
+</code></pre></div>
+</dd>
+<dt id="ethicrawl.HttpClient.with_chrome"><code class="name flex">
+<span>def <span class="ident">with_chrome</span></span>(<span>self, headless=True, wait_time=3, timeout=30, rate_limit=0.5, jitter=0.3) ‑> <a title="ethicrawl.client.http.http_client.HttpClient" href="client/http/http_client.html#ethicrawl.client.http.http_client.HttpClient">HttpClient</a></span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def with_chrome(
+    self,
+    headless=True,
+    wait_time=3,
+    timeout=30,
+    rate_limit=0.5,
+    jitter=0.3,
+) -&gt; &#34;HttpClient&#34;:
+    &#34;&#34;&#34;Create a new HttpClient instance using Chrome/Selenium transport.
+
+    This creates a new client that can render JavaScript and interact
+    with dynamic web applications.
+
+    Args:
+        headless (bool): Whether to run Chrome in headless mode
+        wait_time (int): Default time to wait for page elements in seconds
+        timeout (int): Request timeout in seconds
+        rate_limit (float): Maximum requests per second
+        jitter (float): Random variation factor for rate limiting
+
+    Returns:
+        HttpClient: A new client instance configured to use Chrome
+
+    Example:
+        &gt;&gt;&gt; client = HttpClient()
+        &gt;&gt;&gt; chrome = client.with_chrome(headless=True)
+        &gt;&gt;&gt; response = chrome.get(Resource(&#34;https://single-page-app.com&#34;))
+    &#34;&#34;&#34;
+    chrome_params = {&#34;headless&#34;: headless, &#34;wait_time&#34;: wait_time}
+
+    # Create a new instance with the same context but Chrome transport
+    return HttpClient(
+        context=self._context,  # Use this instance&#39;s context
+        chrome_params=chrome_params,
+        timeout=timeout,
+        rate_limit=rate_limit,
+        jitter=jitter,
+    )</code></pre>
+</details>
+<div class="desc"><p>Create a new HttpClient instance using Chrome/Selenium transport.</p>
+<p>This creates a new client that can render JavaScript and interact
+with dynamic web applications.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>headless</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Whether to run Chrome in headless mode</dd>
+<dt><strong><code>wait_time</code></strong> :&ensp;<code>int</code></dt>
+<dd>Default time to wait for page elements in seconds</dd>
+<dt><strong><code>timeout</code></strong> :&ensp;<code>int</code></dt>
+<dd>Request timeout in seconds</dd>
+<dt><strong><code>rate_limit</code></strong> :&ensp;<code>float</code></dt>
+<dd>Maximum requests per second</dd>
+<dt><strong><code>jitter</code></strong> :&ensp;<code>float</code></dt>
+<dd>Random variation factor for rate limiting</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="ethicrawl.HttpClient" href="#ethicrawl.HttpClient">HttpClient</a></code></dt>
+<dd>A new client instance configured to use Chrome</dd>
+</dl>
+<h2 id="example">Example</h2>
+<pre><code class="language-python-repl">&gt;&gt;&gt; client = HttpClient()
+&gt;&gt;&gt; chrome = client.with_chrome(headless=True)
+&gt;&gt;&gt; response = chrome.get(Resource(&quot;https://single-page-app.com&quot;))
+</code></pre></div>
+</dd>
+</dl>
+</dd>
+<dt id="ethicrawl.Resource"><code class="flex name class">
+<span>class <span class="ident">Resource</span></span>
+<span>(</span><span>url: <a title="ethicrawl.core.url.Url" href="core/url.html#ethicrawl.core.url.Url">Url</a>)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass
+class Resource:
+    &#34;&#34;&#34;URL-identified entity within the crawler system.
+
+    Resource is a generic representation of anything addressable by a URL
+    within the Ethicrawl system. It serves as a common foundation for various
+    components like requests, responses, robots.txt files, sitemap entries, etc.
+
+    This class provides URL type safety, consistent equality comparison, and
+    proper hashing behavior for all URL-addressable entities.
+
+    Attributes:
+        url: The Url object identifying this resource. Can be initialized
+            with either a string or Url object.
+
+    Raises:
+        TypeError: When initialized with something other than a string or Url object
+
+    Examples:
+        &gt;&gt;&gt; resource = Resource(&#34;https://example.com/robots.txt&#34;)
+        &gt;&gt;&gt; resource.url.path
+        &#39;/robots.txt&#39;
+        &gt;&gt;&gt; resource2 = Resource(Url(&#34;https://example.com/robots.txt&#34;))
+        &gt;&gt;&gt; resource == resource2
+        True
+    &#34;&#34;&#34;
+
+    url: Url
+
+    def __post_init__(self):
+        &#34;&#34;&#34;Validate and normalize the url attribute after initialization.
+
+        Converts string URLs to Url objects and raises TypeError for invalid types.
+        &#34;&#34;&#34;
+        if isinstance(self.url, str):  # user provided a str; cast to Url
+            self.url = Url(self.url)
+        if not isinstance(self.url, Url):
+            raise TypeError(
+                f&#34;Error creating resource, got {type(self.url).__name__} expected str or Url&#34;
+            )
+
+    def __hash__(self):
+        &#34;&#34;&#34;Generate a hash based on the string representation of the URL.
+
+        Returns:
+            Integer hash value
+        &#34;&#34;&#34;
+        return hash(str(self.url))
+
+    def __eq__(self, other):
+        &#34;&#34;&#34;Compare resources for equality based on their URLs.
+
+        Two resources are considered equal if they have the same URL.
+
+        Args:
+            other: Another Resource object to compare with
+
+        Returns:
+            True if resources have the same URL, False otherwise
+        &#34;&#34;&#34;
+        if not isinstance(other, self.__class__):
+            return False
+        return str(self.url) == str(other.url)</code></pre>
+</details>
+<div class="desc"><p>URL-identified entity within the crawler system.</p>
+<p>Resource is a generic representation of anything addressable by a URL
+within the Ethicrawl system. It serves as a common foundation for various
+components like requests, responses, robots.txt files, sitemap entries, etc.</p>
+<p>This class provides URL type safety, consistent equality comparison, and
+proper hashing behavior for all URL-addressable entities.</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>url</code></strong></dt>
+<dd>The Url object identifying this resource. Can be initialized
+with either a string or Url object.</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>TypeError</code></dt>
+<dd>When initialized with something other than a string or Url object</dd>
+</dl>
+<h2 id="examples">Examples</h2>
+<pre><code class="language-python-repl">&gt;&gt;&gt; resource = Resource(&quot;https://example.com/robots.txt&quot;)
+&gt;&gt;&gt; resource.url.path
+'/robots.txt'
+&gt;&gt;&gt; resource2 = Resource(Url(&quot;https://example.com/robots.txt&quot;))
+&gt;&gt;&gt; resource == resource2
+True
+</code></pre></div>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="ethicrawl.client.request.Request" href="client/request.html#ethicrawl.client.request.Request">Request</a></li>
+<li><a title="ethicrawl.client.response.Response" href="client/response.html#ethicrawl.client.response.Response">Response</a></li>
+<li><a title="ethicrawl.robots.robot.Robot" href="robots/robot.html#ethicrawl.robots.robot.Robot">Robot</a></li>
+<li><a title="ethicrawl.sitemaps.sitemap_entry.SitemapEntry" href="sitemaps/sitemap_entry.html#ethicrawl.sitemaps.sitemap_entry.SitemapEntry">SitemapEntry</a></li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="ethicrawl.Resource.url"><code class="name">var <span class="ident">url</span> : <a title="ethicrawl.core.url.Url" href="core/url.html#ethicrawl.core.url.Url">Url</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="ethicrawl.ResourceList"><code class="flex name class">
+<span>class <span class="ident">ResourceList</span></span>
+<span>(</span><span>items: list[~T] | None = None)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ResourceList(Generic[T]):
+    &#34;&#34;&#34;Collection of Resource objects with filtering capabilities.
+
+    ResourceList provides list-like functionality specialized for managing
+    collections of Resources with additional filtering methods and type safety.
+    The class is generic and can contain any subclass of Resource.
+
+    Attributes:
+        No public attributes as internal storage is private
+
+    Examples:
+        &gt;&gt;&gt; from ethicrawl.core import Resource, ResourceList
+        &gt;&gt;&gt; resources = ResourceList()
+        &gt;&gt;&gt; resources.append(Resource(&#34;https://example.com/page1&#34;))
+        &gt;&gt;&gt; resources.append(Resource(&#34;https://example.com/page2&#34;))
+        &gt;&gt;&gt; len(resources)
+        2
+        &gt;&gt;&gt; filtered = resources.filter(r&#34;page1&#34;)
+        &gt;&gt;&gt; len(filtered)
+        1
+    &#34;&#34;&#34;
+
+    def __init__(self, items: list[T] | None = None):
+        &#34;&#34;&#34;Initialize a resource list with optional initial items.
+
+        Args:
+            items: Optional list of Resource objects to initialize with
+
+        Raises:
+            TypeError: If items is not a list or contains non-Resource objects
+        &#34;&#34;&#34;
+        self._items: list[T] = []
+        if items and isinstance(items, list):
+            self.extend(items)
+        elif items:
+            raise TypeError(f&#34;Expected list got {type(items).__name__}&#34;)
+
+    def __iter__(self) -&gt; Iterator[T]:
+        return iter(self._items)
+
+    def __getitem__(self, index) -&gt; T | list[T]:
+        return self._items[index]
+
+    def __len__(self) -&gt; int:
+        return len(self._items)
+
+    def __str__(self) -&gt; str:
+        return str(self._items)
+
+    def __repr__(self) -&gt; str:
+        return f&#34;ResourceList({repr(self._items)})&#34;
+
+    def append(self, item: T) -&gt; &#34;ResourceList[T]&#34;:
+        &#34;&#34;&#34;Add a resource to the list.
+
+        Args:
+            item: Resource object to add
+
+        Returns:
+            Self for method chaining
+
+        Raises:
+            TypeError: If item is not a Resource object
+        &#34;&#34;&#34;
+        if not isinstance(item, Resource):
+            raise TypeError(f&#34;Expected Resource, got {type(item).__name__}&#34;)
+        self._items.append(item)
+        return self
+
+    def extend(self, items: Iterable[T]) -&gt; &#34;ResourceList[T]&#34;:
+        &#34;&#34;&#34;Add multiple resources to the list.
+
+        Args:
+            items: Iterable of Resource objects to add
+
+        Returns:
+            Self for method chaining
+
+        Raises:
+            TypeError: If any item is not a Resource object
+        &#34;&#34;&#34;
+        for item in items:
+            self.append(item)
+        return self
+
+    def filter(self, pattern: str | Pattern) -&gt; &#34;ResourceList[T]&#34;:
+        &#34;&#34;&#34;Filter resources by URL pattern.
+
+        Args:
+            pattern: String pattern or compiled regex Pattern to match against URLs
+
+        Returns:
+            New ResourceList containing only matching resources
+        &#34;&#34;&#34;
+        if isinstance(pattern, str):
+            pattern = re_compile(pattern)
+
+        result: ResourceList[T] = ResourceList()
+        for item in self._items:
+            if pattern.search(str(item.url)):
+                result.append(item)
+        return result
+
+    def to_list(self) -&gt; list[T]:
+        &#34;&#34;&#34;Convert to a standard Python list.
+
+        Returns:
+            A copy of the internal list of resources
+        &#34;&#34;&#34;
+        return self._items.copy()</code></pre>
+</details>
+<div class="desc"><p>Collection of Resource objects with filtering capabilities.</p>
+<p>ResourceList provides list-like functionality specialized for managing
+collections of Resources with additional filtering methods and type safety.
+The class is generic and can contain any subclass of Resource.</p>
+<h2 id="attributes">Attributes</h2>
+<p>No public attributes as internal storage is private</p>
+<h2 id="examples">Examples</h2>
+<pre><code class="language-python-repl">&gt;&gt;&gt; from ethicrawl.core import Resource, ResourceList
+&gt;&gt;&gt; resources = ResourceList()
+&gt;&gt;&gt; resources.append(Resource(&quot;https://example.com/page1&quot;))
+&gt;&gt;&gt; resources.append(Resource(&quot;https://example.com/page2&quot;))
+&gt;&gt;&gt; len(resources)
+2
+&gt;&gt;&gt; filtered = resources.filter(r&quot;page1&quot;)
+&gt;&gt;&gt; len(filtered)
+1
+</code></pre>
+<p>Initialize a resource list with optional initial items.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>items</code></strong></dt>
+<dd>Optional list of Resource objects to initialize with</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>TypeError</code></dt>
+<dd>If items is not a list or contains non-Resource objects</dd>
+</dl></div>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>typing.Generic</li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="ethicrawl.ResourceList.append"><code class="name flex">
+<span>def <span class="ident">append</span></span>(<span>self, item: ~T) ‑> <a title="ethicrawl.core.resource_list.ResourceList" href="core/resource_list.html#ethicrawl.core.resource_list.ResourceList">ResourceList</a>[~T]</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def append(self, item: T) -&gt; &#34;ResourceList[T]&#34;:
+    &#34;&#34;&#34;Add a resource to the list.
+
+    Args:
+        item: Resource object to add
+
+    Returns:
+        Self for method chaining
+
+    Raises:
+        TypeError: If item is not a Resource object
+    &#34;&#34;&#34;
+    if not isinstance(item, Resource):
+        raise TypeError(f&#34;Expected Resource, got {type(item).__name__}&#34;)
+    self._items.append(item)
+    return self</code></pre>
+</details>
+<div class="desc"><p>Add a resource to the list.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>item</code></strong></dt>
+<dd>Resource object to add</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>Self for method chaining</p>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>TypeError</code></dt>
+<dd>If item is not a Resource object</dd>
+</dl></div>
+</dd>
+<dt id="ethicrawl.ResourceList.extend"><code class="name flex">
+<span>def <span class="ident">extend</span></span>(<span>self, items: Iterable[~T]) ‑> <a title="ethicrawl.core.resource_list.ResourceList" href="core/resource_list.html#ethicrawl.core.resource_list.ResourceList">ResourceList</a>[~T]</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def extend(self, items: Iterable[T]) -&gt; &#34;ResourceList[T]&#34;:
+    &#34;&#34;&#34;Add multiple resources to the list.
+
+    Args:
+        items: Iterable of Resource objects to add
+
+    Returns:
+        Self for method chaining
+
+    Raises:
+        TypeError: If any item is not a Resource object
+    &#34;&#34;&#34;
+    for item in items:
+        self.append(item)
+    return self</code></pre>
+</details>
+<div class="desc"><p>Add multiple resources to the list.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>items</code></strong></dt>
+<dd>Iterable of Resource objects to add</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>Self for method chaining</p>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>TypeError</code></dt>
+<dd>If any item is not a Resource object</dd>
+</dl></div>
+</dd>
+<dt id="ethicrawl.ResourceList.filter"><code class="name flex">
+<span>def <span class="ident">filter</span></span>(<span>self, pattern: str | Pattern) ‑> <a title="ethicrawl.core.resource_list.ResourceList" href="core/resource_list.html#ethicrawl.core.resource_list.ResourceList">ResourceList</a>[~T]</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def filter(self, pattern: str | Pattern) -&gt; &#34;ResourceList[T]&#34;:
+    &#34;&#34;&#34;Filter resources by URL pattern.
+
+    Args:
+        pattern: String pattern or compiled regex Pattern to match against URLs
+
+    Returns:
+        New ResourceList containing only matching resources
+    &#34;&#34;&#34;
+    if isinstance(pattern, str):
+        pattern = re_compile(pattern)
+
+    result: ResourceList[T] = ResourceList()
+    for item in self._items:
+        if pattern.search(str(item.url)):
+            result.append(item)
+    return result</code></pre>
+</details>
+<div class="desc"><p>Filter resources by URL pattern.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>pattern</code></strong></dt>
+<dd>String pattern or compiled regex Pattern to match against URLs</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>New ResourceList containing only matching resources</p></div>
+</dd>
+<dt id="ethicrawl.ResourceList.to_list"><code class="name flex">
+<span>def <span class="ident">to_list</span></span>(<span>self) ‑> list[~T]</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def to_list(self) -&gt; list[T]:
+    &#34;&#34;&#34;Convert to a standard Python list.
+
+    Returns:
+        A copy of the internal list of resources
+    &#34;&#34;&#34;
+    return self._items.copy()</code></pre>
+</details>
+<div class="desc"><p>Convert to a standard Python list.</p>
+<h2 id="returns">Returns</h2>
+<p>A copy of the internal list of resources</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="ethicrawl.Url"><code class="flex name class">
+<span>class <span class="ident">Url</span></span>
+<span>(</span><span>url: str | ForwardRef('<a title="ethicrawl.Url" href="#ethicrawl.Url">Url</a>'),<br>validate: bool = False)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Url:
+    &#34;&#34;&#34;URL parser and manipulation class.
+
+    This class provides methods for parsing, validating, and manipulating URLs.
+    Supports HTTP, HTTPS, and file URL schemes with validation and component access.
+    Path extension and query parameter manipulation are provided through the extend() method.
+
+    Attributes:
+        scheme: URL scheme (http, https, file)
+        netloc: Network location/domain (HTTP/HTTPS only)
+        hostname: Just the hostname portion of netloc (HTTP/HTTPS only)
+        path: URL path component
+        params: URL parameters (HTTP/HTTPS only)
+        query: Raw query string (HTTP/HTTPS only)
+        query_params: Query string parsed into a dictionary (HTTP/HTTPS only)
+        fragment: URL fragment identifier (HTTP/HTTPS only)
+        base: Base URL (scheme + netloc)
+
+    Raises:
+        ValueError: When provided with invalid URLs or when performing invalid operations
+    &#34;&#34;&#34;
+
+    def __init__(self, url: Union[str, &#34;Url&#34;], validate: bool = False):
+        &#34;&#34;&#34;Initialize a URL object with parsing and optional validation.
+
+        Args:
+            url: String or Url object to parse
+            validate: If True, performs additional validation including DNS resolution
+
+        Raises:
+            ValueError: When the URL has an invalid scheme or missing required components
+            ValueError: When validate=True and the hostname cannot be resolved
+        &#34;&#34;&#34;
+        if isinstance(url, Url):
+            url = str(url)
+
+        self._parsed = parse.urlparse(url)
+
+        # Basic validation
+        if self._parsed.scheme not in [&#34;file&#34;, &#34;http&#34;, &#34;https&#34;]:
+            raise ValueError(f&#34;Only File and HTTP(S) URLs supported: {url}&#34;)
+
+        # For HTTP/HTTPS URLs, ensure netloc exists
+        if self._parsed.scheme in [&#34;http&#34;, &#34;https&#34;] and not self._parsed.netloc:
+            raise ValueError(f&#34;Invalid HTTP URL (missing domain): {url}&#34;)
+
+        # For file URLs, ensure path exists
+        if self._parsed.scheme == &#34;file&#34; and not self._parsed.path:
+            raise ValueError(f&#34;Invalid file URL (missing path): {url}&#34;)
+
+        # Domain resolution validation (for HTTP/HTTPS only)
+        if validate and self._parsed.scheme in [&#34;http&#34;, &#34;https&#34;]:
+            try:
+                gethostbyname(str(self._parsed.hostname))
+            except gaierror as exc:
+                raise ValueError(
+                    f&#34;Cannot resolve hostname: {self._parsed.hostname}&#34;
+                ) from exc
+
+    @property
+    def base(self) -&gt; str:
+        &#34;&#34;&#34;Get the base URL (scheme and netloc).
+
+        Returns:
+            The base URL as a string (e.g., &#39;https://example.com&#39;)
+        &#34;&#34;&#34;
+        if self.scheme == &#34;file&#34;:
+            return &#34;file://&#34;
+        return f&#34;{self.scheme}://{self.netloc}&#34;
+
+    @property
+    def scheme(self) -&gt; str:
+        &#34;&#34;&#34;Get the URL scheme (file, http or https).&#34;&#34;&#34;
+        return self._parsed.scheme
+
+    @property
+    @http_only
+    def netloc(self) -&gt; str:
+        &#34;&#34;&#34;Get the network location (domain).&#34;&#34;&#34;
+        return self._parsed.netloc
+
+    @property
+    @http_only
+    def hostname(self) -&gt; str:
+        &#34;&#34;&#34;Get just the hostname part.&#34;&#34;&#34;
+        return str(self._parsed.hostname)
+
+    @property
+    def path(self) -&gt; str:
+        &#34;&#34;&#34;Get the path component.&#34;&#34;&#34;
+        return self._parsed.path
+
+    @property
+    @http_only
+    def params(self) -&gt; str:
+        &#34;&#34;&#34;Get URL parameters.&#34;&#34;&#34;
+        return self._parsed.params
+
+    @property
+    @http_only
+    def query(self) -&gt; str:
+        &#34;&#34;&#34;Get the query string.&#34;&#34;&#34;
+        return self._parsed.query
+
+    @property
+    @http_only
+    def query_params(self) -&gt; dict[str, Any]:
+        &#34;&#34;&#34;Get query parameters as a dictionary.
+
+        Returns:
+            Dictionary of query parameter keys and values
+
+        Raises:
+            ValueError: If called on a non-HTTP(S) URL
+        &#34;&#34;&#34;
+        return dict(parse.parse_qsl(self._parsed.query))
+
+    @property
+    @http_only
+    def fragment(self) -&gt; str:
+        &#34;&#34;&#34;Get the fragment identifier from the URL.
+
+        The fragment appears after # in a URL and typically
+        references a section within a document.
+
+        Returns:
+            Fragment string without the # character
+
+        Raises:
+            ValueError: If called on a non-HTTP(S) URL
+        &#34;&#34;&#34;
+        return self._parsed.fragment
+
+    def __str__(self) -&gt; str:
+        &#34;&#34;&#34;Convert URL to string representation.
+
+        Returns:
+            Complete URL string
+        &#34;&#34;&#34;
+        return self._parsed.geturl()
+
+    def __eq__(self, other):
+        &#34;&#34;&#34;Compare URLs for equality.
+
+        Args:
+            other: Another Url object or string to compare with
+
+        Returns:
+            True if URLs are equal, False otherwise
+        &#34;&#34;&#34;
+        if isinstance(other, Url):
+            return str(self) == str(other)
+        elif isinstance(other, str):
+            return str(self) == other
+        return False
+
+    def __hash__(self):
+        &#34;&#34;&#34;Return a hash of the URL.
+
+        The hash is based on the string representation of the URL,
+        ensuring URLs that are equal have the same hash.
+
+        Returns:
+            Integer hash value
+        &#34;&#34;&#34;
+        return hash(str(self))
+
+    @http_only
+    def _extend_with_params(self, params: dict[str, Any]) -&gt; &#34;Url&#34;:
+        current_params = self.query_params
+        current_params.update(params)
+
+        query_string = parse.urlencode(current_params)
+
+        # Create new URL with updated query string
+        base_url = f&#34;{self.scheme}://{self.netloc}{self.path}&#34;
+        if self._parsed.params:
+            base_url += f&#34;;{self._parsed.params}&#34;
+
+        # Add fragment if it exists
+        fragment = f&#34;#{self._parsed.fragment}&#34; if self._parsed.fragment else &#34;&#34;
+
+        return Url(
+            f&#34;{base_url}?{query_string}{fragment}&#34;
+            if query_string
+            else f&#34;{base_url}{fragment}&#34;
+        )
+
+    def _extend_with_path(self, path: str) -&gt; &#34;Url&#34;:
+        # Set location based on scheme
+        if self.scheme == &#34;file&#34;:
+            loc = &#34;&#34;  # Empty for file URLs
+        else:
+            loc = self.netloc  # Use netloc for HTTP(S)
+
+        # Handle path joining logic uniformly
+        if path.startswith(&#34;/&#34;):
+            # Path has leading slash
+            if self.path.endswith(&#34;/&#34;):
+                # Remove duplicate slash if base path ends with slash
+                new_path = self.path + path[1:]
+            else:
+                # Keep the leading slash
+                new_path = self.path + path
+        else:
+            # No leading slash in path
+            if not self.path:
+                new_path = &#34;/&#34; + path
+            elif self.path.endswith(&#34;/&#34;):
+                new_path = self.path + path
+            else:
+                new_path = self.path + &#34;/&#34; + path
+
+        # Unified URL construction
+        return Url(f&#34;{self.scheme}://{loc}{new_path}&#34;)
+
+    def extend(self, *args) -&gt; &#34;Url&#34;:
+        &#34;&#34;&#34;Extend the URL with additional path components or query parameters.
+
+        This method supports multiple extension patterns:
+        1. Path extension: extend(&#34;path/component&#34;)
+        2. Single parameter: extend(&#34;param_name&#34;, &#34;param_value&#34;)
+        3. Multiple parameters: extend({&#34;param1&#34;: &#34;value1&#34;, &#34;param2&#34;: &#34;value2&#34;})
+
+        Args:
+            *args: Either a path string, a parameter dict, or name/value parameter pair
+
+        Returns:
+            A new Url object with the extended path or parameters
+
+        Raises:
+            ValueError: If arguments don&#39;t match one of the supported patterns
+            ValueError: If trying to add query parameters to a file:// URL
+
+        Examples:
+            &gt;&gt;&gt; url = Url(&#34;https://example.com/api&#34;)
+            &gt;&gt;&gt; url.extend(&#34;v1&#34;).extend({&#34;format&#34;: &#34;json&#34;})
+            Url(&#34;https://example.com/api/v1?format=json&#34;)
+        &#34;&#34;&#34;
+        # Case 1: Dictionary of parameters
+        if (
+            self.scheme in [&#34;http&#34;, &#34;https&#34;]
+            and len(args) == 1
+            and isinstance(args[0], dict)
+        ):
+            params = args[0]
+            return self._extend_with_params(params)
+
+        # Case 2: Key-value parameter pair
+        elif self.scheme in [&#34;http&#34;, &#34;https&#34;] and len(args) == 2:
+            param_name, param_value = args
+            return self._extend_with_params({param_name: param_value})
+
+        # Case 3: Path component (works for all schemes)
+        elif len(args) == 1 and isinstance(args[0], str):
+            path_component = args[0]
+            return self._extend_with_path(path_component)
+
+        # Invalid usage
+        else:
+            if self.scheme == &#34;file&#34; and (
+                len(args) == 1 and isinstance(args[0], dict) or len(args) == 2
+            ):
+                raise ValueError(&#34;Query parameters are not supported for file:// URLs&#34;)
+            raise ValueError(&#34;Invalid arguments for extend()&#34;)</code></pre>
+</details>
+<div class="desc"><p>URL parser and manipulation class.</p>
+<p>This class provides methods for parsing, validating, and manipulating URLs.
+Supports HTTP, HTTPS, and file URL schemes with validation and component access.
+Path extension and query parameter manipulation are provided through the extend() method.</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>scheme</code></strong></dt>
+<dd>URL scheme (http, https, file)</dd>
+<dt><strong><code>netloc</code></strong></dt>
+<dd>Network location/domain (HTTP/HTTPS only)</dd>
+<dt><strong><code>hostname</code></strong></dt>
+<dd>Just the hostname portion of netloc (HTTP/HTTPS only)</dd>
+<dt><strong><code>path</code></strong></dt>
+<dd>URL path component</dd>
+<dt><strong><code>params</code></strong></dt>
+<dd>URL parameters (HTTP/HTTPS only)</dd>
+<dt><strong><code>query</code></strong></dt>
+<dd>Raw query string (HTTP/HTTPS only)</dd>
+<dt><strong><code>query_params</code></strong></dt>
+<dd>Query string parsed into a dictionary (HTTP/HTTPS only)</dd>
+<dt><strong><code>fragment</code></strong></dt>
+<dd>URL fragment identifier (HTTP/HTTPS only)</dd>
+<dt><strong><code>base</code></strong></dt>
+<dd>Base URL (scheme + netloc)</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>ValueError</code></dt>
+<dd>When provided with invalid URLs or when performing invalid operations</dd>
+</dl>
+<p>Initialize a URL object with parsing and optional validation.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>url</code></strong></dt>
+<dd>String or Url object to parse</dd>
+<dt><strong><code>validate</code></strong></dt>
+<dd>If True, performs additional validation including DNS resolution</dd>
+</dl>
+<h2 id="raises_1">Raises</h2>
+<dl>
+<dt><code>ValueError</code></dt>
+<dd>When the URL has an invalid scheme or missing required components</dd>
+<dt><code>ValueError</code></dt>
+<dd>When validate=True and the hostname cannot be resolved</dd>
+</dl></div>
+<h3>Instance variables</h3>
+<dl>
+<dt id="ethicrawl.Url.base"><code class="name">prop <span class="ident">base</span> : str</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def base(self) -&gt; str:
+    &#34;&#34;&#34;Get the base URL (scheme and netloc).
+
+    Returns:
+        The base URL as a string (e.g., &#39;https://example.com&#39;)
+    &#34;&#34;&#34;
+    if self.scheme == &#34;file&#34;:
+        return &#34;file://&#34;
+    return f&#34;{self.scheme}://{self.netloc}&#34;</code></pre>
+</details>
+<div class="desc"><p>Get the base URL (scheme and netloc).</p>
+<h2 id="returns">Returns</h2>
+<p>The base URL as a string (e.g., 'https://example.com')</p></div>
+</dd>
+<dt id="ethicrawl.Url.fragment"><code class="name">prop <span class="ident">fragment</span> : str</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+@http_only
+def fragment(self) -&gt; str:
+    &#34;&#34;&#34;Get the fragment identifier from the URL.
+
+    The fragment appears after # in a URL and typically
+    references a section within a document.
+
+    Returns:
+        Fragment string without the # character
+
+    Raises:
+        ValueError: If called on a non-HTTP(S) URL
+    &#34;&#34;&#34;
+    return self._parsed.fragment</code></pre>
+</details>
+<div class="desc"><p>Get the fragment identifier from the URL.</p>
+<p>The fragment appears after # in a URL and typically
+references a section within a document.</p>
+<h2 id="returns">Returns</h2>
+<p>Fragment string without the # character</p>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>ValueError</code></dt>
+<dd>If called on a non-HTTP(S) URL</dd>
+</dl></div>
+</dd>
+<dt id="ethicrawl.Url.hostname"><code class="name">prop <span class="ident">hostname</span> : str</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+@http_only
+def hostname(self) -&gt; str:
+    &#34;&#34;&#34;Get just the hostname part.&#34;&#34;&#34;
+    return str(self._parsed.hostname)</code></pre>
+</details>
+<div class="desc"><p>Get just the hostname part.</p></div>
+</dd>
+<dt id="ethicrawl.Url.netloc"><code class="name">prop <span class="ident">netloc</span> : str</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+@http_only
+def netloc(self) -&gt; str:
+    &#34;&#34;&#34;Get the network location (domain).&#34;&#34;&#34;
+    return self._parsed.netloc</code></pre>
+</details>
+<div class="desc"><p>Get the network location (domain).</p></div>
+</dd>
+<dt id="ethicrawl.Url.params"><code class="name">prop <span class="ident">params</span> : str</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+@http_only
+def params(self) -&gt; str:
+    &#34;&#34;&#34;Get URL parameters.&#34;&#34;&#34;
+    return self._parsed.params</code></pre>
+</details>
+<div class="desc"><p>Get URL parameters.</p></div>
+</dd>
+<dt id="ethicrawl.Url.path"><code class="name">prop <span class="ident">path</span> : str</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def path(self) -&gt; str:
+    &#34;&#34;&#34;Get the path component.&#34;&#34;&#34;
+    return self._parsed.path</code></pre>
+</details>
+<div class="desc"><p>Get the path component.</p></div>
+</dd>
+<dt id="ethicrawl.Url.query"><code class="name">prop <span class="ident">query</span> : str</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+@http_only
+def query(self) -&gt; str:
+    &#34;&#34;&#34;Get the query string.&#34;&#34;&#34;
+    return self._parsed.query</code></pre>
+</details>
+<div class="desc"><p>Get the query string.</p></div>
+</dd>
+<dt id="ethicrawl.Url.query_params"><code class="name">prop <span class="ident">query_params</span> : dict[str, typing.Any]</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+@http_only
+def query_params(self) -&gt; dict[str, Any]:
+    &#34;&#34;&#34;Get query parameters as a dictionary.
+
+    Returns:
+        Dictionary of query parameter keys and values
+
+    Raises:
+        ValueError: If called on a non-HTTP(S) URL
+    &#34;&#34;&#34;
+    return dict(parse.parse_qsl(self._parsed.query))</code></pre>
+</details>
+<div class="desc"><p>Get query parameters as a dictionary.</p>
+<h2 id="returns">Returns</h2>
+<p>Dictionary of query parameter keys and values</p>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>ValueError</code></dt>
+<dd>If called on a non-HTTP(S) URL</dd>
+</dl></div>
+</dd>
+<dt id="ethicrawl.Url.scheme"><code class="name">prop <span class="ident">scheme</span> : str</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def scheme(self) -&gt; str:
+    &#34;&#34;&#34;Get the URL scheme (file, http or https).&#34;&#34;&#34;
+    return self._parsed.scheme</code></pre>
+</details>
+<div class="desc"><p>Get the URL scheme (file, http or https).</p></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="ethicrawl.Url.extend"><code class="name flex">
+<span>def <span class="ident">extend</span></span>(<span>self, *args) ‑> <a title="ethicrawl.core.url.Url" href="core/url.html#ethicrawl.core.url.Url">Url</a></span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def extend(self, *args) -&gt; &#34;Url&#34;:
+    &#34;&#34;&#34;Extend the URL with additional path components or query parameters.
+
+    This method supports multiple extension patterns:
+    1. Path extension: extend(&#34;path/component&#34;)
+    2. Single parameter: extend(&#34;param_name&#34;, &#34;param_value&#34;)
+    3. Multiple parameters: extend({&#34;param1&#34;: &#34;value1&#34;, &#34;param2&#34;: &#34;value2&#34;})
+
+    Args:
+        *args: Either a path string, a parameter dict, or name/value parameter pair
+
+    Returns:
+        A new Url object with the extended path or parameters
+
+    Raises:
+        ValueError: If arguments don&#39;t match one of the supported patterns
+        ValueError: If trying to add query parameters to a file:// URL
+
+    Examples:
+        &gt;&gt;&gt; url = Url(&#34;https://example.com/api&#34;)
+        &gt;&gt;&gt; url.extend(&#34;v1&#34;).extend({&#34;format&#34;: &#34;json&#34;})
+        Url(&#34;https://example.com/api/v1?format=json&#34;)
+    &#34;&#34;&#34;
+    # Case 1: Dictionary of parameters
+    if (
+        self.scheme in [&#34;http&#34;, &#34;https&#34;]
+        and len(args) == 1
+        and isinstance(args[0], dict)
+    ):
+        params = args[0]
+        return self._extend_with_params(params)
+
+    # Case 2: Key-value parameter pair
+    elif self.scheme in [&#34;http&#34;, &#34;https&#34;] and len(args) == 2:
+        param_name, param_value = args
+        return self._extend_with_params({param_name: param_value})
+
+    # Case 3: Path component (works for all schemes)
+    elif len(args) == 1 and isinstance(args[0], str):
+        path_component = args[0]
+        return self._extend_with_path(path_component)
+
+    # Invalid usage
+    else:
+        if self.scheme == &#34;file&#34; and (
+            len(args) == 1 and isinstance(args[0], dict) or len(args) == 2
+        ):
+            raise ValueError(&#34;Query parameters are not supported for file:// URLs&#34;)
+        raise ValueError(&#34;Invalid arguments for extend()&#34;)</code></pre>
+</details>
+<div class="desc"><p>Extend the URL with additional path components or query parameters.</p>
+<p>This method supports multiple extension patterns:
+1. Path extension: extend("path/component")
+2. Single parameter: extend("param_name", "param_value")
+3. Multiple parameters: extend({"param1": "value1", "param2": "value2"})</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>*args</code></strong></dt>
+<dd>Either a path string, a parameter dict, or name/value parameter pair</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>A new Url object with the extended path or parameters</p>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>ValueError</code></dt>
+<dd>If arguments don't match one of the supported patterns</dd>
+<dt><code>ValueError</code></dt>
+<dd>If trying to add query parameters to a file:// URL</dd>
+</dl>
+<h2 id="examples">Examples</h2>
+<pre><code class="language-python-repl">&gt;&gt;&gt; url = Url(&quot;https://example.com/api&quot;)
+&gt;&gt;&gt; url.extend(&quot;v1&quot;).extend({&quot;format&quot;: &quot;json&quot;})
+Url(&quot;https://example.com/api/v1?format=json&quot;)
+</code></pre></div>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3><a href="#header-submodules">Sub-modules</a></h3>
+<ul>
+<li><code><a title="ethicrawl.client" href="client/index.html">ethicrawl.client</a></code></li>
+<li><code><a title="ethicrawl.config" href="config/index.html">ethicrawl.config</a></code></li>
+<li><code><a title="ethicrawl.context" href="context/index.html">ethicrawl.context</a></code></li>
+<li><code><a title="ethicrawl.core" href="core/index.html">ethicrawl.core</a></code></li>
+<li><code><a title="ethicrawl.domain_context" href="domain_context.html">ethicrawl.domain_context</a></code></li>
+<li><code><a title="ethicrawl.error" href="error/index.html">ethicrawl.error</a></code></li>
+<li><code><a title="ethicrawl.ethicrawl" href="ethicrawl.html">ethicrawl.ethicrawl</a></code></li>
+<li><code><a title="ethicrawl.logger" href="logger/index.html">ethicrawl.logger</a></code></li>
+<li><code><a title="ethicrawl.robots" href="robots/index.html">ethicrawl.robots</a></code></li>
+<li><code><a title="ethicrawl.sitemaps" href="sitemaps/index.html">ethicrawl.sitemaps</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="ethicrawl.Config" href="#ethicrawl.Config">Config</a></code></h4>
+<ul class="two-column">
+<li><code><a title="ethicrawl.Config.get_snapshot" href="#ethicrawl.Config.get_snapshot">get_snapshot</a></code></li>
+<li><code><a title="ethicrawl.Config.http" href="#ethicrawl.Config.http">http</a></code></li>
+<li><code><a title="ethicrawl.Config.logger" href="#ethicrawl.Config.logger">logger</a></code></li>
+<li><code><a title="ethicrawl.Config.reset" href="#ethicrawl.Config.reset">reset</a></code></li>
+<li><code><a title="ethicrawl.Config.sitemap" href="#ethicrawl.Config.sitemap">sitemap</a></code></li>
+<li><code><a title="ethicrawl.Config.to_dict" href="#ethicrawl.Config.to_dict">to_dict</a></code></li>
+<li><code><a title="ethicrawl.Config.update" href="#ethicrawl.Config.update">update</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="ethicrawl.Ethicrawl" href="#ethicrawl.Ethicrawl">Ethicrawl</a></code></h4>
+<ul class="two-column">
+<li><code><a title="ethicrawl.Ethicrawl.bind" href="#ethicrawl.Ethicrawl.bind">bind</a></code></li>
+<li><code><a title="ethicrawl.Ethicrawl.bound" href="#ethicrawl.Ethicrawl.bound">bound</a></code></li>
+<li><code><a title="ethicrawl.Ethicrawl.config" href="#ethicrawl.Ethicrawl.config">config</a></code></li>
+<li><code><a title="ethicrawl.Ethicrawl.get" href="#ethicrawl.Ethicrawl.get">get</a></code></li>
+<li><code><a title="ethicrawl.Ethicrawl.logger" href="#ethicrawl.Ethicrawl.logger">logger</a></code></li>
+<li><code><a title="ethicrawl.Ethicrawl.robots" href="#ethicrawl.Ethicrawl.robots">robots</a></code></li>
+<li><code><a title="ethicrawl.Ethicrawl.sitemaps" href="#ethicrawl.Ethicrawl.sitemaps">sitemaps</a></code></li>
+<li><code><a title="ethicrawl.Ethicrawl.unbind" href="#ethicrawl.Ethicrawl.unbind">unbind</a></code></li>
+<li><code><a title="ethicrawl.Ethicrawl.whitelist" href="#ethicrawl.Ethicrawl.whitelist">whitelist</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="ethicrawl.HttpClient" href="#ethicrawl.HttpClient">HttpClient</a></code></h4>
+<ul class="">
+<li><code><a title="ethicrawl.HttpClient.get" href="#ethicrawl.HttpClient.get">get</a></code></li>
+<li><code><a title="ethicrawl.HttpClient.user_agent" href="#ethicrawl.HttpClient.user_agent">user_agent</a></code></li>
+<li><code><a title="ethicrawl.HttpClient.with_chrome" href="#ethicrawl.HttpClient.with_chrome">with_chrome</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="ethicrawl.Resource" href="#ethicrawl.Resource">Resource</a></code></h4>
+<ul class="">
+<li><code><a title="ethicrawl.Resource.url" href="#ethicrawl.Resource.url">url</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="ethicrawl.ResourceList" href="#ethicrawl.ResourceList">ResourceList</a></code></h4>
+<ul class="">
+<li><code><a title="ethicrawl.ResourceList.append" href="#ethicrawl.ResourceList.append">append</a></code></li>
+<li><code><a title="ethicrawl.ResourceList.extend" href="#ethicrawl.ResourceList.extend">extend</a></code></li>
+<li><code><a title="ethicrawl.ResourceList.filter" href="#ethicrawl.ResourceList.filter">filter</a></code></li>
+<li><code><a title="ethicrawl.ResourceList.to_list" href="#ethicrawl.ResourceList.to_list">to_list</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="ethicrawl.Url" href="#ethicrawl.Url">Url</a></code></h4>
+<ul class="two-column">
+<li><code><a title="ethicrawl.Url.base" href="#ethicrawl.Url.base">base</a></code></li>
+<li><code><a title="ethicrawl.Url.extend" href="#ethicrawl.Url.extend">extend</a></code></li>
+<li><code><a title="ethicrawl.Url.fragment" href="#ethicrawl.Url.fragment">fragment</a></code></li>
+<li><code><a title="ethicrawl.Url.hostname" href="#ethicrawl.Url.hostname">hostname</a></code></li>
+<li><code><a title="ethicrawl.Url.netloc" href="#ethicrawl.Url.netloc">netloc</a></code></li>
+<li><code><a title="ethicrawl.Url.params" href="#ethicrawl.Url.params">params</a></code></li>
+<li><code><a title="ethicrawl.Url.path" href="#ethicrawl.Url.path">path</a></code></li>
+<li><code><a title="ethicrawl.Url.query" href="#ethicrawl.Url.query">query</a></code></li>
+<li><code><a title="ethicrawl.Url.query_params" href="#ethicrawl.Url.query_params">query_params</a></code></li>
+<li><code><a title="ethicrawl.Url.scheme" href="#ethicrawl.Url.scheme">scheme</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.6</a>.</p>
+</footer>
+</body>
+</html>

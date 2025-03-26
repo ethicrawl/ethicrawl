@@ -1,3 +1,5 @@
+"""Context management for sharing state between components."""
+
 from .context import Context
 
 __all__ = [

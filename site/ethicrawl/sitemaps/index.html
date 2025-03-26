@@ -1,0 +1,1678 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.6">
+<title>ethicrawl.sitemaps API documentation</title>
+<meta name="description" content="XML sitemap parsing and traversal for discovering website structure.">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+/* Collapse source docstrings */
+setTimeout(() => {
+[...document.querySelectorAll('.hljs.language-python > .hljs-string')]
+.filter(el => el.innerHTML.length > 200 && ['"""', "'''"].includes(el.innerHTML.substring(0, 3)))
+.forEach(el => {
+let d = document.createElement('details');
+d.classList.add('hljs-string');
+d.innerHTML = '<summary>"""</summary>' + el.innerHTML.substring(3);
+el.replaceWith(d);
+});
+}, 100);
+})</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>ethicrawl.sitemaps</code></h1>
+</header>
+<section id="section-intro">
+<p>XML sitemap parsing and traversal for discovering website structure.</p>
+</section>
+<section>
+<h2 class="section-title" id="header-submodules">Sub-modules</h2>
+<dl>
+<dt><code class="name"><a title="ethicrawl.sitemaps.const" href="const.html">ethicrawl.sitemaps.const</a></code></dt>
+<dd>
+<div class="desc"><p>Constants for sitemap document type identification.</p></div>
+</dd>
+<dt><code class="name"><a title="ethicrawl.sitemaps.index_document" href="index_document.html">ethicrawl.sitemaps.index_document</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="ethicrawl.sitemaps.index_entry" href="index_entry.html">ethicrawl.sitemaps.index_entry</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="ethicrawl.sitemaps.sitemap_document" href="sitemap_document.html">ethicrawl.sitemaps.sitemap_document</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="ethicrawl.sitemaps.sitemap_entry" href="sitemap_entry.html">ethicrawl.sitemaps.sitemap_entry</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="ethicrawl.sitemaps.sitemap_parser" href="sitemap_parser.html">ethicrawl.sitemaps.sitemap_parser</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="ethicrawl.sitemaps.urlset_document" href="urlset_document.html">ethicrawl.sitemaps.urlset_document</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="ethicrawl.sitemaps.urlset_entry" href="urlset_entry.html">ethicrawl.sitemaps.urlset_entry</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="ethicrawl.sitemaps.IndexDocument"><code class="flex name class">
+<span>class <span class="ident">IndexDocument</span></span>
+<span>(</span><span>context: <a title="ethicrawl.context.context.Context" href="../context/context.html#ethicrawl.context.context.Context">Context</a>,<br>document: str | None = None)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class IndexDocument(SitemapDocument):
+    &#34;&#34;&#34;Specialized parser for sitemap index documents.
+
+    This class extends the SitemapDocument class to handle sitemap indexes,
+    which are XML documents containing references to other sitemap files.
+    It validates that the document is a proper sitemap index and extracts
+    all sitemap references as IndexEntry objects.
+
+    IndexDocument enforces type safety for its entries collection, ensuring
+    that only IndexEntry objects can be added.
+
+    Attributes:
+        entries: ResourceList of IndexEntry objects representing sitemap references
+
+    Example:
+        &gt;&gt;&gt; from ethicrawl.context import Context
+        &gt;&gt;&gt; from ethicrawl.core import Resource
+        &gt;&gt;&gt; from ethicrawl.sitemaps import IndexDocument
+        &gt;&gt;&gt; context = Context(Resource(&#34;https://example.com&#34;))
+        &gt;&gt;&gt; sitemap_xml = &#39;&#39;&#39;&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;
+        ... &lt;sitemapindex xmlns=&#34;http://www.sitemaps.org/schemas/sitemap/0.9&#34;&gt;
+        ...   &lt;sitemap&gt;
+        ...     &lt;loc&gt;https://example.com/sitemap1.xml&lt;/loc&gt;
+        ...     &lt;lastmod&gt;2023-06-15T14:30:00Z&lt;/lastmod&gt;
+        ...   &lt;/sitemap&gt;
+        ... &lt;/sitemapindex&gt;&#39;&#39;&#39;
+        &gt;&gt;&gt; index = IndexDocument(context, sitemap_xml)
+        &gt;&gt;&gt; len(index.entries)
+        1
+        &gt;&gt;&gt; str(index.entries[0])
+        &#39;https://example.com/sitemap1.xml (last modified: 2023-06-15T14:30:00Z)&#39;
+    &#34;&#34;&#34;
+
+    def __init__(self, context: Context, document: str | None = None) -&gt; None:
+        &#34;&#34;&#34;Initialize a sitemap index document parser.
+
+        Args:
+            context: Context for logging and resource resolution
+            document: Optional XML sitemap index content to parse
+
+        Raises:
+            ValueError: If the document is not a valid sitemap index
+            SitemapError: If the document cannot be parsed
+        &#34;&#34;&#34;
+        super().__init__(context, document)
+        self._logger.debug(&#34;Creating IndexDocument instance&#34;)
+
+        if document is not None:
+            _localname = etree.QName(self._root.tag).localname
+            if _localname != SITEMAPINDEX:
+                raise ValueError(f&#34;Expected a root {SITEMAPINDEX} got {_localname}&#34;)
+            self._entries = self._parse_index_sitemap(document)
+            self._logger.debug(
+                &#34;Parsed sitemap index with %d entries&#34;, len(self._entries)
+            )
+
+    def _parse_index_sitemap(self, document) -&gt; ResourceList:
+        &#34;&#34;&#34;Parse sitemap references from a sitemap index.
+
+        Extracts all &lt;sitemap&gt; elements and their &lt;loc&gt; and &lt;lastmod&gt;
+        children, creating IndexEntry objects for each valid reference.
+
+        Args:
+            document: XML document string to parse
+
+        Returns:
+            ResourceList containing IndexEntry objects for each sitemap reference
+        &#34;&#34;&#34;
+        sitemaps: ResourceList = ResourceList()
+
+        nsmap = {&#34;&#34;: self.SITEMAP_NS}
+        _root = etree.fromstring(document.encode(&#34;utf-8&#34;), parser=self._parser)
+
+        # Find all sitemap elements
+        sitemap_elements = _root.findall(&#34;.//sitemap&#34;, namespaces=nsmap)
+        self._logger.debug(
+            &#34;Found %d sitemap references in index&#34;, len(sitemap_elements)
+        )
+
+        for sitemap_elem in sitemap_elements:
+            try:
+                # Get the required loc element
+                loc_elem = sitemap_elem.find(&#34;loc&#34;, namespaces=nsmap)
+                if loc_elem is None or not loc_elem.text:
+                    continue
+
+                # Get optional lastmod element
+                lastmod_elem = sitemap_elem.find(&#34;lastmod&#34;, namespaces=nsmap)
+
+                # Create IndexEntry object (only loc and lastmod)
+                index = IndexEntry(
+                    url=Url(loc_elem.text),
+                    lastmod=lastmod_elem.text if lastmod_elem is not None else None,
+                )
+
+                sitemaps.append(index)
+            except ValueError as exc:  # pragma: no cover
+                self._logger.warning(&#34;Error parsing sitemap reference: %s&#34;, exc)
+        return sitemaps
+
+    @property
+    def entries(self) -&gt; ResourceList:
+        &#34;&#34;&#34;Get the sitemaps in this index.
+
+        Returns:
+            ResourceList of IndexEntry objects representing sitemap references
+        &#34;&#34;&#34;
+        return self._entries
+
+    @entries.setter
+    def entries(self, entries: ResourceList) -&gt; None:
+        &#34;&#34;&#34;Set the sitemaps in this index.
+
+        Args:
+            entries: List of sitemap references as IndexEntry objects
+
+        Raises:
+            TypeError: If entries is not a ResourceList or contains non-IndexEntry objects
+        &#34;&#34;&#34;
+        if not isinstance(entries, ResourceList):
+            raise TypeError(f&#34;Expected a ResourceList, got {type(entries).__name__}&#34;)
+
+        # Validate all items are of correct type
+        for entry in entries:
+            if not isinstance(entry, IndexEntry):
+                raise TypeError(f&#34;Expected IndexEntry, got {type(entry).__name__}&#34;)
+
+        self._logger.debug(&#34;Setting %d entries in sitemap index&#34;, len(entries))
+        self._entries = entries</code></pre>
+</details>
+<div class="desc"><p>Specialized parser for sitemap index documents.</p>
+<p>This class extends the SitemapDocument class to handle sitemap indexes,
+which are XML documents containing references to other sitemap files.
+It validates that the document is a proper sitemap index and extracts
+all sitemap references as IndexEntry objects.</p>
+<p>IndexDocument enforces type safety for its entries collection, ensuring
+that only IndexEntry objects can be added.</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>entries</code></strong></dt>
+<dd>ResourceList of IndexEntry objects representing sitemap references</dd>
+</dl>
+<h2 id="example">Example</h2>
+<pre><code class="language-python-repl">&gt;&gt;&gt; from ethicrawl.context import Context
+&gt;&gt;&gt; from ethicrawl.core import Resource
+&gt;&gt;&gt; from ethicrawl.sitemaps import IndexDocument
+&gt;&gt;&gt; context = Context(Resource(&quot;https://example.com&quot;))
+&gt;&gt;&gt; sitemap_xml = '''&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+... &lt;sitemapindex xmlns=&quot;http://www.sitemaps.org/schemas/sitemap/0.9&quot;&gt;
+...   &lt;sitemap&gt;
+...     &lt;loc&gt;&lt;https://example.com/sitemap1.xml&lt;/loc&gt;&gt;
+...     &lt;lastmod&gt;2023-06-15T14:30:00Z&lt;/lastmod&gt;
+...   &lt;/sitemap&gt;
+... &lt;/sitemapindex&gt;'''
+&gt;&gt;&gt; index = IndexDocument(context, sitemap_xml)
+&gt;&gt;&gt; len(index.entries)
+1
+&gt;&gt;&gt; str(index.entries[0])
+'https://example.com/sitemap1.xml (last modified: 2023-06-15T14:30:00Z)'
+</code></pre>
+<p>Initialize a sitemap index document parser.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>context</code></strong></dt>
+<dd>Context for logging and resource resolution</dd>
+<dt><strong><code>document</code></strong></dt>
+<dd>Optional XML sitemap index content to parse</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>ValueError</code></dt>
+<dd>If the document is not a valid sitemap index</dd>
+<dt><code>SitemapError</code></dt>
+<dd>If the document cannot be parsed</dd>
+</dl></div>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="ethicrawl.sitemaps.sitemap_document.SitemapDocument" href="sitemap_document.html#ethicrawl.sitemaps.sitemap_document.SitemapDocument">SitemapDocument</a></li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="ethicrawl.sitemaps.IndexDocument.entries"><code class="name">prop <span class="ident">entries</span> : <a title="ethicrawl.core.resource_list.ResourceList" href="../core/resource_list.html#ethicrawl.core.resource_list.ResourceList">ResourceList</a></code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def entries(self) -&gt; ResourceList:
+    &#34;&#34;&#34;Get the sitemaps in this index.
+
+    Returns:
+        ResourceList of IndexEntry objects representing sitemap references
+    &#34;&#34;&#34;
+    return self._entries</code></pre>
+</details>
+<div class="desc"><p>Get the sitemaps in this index.</p>
+<h2 id="returns">Returns</h2>
+<p>ResourceList of IndexEntry objects representing sitemap references</p></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="ethicrawl.sitemaps.sitemap_document.SitemapDocument" href="sitemap_document.html#ethicrawl.sitemaps.sitemap_document.SitemapDocument">SitemapDocument</a></b></code>:
+<ul class="hlist">
+<li><code><a title="ethicrawl.sitemaps.sitemap_document.SitemapDocument.type" href="sitemap_document.html#ethicrawl.sitemaps.sitemap_document.SitemapDocument.type">type</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="ethicrawl.sitemaps.IndexEntry"><code class="flex name class">
+<span>class <span class="ident">IndexEntry</span></span>
+<span>(</span><span>url: <a title="ethicrawl.core.url.Url" href="../core/url.html#ethicrawl.core.url.Url">Url</a>,<br>lastmod: str | None = None)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass
+class IndexEntry(SitemapEntry):
+    &#34;&#34;&#34;Represents an entry in a sitemap index file.
+
+    IndexEntry specializes SitemapEntry for use in sitemap index files.
+    Sitemap indexes are XML files that contain references to other sitemap
+    files, allowing websites to organize their sitemaps hierarchically.
+
+    IndexEntry maintains the same attributes as SitemapEntry (url and lastmod)
+    but provides specialized string representation appropriate for index entries.
+
+    Attributes:
+        url: URL of the sitemap file (inherited from Resource)
+        lastmod: Last modification date of the sitemap (inherited from SitemapEntry)
+
+    Example:
+        &gt;&gt;&gt; from ethicrawl.core import Url
+        &gt;&gt;&gt; from ethicrawl.sitemaps import IndexEntry
+        &gt;&gt;&gt; index = IndexEntry(
+        ...     Url(&#34;https://example.com/sitemap-products.xml&#34;),
+        ...     lastmod=&#34;2023-06-15T14:30:00Z&#34;
+        ... )
+        &gt;&gt;&gt; str(index)
+        &#39;https://example.com/sitemap-products.xml (last modified: 2023-06-15T14:30:00Z)&#39;
+        &gt;&gt;&gt; repr(index)
+        &#34;SitemapIndexEntry(url=&#39;https://example.com/sitemap-products.xml&#39;, lastmod=&#39;2023-06-15T14:30:00Z&#39;)&#34;
+    &#34;&#34;&#34;
+
+    def __repr__(self) -&gt; str:
+        &#34;&#34;&#34;Detailed representation for debugging.
+
+        Returns:
+            String representation showing class name and field values
+        &#34;&#34;&#34;
+        return f&#34;SitemapIndexEntry(url=&#39;{str(self.url)}&#39;, lastmod={repr(self.lastmod)})&#34;</code></pre>
+</details>
+<div class="desc"><p>Represents an entry in a sitemap index file.</p>
+<p>IndexEntry specializes SitemapEntry for use in sitemap index files.
+Sitemap indexes are XML files that contain references to other sitemap
+files, allowing websites to organize their sitemaps hierarchically.</p>
+<p>IndexEntry maintains the same attributes as SitemapEntry (url and lastmod)
+but provides specialized string representation appropriate for index entries.</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>url</code></strong></dt>
+<dd>URL of the sitemap file (inherited from Resource)</dd>
+<dt><strong><code>lastmod</code></strong></dt>
+<dd>Last modification date of the sitemap (inherited from SitemapEntry)</dd>
+</dl>
+<h2 id="example">Example</h2>
+<pre><code class="language-python-repl">&gt;&gt;&gt; from ethicrawl.core import Url
+&gt;&gt;&gt; from ethicrawl.sitemaps import IndexEntry
+&gt;&gt;&gt; index = IndexEntry(
+...     Url(&quot;https://example.com/sitemap-products.xml&quot;),
+...     lastmod=&quot;2023-06-15T14:30:00Z&quot;
+... )
+&gt;&gt;&gt; str(index)
+'https://example.com/sitemap-products.xml (last modified: 2023-06-15T14:30:00Z)'
+&gt;&gt;&gt; repr(index)
+&quot;SitemapIndexEntry(url='https://example.com/sitemap-products.xml', lastmod='2023-06-15T14:30:00Z')&quot;
+</code></pre></div>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="ethicrawl.sitemaps.sitemap_entry.SitemapEntry" href="sitemap_entry.html#ethicrawl.sitemaps.sitemap_entry.SitemapEntry">SitemapEntry</a></li>
+<li><a title="ethicrawl.core.resource.Resource" href="../core/resource.html#ethicrawl.core.resource.Resource">Resource</a></li>
+</ul>
+</dd>
+<dt id="ethicrawl.sitemaps.SitemapDocument"><code class="flex name class">
+<span>class <span class="ident">SitemapDocument</span></span>
+<span>(</span><span>context: <a title="ethicrawl.context.context.Context" href="../context/context.html#ethicrawl.context.context.Context">Context</a>,<br>document: str | None = None)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class SitemapDocument:
+    &#34;&#34;&#34;Parser and representation of XML sitemap documents.
+
+    This class handles the parsing, validation, and extraction of entries from
+    XML sitemap documents, supporting both sitemap index files and urlset files.
+    It implements security best practices for XML parsing to prevent common
+    vulnerabilities like XXE attacks.
+
+    SitemapDocument distinguishes between sitemap indexes (which contain references
+    to other sitemaps) and urlsets (which contain actual page URLs), extracting
+    the appropriate entries in each case.
+
+    Attributes:
+        SITEMAP_NS: The official sitemap namespace URI
+        entries: ResourceList containing the parsed sitemap entries
+        type: The type of sitemap (sitemapindex, urlset, or unsupported)
+
+    Example:
+        &gt;&gt;&gt; from ethicrawl.context import Context
+        &gt;&gt;&gt; from ethicrawl.core import Resource
+        &gt;&gt;&gt; from ethicrawl.sitemaps import SitemapDocument
+        &gt;&gt;&gt; context = Context(Resource(&#34;https://example.com&#34;))
+        &gt;&gt;&gt; sitemap_xml = &#39;&#39;&#39;&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;
+        ... &lt;urlset xmlns=&#34;http://www.sitemaps.org/schemas/sitemap/0.9&#34;&gt;
+        ...   &lt;url&gt;
+        ...     &lt;loc&gt;https://example.com/page1&lt;/loc&gt;
+        ...     &lt;lastmod&gt;2023-06-15T14:30:00Z&lt;/lastmod&gt;
+        ...   &lt;/url&gt;
+        ... &lt;/urlset&gt;&#39;&#39;&#39;
+        &gt;&gt;&gt; sitemap = SitemapDocument(context, sitemap_xml)
+        &gt;&gt;&gt; sitemap.type
+        &#39;urlset&#39;
+        &gt;&gt;&gt; len(sitemap.entries)
+        1
+    &#34;&#34;&#34;
+
+    SITEMAP_NS = &#34;http://www.sitemaps.org/schemas/sitemap/0.9&#34;
+
+    def __init__(self, context: Context, document: str | None = None) -&gt; None:
+        &#34;&#34;&#34;Initialize a sitemap document parser with security protections.
+
+        Sets up the XML parser with security features to prevent common
+        XML vulnerabilities and optionally parses a provided document.
+
+        Args:
+            context: Context for logging and resource resolution
+            document: Optional XML sitemap content to parse immediately
+
+        Raises:
+            SitemapError: If the provided document cannot be parsed
+        &#34;&#34;&#34;
+        self._context = context
+        self._logger = self._context.logger(&#34;sitemap.document&#34;)
+        # Add debug logging
+        self._logger.debug(&#34;Creating new SitemapDocument instance&#34;)
+        self._entries: ResourceList = ResourceList()
+        self._parser = etree.XMLParser(
+            resolve_entities=False,  # Prevent XXE attacks
+            no_network=True,  # Prevent external resource loading
+            dtd_validation=False,  # Don&#39;t validate DTDs
+            load_dtd=False,  # Don&#39;t load DTDs at all
+            huge_tree=False,  # Prevent XML bomb attacks
+        )
+        if document is not None:
+            self._root = self._validate(document)
+
+    def _escape_unescaped_ampersands(self, xml_document: str) -&gt; str:
+        &#34;&#34;&#34;Escape unescaped ampersands in XML content.
+
+        Args:
+            xml_document: Raw XML string that may contain unescaped ampersands
+
+        Returns:
+            XML string with properly escaped ampersands
+        &#34;&#34;&#34;
+        pattern = r&#34;&amp;(?!(?:[a-zA-Z]+|#[0-9]+|#x[0-9a-fA-F]+);)&#34;
+        return sub(pattern, &#34;&amp;amp;&#34;, xml_document)
+
+    def _validate(self, document: str) -&gt; etree._Element:
+        &#34;&#34;&#34;Validate and parse a sitemap XML document.
+
+        This method:
+        1. Escapes unescaped ampersands in the document
+        2. Parses the XML using the secure parser
+        3. Validates that it uses the correct sitemap namespace
+
+        Args:
+            document: XML document string to parse
+
+        Returns:
+            The parsed XML element tree root
+
+        Raises:
+            SitemapError: If the document has invalid XML or incorrect namespace
+        &#34;&#34;&#34;
+        document = self._escape_unescaped_ampersands(
+            document
+        )  # TODO: might want to move this to the HttpClient
+        try:
+            _element = etree.fromstring(document.encode(&#34;utf-8&#34;), parser=self._parser)
+            if _element.nsmap[None] != SitemapDocument.SITEMAP_NS:
+                self._logger.error(
+                    &#34;Required default namespace not found: %s&#34;,
+                    SitemapDocument.SITEMAP_NS,
+                )
+                raise SitemapError(
+                    f&#34;Required default namespace not found: {SitemapDocument.SITEMAP_NS}&#34;
+                )
+            return _element
+        except Exception as e:
+            self._logger.error(&#34;Invalid XML syntax: %s&#34;, e)
+            raise SitemapError(f&#34;Invalid XML syntax: {str(e)}&#34;) from e
+
+    @property
+    def entries(self) -&gt; ResourceList:
+        &#34;&#34;&#34;Get the list of entries extracted from the sitemap.
+
+        Returns:
+            ResourceList containing SitemapEntry objects (either IndexEntry
+            or UrlsetEntry depending on the sitemap type)
+        &#34;&#34;&#34;
+        return self._entries
+
+    @property
+    def type(self) -&gt; str:
+        &#34;&#34;&#34;Get the type of sitemap document.
+
+        Determines the type based on the root element&#39;s local name.
+
+        Returns:
+            String indicating the sitemap type:
+            - &#39;sitemapindex&#39;: A sitemap index containing references to other sitemaps
+            - &#39;urlset&#39;: A sitemap containing page URLs
+            - &#39;unsupported&#39;: Any other type of document
+
+        Raises:
+            SitemapError: If no document has been loaded
+        &#34;&#34;&#34;
+        if not hasattr(self, &#34;_root&#34;):  # pragma: no cover
+            raise SitemapError(&#34;No root name&#34;)
+
+        localname = etree.QName(self._root.tag).localname
+        if localname in [SITEMAPINDEX, URLSET]:
+            self._logger.debug(&#34;Identified sitemap type: %s&#34;, localname)
+            return localname
+
+        self._logger.warning(&#34;Unsupported sitemap document type: %s&#34;, localname)
+        return &#34;unsupported&#34;</code></pre>
+</details>
+<div class="desc"><p>Parser and representation of XML sitemap documents.</p>
+<p>This class handles the parsing, validation, and extraction of entries from
+XML sitemap documents, supporting both sitemap index files and urlset files.
+It implements security best practices for XML parsing to prevent common
+vulnerabilities like XXE attacks.</p>
+<p>SitemapDocument distinguishes between sitemap indexes (which contain references
+to other sitemaps) and urlsets (which contain actual page URLs), extracting
+the appropriate entries in each case.</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>SITEMAP_NS</code></strong></dt>
+<dd>The official sitemap namespace URI</dd>
+<dt><strong><code>entries</code></strong></dt>
+<dd>ResourceList containing the parsed sitemap entries</dd>
+<dt><strong><code>type</code></strong></dt>
+<dd>The type of sitemap (sitemapindex, urlset, or unsupported)</dd>
+</dl>
+<h2 id="example">Example</h2>
+<pre><code class="language-python-repl">&gt;&gt;&gt; from ethicrawl.context import Context
+&gt;&gt;&gt; from ethicrawl.core import Resource
+&gt;&gt;&gt; from ethicrawl.sitemaps import SitemapDocument
+&gt;&gt;&gt; context = Context(Resource(&quot;https://example.com&quot;))
+&gt;&gt;&gt; sitemap_xml = '''&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+... &lt;urlset xmlns=&quot;http://www.sitemaps.org/schemas/sitemap/0.9&quot;&gt;
+...   &lt;url&gt;
+...     &lt;loc&gt;&lt;https://example.com/page1&lt;/loc&gt;&gt;
+...     &lt;lastmod&gt;2023-06-15T14:30:00Z&lt;/lastmod&gt;
+...   &lt;/url&gt;
+... &lt;/urlset&gt;'''
+&gt;&gt;&gt; sitemap = SitemapDocument(context, sitemap_xml)
+&gt;&gt;&gt; sitemap.type
+'urlset'
+&gt;&gt;&gt; len(sitemap.entries)
+1
+</code></pre>
+<p>Initialize a sitemap document parser with security protections.</p>
+<p>Sets up the XML parser with security features to prevent common
+XML vulnerabilities and optionally parses a provided document.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>context</code></strong></dt>
+<dd>Context for logging and resource resolution</dd>
+<dt><strong><code>document</code></strong></dt>
+<dd>Optional XML sitemap content to parse immediately</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>SitemapError</code></dt>
+<dd>If the provided document cannot be parsed</dd>
+</dl></div>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="ethicrawl.sitemaps.index_document.IndexDocument" href="index_document.html#ethicrawl.sitemaps.index_document.IndexDocument">IndexDocument</a></li>
+<li><a title="ethicrawl.sitemaps.urlset_document.UrlsetDocument" href="urlset_document.html#ethicrawl.sitemaps.urlset_document.UrlsetDocument">UrlsetDocument</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="ethicrawl.sitemaps.SitemapDocument.SITEMAP_NS"><code class="name">var <span class="ident">SITEMAP_NS</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Instance variables</h3>
+<dl>
+<dt id="ethicrawl.sitemaps.SitemapDocument.entries"><code class="name">prop <span class="ident">entries</span> : <a title="ethicrawl.core.resource_list.ResourceList" href="../core/resource_list.html#ethicrawl.core.resource_list.ResourceList">ResourceList</a></code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def entries(self) -&gt; ResourceList:
+    &#34;&#34;&#34;Get the list of entries extracted from the sitemap.
+
+    Returns:
+        ResourceList containing SitemapEntry objects (either IndexEntry
+        or UrlsetEntry depending on the sitemap type)
+    &#34;&#34;&#34;
+    return self._entries</code></pre>
+</details>
+<div class="desc"><p>Get the list of entries extracted from the sitemap.</p>
+<h2 id="returns">Returns</h2>
+<p>ResourceList containing SitemapEntry objects (either IndexEntry
+or UrlsetEntry depending on the sitemap type)</p></div>
+</dd>
+<dt id="ethicrawl.sitemaps.SitemapDocument.type"><code class="name">prop <span class="ident">type</span> : str</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def type(self) -&gt; str:
+    &#34;&#34;&#34;Get the type of sitemap document.
+
+    Determines the type based on the root element&#39;s local name.
+
+    Returns:
+        String indicating the sitemap type:
+        - &#39;sitemapindex&#39;: A sitemap index containing references to other sitemaps
+        - &#39;urlset&#39;: A sitemap containing page URLs
+        - &#39;unsupported&#39;: Any other type of document
+
+    Raises:
+        SitemapError: If no document has been loaded
+    &#34;&#34;&#34;
+    if not hasattr(self, &#34;_root&#34;):  # pragma: no cover
+        raise SitemapError(&#34;No root name&#34;)
+
+    localname = etree.QName(self._root.tag).localname
+    if localname in [SITEMAPINDEX, URLSET]:
+        self._logger.debug(&#34;Identified sitemap type: %s&#34;, localname)
+        return localname
+
+    self._logger.warning(&#34;Unsupported sitemap document type: %s&#34;, localname)
+    return &#34;unsupported&#34;</code></pre>
+</details>
+<div class="desc"><p>Get the type of sitemap document.</p>
+<p>Determines the type based on the root element's local name.</p>
+<h2 id="returns">Returns</h2>
+<p>String indicating the sitemap type:
+- 'sitemapindex': A sitemap index containing references to other sitemaps
+- 'urlset': A sitemap containing page URLs
+- 'unsupported': Any other type of document</p>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>SitemapError</code></dt>
+<dd>If no document has been loaded</dd>
+</dl></div>
+</dd>
+</dl>
+</dd>
+<dt id="ethicrawl.sitemaps.SitemapEntry"><code class="flex name class">
+<span>class <span class="ident">SitemapEntry</span></span>
+<span>(</span><span>url: <a title="ethicrawl.core.url.Url" href="../core/url.html#ethicrawl.core.url.Url">Url</a>,<br>lastmod: str | None = None)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass
+class SitemapEntry(Resource):
+    &#34;&#34;&#34;Base class for entries found in XML sitemaps.
+
+    SitemapEntry extends Resource to represent entries from XML sitemaps with
+    their additional metadata. It maintains the URL identity pattern while
+    adding sitemap-specific attributes like the last modification date.
+
+    This class handles validation of W3C datetime formats and provides
+    appropriate string representation of sitemap entries.
+
+    Attributes:
+        url: URL of the sitemap entry (inherited from Resource)
+        lastmod: Last modification date string in W3C format (optional)
+
+    Example:
+        &gt;&gt;&gt; from ethicrawl.core import Url
+        &gt;&gt;&gt; from ethicrawl.sitemaps import SitemapEntry
+        &gt;&gt;&gt; entry = SitemapEntry(
+        ...     Url(&#34;https://example.com/page1&#34;),
+        ...     lastmod=&#34;2023-06-15T14:30:00Z&#34;
+        ... )
+        &gt;&gt;&gt; str(entry)
+        &#39;https://example.com/page1 (last modified: 2023-06-15T14:30:00Z)&#39;
+    &#34;&#34;&#34;
+
+    lastmod: str | None = None
+
+    @staticmethod
+    def _validate_lastmod(value: str | None) -&gt; str | None:
+        &#34;&#34;&#34;
+        Validate lastmod date format using standard datetime.
+
+        Args:
+            value: Date string in W3C format
+
+        Returns:
+            str: Validated date string
+
+        Raises:
+            ValueError: If date format is invalid
+        &#34;&#34;&#34;
+        if not value:
+            return None
+
+        if not isinstance(value, str):
+            raise TypeError(f&#34;expected lastmod to be str, got {type(value).__name__}&#34;)
+
+        # Strip whitespace
+        value = value.strip()
+
+        # Try standard formats for W3C datetime
+        formats = [
+            &#34;%Y-%m-%d&#34;,  # YYYY-MM-DD
+            &#34;%Y-%m-%dT%H:%M:%S&#34;,  # YYYY-MM-DDThh:mm:ss
+            &#34;%Y-%m-%dT%H:%M:%SZ&#34;,  # YYYY-MM-DDThh:mm:ssZ
+            &#34;%Y-%m-%dT%H:%M:%S%z&#34;,  # YYYY-MM-DDThh:mm:ss+hh:mm (no colon)
+            &#34;%Y-%m-%dT%H:%M:%S%:z&#34;,  # YYYY-MM-DDThh:mm:ss+hh:mm (with colon)
+            &#34;%Y-%m-%dT%H:%M:%S.%fZ&#34;,  # YYYY-MM-DDThh:mm:ss.ssssssZ (with microseconds)
+            &#34;%Y-%m-%dT%H:%M:%S.%f&#34;,  # YYYY-MM-DDThh:mm:ss.ssssss (with microseconds, no Z)
+        ]
+
+        # Try each format
+        for fmt in formats:
+            try:
+                # If parse succeeds, the date is valid
+                datetime.strptime(value, fmt)
+                return value
+            except ValueError:
+                continue
+
+        raise ValueError(f&#34;Invalid lastmod date format: {value}&#34;)
+
+    def __post_init__(self):
+        &#34;&#34;&#34;Validate fields after initialization.
+
+        Validates the lastmod date format if provided, ensuring it
+        conforms to one of the accepted W3C datetime formats.
+
+        Raises:
+            ValueError: If lastmod format is invalid
+            TypeError: If lastmod is not a string
+        &#34;&#34;&#34;
+        super().__post_init__()  # Call Resource.__post_init__ first
+        self.lastmod = self._validate_lastmod(self.lastmod)
+
+    def __str__(self) -&gt; str:
+        &#34;&#34;&#34;Human-readable string representation of the sitemap entry.
+
+        Returns:
+            URL string with last modification date if available
+        &#34;&#34;&#34;
+        if self.lastmod:
+            return f&#34;{str(self.url)} (last modified: {self.lastmod})&#34;
+        return f&#34;{str(self.url)}&#34;</code></pre>
+</details>
+<div class="desc"><p>Base class for entries found in XML sitemaps.</p>
+<p>SitemapEntry extends Resource to represent entries from XML sitemaps with
+their additional metadata. It maintains the URL identity pattern while
+adding sitemap-specific attributes like the last modification date.</p>
+<p>This class handles validation of W3C datetime formats and provides
+appropriate string representation of sitemap entries.</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>url</code></strong></dt>
+<dd>URL of the sitemap entry (inherited from Resource)</dd>
+<dt><strong><code>lastmod</code></strong></dt>
+<dd>Last modification date string in W3C format (optional)</dd>
+</dl>
+<h2 id="example">Example</h2>
+<pre><code class="language-python-repl">&gt;&gt;&gt; from ethicrawl.core import Url
+&gt;&gt;&gt; from ethicrawl.sitemaps import SitemapEntry
+&gt;&gt;&gt; entry = SitemapEntry(
+...     Url(&quot;https://example.com/page1&quot;),
+...     lastmod=&quot;2023-06-15T14:30:00Z&quot;
+... )
+&gt;&gt;&gt; str(entry)
+'https://example.com/page1 (last modified: 2023-06-15T14:30:00Z)'
+</code></pre></div>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="ethicrawl.core.resource.Resource" href="../core/resource.html#ethicrawl.core.resource.Resource">Resource</a></li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="ethicrawl.sitemaps.index_entry.IndexEntry" href="index_entry.html#ethicrawl.sitemaps.index_entry.IndexEntry">IndexEntry</a></li>
+<li><a title="ethicrawl.sitemaps.urlset_entry.UrlsetEntry" href="urlset_entry.html#ethicrawl.sitemaps.urlset_entry.UrlsetEntry">UrlsetEntry</a></li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="ethicrawl.sitemaps.SitemapEntry.lastmod"><code class="name">var <span class="ident">lastmod</span> : str | None</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="ethicrawl.sitemaps.SitemapParser"><code class="flex name class">
+<span>class <span class="ident">SitemapParser</span></span>
+<span>(</span><span>context: <a title="ethicrawl.context.context.Context" href="../context/context.html#ethicrawl.context.context.Context">Context</a>)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class SitemapParser:
+    &#34;&#34;&#34;Recursive parser for extracting URLs from sitemap documents.
+
+    This class handles the traversal of sitemap structures, including nested
+    sitemap indexes, to extract all page URLs. It implements:
+
+    - Recursive traversal of sitemap indexes
+    - Depth limiting to prevent excessive recursion
+    - Cycle detection to prevent infinite loops
+    - URL deduplication
+    - Multiple input formats (IndexDocument, ResourceList, etc.)
+
+    Attributes:
+        context: Context with client for fetching sitemaps and logging
+
+    Example:
+        &gt;&gt;&gt; from ethicrawl.context import Context
+        &gt;&gt;&gt; from ethicrawl.core import Resource, Url
+        &gt;&gt;&gt; from ethicrawl.sitemaps import SitemapParser
+        &gt;&gt;&gt; context = Context(Resource(Url(&#34;https://example.com&#34;)))
+        &gt;&gt;&gt; parser = SitemapParser(context)
+        &gt;&gt;&gt; # Parse from a single sitemap URL
+        &gt;&gt;&gt; urls = parser.parse([Resource(Url(&#34;https://example.com/sitemap.xml&#34;))])
+        &gt;&gt;&gt; print(f&#34;Found {len(urls)} URLs in sitemap&#34;)
+    &#34;&#34;&#34;
+
+    def __init__(self, context: Context):
+        &#34;&#34;&#34;Initialize the sitemap parser.
+
+        Args:
+            context: Context with client for fetching sitemaps and logging
+        &#34;&#34;&#34;
+        self._context = context
+        self._logger = self._context.logger(&#34;sitemap&#34;)
+
+    def parse(
+        self,
+        root: IndexDocument | ResourceList | list[Resource] | None = None,
+    ) -&gt; ResourceList:
+        &#34;&#34;&#34;Parse sitemap(s) and extract all contained URLs.
+
+        This is the main entry point for sitemap parsing. It accepts various
+        input formats and recursively extracts all URLs from the sitemap(s).
+
+        Args:
+            root: Source to parse, which can be:
+                - IndexDocument: Pre-parsed sitemap index
+                - ResourceList: List of resources to fetch as sitemaps
+                - list[Resource]: List of resources to fetch as sitemaps
+                - None: Use the context&#39;s base URL for robots.txt discovery
+
+        Returns:
+            ResourceList containing all page URLs found in the sitemap(s)
+
+        Raises:
+            SitemapError: If a sitemap cannot be fetched or parsed
+        &#34;&#34;&#34;
+        self._logger.debug(&#34;Starting sitemap parsing&#34;)
+
+        if isinstance(root, IndexDocument):
+            self._logger.debug(&#34;Parsing from provided IndexDocument&#34;)
+            document = root
+        else:
+            # Handle different input types properly
+            if isinstance(root, ResourceList):
+                # Already a ResourceList, use directly
+                resources = root
+            else:
+                # Convert other list-like objects or None
+                resources = ResourceList(root or [])
+
+            document = IndexDocument(self._context)
+            for resource in resources:
+                document.entries.append(IndexEntry(resource.url))
+
+        return self._traverse(document, 0)
+
+    def _get(self, resource: Resource) -&gt; IndexDocument | SitemapDocument:
+        &#34;&#34;&#34;Fetch and parse a sitemap document from a resource.
+
+        Retrieves the resource using the context&#39;s client and attempts
+        to parse it as a sitemap document, determining the correct type
+        (index or urlset).
+
+        Args:
+            resource: Resource to fetch and parse
+
+        Returns:
+            Parsed sitemap document (either IndexDocument or UrlsetDocument)
+
+        Raises:
+            SitemapError: If the document cannot be fetched or parsed
+        &#34;&#34;&#34;
+        assert isinstance(self._context.client, Client)
+        self._logger.debug(&#34;Fetching sitemap from %s&#34;, resource.url)
+        response = self._context.client.get(resource)
+
+        # Handle different response types
+        if hasattr(response, &#34;text&#34;):
+            self._logger.debug(&#34;Using text attribute from response&#34;)
+            content = response.text  # pyright: ignore[reportAttributeAccessIssue]
+        elif hasattr(response, &#34;content&#34;) and isinstance(response.content, str):
+            self._logger.debug(&#34;Using string content attribute from response&#34;)
+            content = response.content
+        elif hasattr(response, &#34;content&#34;):
+            # Content attribute that needs decoding
+            content = response.content.decode(&#34;utf-8&#34;)
+        else:
+            # Fallback - convert response to string
+            content = str(response)
+
+        document = SitemapDocument(self._context, content)
+        if document.type == URLSET:
+            return UrlsetDocument(self._context, content)
+        elif document.type == SITEMAPINDEX:
+            return IndexDocument(self._context, content)
+        self._logger.warning(
+            &#34;Unknown sitemap type with root element: %s&#34;, document.type
+        )
+        raise SitemapError(f&#34;Unknown sitemap type with root element: {document.type}&#34;)
+
+    def _traverse(
+        self, document: IndexDocument | SitemapDocument, depth: int = 0, visited=None
+    ) -&gt; ResourceList:
+        &#34;&#34;&#34;Recursively traverse a sitemap document and extract URLs.
+
+        Handles depth limiting and crawls nested sitemaps up to the
+        configured maximum depth.
+
+        Args:
+            document: Sitemap document to traverse
+            depth: Current recursion depth
+            visited: Set of already processed sitemap URLs to prevent cycles
+
+        Returns:
+            ResourceList containing all URLs found in the traverse
+        &#34;&#34;&#34;
+        # Collection of all found URLs
+        if not isinstance(document, IndexDocument):  # we shouldn&#39;t be here
+            return ResourceList()
+        max_depth = Config().sitemap.max_depth
+        all_urls: ResourceList = ResourceList([])
+
+        # Initialize visited set if this is the first call
+        if visited is None:
+            visited = set()
+
+        # Check if we&#39;ve reached maximum depth
+        if depth &gt;= max_depth:
+            self._logger.warning(
+                &#34;Maximum recursion depth (%d) reached, stopping traversal&#34;, max_depth
+            )
+            # Return empty ResourceList instead of None
+            return ResourceList()
+
+        self._logger.debug(
+            &#34;Traversing IndexDocument at depth %d, has %d items&#34;,
+            depth,
+            len(document.entries),
+        )
+
+        for item in document.entries:
+            # Process each entry and collect any URLs found
+            urls = self._process_entry(item, depth, visited)
+            all_urls.extend(urls)
+
+        return all_urls
+
+    def _process_entry(
+        self, item: IndexEntry, depth: int, visited: set
+    ) -&gt; ResourceList:
+        &#34;&#34;&#34;Process a single sitemap entry, handling cycles and recursion.
+
+        Args:
+            item: Sitemap entry to process
+            depth: Current recursion depth
+            visited: Set of already processed sitemap URLs
+
+        Returns:
+            ResourceList of URLs found in this entry (and any nested entries)
+        &#34;&#34;&#34;
+        url_str = str(item.url)
+
+        # Check for cycles - skip if we&#39;ve seen this URL before
+        if url_str in visited:
+            self._logger.warning(
+                &#34;Cycle detected: %s has already been processed&#34;, url_str
+            )
+            return ResourceList()
+
+        self._logger.debug(&#34;Processing item: %s&#34;, item.url)
+        document = self._get(Resource(item.url))
+
+        # Mark this URL as visited
+        visited.add(url_str)
+
+        if document.type == SITEMAPINDEX:
+            self._logger.debug(
+                &#34;Found index sitemap with %d items&#34;, len(document.entries)
+            )
+            return self._traverse(document, depth + 1, visited)
+        elif document.type == URLSET:
+            self._logger.debug(&#34;Found urlset with %d URLs&#34;, len(document.entries))
+            return document.entries
+
+        # Empty list for any unhandled cases
+        return ResourceList()  # pragma: no cover</code></pre>
+</details>
+<div class="desc"><p>Recursive parser for extracting URLs from sitemap documents.</p>
+<p>This class handles the traversal of sitemap structures, including nested
+sitemap indexes, to extract all page URLs. It implements:</p>
+<ul>
+<li>Recursive traversal of sitemap indexes</li>
+<li>Depth limiting to prevent excessive recursion</li>
+<li>Cycle detection to prevent infinite loops</li>
+<li>URL deduplication</li>
+<li>Multiple input formats (IndexDocument, ResourceList, etc.)</li>
+</ul>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>context</code></strong></dt>
+<dd>Context with client for fetching sitemaps and logging</dd>
+</dl>
+<h2 id="example">Example</h2>
+<pre><code class="language-python-repl">&gt;&gt;&gt; from ethicrawl.context import Context
+&gt;&gt;&gt; from ethicrawl.core import Resource, Url
+&gt;&gt;&gt; from ethicrawl.sitemaps import SitemapParser
+&gt;&gt;&gt; context = Context(Resource(Url(&quot;https://example.com&quot;)))
+&gt;&gt;&gt; parser = SitemapParser(context)
+&gt;&gt;&gt; # Parse from a single sitemap URL
+&gt;&gt;&gt; urls = parser.parse([Resource(Url(&quot;https://example.com/sitemap.xml&quot;))])
+&gt;&gt;&gt; print(f&quot;Found {len(urls)} URLs in sitemap&quot;)
+</code></pre>
+<p>Initialize the sitemap parser.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>context</code></strong></dt>
+<dd>Context with client for fetching sitemaps and logging</dd>
+</dl></div>
+<h3>Methods</h3>
+<dl>
+<dt id="ethicrawl.sitemaps.SitemapParser.parse"><code class="name flex">
+<span>def <span class="ident">parse</span></span>(<span>self,<br>root: <a title="ethicrawl.sitemaps.index_document.IndexDocument" href="index_document.html#ethicrawl.sitemaps.index_document.IndexDocument">IndexDocument</a> | <a title="ethicrawl.core.resource_list.ResourceList" href="../core/resource_list.html#ethicrawl.core.resource_list.ResourceList">ResourceList</a> | list[<a title="ethicrawl.core.resource.Resource" href="../core/resource.html#ethicrawl.core.resource.Resource">Resource</a>] | None = None) ‑> <a title="ethicrawl.core.resource_list.ResourceList" href="../core/resource_list.html#ethicrawl.core.resource_list.ResourceList">ResourceList</a></span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def parse(
+    self,
+    root: IndexDocument | ResourceList | list[Resource] | None = None,
+) -&gt; ResourceList:
+    &#34;&#34;&#34;Parse sitemap(s) and extract all contained URLs.
+
+    This is the main entry point for sitemap parsing. It accepts various
+    input formats and recursively extracts all URLs from the sitemap(s).
+
+    Args:
+        root: Source to parse, which can be:
+            - IndexDocument: Pre-parsed sitemap index
+            - ResourceList: List of resources to fetch as sitemaps
+            - list[Resource]: List of resources to fetch as sitemaps
+            - None: Use the context&#39;s base URL for robots.txt discovery
+
+    Returns:
+        ResourceList containing all page URLs found in the sitemap(s)
+
+    Raises:
+        SitemapError: If a sitemap cannot be fetched or parsed
+    &#34;&#34;&#34;
+    self._logger.debug(&#34;Starting sitemap parsing&#34;)
+
+    if isinstance(root, IndexDocument):
+        self._logger.debug(&#34;Parsing from provided IndexDocument&#34;)
+        document = root
+    else:
+        # Handle different input types properly
+        if isinstance(root, ResourceList):
+            # Already a ResourceList, use directly
+            resources = root
+        else:
+            # Convert other list-like objects or None
+            resources = ResourceList(root or [])
+
+        document = IndexDocument(self._context)
+        for resource in resources:
+            document.entries.append(IndexEntry(resource.url))
+
+    return self._traverse(document, 0)</code></pre>
+</details>
+<div class="desc"><p>Parse sitemap(s) and extract all contained URLs.</p>
+<p>This is the main entry point for sitemap parsing. It accepts various
+input formats and recursively extracts all URLs from the sitemap(s).</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>root</code></strong></dt>
+<dd>Source to parse, which can be:
+- IndexDocument: Pre-parsed sitemap index
+- ResourceList: List of resources to fetch as sitemaps
+- list[Resource]: List of resources to fetch as sitemaps
+- None: Use the context's base URL for robots.txt discovery</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>ResourceList containing all page URLs found in the sitemap(s)</p>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>SitemapError</code></dt>
+<dd>If a sitemap cannot be fetched or parsed</dd>
+</dl></div>
+</dd>
+</dl>
+</dd>
+<dt id="ethicrawl.sitemaps.UrlsetDocument"><code class="flex name class">
+<span>class <span class="ident">UrlsetDocument</span></span>
+<span>(</span><span>context: <a title="ethicrawl.context.context.Context" href="../context/context.html#ethicrawl.context.context.Context">Context</a>,<br>document: str | None = None)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class UrlsetDocument(SitemapDocument):
+    &#34;&#34;&#34;Specialized parser for sitemap urlset documents.
+
+    This class extends SitemapDocument to handle urlset sitemaps,
+    which contain page URLs with metadata like change frequency and priority.
+    It validates that the document is a proper urlset and extracts all
+    URL references as UrlsetEntry objects.
+
+    UrlsetDocument supports only the core sitemap protocol specification
+    elements (loc, lastmod, changefreq, priority) and does not handle any
+    sitemap protocol extensions.
+
+    Attributes:
+        entries: ResourceList of UrlsetEntry objects representing page URLs
+
+    Example:
+        &gt;&gt;&gt; from ethicrawl.context import Context
+        &gt;&gt;&gt; from ethicrawl.core import Resource
+        &gt;&gt;&gt; from ethicrawl.sitemaps import UrlsetDocument
+        &gt;&gt;&gt; context = Context(Resource(&#34;https://example.com&#34;))
+        &gt;&gt;&gt; sitemap_xml = &#39;&#39;&#39;&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;
+        ... &lt;urlset xmlns=&#34;http://www.sitemaps.org/schemas/sitemap/0.9&#34;&gt;
+        ...   &lt;url&gt;
+        ...     &lt;loc&gt;https://example.com/page1&lt;/loc&gt;
+        ...     &lt;lastmod&gt;2023-06-15T14:30:00Z&lt;/lastmod&gt;
+        ...     &lt;changefreq&gt;weekly&lt;/changefreq&gt;
+        ...     &lt;priority&gt;0.8&lt;/priority&gt;
+        ...   &lt;/url&gt;
+        ... &lt;/urlset&gt;&#39;&#39;&#39;
+        &gt;&gt;&gt; urlset = UrlsetDocument(context, sitemap_xml)
+        &gt;&gt;&gt; len(urlset.entries)
+        1
+        &gt;&gt;&gt; entry = urlset.entries[0]
+        &gt;&gt;&gt; entry.priority
+        &#39;0.8&#39;
+    &#34;&#34;&#34;
+
+    def __init__(self, context: Context, document: str | None = None) -&gt; None:
+        &#34;&#34;&#34;Initialize a urlset sitemap document parser.
+
+        Args:
+            context: Context for logging and resource resolution
+            document: Optional XML urlset content to parse
+
+        Raises:
+            ValueError: If the document is not a valid urlset
+            SitemapError: If the document cannot be parsed
+        &#34;&#34;&#34;
+        super().__init__(context, document)
+        self._logger.debug(&#34;Creating UrlsetDocument instance&#34;)
+
+        if document is not None:
+            _localname = etree.QName(self._root.tag).localname
+            if _localname != URLSET:
+                raise ValueError(f&#34;Expected a root {URLSET} got {_localname}&#34;)
+            self._entries = self._parse_urlset_sitemap(document)
+            self._logger.debug(&#34;Parsed urlset with %d entries&#34;, len(self._entries))
+
+    def _parse_urlset_sitemap(self, document) -&gt; ResourceList:
+        &#34;&#34;&#34;Parse page URLs from a urlset sitemap.
+
+        Extracts all &lt;url&gt; elements and their children (&lt;loc&gt;, &lt;lastmod&gt;,
+        &lt;changefreq&gt;, &lt;priority&gt;), creating UrlsetEntry objects for each
+        valid URL entry.
+
+        Args:
+            document: XML document string to parse
+
+        Returns:
+            ResourceList containing UrlsetEntry objects for each URL
+        &#34;&#34;&#34;
+        urlset: ResourceList = ResourceList()
+
+        nsmap = {&#34;&#34;: self.SITEMAP_NS}
+        _root = etree.fromstring(document.encode(&#34;utf-8&#34;), parser=self._parser)
+
+        # Find all url elements
+        url_elements = _root.findall(&#34;.//url&#34;, namespaces=nsmap)
+        self._logger.debug(&#34;Found %d URL entries in urlset&#34;, len(url_elements))
+
+        for url_elem in url_elements:
+            try:
+                loc_elem = url_elem.find(&#34;loc&#34;, namespaces=nsmap)
+                if loc_elem is None or not loc_elem.text:
+                    continue
+
+                # Get optional elements
+                lastmod_elem = url_elem.find(&#34;lastmod&#34;, namespaces=nsmap)
+                changefreq_elem = url_elem.find(&#34;changefreq&#34;, namespaces=nsmap)
+                priority_elem = url_elem.find(&#34;priority&#34;, namespaces=nsmap)
+
+                url = UrlsetEntry(
+                    url=Url(loc_elem.text),
+                    lastmod=lastmod_elem.text if lastmod_elem is not None else None,
+                    changefreq=(
+                        changefreq_elem.text if changefreq_elem is not None else None
+                    ),
+                    priority=(
+                        priority_elem.text if priority_elem is not None else None
+                    ),
+                )
+
+                urlset.append(url)
+            except ValueError as e:  # pragma: no cover
+                self._logger.warning(&#34;Error parsing sitemap reference: %s&#34;, e)
+        return urlset
+
+    @property
+    def entries(self) -&gt; ResourceList:
+        &#34;&#34;&#34;Get the URLs in this urlset.
+
+        Returns:
+            ResourceList of UrlsetEntry objects representing page URLs
+        &#34;&#34;&#34;
+        return self._entries
+
+    @entries.setter
+    def entries(self, entries: ResourceList) -&gt; None:
+        &#34;&#34;&#34;Set the URLs in this urlset.
+
+        Args:
+            entries: List of page URLs as UrlsetEntry objects
+
+        Raises:
+            TypeError: If entries is not a ResourceList or contains non-UrlsetEntry objects
+        &#34;&#34;&#34;
+        if not isinstance(entries, ResourceList):
+            raise TypeError(&#34;entries must be a ResourceList&#34;)
+        for entry in entries:
+            if not isinstance(entry, UrlsetEntry):
+                raise TypeError(&#34;entries must contain only UrlsetEntry objects&#34;)
+        self._entries = entries</code></pre>
+</details>
+<div class="desc"><p>Specialized parser for sitemap urlset documents.</p>
+<p>This class extends SitemapDocument to handle urlset sitemaps,
+which contain page URLs with metadata like change frequency and priority.
+It validates that the document is a proper urlset and extracts all
+URL references as UrlsetEntry objects.</p>
+<p>UrlsetDocument supports only the core sitemap protocol specification
+elements (loc, lastmod, changefreq, priority) and does not handle any
+sitemap protocol extensions.</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>entries</code></strong></dt>
+<dd>ResourceList of UrlsetEntry objects representing page URLs</dd>
+</dl>
+<h2 id="example">Example</h2>
+<pre><code class="language-python-repl">&gt;&gt;&gt; from ethicrawl.context import Context
+&gt;&gt;&gt; from ethicrawl.core import Resource
+&gt;&gt;&gt; from ethicrawl.sitemaps import UrlsetDocument
+&gt;&gt;&gt; context = Context(Resource(&quot;https://example.com&quot;))
+&gt;&gt;&gt; sitemap_xml = '''&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+... &lt;urlset xmlns=&quot;http://www.sitemaps.org/schemas/sitemap/0.9&quot;&gt;
+...   &lt;url&gt;
+...     &lt;loc&gt;&lt;https://example.com/page1&lt;/loc&gt;&gt;
+...     &lt;lastmod&gt;2023-06-15T14:30:00Z&lt;/lastmod&gt;
+...     &lt;changefreq&gt;weekly&lt;/changefreq&gt;
+...     &lt;priority&gt;0.8&lt;/priority&gt;
+...   &lt;/url&gt;
+... &lt;/urlset&gt;'''
+&gt;&gt;&gt; urlset = UrlsetDocument(context, sitemap_xml)
+&gt;&gt;&gt; len(urlset.entries)
+1
+&gt;&gt;&gt; entry = urlset.entries[0]
+&gt;&gt;&gt; entry.priority
+'0.8'
+</code></pre>
+<p>Initialize a urlset sitemap document parser.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>context</code></strong></dt>
+<dd>Context for logging and resource resolution</dd>
+<dt><strong><code>document</code></strong></dt>
+<dd>Optional XML urlset content to parse</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>ValueError</code></dt>
+<dd>If the document is not a valid urlset</dd>
+<dt><code>SitemapError</code></dt>
+<dd>If the document cannot be parsed</dd>
+</dl></div>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="ethicrawl.sitemaps.sitemap_document.SitemapDocument" href="sitemap_document.html#ethicrawl.sitemaps.sitemap_document.SitemapDocument">SitemapDocument</a></li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="ethicrawl.sitemaps.UrlsetDocument.entries"><code class="name">prop <span class="ident">entries</span> : <a title="ethicrawl.core.resource_list.ResourceList" href="../core/resource_list.html#ethicrawl.core.resource_list.ResourceList">ResourceList</a></code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def entries(self) -&gt; ResourceList:
+    &#34;&#34;&#34;Get the URLs in this urlset.
+
+    Returns:
+        ResourceList of UrlsetEntry objects representing page URLs
+    &#34;&#34;&#34;
+    return self._entries</code></pre>
+</details>
+<div class="desc"><p>Get the URLs in this urlset.</p>
+<h2 id="returns">Returns</h2>
+<p>ResourceList of UrlsetEntry objects representing page URLs</p></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="ethicrawl.sitemaps.sitemap_document.SitemapDocument" href="sitemap_document.html#ethicrawl.sitemaps.sitemap_document.SitemapDocument">SitemapDocument</a></b></code>:
+<ul class="hlist">
+<li><code><a title="ethicrawl.sitemaps.sitemap_document.SitemapDocument.type" href="sitemap_document.html#ethicrawl.sitemaps.sitemap_document.SitemapDocument.type">type</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="ethicrawl.sitemaps.UrlsetEntry"><code class="flex name class">
+<span>class <span class="ident">UrlsetEntry</span></span>
+<span>(</span><span>url: <a title="ethicrawl.core.url.Url" href="../core/url.html#ethicrawl.core.url.Url">Url</a>,<br>lastmod: str | None = None,<br>changefreq: str | None = None,<br>priority: float | str | None = None)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass
+class UrlsetEntry(SitemapEntry):
+    &#34;&#34;&#34;Represents an entry in a sitemap urlset file.
+
+    UrlsetEntry specializes SitemapEntry for standard sitemap URL entries
+    that contain page URLs with metadata. These entries represent actual
+    content pages on a website, as opposed to index entries that point
+    to other sitemap files.
+
+    In addition to the URL and lastmod attributes inherited from SitemapEntry,
+    UrlsetEntry adds support for:
+    - changefreq: How frequently the page is likely to change
+    - priority: Relative importance of this URL (0.0-1.0)
+
+    All attributes are validated during initialization to ensure they
+    conform to the sitemap protocol specification.
+
+    Attributes:
+        url: URL of the page (inherited from Resource)
+        lastmod: Last modification date (inherited from SitemapEntry)
+        changefreq: Update frequency (always, hourly, daily, weekly, etc.)
+        priority: Relative importance value from 0.0 to 1.0
+
+    Example:
+        &gt;&gt;&gt; from ethicrawl.core import Url
+        &gt;&gt;&gt; from ethicrawl.sitemaps import UrlsetEntry
+        &gt;&gt;&gt; entry = UrlsetEntry(
+        ...     Url(&#34;https://example.com/page1&#34;),
+        ...     lastmod=&#34;2023-06-15T14:30:00Z&#34;,
+        ...     changefreq=&#34;weekly&#34;,
+        ...     priority=0.8
+        ... )
+        &gt;&gt;&gt; str(entry)
+        &#39;https://example.com/page1 | last modified: 2023-06-15T14:30:00Z | frequency: weekly | priority: 0.8&#39;
+    &#34;&#34;&#34;
+
+    changefreq: str | None = None
+    priority: float | str | None = None
+
+    _valid_change_freqs = [
+        &#34;always&#34;,
+        &#34;hourly&#34;,
+        &#34;daily&#34;,
+        &#34;weekly&#34;,
+        &#34;monthly&#34;,
+        &#34;yearly&#34;,
+        &#34;never&#34;,
+    ]
+
+    @staticmethod
+    def _validate_priority(value: str | float | int | None = None) -&gt; float | None:
+        &#34;&#34;&#34;
+        Validate and convert priority value.
+
+        Args:
+            value: Priority value as string or float
+
+        Returns:
+            float: Normalized priority value
+
+        Raises:
+            ValueError: If priority is not between 0.0 and 1.0
+        &#34;&#34;&#34;
+        if value is None:
+            return None
+
+        # Convert string to float if needed
+        if isinstance(value, str):
+            try:
+                value = float(value)
+            except ValueError as exc:
+                raise TypeError(
+                    f&#34;Priority must be a number, got &#39;{type(value).__name__}&#39;&#34;
+                ) from exc
+
+        # Always convert to float (handles integers)
+        value = float(value)
+
+        # Validate range
+        if not (0.0 &lt;= value &lt;= 1.0):
+            raise ValueError(f&#34;Priority must be between 0.0 and 1.0, got {value}&#34;)
+
+        return value
+
+    @staticmethod
+    def _validate_changefreq(value: str | None = None) -&gt; str | None:
+        &#34;&#34;&#34;
+        Validate and normalize change frequency value.
+
+        Args:
+            value: Change frequency string or None
+
+        Returns:
+            str: Normalized change frequency (lowercase, stripped) or None
+
+        Raises:
+            TypeError: If changefreq is not a string
+            ValueError: If changefreq is not one of the valid values
+        &#34;&#34;&#34;
+        if value is None:
+            return None
+
+        if not isinstance(value, str):
+            raise TypeError(f&#34;changefreq must be a string, got {type(value).__name__}&#34;)
+
+        # Normalize: strip and lowercase
+        normalized = value.strip().lower()
+
+        # Validate against valid frequencies
+        valid_freqs = [
+            &#34;always&#34;,
+            &#34;hourly&#34;,
+            &#34;daily&#34;,
+            &#34;weekly&#34;,
+            &#34;monthly&#34;,
+            &#34;yearly&#34;,
+            &#34;never&#34;,
+        ]
+
+        if normalized not in valid_freqs:
+            raise ValueError(
+                f&#34;Invalid change frequency: &#39;{value}&#39;. Must be one of: {&#39;, &#39;.join(valid_freqs)}&#34;
+            )
+
+        return normalized
+
+    def __post_init__(self):
+        &#34;&#34;&#34;Validate fields after initialization.
+
+        Calls the parent class validation, then validates and normalizes
+        the changefreq and priority attributes if they are provided.
+
+        Raises:
+            ValueError: If any field contains invalid values
+            TypeError: If any field has an incorrect type
+        &#34;&#34;&#34;
+        super().__post_init__()  # Call parent&#39;s validation
+
+        # Validate changefreq
+        if self.changefreq is not None:
+            self.changefreq = self._validate_changefreq(self.changefreq)
+
+        # Validate priority
+        if self.priority is not None:
+            self.priority = self._validate_priority(self.priority)
+
+    def __str__(self) -&gt; str:
+        &#34;&#34;&#34;Human-readable string representation.
+
+        Creates a pipe-separated string containing the URL and any available
+        metadata (lastmod, changefreq, priority).
+
+        Returns:
+            Formatted string with URL and metadata
+        &#34;&#34;&#34;
+        parts = [str(self.url)]
+
+        if self.lastmod:
+            parts.append(f&#34;last modified: {self.lastmod}&#34;)
+        if self.changefreq:
+            parts.append(f&#34;frequency: {self.changefreq}&#34;)
+        if self.priority is not None:
+            parts.append(f&#34;priority: {self.priority}&#34;)
+
+        return &#34; | &#34;.join(parts)
+
+    def __repr__(self) -&gt; str:
+        &#34;&#34;&#34;Detailed representation for debugging.
+
+        Returns:
+            String representation showing class name and all field values
+        &#34;&#34;&#34;
+        return (
+            f&#34;SitemapUrlsetEntry(url=&#39;{str(self.url)}&#39;, lastmod={repr(self.lastmod)}, &#34;
+            f&#34;changefreq={repr(self.changefreq)}, priority={repr(self.priority)})&#34;
+        )</code></pre>
+</details>
+<div class="desc"><p>Represents an entry in a sitemap urlset file.</p>
+<p>UrlsetEntry specializes SitemapEntry for standard sitemap URL entries
+that contain page URLs with metadata. These entries represent actual
+content pages on a website, as opposed to index entries that point
+to other sitemap files.</p>
+<p>In addition to the URL and lastmod attributes inherited from SitemapEntry,
+UrlsetEntry adds support for:
+- changefreq: How frequently the page is likely to change
+- priority: Relative importance of this URL (0.0-1.0)</p>
+<p>All attributes are validated during initialization to ensure they
+conform to the sitemap protocol specification.</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>url</code></strong></dt>
+<dd>URL of the page (inherited from Resource)</dd>
+<dt><strong><code>lastmod</code></strong></dt>
+<dd>Last modification date (inherited from SitemapEntry)</dd>
+<dt><strong><code>changefreq</code></strong></dt>
+<dd>Update frequency (always, hourly, daily, weekly, etc.)</dd>
+<dt><strong><code>priority</code></strong></dt>
+<dd>Relative importance value from 0.0 to 1.0</dd>
+</dl>
+<h2 id="example">Example</h2>
+<pre><code class="language-python-repl">&gt;&gt;&gt; from ethicrawl.core import Url
+&gt;&gt;&gt; from ethicrawl.sitemaps import UrlsetEntry
+&gt;&gt;&gt; entry = UrlsetEntry(
+...     Url(&quot;https://example.com/page1&quot;),
+...     lastmod=&quot;2023-06-15T14:30:00Z&quot;,
+...     changefreq=&quot;weekly&quot;,
+...     priority=0.8
+... )
+&gt;&gt;&gt; str(entry)
+'https://example.com/page1 | last modified: 2023-06-15T14:30:00Z | frequency: weekly | priority: 0.8'
+</code></pre></div>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="ethicrawl.sitemaps.sitemap_entry.SitemapEntry" href="sitemap_entry.html#ethicrawl.sitemaps.sitemap_entry.SitemapEntry">SitemapEntry</a></li>
+<li><a title="ethicrawl.core.resource.Resource" href="../core/resource.html#ethicrawl.core.resource.Resource">Resource</a></li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="ethicrawl.sitemaps.UrlsetEntry.changefreq"><code class="name">var <span class="ident">changefreq</span> : str | None</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="ethicrawl.sitemaps.UrlsetEntry.priority"><code class="name">var <span class="ident">priority</span> : float | str | None</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="ethicrawl" href="../index.html">ethicrawl</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-submodules">Sub-modules</a></h3>
+<ul>
+<li><code><a title="ethicrawl.sitemaps.const" href="const.html">ethicrawl.sitemaps.const</a></code></li>
+<li><code><a title="ethicrawl.sitemaps.index_document" href="index_document.html">ethicrawl.sitemaps.index_document</a></code></li>
+<li><code><a title="ethicrawl.sitemaps.index_entry" href="index_entry.html">ethicrawl.sitemaps.index_entry</a></code></li>
+<li><code><a title="ethicrawl.sitemaps.sitemap_document" href="sitemap_document.html">ethicrawl.sitemaps.sitemap_document</a></code></li>
+<li><code><a title="ethicrawl.sitemaps.sitemap_entry" href="sitemap_entry.html">ethicrawl.sitemaps.sitemap_entry</a></code></li>
+<li><code><a title="ethicrawl.sitemaps.sitemap_parser" href="sitemap_parser.html">ethicrawl.sitemaps.sitemap_parser</a></code></li>
+<li><code><a title="ethicrawl.sitemaps.urlset_document" href="urlset_document.html">ethicrawl.sitemaps.urlset_document</a></code></li>
+<li><code><a title="ethicrawl.sitemaps.urlset_entry" href="urlset_entry.html">ethicrawl.sitemaps.urlset_entry</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="ethicrawl.sitemaps.IndexDocument" href="#ethicrawl.sitemaps.IndexDocument">IndexDocument</a></code></h4>
+<ul class="">
+<li><code><a title="ethicrawl.sitemaps.IndexDocument.entries" href="#ethicrawl.sitemaps.IndexDocument.entries">entries</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="ethicrawl.sitemaps.IndexEntry" href="#ethicrawl.sitemaps.IndexEntry">IndexEntry</a></code></h4>
+</li>
+<li>
+<h4><code><a title="ethicrawl.sitemaps.SitemapDocument" href="#ethicrawl.sitemaps.SitemapDocument">SitemapDocument</a></code></h4>
+<ul class="">
+<li><code><a title="ethicrawl.sitemaps.SitemapDocument.SITEMAP_NS" href="#ethicrawl.sitemaps.SitemapDocument.SITEMAP_NS">SITEMAP_NS</a></code></li>
+<li><code><a title="ethicrawl.sitemaps.SitemapDocument.entries" href="#ethicrawl.sitemaps.SitemapDocument.entries">entries</a></code></li>
+<li><code><a title="ethicrawl.sitemaps.SitemapDocument.type" href="#ethicrawl.sitemaps.SitemapDocument.type">type</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="ethicrawl.sitemaps.SitemapEntry" href="#ethicrawl.sitemaps.SitemapEntry">SitemapEntry</a></code></h4>
+<ul class="">
+<li><code><a title="ethicrawl.sitemaps.SitemapEntry.lastmod" href="#ethicrawl.sitemaps.SitemapEntry.lastmod">lastmod</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="ethicrawl.sitemaps.SitemapParser" href="#ethicrawl.sitemaps.SitemapParser">SitemapParser</a></code></h4>
+<ul class="">
+<li><code><a title="ethicrawl.sitemaps.SitemapParser.parse" href="#ethicrawl.sitemaps.SitemapParser.parse">parse</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="ethicrawl.sitemaps.UrlsetDocument" href="#ethicrawl.sitemaps.UrlsetDocument">UrlsetDocument</a></code></h4>
+<ul class="">
+<li><code><a title="ethicrawl.sitemaps.UrlsetDocument.entries" href="#ethicrawl.sitemaps.UrlsetDocument.entries">entries</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="ethicrawl.sitemaps.UrlsetEntry" href="#ethicrawl.sitemaps.UrlsetEntry">UrlsetEntry</a></code></h4>
+<ul class="">
+<li><code><a title="ethicrawl.sitemaps.UrlsetEntry.changefreq" href="#ethicrawl.sitemaps.UrlsetEntry.changefreq">changefreq</a></code></li>
+<li><code><a title="ethicrawl.sitemaps.UrlsetEntry.priority" href="#ethicrawl.sitemaps.UrlsetEntry.priority">priority</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.6</a>.</p>
+</footer>
+</body>
+</html>

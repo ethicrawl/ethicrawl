@@ -135,93 +135,95 @@ def main():
 if __name__ == "__main__":
     main()
 
-# (venv) ➜  ethicrawl git:(optional) ✗ python usage.py
-# Configuration: {
-#   "http": {
-#     "timeout": 15.0,
-#     "rate_limit": 1.0,
-#     "jitter": 0.2,
-#     "max_retries": 3,
-#     "retry_delay": 1.0,
-#     "user_agent": "Ethicrawl/1.0",
-#     "headers": {},
-#     "proxies": {
-#       "http": null,
-#       "https": null
-#     }
-#   },
-#   "logger": {
-#     "level": 20,
-#     "console_enabled": true,
-#     "file_enabled": false,
-#     "file_path": null,
-#     "use_colors": true,
-#     "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-#     "component_levels": {}
-#   },
-#   "sitemap": {
-#     "max_depth": 2,
-#     "follow_external": false,
-#     "validate_urls": true
-#   }
-# }
 
-# ==== Creating crawler and HTTP client ====
-# Binding crawler to BBC website...
+"""
+(venv) ➜  ethicrawl git:(develop) ✗ python usage.py
+Configuration: {
+  "http": {
+    "timeout": 15.0,
+    "rate_limit": 1.0,
+    "jitter": 0.2,
+    "max_retries": 3,
+    "retry_delay": 1.0,
+    "user_agent": "Ethicrawl/1.0",
+    "headers": {},
+    "proxies": {
+      "http": null,
+      "https": null
+    }
+  },
+  "logger": {
+    "level": 20,
+    "console_enabled": true,
+    "file_enabled": false,
+    "file_path": null,
+    "use_colors": true,
+    "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    "component_levels": {}
+  },
+  "sitemap": {
+    "max_depth": 2,
+    "follow_external": false,
+    "validate_urls": true
+  }
+}
 
-# ==== Checking robots.txt rules ====
-# 2025-03-20 18:32:27,782 - ethicrawl.https_www_bbc_co_uk.robots - INFO - Server returned 200 - using robots.txt
-# Can fetch article: True
-# 2025-03-20 18:32:33,009 - ethicrawl.https_www_bbc_co_uk.robots - INFO - Server returned 200 - using robots.txt
-# 2025-03-20 18:32:33,010 - ethicrawl.https_www_bbc_co_uk.robots - WARNING - Permission check for https://www.bbc.co.uk/cbeebies/search?q=test with User-Agent 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36': denied
-# Can fetch search: https://www.bbc.co.uk/cbeebies/search?q=test Permission denied by robots.txt for User-Agent 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36' at URL 'https://www.bbc.co.uk/cbeebies/search?q=test'
+==== Creating crawler and HTTP client ====
+Binding crawler to BBC website...
+2025-03-22 17:49:32,107 - ethicrawl.https_www_bbc_co_uk - INFO - Successfully bound to https://www.bbc.co.uk/
 
-# ==== Listing sitemaps from robots.txt ====
-# 2025-03-20 18:32:38,156 - ethicrawl.https_www_bbc_co_uk.robots - INFO - Server returned 200 - using robots.txt
-# Found 13 sitemaps:
-# 1. https://www.bbc.co.uk/sitemap.xml
-# 2. https://www.bbc.co.uk/sitemaps/https-index-uk-archive.xml
-# 3. https://www.bbc.co.uk/sitemaps/https-index-uk-news.xml
-# 4. https://www.bbc.co.uk/food/sitemap.xml
-# 5. https://www.bbc.co.uk/bitesize/sitemap/sitemapindex.xml
-# 6. https://www.bbc.co.uk/teach/sitemap/sitemapindex.xml
-# 7. https://www.bbc.co.uk/sitemaps/https-index-uk-archive_video.xml
-# 8. https://www.bbc.co.uk/sitemaps/https-index-uk-video.xml
-# 9. https://www.bbc.co.uk/sitemaps/sitemap-uk-ws-topics.xml
-# 10. https://www.bbc.co.uk/sport/sitemap.xml
-# 11. https://www.bbc.co.uk/sitemaps/sitemap-uk-topics.xml
-# 12. https://www.bbc.co.uk/ideas/sitemap.xml
-# 13. https://www.bbc.co.uk/tiny-happy-people/sitemap/sitemapindex.xml
+==== Checking robots.txt rules ====
+2025-03-22 17:49:35,201 - ethicrawl.https_www_bbc_co_uk.robots - INFO - Server returned 200 - using robots.txt
+Can fetch article: True
+2025-03-22 17:49:35,202 - ethicrawl.https_www_bbc_co_uk.robots - WARNING - Permission check for https://www.bbc.co.uk/cbeebies/search?q=test with User-Agent 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36': denied
+Can fetch search: https://www.bbc.co.uk/cbeebies/search?q=test Permission denied by robots.txt for https://www.bbc.co.uk/cbeebies/search?q=test with User-Agent 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36'
 
-# ==== Parsing main sitemap (with depth limit) ====
-# 2025-03-20 18:32:43,404 - ethicrawl.https_www_bbc_co_uk.robots - INFO - Server returned 200 - using robots.txt
-# Found 29354 URLs in 46.66 seconds
-# Found 17968 news URLs
+==== Listing sitemaps from robots.txt ====
+Found 13 sitemaps:
+1. https://www.bbc.co.uk/sitemap.xml
+2. https://www.bbc.co.uk/sitemaps/https-index-uk-archive.xml
+3. https://www.bbc.co.uk/sitemaps/https-index-uk-news.xml
+4. https://www.bbc.co.uk/food/sitemap.xml
+5. https://www.bbc.co.uk/bitesize/sitemap/sitemapindex.xml
+6. https://www.bbc.co.uk/teach/sitemap/sitemapindex.xml
+7. https://www.bbc.co.uk/sitemaps/https-index-uk-archive_video.xml
+8. https://www.bbc.co.uk/sitemaps/https-index-uk-video.xml
+9. https://www.bbc.co.uk/sitemaps/sitemap-uk-ws-topics.xml
+10. https://www.bbc.co.uk/sport/sitemap.xml
+11. https://www.bbc.co.uk/sitemaps/sitemap-uk-topics.xml
+12. https://www.bbc.co.uk/ideas/sitemap.xml
+13. https://www.bbc.co.uk/tiny-happy-people/sitemap/sitemapindex.xml
 
-# ==== Sample of news URLs ====
-# - https://www.bbc.co.uk/news/topics/c4y26wwj72zt
-# - https://www.bbc.co.uk/news/topics/czm9g685xgzt
-# - https://www.bbc.co.uk/news/topics/cp29jzed52et
-# - https://www.bbc.co.uk/news/topics/cerlz4j51w7t
-# - https://www.bbc.co.uk/news/topics/c27968gy256t
+==== Parsing main sitemap (with depth limit) ====
+Found 29354 URLs in 46.87 seconds
+Found 17968 news URLs
 
-# ==== Testing domain whitelisting ====
-# Attempting to access image without whitelisting...
-# 2025-03-20 18:33:30,128 - ethicrawl.https_www_bbc_co_uk - WARNING - Domain not allowed: ichef.bbci.co.uk
-# Expected error: Domain not allowed: ichef.bbci.co.uk
+==== Sample of news URLs ====
+- https://www.bbc.co.uk/news/topics/c4y26wwj72zt
+- https://www.bbc.co.uk/news/topics/czm9g685xgzt
+- https://www.bbc.co.uk/news/topics/cp29jzed52et
+- https://www.bbc.co.uk/news/topics/cerlz4j51w7t
+- https://www.bbc.co.uk/news/topics/c27968gy256t
 
-# Whitelisting image domain...
-# 2025-03-20 18:33:34,500 - ethicrawl.https_ichef_bbci_co_uk.robots - INFO - Server returned 200 - using robots.txt
-# 2025-03-20 18:33:34,500 - ethicrawl.https_www_bbc_co_uk - INFO - Whitelisted domain: ichef.bbci.co.uk
-# Attempting to access image after whitelisting...
-# Success! Got 489 bytes of image data
+==== Testing domain whitelisting ====
+Attempting to access image without whitelisting...
+2025-03-22 17:50:22,142 - ethicrawl.https_www_bbc_co_uk - WARNING - Domain not allowed: ichef.bbci.co.uk
+Expected error: Domain not allowed: ichef.bbci.co.uk
 
-# ==== Using Chromium for JavaScript-heavy sites ====
-# To use a Chromium client:
-# crawler.unbind()
-# chromium_client = client.with_chromium(headless=True)
-# crawler.bind('https://example.com', chromium_client)
-# # Now the crawler will render JavaScript before processing
+Whitelisting image domain...
+2025-03-22 17:50:22,153 - ethicrawl.https_www_bbc_co_uk - INFO - Whitelisted domain: ichef.bbci.co.uk
+Attempting to access image after whitelisting...
+2025-03-22 17:50:26,403 - ethicrawl.https_ichef_bbci_co_uk.robots - INFO - Server returned 200 - using robots.txt
+Success! Got 489 bytes of image data
 
-# ==== Cleaning up ====
-# Crawler unbound and resources released
+==== Using Chromium for JavaScript-heavy sites ====
+To use a Chromium client:
+crawler.unbind()
+chromium_client = client.with_chromium(headless=True)
+crawler.bind('https://example.com', chromium_client)
+# Now the crawler will render JavaScript before processing
+
+==== Cleaning up ====
+2025-03-22 17:50:31,703 - ethicrawl.https_www_bbc_co_uk - INFO - Unbinding from www.bbc.co.uk
+Crawler unbound and resources released
+"""

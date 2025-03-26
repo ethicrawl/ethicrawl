@@ -2,6 +2,7 @@ import pytest
 import re
 
 from ethicrawl.core import Url
+from ethicrawl.error import DomainResolutionError
 
 
 class TestUrl:
@@ -43,7 +44,10 @@ class TestUrl:
 
     def test_url_initialisation_with_invalid_domain(self):
         domain = "x"
-        with pytest.raises(ValueError, match=f"Cannot resolve hostname: {domain}"):
+        with pytest.raises(
+            DomainResolutionError,
+            match=f"Cannot resolve hostname '{domain}' for URL 'http://{domain}",
+        ):
             Url(f"http://{domain}", validate=True)
 
     def test_property_base(self):

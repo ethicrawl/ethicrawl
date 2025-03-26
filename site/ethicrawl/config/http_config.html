@@ -1,0 +1,651 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.6">
+<title>ethicrawl.config.http_config API documentation</title>
+<meta name="description" content="">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+/* Collapse source docstrings */
+setTimeout(() => {
+[...document.querySelectorAll('.hljs.language-python > .hljs-string')]
+.filter(el => el.innerHTML.length > 200 && ['"""', "'''"].includes(el.innerHTML.substring(0, 3)))
+.forEach(el => {
+let d = document.createElement('details');
+d.classList.add('hljs-string');
+d.innerHTML = '<summary>"""</summary>' + el.innerHTML.substring(3);
+el.replaceWith(d);
+});
+}, 100);
+})</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>ethicrawl.config.http_config</code></h1>
+</header>
+<section id="section-intro">
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="ethicrawl.config.http_config.HttpConfig"><code class="flex name class">
+<span>class <span class="ident">HttpConfig</span></span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass
+class HttpConfig(BaseConfig):
+    &#34;&#34;&#34;HTTP client configuration settings for Ethicrawl.
+
+    This class manages all HTTP-specific configuration options including
+    timeouts, rate limiting, retries, user agent settings, headers, and
+    proxy configuration. It provides validation for all values to ensure
+    they&#39;re within safe and reasonable ranges.
+
+    All setters perform type checking and value validation to prevent
+    invalid configurations. The class integrates with the global Config
+    singleton for system-wide settings.
+
+    Attributes:
+        timeout: Request timeout in seconds (default: 30.0)
+        max_retries: Maximum retry attempts for failed requests (default: 3)
+        retry_delay: Base delay between retries in seconds (default: 1.0)
+        rate_limit: Maximum requests per second (default: 0.5)
+        jitter: Random variation factor for rate limiting (default: 0.2)
+        user_agent: User agent string for requests (default: &#34;Ethicrawl/1.0&#34;)
+        headers: Default headers to include with requests
+        proxies: Proxy server configuration
+
+    Example:
+        &gt;&gt;&gt; from ethicrawl.config import Config
+        &gt;&gt;&gt; # Get the global configuration
+        &gt;&gt;&gt; config = Config()
+        &gt;&gt;&gt; # Update HTTP settings
+        &gt;&gt;&gt; config.http.timeout = 60.0
+        &gt;&gt;&gt; config.http.user_agent = &#34;MyCustomCrawler/2.0&#34;
+        &gt;&gt;&gt; config.http.rate_limit = 1.0  # 1 request per second
+        &gt;&gt;&gt; # Configure proxy
+        &gt;&gt;&gt; config.http.proxies = {&#34;http&#34;: &#34;http://proxy:8080&#34;, &#34;https&#34;: &#34;https://proxy:8443&#34;}
+    &#34;&#34;&#34;
+
+    # Private fields for property implementation
+    _timeout: float = field(default=30.0, repr=False)
+    _max_retries: int = field(default=3, repr=False)
+    _retry_delay: float = field(default=1.0, repr=False)
+    _rate_limit: float | None = field(default=0.5, repr=False)
+    _jitter: float = field(default=0.2, repr=False)
+    _user_agent: str = field(default=&#34;Ethicrawl/1.0&#34;, repr=False)
+    _headers: Headers = field(default_factory=Headers, repr=False)
+    _proxies: HttpProxyConfig = field(default_factory=HttpProxyConfig, repr=False)
+
+    def __post_init__(self):
+        # Validate initial values by calling setters
+        # This ensures values provided at instantiation are also validated
+        self.timeout = self._timeout
+        self.max_retries = self._max_retries
+        self.retry_delay = self._retry_delay
+        self.rate_limit = self._rate_limit
+        self.jitter = self._jitter
+        self.user_agent = self._user_agent
+
+    @property
+    def timeout(self) -&gt; float:
+        &#34;&#34;&#34;Request timeout in seconds.
+
+        Controls how long to wait for a response before abandoning the request.
+
+        Valid range: 0 &lt; timeout &lt;= 300
+        Default: 30.0
+
+        Raises:
+            TypeError: If value is not a number
+            ValueError: If value is &lt;= 0 or &gt; 300
+        &#34;&#34;&#34;
+        return self._timeout
+
+    @timeout.setter
+    def timeout(self, value: float):
+        if not isinstance(value, (int, float)):
+            raise TypeError(f&#34;timeout must be a number, got {type(value).__name__}&#34;)
+        if value &lt;= 0:
+            raise ValueError(&#34;timeout must be positive&#34;)
+        if value &gt; 300:
+            raise ValueError(&#34;maximum timeout is 300 seconds&#34;)
+        self._timeout = float(value)
+
+    @property
+    def max_retries(self) -&gt; int:
+        &#34;&#34;&#34;Maximum number of retry attempts for failed requests.
+
+        Controls how many times a failed request should be retried
+        before giving up. Uses exponential backoff between attempts.
+
+        Valid range: 0-10 (0 means no retries)
+        Default: 3
+
+        Raises:
+            TypeError: If value is not an integer
+            ValueError: If value is negative or &gt; 10
+        &#34;&#34;&#34;
+        return self._max_retries
+
+    @max_retries.setter
+    def max_retries(self, value: int):
+        if not isinstance(value, int):
+            raise TypeError(
+                f&#34;max_retries must be an integer, got {type(value).__name__}&#34;
+            )
+        if value &lt; 0:
+            raise ValueError(&#34;max_retries cannot be negative&#34;)
+        if value &gt; 10:
+            raise ValueError(&#34;max_retries cannot be more than 10&#34;)
+        self._max_retries = value
+
+    @property
+    def retry_delay(self) -&gt; float:
+        &#34;&#34;&#34;Base delay between retries in seconds&#34;&#34;&#34;
+        return self._retry_delay
+
+    @retry_delay.setter
+    def retry_delay(self, value: float):
+        if not isinstance(value, (int, float)):
+            raise TypeError(f&#34;retry_delay must be a number, got {type(value).__name__}&#34;)
+        if value &lt; 0:
+            raise ValueError(&#34;retry_delay cannot be negative&#34;)
+        if value &gt; 60:
+            raise ValueError(&#34;retry_delay cannot be more than 60&#34;)
+        self._retry_delay = float(value)
+
+    @property
+    def rate_limit(self) -&gt; float | None:
+        &#34;&#34;&#34;Maximum requests per second allowed.
+
+        Controls request frequency to avoid overwhelming servers.
+        Set to None to disable rate limiting (not recommended).
+
+        Example: 0.5 means maximum of one request every 2 seconds
+
+        Valid range: &gt; 0
+        Default: 0.5
+
+        Raises:
+            TypeError: If value is not a number
+            ValueError: If value is &lt;= 0
+        &#34;&#34;&#34;
+        return self._rate_limit
+
+    @rate_limit.setter
+    def rate_limit(self, value: float | None):
+        if not isinstance(value, (int, float)):
+            raise TypeError(f&#34;rate_limit must be a number, got {type(value).__name__}&#34;)
+        if value &lt;= 0:
+            raise ValueError(&#34;rate_limit must be positive&#34;)
+        self._rate_limit = float(value)
+
+    @property
+    def jitter(self) -&gt; float:
+        &#34;&#34;&#34;Random variation factor for rate limiting.
+
+        Adds randomness to the timing between requests to make
+        crawling patterns less predictable. The random factor
+        is calculated as: delay * (1 + random() * jitter)
+
+        Valid range: 0.0-1.0
+        Default: 0.2
+
+        Raises:
+            TypeError: If value is not a number
+            ValueError: If value outside allowed range
+        &#34;&#34;&#34;
+        return self._jitter
+
+    @jitter.setter
+    def jitter(self, value: float):
+        if not isinstance(value, (int, float)):
+            raise TypeError(f&#34;jitter must be a number, got {type(value).__name__}&#34;)
+        if value &lt; 0 or value &gt;= 1:
+            raise ValueError(&#34;jitter must be between 0.0 and 1.0&#34;)
+        self._jitter = float(value)
+
+    @property
+    def user_agent(self) -&gt; str:
+        &#34;&#34;&#34;User agent string&#34;&#34;&#34;
+        return self._user_agent
+
+    @user_agent.setter
+    def user_agent(self, value: str):
+        if not isinstance(value, str):
+            raise TypeError(f&#34;user_agent must be a string, got {type(value).__name__}&#34;)
+        if not value.strip():
+            raise ValueError(&#34;user_agent cannot be empty&#34;)
+        self._user_agent = value
+
+    @property
+    def headers(self) -&gt; Headers:
+        &#34;&#34;&#34;Get request headers.&#34;&#34;&#34;
+        return self._headers
+
+    @headers.setter
+    def headers(self, value: Headers | dict):
+        &#34;&#34;&#34;Set request headers.&#34;&#34;&#34;
+        if isinstance(value, Headers):
+            self._headers = value
+        elif isinstance(value, dict):
+            # Let the Headers constructor handle validation
+            self._headers = Headers(value)
+        else:
+            raise TypeError(
+                f&#34;headers must be a Headers instance or dictionary, got {type(value).__name__}&#34;
+            )
+
+    @property
+    def proxies(self) -&gt; HttpProxyConfig:
+        &#34;&#34;&#34;Proxy server configuration for HTTP requests.
+
+        Configures HTTP and HTTPS proxy servers for requests.
+
+        Example:
+            &gt;&gt;&gt; config.http.proxies = {
+            ...    &#34;http&#34;: &#34;http://proxy:8080&#34;,
+            ...    &#34;https&#34;: &#34;https://proxy:8443&#34;
+            ... }
+
+        Returns:
+            HttpProxyConfig object with http and https properties
+
+        Raises:
+            TypeError: If value is not HttpProxyConfig or dict
+        &#34;&#34;&#34;
+        return self._proxies
+
+    @proxies.setter
+    def proxies(self, value: HttpProxyConfig | dict):
+        &#34;&#34;&#34;Set proxy configuration.&#34;&#34;&#34;
+        if isinstance(value, HttpProxyConfig):
+            self._proxies = value
+        elif isinstance(value, dict):
+            # Create a new proxy config instance
+            proxy_config = HttpProxyConfig()
+
+            # Set the http and https values if present
+            if &#34;http&#34; in value:
+                proxy_config.http = value[&#34;http&#34;]
+            if &#34;https&#34; in value:
+                proxy_config.https = value[&#34;https&#34;]
+
+            self._proxies = proxy_config
+        else:
+            raise TypeError(
+                f&#34;proxies must be a HttpProxyConfig instance or dictionary, got {type(value).__name__}&#34;
+            )
+
+    def to_dict(self) -&gt; dict:
+        &#34;&#34;&#34;Convert config to dictionary.&#34;&#34;&#34;
+        return {
+            &#34;timeout&#34;: self._timeout,
+            &#34;rate_limit&#34;: self._rate_limit,
+            &#34;jitter&#34;: self._jitter,
+            &#34;max_retries&#34;: self._max_retries,
+            &#34;retry_delay&#34;: self._retry_delay,
+            &#34;user_agent&#34;: self._user_agent,
+            &#34;headers&#34;: self._headers,
+            &#34;proxies&#34;: self._proxies.to_dict(),
+        }</code></pre>
+</details>
+<div class="desc"><p>HTTP client configuration settings for Ethicrawl.</p>
+<p>This class manages all HTTP-specific configuration options including
+timeouts, rate limiting, retries, user agent settings, headers, and
+proxy configuration. It provides validation for all values to ensure
+they're within safe and reasonable ranges.</p>
+<p>All setters perform type checking and value validation to prevent
+invalid configurations. The class integrates with the global Config
+singleton for system-wide settings.</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>timeout</code></strong></dt>
+<dd>Request timeout in seconds (default: 30.0)</dd>
+<dt><strong><code>max_retries</code></strong></dt>
+<dd>Maximum retry attempts for failed requests (default: 3)</dd>
+<dt><strong><code>retry_delay</code></strong></dt>
+<dd>Base delay between retries in seconds (default: 1.0)</dd>
+<dt><strong><code>rate_limit</code></strong></dt>
+<dd>Maximum requests per second (default: 0.5)</dd>
+<dt><strong><code>jitter</code></strong></dt>
+<dd>Random variation factor for rate limiting (default: 0.2)</dd>
+<dt><strong><code>user_agent</code></strong></dt>
+<dd>User agent string for requests (default: "Ethicrawl/1.0")</dd>
+<dt><strong><code>headers</code></strong></dt>
+<dd>Default headers to include with requests</dd>
+<dt><strong><code>proxies</code></strong></dt>
+<dd>Proxy server configuration</dd>
+</dl>
+<h2 id="example">Example</h2>
+<pre><code class="language-python-repl">&gt;&gt;&gt; from ethicrawl.config import Config
+&gt;&gt;&gt; # Get the global configuration
+&gt;&gt;&gt; config = Config()
+&gt;&gt;&gt; # Update HTTP settings
+&gt;&gt;&gt; config.http.timeout = 60.0
+&gt;&gt;&gt; config.http.user_agent = &quot;MyCustomCrawler/2.0&quot;
+&gt;&gt;&gt; config.http.rate_limit = 1.0  # 1 request per second
+&gt;&gt;&gt; # Configure proxy
+&gt;&gt;&gt; config.http.proxies = {&quot;http&quot;: &quot;http://proxy:8080&quot;, &quot;https&quot;: &quot;https://proxy:8443&quot;}
+</code></pre></div>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="ethicrawl.config.base_config.BaseConfig" href="base_config.html#ethicrawl.config.base_config.BaseConfig">BaseConfig</a></li>
+<li>abc.ABC</li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="ethicrawl.config.http_config.HttpConfig.headers"><code class="name">prop <span class="ident">headers</span> : <a title="ethicrawl.core.headers.Headers" href="../core/headers.html#ethicrawl.core.headers.Headers">Headers</a></code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def headers(self) -&gt; Headers:
+    &#34;&#34;&#34;Get request headers.&#34;&#34;&#34;
+    return self._headers</code></pre>
+</details>
+<div class="desc"><p>Get request headers.</p></div>
+</dd>
+<dt id="ethicrawl.config.http_config.HttpConfig.jitter"><code class="name">prop <span class="ident">jitter</span> : float</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def jitter(self) -&gt; float:
+    &#34;&#34;&#34;Random variation factor for rate limiting.
+
+    Adds randomness to the timing between requests to make
+    crawling patterns less predictable. The random factor
+    is calculated as: delay * (1 + random() * jitter)
+
+    Valid range: 0.0-1.0
+    Default: 0.2
+
+    Raises:
+        TypeError: If value is not a number
+        ValueError: If value outside allowed range
+    &#34;&#34;&#34;
+    return self._jitter</code></pre>
+</details>
+<div class="desc"><p>Random variation factor for rate limiting.</p>
+<p>Adds randomness to the timing between requests to make
+crawling patterns less predictable. The random factor
+is calculated as: delay * (1 + random() * jitter)</p>
+<p>Valid range: 0.0-1.0
+Default: 0.2</p>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>TypeError</code></dt>
+<dd>If value is not a number</dd>
+<dt><code>ValueError</code></dt>
+<dd>If value outside allowed range</dd>
+</dl></div>
+</dd>
+<dt id="ethicrawl.config.http_config.HttpConfig.max_retries"><code class="name">prop <span class="ident">max_retries</span> : int</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def max_retries(self) -&gt; int:
+    &#34;&#34;&#34;Maximum number of retry attempts for failed requests.
+
+    Controls how many times a failed request should be retried
+    before giving up. Uses exponential backoff between attempts.
+
+    Valid range: 0-10 (0 means no retries)
+    Default: 3
+
+    Raises:
+        TypeError: If value is not an integer
+        ValueError: If value is negative or &gt; 10
+    &#34;&#34;&#34;
+    return self._max_retries</code></pre>
+</details>
+<div class="desc"><p>Maximum number of retry attempts for failed requests.</p>
+<p>Controls how many times a failed request should be retried
+before giving up. Uses exponential backoff between attempts.</p>
+<p>Valid range: 0-10 (0 means no retries)
+Default: 3</p>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>TypeError</code></dt>
+<dd>If value is not an integer</dd>
+<dt><code>ValueError</code></dt>
+<dd>If value is negative or &gt; 10</dd>
+</dl></div>
+</dd>
+<dt id="ethicrawl.config.http_config.HttpConfig.proxies"><code class="name">prop <span class="ident">proxies</span> : <a title="ethicrawl.config.http_proxy_config.HttpProxyConfig" href="http_proxy_config.html#ethicrawl.config.http_proxy_config.HttpProxyConfig">HttpProxyConfig</a></code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def proxies(self) -&gt; HttpProxyConfig:
+    &#34;&#34;&#34;Proxy server configuration for HTTP requests.
+
+    Configures HTTP and HTTPS proxy servers for requests.
+
+    Example:
+        &gt;&gt;&gt; config.http.proxies = {
+        ...    &#34;http&#34;: &#34;http://proxy:8080&#34;,
+        ...    &#34;https&#34;: &#34;https://proxy:8443&#34;
+        ... }
+
+    Returns:
+        HttpProxyConfig object with http and https properties
+
+    Raises:
+        TypeError: If value is not HttpProxyConfig or dict
+    &#34;&#34;&#34;
+    return self._proxies</code></pre>
+</details>
+<div class="desc"><p>Proxy server configuration for HTTP requests.</p>
+<p>Configures HTTP and HTTPS proxy servers for requests.</p>
+<h2 id="example">Example</h2>
+<pre><code class="language-python-repl">&gt;&gt;&gt; config.http.proxies = {
+...    &quot;http&quot;: &quot;http://proxy:8080&quot;,
+...    &quot;https&quot;: &quot;https://proxy:8443&quot;
+... }
+</code></pre>
+<h2 id="returns">Returns</h2>
+<p>HttpProxyConfig object with http and https properties</p>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>TypeError</code></dt>
+<dd>If value is not HttpProxyConfig or dict</dd>
+</dl></div>
+</dd>
+<dt id="ethicrawl.config.http_config.HttpConfig.rate_limit"><code class="name">prop <span class="ident">rate_limit</span> : float | None</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def rate_limit(self) -&gt; float | None:
+    &#34;&#34;&#34;Maximum requests per second allowed.
+
+    Controls request frequency to avoid overwhelming servers.
+    Set to None to disable rate limiting (not recommended).
+
+    Example: 0.5 means maximum of one request every 2 seconds
+
+    Valid range: &gt; 0
+    Default: 0.5
+
+    Raises:
+        TypeError: If value is not a number
+        ValueError: If value is &lt;= 0
+    &#34;&#34;&#34;
+    return self._rate_limit</code></pre>
+</details>
+<div class="desc"><p>Maximum requests per second allowed.</p>
+<p>Controls request frequency to avoid overwhelming servers.
+Set to None to disable rate limiting (not recommended).</p>
+<p>Example: 0.5 means maximum of one request every 2 seconds</p>
+<p>Valid range: &gt; 0
+Default: 0.5</p>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>TypeError</code></dt>
+<dd>If value is not a number</dd>
+<dt><code>ValueError</code></dt>
+<dd>If value is &lt;= 0</dd>
+</dl></div>
+</dd>
+<dt id="ethicrawl.config.http_config.HttpConfig.retry_delay"><code class="name">prop <span class="ident">retry_delay</span> : float</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def retry_delay(self) -&gt; float:
+    &#34;&#34;&#34;Base delay between retries in seconds&#34;&#34;&#34;
+    return self._retry_delay</code></pre>
+</details>
+<div class="desc"><p>Base delay between retries in seconds</p></div>
+</dd>
+<dt id="ethicrawl.config.http_config.HttpConfig.timeout"><code class="name">prop <span class="ident">timeout</span> : float</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def timeout(self) -&gt; float:
+    &#34;&#34;&#34;Request timeout in seconds.
+
+    Controls how long to wait for a response before abandoning the request.
+
+    Valid range: 0 &lt; timeout &lt;= 300
+    Default: 30.0
+
+    Raises:
+        TypeError: If value is not a number
+        ValueError: If value is &lt;= 0 or &gt; 300
+    &#34;&#34;&#34;
+    return self._timeout</code></pre>
+</details>
+<div class="desc"><p>Request timeout in seconds.</p>
+<p>Controls how long to wait for a response before abandoning the request.</p>
+<p>Valid range: 0 &lt; timeout &lt;= 300
+Default: 30.0</p>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>TypeError</code></dt>
+<dd>If value is not a number</dd>
+<dt><code>ValueError</code></dt>
+<dd>If value is &lt;= 0 or &gt; 300</dd>
+</dl></div>
+</dd>
+<dt id="ethicrawl.config.http_config.HttpConfig.user_agent"><code class="name">prop <span class="ident">user_agent</span> : str</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def user_agent(self) -&gt; str:
+    &#34;&#34;&#34;User agent string&#34;&#34;&#34;
+    return self._user_agent</code></pre>
+</details>
+<div class="desc"><p>User agent string</p></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="ethicrawl.config.http_config.HttpConfig.to_dict"><code class="name flex">
+<span>def <span class="ident">to_dict</span></span>(<span>self) ‑> dict</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def to_dict(self) -&gt; dict:
+    &#34;&#34;&#34;Convert config to dictionary.&#34;&#34;&#34;
+    return {
+        &#34;timeout&#34;: self._timeout,
+        &#34;rate_limit&#34;: self._rate_limit,
+        &#34;jitter&#34;: self._jitter,
+        &#34;max_retries&#34;: self._max_retries,
+        &#34;retry_delay&#34;: self._retry_delay,
+        &#34;user_agent&#34;: self._user_agent,
+        &#34;headers&#34;: self._headers,
+        &#34;proxies&#34;: self._proxies.to_dict(),
+    }</code></pre>
+</details>
+<div class="desc"><p>Convert config to dictionary.</p></div>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="ethicrawl.config" href="index.html">ethicrawl.config</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="ethicrawl.config.http_config.HttpConfig" href="#ethicrawl.config.http_config.HttpConfig">HttpConfig</a></code></h4>
+<ul class="two-column">
+<li><code><a title="ethicrawl.config.http_config.HttpConfig.headers" href="#ethicrawl.config.http_config.HttpConfig.headers">headers</a></code></li>
+<li><code><a title="ethicrawl.config.http_config.HttpConfig.jitter" href="#ethicrawl.config.http_config.HttpConfig.jitter">jitter</a></code></li>
+<li><code><a title="ethicrawl.config.http_config.HttpConfig.max_retries" href="#ethicrawl.config.http_config.HttpConfig.max_retries">max_retries</a></code></li>
+<li><code><a title="ethicrawl.config.http_config.HttpConfig.proxies" href="#ethicrawl.config.http_config.HttpConfig.proxies">proxies</a></code></li>
+<li><code><a title="ethicrawl.config.http_config.HttpConfig.rate_limit" href="#ethicrawl.config.http_config.HttpConfig.rate_limit">rate_limit</a></code></li>
+<li><code><a title="ethicrawl.config.http_config.HttpConfig.retry_delay" href="#ethicrawl.config.http_config.HttpConfig.retry_delay">retry_delay</a></code></li>
+<li><code><a title="ethicrawl.config.http_config.HttpConfig.timeout" href="#ethicrawl.config.http_config.HttpConfig.timeout">timeout</a></code></li>
+<li><code><a title="ethicrawl.config.http_config.HttpConfig.to_dict" href="#ethicrawl.config.http_config.HttpConfig.to_dict">to_dict</a></code></li>
+<li><code><a title="ethicrawl.config.http_config.HttpConfig.user_agent" href="#ethicrawl.config.http_config.HttpConfig.user_agent">user_agent</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.6</a>.</p>
+</footer>
+</body>
+</html>

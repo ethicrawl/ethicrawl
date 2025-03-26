@@ -1,0 +1,690 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.6">
+<title>ethicrawl.core.url API documentation</title>
+<meta name="description" content="">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+/* Collapse source docstrings */
+setTimeout(() => {
+[...document.querySelectorAll('.hljs.language-python > .hljs-string')]
+.filter(el => el.innerHTML.length > 200 && ['"""', "'''"].includes(el.innerHTML.substring(0, 3)))
+.forEach(el => {
+let d = document.createElement('details');
+d.classList.add('hljs-string');
+d.innerHTML = '<summary>"""</summary>' + el.innerHTML.substring(3);
+el.replaceWith(d);
+});
+}, 100);
+})</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>ethicrawl.core.url</code></h1>
+</header>
+<section id="section-intro">
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="ethicrawl.core.url.http_only"><code class="name flex">
+<span>def <span class="ident">http_only</span></span>(<span>func)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def http_only(func):
+
+    @wraps(func)
+    def wrapper(self, *args, **kwargs):
+        if self._parsed.scheme not in [&#34;http&#34;, &#34;https&#34;]:
+            raise ValueError(&#34;Only valid for HTTP and HTTPS urls&#34;)
+        return func(self, *args, **kwargs)
+
+    return wrapper</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+</dl>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="ethicrawl.core.url.Url"><code class="flex name class">
+<span>class <span class="ident">Url</span></span>
+<span>(</span><span>url: str | ForwardRef('<a title="ethicrawl.core.url.Url" href="#ethicrawl.core.url.Url">Url</a>'),<br>validate: bool = False)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Url:
+    &#34;&#34;&#34;URL parser and manipulation class.
+
+    This class provides methods for parsing, validating, and manipulating URLs.
+    Supports HTTP, HTTPS, and file URL schemes with validation and component access.
+    Path extension and query parameter manipulation are provided through the extend() method.
+
+    Attributes:
+        scheme: URL scheme (http, https, file)
+        netloc: Network location/domain (HTTP/HTTPS only)
+        hostname: Just the hostname portion of netloc (HTTP/HTTPS only)
+        path: URL path component
+        params: URL parameters (HTTP/HTTPS only)
+        query: Raw query string (HTTP/HTTPS only)
+        query_params: Query string parsed into a dictionary (HTTP/HTTPS only)
+        fragment: URL fragment identifier (HTTP/HTTPS only)
+        base: Base URL (scheme + netloc)
+
+    Raises:
+        ValueError: When provided with invalid URLs or when performing invalid operations
+    &#34;&#34;&#34;
+
+    def __init__(self, url: Union[str, &#34;Url&#34;], validate: bool = False):
+        &#34;&#34;&#34;Initialize a URL object with parsing and optional validation.
+
+        Args:
+            url: String or Url object to parse
+            validate: If True, performs additional validation including DNS resolution
+
+        Raises:
+            ValueError: When the URL has an invalid scheme or missing required components
+            ValueError: When validate=True and the hostname cannot be resolved
+        &#34;&#34;&#34;
+        if isinstance(url, Url):
+            url = str(url)
+
+        self._parsed = parse.urlparse(url)
+
+        # Basic validation
+        if self._parsed.scheme not in [&#34;file&#34;, &#34;http&#34;, &#34;https&#34;]:
+            raise ValueError(f&#34;Only File and HTTP(S) URLs supported: {url}&#34;)
+
+        # For HTTP/HTTPS URLs, ensure netloc exists
+        if self._parsed.scheme in [&#34;http&#34;, &#34;https&#34;] and not self._parsed.netloc:
+            raise ValueError(f&#34;Invalid HTTP URL (missing domain): {url}&#34;)
+
+        # For file URLs, ensure path exists
+        if self._parsed.scheme == &#34;file&#34; and not self._parsed.path:
+            raise ValueError(f&#34;Invalid file URL (missing path): {url}&#34;)
+
+        # Domain resolution validation (for HTTP/HTTPS only)
+        if validate and self._parsed.scheme in [&#34;http&#34;, &#34;https&#34;]:
+            try:
+                gethostbyname(str(self._parsed.hostname))
+            except gaierror as exc:
+                raise ValueError(
+                    f&#34;Cannot resolve hostname: {self._parsed.hostname}&#34;
+                ) from exc
+
+    @property
+    def base(self) -&gt; str:
+        &#34;&#34;&#34;Get the base URL (scheme and netloc).
+
+        Returns:
+            The base URL as a string (e.g., &#39;https://example.com&#39;)
+        &#34;&#34;&#34;
+        if self.scheme == &#34;file&#34;:
+            return &#34;file://&#34;
+        return f&#34;{self.scheme}://{self.netloc}&#34;
+
+    @property
+    def scheme(self) -&gt; str:
+        &#34;&#34;&#34;Get the URL scheme (file, http or https).&#34;&#34;&#34;
+        return self._parsed.scheme
+
+    @property
+    @http_only
+    def netloc(self) -&gt; str:
+        &#34;&#34;&#34;Get the network location (domain).&#34;&#34;&#34;
+        return self._parsed.netloc
+
+    @property
+    @http_only
+    def hostname(self) -&gt; str:
+        &#34;&#34;&#34;Get just the hostname part.&#34;&#34;&#34;
+        return str(self._parsed.hostname)
+
+    @property
+    def path(self) -&gt; str:
+        &#34;&#34;&#34;Get the path component.&#34;&#34;&#34;
+        return self._parsed.path
+
+    @property
+    @http_only
+    def params(self) -&gt; str:
+        &#34;&#34;&#34;Get URL parameters.&#34;&#34;&#34;
+        return self._parsed.params
+
+    @property
+    @http_only
+    def query(self) -&gt; str:
+        &#34;&#34;&#34;Get the query string.&#34;&#34;&#34;
+        return self._parsed.query
+
+    @property
+    @http_only
+    def query_params(self) -&gt; dict[str, Any]:
+        &#34;&#34;&#34;Get query parameters as a dictionary.
+
+        Returns:
+            Dictionary of query parameter keys and values
+
+        Raises:
+            ValueError: If called on a non-HTTP(S) URL
+        &#34;&#34;&#34;
+        return dict(parse.parse_qsl(self._parsed.query))
+
+    @property
+    @http_only
+    def fragment(self) -&gt; str:
+        &#34;&#34;&#34;Get the fragment identifier from the URL.
+
+        The fragment appears after # in a URL and typically
+        references a section within a document.
+
+        Returns:
+            Fragment string without the # character
+
+        Raises:
+            ValueError: If called on a non-HTTP(S) URL
+        &#34;&#34;&#34;
+        return self._parsed.fragment
+
+    def __str__(self) -&gt; str:
+        &#34;&#34;&#34;Convert URL to string representation.
+
+        Returns:
+            Complete URL string
+        &#34;&#34;&#34;
+        return self._parsed.geturl()
+
+    def __eq__(self, other):
+        &#34;&#34;&#34;Compare URLs for equality.
+
+        Args:
+            other: Another Url object or string to compare with
+
+        Returns:
+            True if URLs are equal, False otherwise
+        &#34;&#34;&#34;
+        if isinstance(other, Url):
+            return str(self) == str(other)
+        elif isinstance(other, str):
+            return str(self) == other
+        return False
+
+    def __hash__(self):
+        &#34;&#34;&#34;Return a hash of the URL.
+
+        The hash is based on the string representation of the URL,
+        ensuring URLs that are equal have the same hash.
+
+        Returns:
+            Integer hash value
+        &#34;&#34;&#34;
+        return hash(str(self))
+
+    @http_only
+    def _extend_with_params(self, params: dict[str, Any]) -&gt; &#34;Url&#34;:
+        current_params = self.query_params
+        current_params.update(params)
+
+        query_string = parse.urlencode(current_params)
+
+        # Create new URL with updated query string
+        base_url = f&#34;{self.scheme}://{self.netloc}{self.path}&#34;
+        if self._parsed.params:
+            base_url += f&#34;;{self._parsed.params}&#34;
+
+        # Add fragment if it exists
+        fragment = f&#34;#{self._parsed.fragment}&#34; if self._parsed.fragment else &#34;&#34;
+
+        return Url(
+            f&#34;{base_url}?{query_string}{fragment}&#34;
+            if query_string
+            else f&#34;{base_url}{fragment}&#34;
+        )
+
+    def _extend_with_path(self, path: str) -&gt; &#34;Url&#34;:
+        # Set location based on scheme
+        if self.scheme == &#34;file&#34;:
+            loc = &#34;&#34;  # Empty for file URLs
+        else:
+            loc = self.netloc  # Use netloc for HTTP(S)
+
+        # Handle path joining logic uniformly
+        if path.startswith(&#34;/&#34;):
+            # Path has leading slash
+            if self.path.endswith(&#34;/&#34;):
+                # Remove duplicate slash if base path ends with slash
+                new_path = self.path + path[1:]
+            else:
+                # Keep the leading slash
+                new_path = self.path + path
+        else:
+            # No leading slash in path
+            if not self.path:
+                new_path = &#34;/&#34; + path
+            elif self.path.endswith(&#34;/&#34;):
+                new_path = self.path + path
+            else:
+                new_path = self.path + &#34;/&#34; + path
+
+        # Unified URL construction
+        return Url(f&#34;{self.scheme}://{loc}{new_path}&#34;)
+
+    def extend(self, *args) -&gt; &#34;Url&#34;:
+        &#34;&#34;&#34;Extend the URL with additional path components or query parameters.
+
+        This method supports multiple extension patterns:
+        1. Path extension: extend(&#34;path/component&#34;)
+        2. Single parameter: extend(&#34;param_name&#34;, &#34;param_value&#34;)
+        3. Multiple parameters: extend({&#34;param1&#34;: &#34;value1&#34;, &#34;param2&#34;: &#34;value2&#34;})
+
+        Args:
+            *args: Either a path string, a parameter dict, or name/value parameter pair
+
+        Returns:
+            A new Url object with the extended path or parameters
+
+        Raises:
+            ValueError: If arguments don&#39;t match one of the supported patterns
+            ValueError: If trying to add query parameters to a file:// URL
+
+        Examples:
+            &gt;&gt;&gt; url = Url(&#34;https://example.com/api&#34;)
+            &gt;&gt;&gt; url.extend(&#34;v1&#34;).extend({&#34;format&#34;: &#34;json&#34;})
+            Url(&#34;https://example.com/api/v1?format=json&#34;)
+        &#34;&#34;&#34;
+        # Case 1: Dictionary of parameters
+        if (
+            self.scheme in [&#34;http&#34;, &#34;https&#34;]
+            and len(args) == 1
+            and isinstance(args[0], dict)
+        ):
+            params = args[0]
+            return self._extend_with_params(params)
+
+        # Case 2: Key-value parameter pair
+        elif self.scheme in [&#34;http&#34;, &#34;https&#34;] and len(args) == 2:
+            param_name, param_value = args
+            return self._extend_with_params({param_name: param_value})
+
+        # Case 3: Path component (works for all schemes)
+        elif len(args) == 1 and isinstance(args[0], str):
+            path_component = args[0]
+            return self._extend_with_path(path_component)
+
+        # Invalid usage
+        else:
+            if self.scheme == &#34;file&#34; and (
+                len(args) == 1 and isinstance(args[0], dict) or len(args) == 2
+            ):
+                raise ValueError(&#34;Query parameters are not supported for file:// URLs&#34;)
+            raise ValueError(&#34;Invalid arguments for extend()&#34;)</code></pre>
+</details>
+<div class="desc"><p>URL parser and manipulation class.</p>
+<p>This class provides methods for parsing, validating, and manipulating URLs.
+Supports HTTP, HTTPS, and file URL schemes with validation and component access.
+Path extension and query parameter manipulation are provided through the extend() method.</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>scheme</code></strong></dt>
+<dd>URL scheme (http, https, file)</dd>
+<dt><strong><code>netloc</code></strong></dt>
+<dd>Network location/domain (HTTP/HTTPS only)</dd>
+<dt><strong><code>hostname</code></strong></dt>
+<dd>Just the hostname portion of netloc (HTTP/HTTPS only)</dd>
+<dt><strong><code>path</code></strong></dt>
+<dd>URL path component</dd>
+<dt><strong><code>params</code></strong></dt>
+<dd>URL parameters (HTTP/HTTPS only)</dd>
+<dt><strong><code>query</code></strong></dt>
+<dd>Raw query string (HTTP/HTTPS only)</dd>
+<dt><strong><code>query_params</code></strong></dt>
+<dd>Query string parsed into a dictionary (HTTP/HTTPS only)</dd>
+<dt><strong><code>fragment</code></strong></dt>
+<dd>URL fragment identifier (HTTP/HTTPS only)</dd>
+<dt><strong><code>base</code></strong></dt>
+<dd>Base URL (scheme + netloc)</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>ValueError</code></dt>
+<dd>When provided with invalid URLs or when performing invalid operations</dd>
+</dl>
+<p>Initialize a URL object with parsing and optional validation.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>url</code></strong></dt>
+<dd>String or Url object to parse</dd>
+<dt><strong><code>validate</code></strong></dt>
+<dd>If True, performs additional validation including DNS resolution</dd>
+</dl>
+<h2 id="raises_1">Raises</h2>
+<dl>
+<dt><code>ValueError</code></dt>
+<dd>When the URL has an invalid scheme or missing required components</dd>
+<dt><code>ValueError</code></dt>
+<dd>When validate=True and the hostname cannot be resolved</dd>
+</dl></div>
+<h3>Instance variables</h3>
+<dl>
+<dt id="ethicrawl.core.url.Url.base"><code class="name">prop <span class="ident">base</span> : str</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def base(self) -&gt; str:
+    &#34;&#34;&#34;Get the base URL (scheme and netloc).
+
+    Returns:
+        The base URL as a string (e.g., &#39;https://example.com&#39;)
+    &#34;&#34;&#34;
+    if self.scheme == &#34;file&#34;:
+        return &#34;file://&#34;
+    return f&#34;{self.scheme}://{self.netloc}&#34;</code></pre>
+</details>
+<div class="desc"><p>Get the base URL (scheme and netloc).</p>
+<h2 id="returns">Returns</h2>
+<p>The base URL as a string (e.g., 'https://example.com')</p></div>
+</dd>
+<dt id="ethicrawl.core.url.Url.fragment"><code class="name">prop <span class="ident">fragment</span> : str</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+@http_only
+def fragment(self) -&gt; str:
+    &#34;&#34;&#34;Get the fragment identifier from the URL.
+
+    The fragment appears after # in a URL and typically
+    references a section within a document.
+
+    Returns:
+        Fragment string without the # character
+
+    Raises:
+        ValueError: If called on a non-HTTP(S) URL
+    &#34;&#34;&#34;
+    return self._parsed.fragment</code></pre>
+</details>
+<div class="desc"><p>Get the fragment identifier from the URL.</p>
+<p>The fragment appears after # in a URL and typically
+references a section within a document.</p>
+<h2 id="returns">Returns</h2>
+<p>Fragment string without the # character</p>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>ValueError</code></dt>
+<dd>If called on a non-HTTP(S) URL</dd>
+</dl></div>
+</dd>
+<dt id="ethicrawl.core.url.Url.hostname"><code class="name">prop <span class="ident">hostname</span> : str</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+@http_only
+def hostname(self) -&gt; str:
+    &#34;&#34;&#34;Get just the hostname part.&#34;&#34;&#34;
+    return str(self._parsed.hostname)</code></pre>
+</details>
+<div class="desc"><p>Get just the hostname part.</p></div>
+</dd>
+<dt id="ethicrawl.core.url.Url.netloc"><code class="name">prop <span class="ident">netloc</span> : str</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+@http_only
+def netloc(self) -&gt; str:
+    &#34;&#34;&#34;Get the network location (domain).&#34;&#34;&#34;
+    return self._parsed.netloc</code></pre>
+</details>
+<div class="desc"><p>Get the network location (domain).</p></div>
+</dd>
+<dt id="ethicrawl.core.url.Url.params"><code class="name">prop <span class="ident">params</span> : str</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+@http_only
+def params(self) -&gt; str:
+    &#34;&#34;&#34;Get URL parameters.&#34;&#34;&#34;
+    return self._parsed.params</code></pre>
+</details>
+<div class="desc"><p>Get URL parameters.</p></div>
+</dd>
+<dt id="ethicrawl.core.url.Url.path"><code class="name">prop <span class="ident">path</span> : str</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def path(self) -&gt; str:
+    &#34;&#34;&#34;Get the path component.&#34;&#34;&#34;
+    return self._parsed.path</code></pre>
+</details>
+<div class="desc"><p>Get the path component.</p></div>
+</dd>
+<dt id="ethicrawl.core.url.Url.query"><code class="name">prop <span class="ident">query</span> : str</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+@http_only
+def query(self) -&gt; str:
+    &#34;&#34;&#34;Get the query string.&#34;&#34;&#34;
+    return self._parsed.query</code></pre>
+</details>
+<div class="desc"><p>Get the query string.</p></div>
+</dd>
+<dt id="ethicrawl.core.url.Url.query_params"><code class="name">prop <span class="ident">query_params</span> : dict[str, typing.Any]</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+@http_only
+def query_params(self) -&gt; dict[str, Any]:
+    &#34;&#34;&#34;Get query parameters as a dictionary.
+
+    Returns:
+        Dictionary of query parameter keys and values
+
+    Raises:
+        ValueError: If called on a non-HTTP(S) URL
+    &#34;&#34;&#34;
+    return dict(parse.parse_qsl(self._parsed.query))</code></pre>
+</details>
+<div class="desc"><p>Get query parameters as a dictionary.</p>
+<h2 id="returns">Returns</h2>
+<p>Dictionary of query parameter keys and values</p>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>ValueError</code></dt>
+<dd>If called on a non-HTTP(S) URL</dd>
+</dl></div>
+</dd>
+<dt id="ethicrawl.core.url.Url.scheme"><code class="name">prop <span class="ident">scheme</span> : str</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def scheme(self) -&gt; str:
+    &#34;&#34;&#34;Get the URL scheme (file, http or https).&#34;&#34;&#34;
+    return self._parsed.scheme</code></pre>
+</details>
+<div class="desc"><p>Get the URL scheme (file, http or https).</p></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="ethicrawl.core.url.Url.extend"><code class="name flex">
+<span>def <span class="ident">extend</span></span>(<span>self, *args) ‑> <a title="ethicrawl.core.url.Url" href="#ethicrawl.core.url.Url">Url</a></span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def extend(self, *args) -&gt; &#34;Url&#34;:
+    &#34;&#34;&#34;Extend the URL with additional path components or query parameters.
+
+    This method supports multiple extension patterns:
+    1. Path extension: extend(&#34;path/component&#34;)
+    2. Single parameter: extend(&#34;param_name&#34;, &#34;param_value&#34;)
+    3. Multiple parameters: extend({&#34;param1&#34;: &#34;value1&#34;, &#34;param2&#34;: &#34;value2&#34;})
+
+    Args:
+        *args: Either a path string, a parameter dict, or name/value parameter pair
+
+    Returns:
+        A new Url object with the extended path or parameters
+
+    Raises:
+        ValueError: If arguments don&#39;t match one of the supported patterns
+        ValueError: If trying to add query parameters to a file:// URL
+
+    Examples:
+        &gt;&gt;&gt; url = Url(&#34;https://example.com/api&#34;)
+        &gt;&gt;&gt; url.extend(&#34;v1&#34;).extend({&#34;format&#34;: &#34;json&#34;})
+        Url(&#34;https://example.com/api/v1?format=json&#34;)
+    &#34;&#34;&#34;
+    # Case 1: Dictionary of parameters
+    if (
+        self.scheme in [&#34;http&#34;, &#34;https&#34;]
+        and len(args) == 1
+        and isinstance(args[0], dict)
+    ):
+        params = args[0]
+        return self._extend_with_params(params)
+
+    # Case 2: Key-value parameter pair
+    elif self.scheme in [&#34;http&#34;, &#34;https&#34;] and len(args) == 2:
+        param_name, param_value = args
+        return self._extend_with_params({param_name: param_value})
+
+    # Case 3: Path component (works for all schemes)
+    elif len(args) == 1 and isinstance(args[0], str):
+        path_component = args[0]
+        return self._extend_with_path(path_component)
+
+    # Invalid usage
+    else:
+        if self.scheme == &#34;file&#34; and (
+            len(args) == 1 and isinstance(args[0], dict) or len(args) == 2
+        ):
+            raise ValueError(&#34;Query parameters are not supported for file:// URLs&#34;)
+        raise ValueError(&#34;Invalid arguments for extend()&#34;)</code></pre>
+</details>
+<div class="desc"><p>Extend the URL with additional path components or query parameters.</p>
+<p>This method supports multiple extension patterns:
+1. Path extension: extend("path/component")
+2. Single parameter: extend("param_name", "param_value")
+3. Multiple parameters: extend({"param1": "value1", "param2": "value2"})</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>*args</code></strong></dt>
+<dd>Either a path string, a parameter dict, or name/value parameter pair</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>A new Url object with the extended path or parameters</p>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>ValueError</code></dt>
+<dd>If arguments don't match one of the supported patterns</dd>
+<dt><code>ValueError</code></dt>
+<dd>If trying to add query parameters to a file:// URL</dd>
+</dl>
+<h2 id="examples">Examples</h2>
+<pre><code class="language-python-repl">&gt;&gt;&gt; url = Url(&quot;https://example.com/api&quot;)
+&gt;&gt;&gt; url.extend(&quot;v1&quot;).extend({&quot;format&quot;: &quot;json&quot;})
+Url(&quot;https://example.com/api/v1?format=json&quot;)
+</code></pre></div>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="ethicrawl.core" href="index.html">ethicrawl.core</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="ethicrawl.core.url.http_only" href="#ethicrawl.core.url.http_only">http_only</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="ethicrawl.core.url.Url" href="#ethicrawl.core.url.Url">Url</a></code></h4>
+<ul class="two-column">
+<li><code><a title="ethicrawl.core.url.Url.base" href="#ethicrawl.core.url.Url.base">base</a></code></li>
+<li><code><a title="ethicrawl.core.url.Url.extend" href="#ethicrawl.core.url.Url.extend">extend</a></code></li>
+<li><code><a title="ethicrawl.core.url.Url.fragment" href="#ethicrawl.core.url.Url.fragment">fragment</a></code></li>
+<li><code><a title="ethicrawl.core.url.Url.hostname" href="#ethicrawl.core.url.Url.hostname">hostname</a></code></li>
+<li><code><a title="ethicrawl.core.url.Url.netloc" href="#ethicrawl.core.url.Url.netloc">netloc</a></code></li>
+<li><code><a title="ethicrawl.core.url.Url.params" href="#ethicrawl.core.url.Url.params">params</a></code></li>
+<li><code><a title="ethicrawl.core.url.Url.path" href="#ethicrawl.core.url.Url.path">path</a></code></li>
+<li><code><a title="ethicrawl.core.url.Url.query" href="#ethicrawl.core.url.Url.query">query</a></code></li>
+<li><code><a title="ethicrawl.core.url.Url.query_params" href="#ethicrawl.core.url.Url.query_params">query_params</a></code></li>
+<li><code><a title="ethicrawl.core.url.Url.scheme" href="#ethicrawl.core.url.Url.scheme">scheme</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.6</a>.</p>
+</footer>
+</body>
+</html>

@@ -3,24 +3,10 @@ from socket import gaierror, gethostbyname
 from typing import Any, Union
 from urllib import parse
 
+from ethicrawl.error import DomainResolutionError
+
 
 def http_only(func):
-    """
-    Decorator to restrict property access to HTTP/HTTPS URLs only.
-
-    This decorator ensures that the decorated method is only called if the URL scheme
-    is either 'http' or 'https'. If the URL scheme is not 'http' or 'https', a ValueError
-    is raised.
-
-    Args:
-        func (function): The function to be decorated.
-
-    Returns:
-        function: The wrapped function that includes the URL scheme check.
-
-    Raises:
-        ValueError: If the URL scheme is not 'http' or 'https'.
-    """
 
     @wraps(func)
     def wrapper(self, *args, **kwargs):
@@ -36,58 +22,37 @@ def http_only(func):
 
 
 class Url:
-    """
-    URL handling and parsing.
+    """URL parser and manipulation class.
 
-    A utility class for manipulating and parsing URLs, ensuring they're properly
-    formatted and providing easy access to their components. Supports HTTP, HTTPS,
-    and file URLs with different behavior for each scheme.
-
-    Examples:
-        >>> from ethicrawl import Url
-        >>> url = Url("https://example.com/path?q=search")
-        >>> print(url.netloc)
-        example.com
-        >>> print(url.path)
-        /path
-        >>> print(url.query_params)
-        {'q': 'search'}
-
-        # Extending URLs
-        >>> url = Url("https://example.com")
-        >>> new_url = url.extend("products")
-        >>> print(new_url)
-        https://example.com/products
-
-        # Adding query parameters
-        >>> url = Url("https://example.com/search")
-        >>> new_url = url.extend({"q": "term", "page": "1"})
-        >>> print(new_url)
-        https://example.com/search?q=term&page=1
+    This class provides methods for parsing, validating, and manipulating URLs.
+    Supports HTTP, HTTPS, and file URL schemes with validation and component access.
+    Path extension and query parameter manipulation are provided through the extend() method.
 
     Attributes:
-        scheme (str): URL scheme (http, https, file)
-        netloc (str): Network location/domain (HTTP/HTTPS only)
-        hostname (str): Just the hostname part without port (HTTP/HTTPS only)
-        path (str): URL path
-        params (str): URL parameters (semicolon params, HTTP/HTTPS only)
-        query (str): Raw query string (HTTP/HTTPS only)
-        query_params (dict): Query parameters as a dictionary (HTTP/HTTPS only)
-        fragment (str): URL fragment/anchor (HTTP/HTTPS only)
-        base (str): Base URL (scheme + netloc for HTTP/HTTPS, 'file://' for file)
+        scheme: URL scheme (http, https, file)
+        netloc: Network location/domain (HTTP/HTTPS only)
+        hostname: Just the hostname portion of netloc (HTTP/HTTPS only)
+        path: URL path component
+        params: URL parameters (HTTP/HTTPS only)
+        query: Raw query string (HTTP/HTTPS only)
+        query_params: Query string parsed into a dictionary (HTTP/HTTPS only)
+        fragment: URL fragment identifier (HTTP/HTTPS only)
+        base: Base URL (scheme + netloc)
+
+    Raises:
+        ValueError: When provided with invalid URLs or when performing invalid operations
     """
 
     def __init__(self, url: Union[str, "Url"], validate: bool = False):
-        """
-        Initialize a URL object.
+        """Initialize a URL object with parsing and optional validation.
 
         Args:
-            url (str or Url): URL string or another Url object
-            validate (bool): If True, performs hostname resolution to validate
-                            the domain (HTTP/HTTPS only)
+            url: String or Url object to parse
+            validate: If True, performs additional validation including DNS resolution
 
         Raises:
-            ValueError: If URL is invalid or hostname can't be resolved (when validate=True)
+            ValueError: When the URL has an invalid scheme or missing required components
+            ValueError: When validate=True and the hostname cannot be resolved
         """
         if isinstance(url, Url):
             url = str(url)
@@ -111,13 +76,21 @@ class Url:
             try:
                 gethostbyname(str(self._parsed.hostname))
             except gaierror as exc:
-                raise ValueError(
-                    f"Cannot resolve hostname: {self._parsed.hostname}"
+                # Raise a DomainResolutionError instead of ValueError
+                raise DomainResolutionError(
+                    str(self),  # Pass the full URL string
+                    str(
+                        self._parsed.hostname
+                    ),  # Pass the hostname that failed resolution
                 ) from exc
 
     @property
     def base(self) -> str:
-        """Get scheme and netloc."""
+        """Get the base URL (scheme and netloc).
+
+        Returns:
+            The base URL as a string (e.g., 'https://example.com')
+        """
         if self.scheme == "file":
             return "file://"
         return f"{self.scheme}://{self.netloc}"
@@ -159,32 +132,49 @@ class Url:
     @property
     @http_only
     def query_params(self) -> dict[str, Any]:
-        """
-        Get parsed query parameters as a dictionary.
-
-        Parses the URL's query string into a dictionary of parameter name/value pairs.
-        Only available for HTTP/HTTPS URLs.
+        """Get query parameters as a dictionary.
 
         Returns:
-            dict: Dictionary of query parameters
+            Dictionary of query parameter keys and values
 
         Raises:
-            ValueError: If used on a file:// URL
+            ValueError: If called on a non-HTTP(S) URL
         """
         return dict(parse.parse_qsl(self._parsed.query))
 
     @property
     @http_only
     def fragment(self) -> str:
-        """Get URL fragment."""
+        """Get the fragment identifier from the URL.
+
+        The fragment appears after # in a URL and typically
+        references a section within a document.
+
+        Returns:
+            Fragment string without the # character
+
+        Raises:
+            ValueError: If called on a non-HTTP(S) URL
+        """
         return self._parsed.fragment
 
     def __str__(self) -> str:
-        """String representation of the URL."""
+        """Convert URL to string representation.
+
+        Returns:
+            Complete URL string
+        """
         return self._parsed.geturl()
 
     def __eq__(self, other):
-        """Compare URLs for equality."""
+        """Compare URLs for equality.
+
+        Args:
+            other: Another Url object or string to compare with
+
+        Returns:
+            True if URLs are equal, False otherwise
+        """
         if isinstance(other, Url):
             return str(self) == str(other)
         elif isinstance(other, str):
@@ -192,12 +182,18 @@ class Url:
         return False
 
     def __hash__(self):
-        """Hash implementation for using URLs in sets/dicts."""
+        """Return a hash of the URL.
+
+        The hash is based on the string representation of the URL,
+        ensuring URLs that are equal have the same hash.
+
+        Returns:
+            Integer hash value
+        """
         return hash(str(self))
 
     @http_only
     def _extend_with_params(self, params: dict[str, Any]) -> "Url":
-        """Add query parameters to URL."""
         current_params = self.query_params
         current_params.update(params)
 
@@ -218,7 +214,6 @@ class Url:
         )
 
     def _extend_with_path(self, path: str) -> "Url":
-        """Add path component to URL."""
         # Set location based on scheme
         if self.scheme == "file":
             loc = ""  # Empty for file URLs
@@ -247,35 +242,27 @@ class Url:
         return Url(f"{self.scheme}://{loc}{new_path}")
 
     def extend(self, *args) -> "Url":
-        """
-        Extend the URL with path components or query parameters.
+        """Extend the URL with additional path components or query parameters.
 
-        This method allows flexible extension of URLs in different ways:
-
-        1. Add path component: extend("path/to/resource")
-        2. Add query parameters as dictionary: extend({"param1": "value1"})
-        3. Add single query parameter: extend("param_name", "param_value")
-
-        Note that query parameter operations are only available for HTTP/HTTPS URLs,
-        not for file URLs.
+        This method supports multiple extension patterns:
+        1. Path extension: extend("path/component")
+        2. Single parameter: extend("param_name", "param_value")
+        3. Multiple parameters: extend({"param1": "value1", "param2": "value2"})
 
         Args:
-            *args: Either a path string, a parameter dictionary, or a name/value pair
+            *args: Either a path string, a parameter dict, or name/value parameter pair
 
         Returns:
-            Url: A new Url instance with the extensions applied
+            A new Url object with the extended path or parameters
 
         Raises:
-            ValueError: For invalid arguments or when trying to add query parameters to file URLs
+            ValueError: If arguments don't match one of the supported patterns
+            ValueError: If trying to add query parameters to a file:// URL
 
         Examples:
-            >>> url = Url("https://example.com")
-            >>> # Add path
-            >>> url.extend("products").extend("category")
-            'https://example.com/products/category'
-            >>> # Add parameters
-            >>> url.extend({"search": "term", "page": "1"})
-            'https://example.com?search=term&page=1'
+            >>> url = Url("https://example.com/api")
+            >>> url.extend("v1").extend({"format": "json"})
+            Url("https://example.com/api/v1?format=json")
         """
         # Case 1: Dictionary of parameters
         if (

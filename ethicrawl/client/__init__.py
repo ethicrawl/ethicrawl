@@ -1,4 +1,4 @@
-"""HTTP client components for making web requests."""
+"""Client interfaces for making ethical requests to resources."""
 
 from .client import Client, NoneClient
 from .request import Request

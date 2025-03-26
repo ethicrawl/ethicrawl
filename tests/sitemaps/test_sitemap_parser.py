@@ -1,9 +1,9 @@
 import pytest
 from unittest.mock import MagicMock, patch
 from ethicrawl.sitemaps import (
-    IndexNode,
+    IndexDocument,
     IndexEntry,
-    UrlsetNode,
+    UrlsetDocument,
     SitemapParser,
 )
 from ethicrawl.context import Context
@@ -70,14 +70,14 @@ class TestSitemapParser:
             mock_response.text = index_doc
             mock_get.return_value = mock_response
             result = sp._get(r)
-            assert isinstance(result, IndexNode)
+            assert isinstance(result, IndexDocument)
 
         with patch.object(context.client, "get") as mock_get:
             mock_response = MagicMock()
             mock_response.text = urlset_doc
             mock_get.return_value = mock_response
             result = sp._get(r)
-            assert isinstance(result, UrlsetNode)
+            assert isinstance(result, UrlsetDocument)
 
         with patch.object(context.client, "get") as mock_get:
             mock_response = MagicMock()
@@ -96,11 +96,11 @@ class TestSitemapParser:
             # Set up mock to return a known value
             mock_traverse.return_value = []
 
-            # Test parsing with an IndexNode
-            index = IndexNode(context, index_doc)
+            # Test parsing with an IndexDocument
+            index = IndexDocument(context, index_doc)
             parser.parse(index)
 
-            # Verify _traverse was called with the IndexNode and depth 0
+            # Verify _traverse was called with the IndexDocument and depth 0
             mock_traverse.assert_called_once_with(index, 0)
 
         # Test with a list of resources
@@ -117,7 +117,7 @@ class TestSitemapParser:
             args = mock_traverse.call_args[0]
             document = args[0]
 
-            assert isinstance(document, IndexNode)
+            assert isinstance(document, IndexDocument)
             assert len(document.entries) == 2
             assert [str(e.url) for e in document.entries] == [
                 "https://example.com/1",
@@ -138,7 +138,7 @@ class TestSitemapParser:
             args = mock_traverse.call_args[0]
             document = args[0]
 
-            assert isinstance(document, IndexNode)
+            assert isinstance(document, IndexDocument)
             assert len(document.entries) == 2
             assert [str(e.url) for e in document.entries] == [
                 "https://example.com/1",
@@ -156,7 +156,7 @@ class TestSitemapParser:
             args = mock_traverse.call_args[0]
             document = args[0]
 
-            assert isinstance(document, IndexNode)
+            assert isinstance(document, IndexDocument)
             assert len(document.entries) == 0
 
     def test_process_entry_urlset(self):
@@ -167,10 +167,10 @@ class TestSitemapParser:
         # Create an entry to process
         entry = IndexEntry("https://www.example.com/sitemap.xml")
 
-        # Create a mock for _get to return a UrlsetNode
+        # Create a mock for _get to return a UrlsetDocument
         with patch.object(parser, "_get") as mock_get:
-            # Create a urlset node with our test document
-            urlset = UrlsetNode(context, urlset_doc)
+            # Create a urlset document with our test document
+            urlset = UrlsetDocument(context, urlset_doc)
             mock_get.return_value = urlset
 
             # Call _process_entry
@@ -204,7 +204,7 @@ class TestSitemapParser:
 
         # Mock _get to return an empty urlset
         with patch.object(parser, "_get") as mock_get:
-            empty_urlset = UrlsetNode(context, empty_urlset_doc)
+            empty_urlset = UrlsetDocument(context, empty_urlset_doc)
             mock_get.return_value = empty_urlset
 
             # Call _process_entry
@@ -229,9 +229,9 @@ class TestSitemapParser:
         # Set up mocks for both _get and _traverse
         with patch.object(parser, "_get") as mock_get:
             with patch.object(parser, "_traverse") as mock_traverse:
-                # Create an index node with our test document
-                index_node = IndexNode(context, index_doc)
-                mock_get.return_value = index_node
+                # Create an index document with our test document
+                index_document = IndexDocument(context, index_doc)
+                mock_get.return_value = index_document
 
                 # Make _traverse return some fake resources
                 fake_resources = ResourceList(
@@ -256,7 +256,9 @@ class TestSitemapParser:
                 # Verify _traverse was called with correct params
                 mock_traverse.assert_called_once()
                 args = mock_traverse.call_args[0]
-                assert args[0] is index_node  # First arg should be the index node
+                assert (
+                    args[0] is index_document
+                )  # First arg should be the index document
                 assert args[1] == current_depth + 1  # Depth should be incremented
                 assert args[2] is visited  # Should use the same visited set
 
@@ -286,13 +288,13 @@ class TestSitemapParser:
     def test_traverse_empty_index(self):
         context = self.context()
         parser = SitemapParser(context)
-        empty_index = IndexNode(context)
+        empty_index = IndexDocument(context)
         parser._traverse(empty_index)
 
     def test_traverse_empty_index_max_depth(self):
         context = self.context()
         parser = SitemapParser(context)
-        empty_index = IndexNode(context)
+        empty_index = IndexDocument(context)
         parser._traverse(empty_index, depth=2**1000)  # big number
 
     def test_traverse_entry_processing_loop(self):
@@ -300,9 +302,9 @@ class TestSitemapParser:
         context = self.context()
         parser = SitemapParser(context)
 
-        # Create a node with specifically ordered entries
-        node = IndexNode(context)
-        node.entries = ResourceList(
+        # Create a document with specifically ordered entries
+        document = IndexDocument(context)
+        document.entries = ResourceList(
             [
                 IndexEntry("https://www.example.com/first"),
                 IndexEntry("https://www.example.com/second"),
@@ -335,7 +337,7 @@ class TestSitemapParser:
             mock_process.side_effect = side_effect
 
             # Call _traverse
-            result = parser._traverse(node, 1, {"already-visited"})
+            result = parser._traverse(document, 1, {"already-visited"})
 
             # Verify all entries were processed in order
             assert processed_entries == [
@@ -347,7 +349,7 @@ class TestSitemapParser:
             # Verify correct parameters passed to _process_entry
             assert mock_process.call_count == 3
             for i, call in enumerate(mock_process.call_args_list):
-                assert call[0][0] == node.entries[i]  # entry
+                assert call[0][0] == document.entries[i]  # entry
                 assert call[0][1] == 1  # depth
                 assert "already-visited" in call[0][2]  # visited set
 

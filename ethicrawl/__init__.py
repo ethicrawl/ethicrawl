@@ -1,7 +1,7 @@
 """
 Ethicrawl - An ethical web crawler that respects robots.txt and rate limits.
 
-This package provides tools for crawling websites in an ethical manner,
+This package provides tools for crawling websites in a respectful manner,
 following robots.txt rules and maintaining reasonable request rates.
 """
 

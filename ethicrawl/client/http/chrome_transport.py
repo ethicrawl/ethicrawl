@@ -19,16 +19,50 @@ from .http_response import HttpResponse
 
 
 class ChromeTransport(Transport):
-    """Transport implementation using Chrome for JavaScript-rendered content."""
+    """Selenium-based transport implementation using Chrome/Chromium.
+
+    This transport provides browser automation capabilities for fetching
+    JavaScript-rendered content and interacting with dynamic websites. It
+    uses Selenium WebDriver to control Chrome, extract network information,
+    and process the rendered DOM.
+
+    Features:
+    - Full JavaScript execution and rendering
+    - Network traffic inspection via Chrome DevTools Protocol
+    - Automatic XML content extraction from browser rendering
+    - Proxy configuration support
+    - Configurable wait time for dynamic content
+
+    Attributes:
+        driver: Selenium WebDriver instance controlling Chrome
+        _wait_time: Time to wait for dynamic content to load (seconds)
+        _user_agent: Browser's actual user agent string
+
+    Example:
+        >>> from ethicrawl.context import Context
+        >>> from ethicrawl.client.http import ChromeTransport, HttpRequest
+        >>> from ethicrawl.core import Resource
+        >>> context = Context(Resource("https://example.com"))
+        >>> transport = ChromeTransport(context, headless=True)
+        >>> request = HttpRequest(Resource("https://spa-example.com"))
+        >>> response = transport.get(request)
+        >>> "dynamically loaded content" in response.text
+        True
+    """
 
     def __init__(self, context: Context, headless=True, wait_time=3):
-        """
-        Initialize Chrome transport.
+        """Initialize the Chrome transport with browser configuration.
+
+        Sets up a Chrome browser instance with appropriate options for
+        web scraping, including performance logging for network inspection.
 
         Args:
-            context (Context): The application context
-            headless (bool): Run browser in headless mode
-            wait_time (int): Time to wait for JavaScript to execute in seconds
+            context: The context to use for logging and resource resolution
+            headless: Whether to run Chrome in headless mode (no GUI)
+            wait_time: Time to wait for dynamic content after page load (seconds)
+
+        Note:
+            Chrome/Chromium must be installed on the system for this to work
         """
         self._context = context
         self._logger = self._context.logger("client.chrome")
@@ -70,11 +104,13 @@ class ChromeTransport(Transport):
 
     @property
     def user_agent(self) -> str:
-        """
-        Get the User-Agent string used by Chrome.
+        """Get the actual Chrome user agent string.
+
+        Returns the browser's native User-Agent rather than a configured one
+        to maintain browser fingerprint authenticity.
 
         Returns:
-            str: The User-Agent string
+            The actual Chrome user agent string
         """
         # If we already know the UA, return it
         if self._user_agent:
@@ -93,13 +129,14 @@ class ChromeTransport(Transport):
 
     @user_agent.setter
     def user_agent(self, agent: str):
-        """
-        Set the User-Agent string for Chrome.
-        This is a passive operation - it only records what was passed,
-        but doesn't actually modify the browser's User-Agent.
+        """Record requested user agent (not actually applied).
+
+        For Chrome, we don't modify the browser's actual User-Agent to
+        maintain browser authenticity and avoid detection. This method
+        logs that a change was requested but doesn't apply it.
 
         Args:
-            agent (str): The User-Agent string that was requested
+            agent: Requested user agent string
         """
         # For Chrome, we just record that this was requested but don't modify
         # the browser's actual User-Agent to maintain authenticity
@@ -109,18 +146,26 @@ class ChromeTransport(Transport):
         )
 
     def get(self, request: HttpRequest) -> HttpResponse:
-        """
-        Make a GET request using Chrome with full network information capture.
+        """Fetch a page using Chrome/Selenium with full JavaScript rendering.
+
+        Navigates to the URL, waits for content to load, and extracts the
+        rendered DOM along with network traffic information. Handles special
+        cases like XML content that may be rendered differently in a browser.
 
         Args:
-            url (str): The URL to request
-            timeout (int, optional): Request timeout in seconds
-            headers (dict, optional): Additional headers (limited support)
+            request: The HttpRequest object containing URL, headers, etc.
 
         Returns:
-            HttpResponse: Standardized response object
-        """
+            HttpResponse object with rendered content, actual status code,
+            and response headers extracted from network logs
 
+        Raises:
+            IOError: If the navigation or page processing fails
+
+        Note:
+            Headers provided in the request are logged but may not be fully
+            applied due to limitations in Selenium's header control
+        """
         url = "unknown"
 
         try:
@@ -206,15 +251,7 @@ class ChromeTransport(Transport):
             raise IOError(f"Error fetching {url} with Chrome: {e}")
 
     def _extract_xml_content(self, content_str: str) -> bytes:
-        """
-        Extract XML content when Chrome renders XML as HTML.
 
-        Args:
-            content_str: Page source as string
-
-        Returns:
-            bytes: Raw XML content as bytes
-        """
         try:
             # Check if this is a browser-rendered XML page
             if '<div id="webkit-xml-viewer-source-xml">' in content_str:
@@ -248,7 +285,7 @@ class ChromeTransport(Transport):
     def _extract_response_info_from_log_entry(
         self, entry: dict[str, Any]
     ) -> tuple[dict[str, Any], dict[str, Any]] | None:
-        """Process a single performance log entry and extract response data."""
+
         try:
             log_data = loads(entry["message"])["message"]
             if log_data["method"] != "Network.responseReceived":
@@ -267,7 +304,6 @@ class ChromeTransport(Transport):
     def _extract_response_info_from_response(
         self, response: dict[str, Any]
     ) -> tuple[int | None, dict[str, str], str | None]:
-        """Extract status, headers and MIME type from a response."""
         try:
             status_code = response.get("status")
             mime_type = response.get("mimeType")
@@ -320,7 +356,11 @@ class ChromeTransport(Transport):
             return default_status, default_headers, default_mime
 
     def __del__(self):
-        """Close browser when transport is garbage collected."""
+        """Close browser when transport is garbage collected.
+
+        Ensures proper cleanup of Chrome processes when the transport
+        is no longer needed to avoid leaving orphaned browser instances.
+        """
         try:
             if hasattr(self, "driver") and self.driver:
                 self.driver.quit()

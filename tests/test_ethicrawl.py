@@ -6,7 +6,7 @@ from unittest.mock import Mock
 
 from ethicrawl import Ethicrawl, Resource, Config, Url, HttpClient
 from ethicrawl.robots import Robot
-from ethicrawl.error import RobotDisallowedError
+from ethicrawl.error import RobotDisallowedError, DomainWhitelistError
 from ethicrawl.sitemaps import SitemapParser
 
 
@@ -167,15 +167,20 @@ class TestEthicrawl:
         assert "<html>" in result.text
 
         # Test request to non-whitelisted domain is rejected
-        with pytest.raises(ValueError, match="Domain not allowed"):
+        with pytest.raises(
+            DomainWhitelistError,
+            match="Cannot access URL 'https://example.com/index.html' - domain not whitelisted. Ethicrawl is bound to 'http://localhost:5000'",
+        ):
             crawler.get("https://example.com/index.html")
 
-        # Verify whitelist internals
+        # Verify whitelist internals - KEY CHANGE: Add protocol to whitelist key
         assert hasattr(crawler, "_whitelist")
-        assert f"127.0.0.1:{port}" in crawler._whitelist
-        assert hasattr(crawler._whitelist[f"127.0.0.1:{port}"], "context")
+        assert f"http://127.0.0.1:{port}" in crawler._whitelist  # Include protocol here
+        assert hasattr(crawler._whitelist[f"http://127.0.0.1:{port}"], "context")
         # Check robot property accessor works
-        robot = crawler._whitelist[f"127.0.0.1:{port}"].robot
+        robot = crawler._whitelist[
+            f"http://127.0.0.1:{port}"
+        ].robot  # Include protocol here
         assert robot is not None
 
         # Test that whitelist information is cleared on unbind

@@ -10,11 +10,34 @@ from sys import stdout
 from ethicrawl.config import Config
 from ethicrawl.core import Resource
 
-from .formatter import ColorFormatter
+from .color_formatter import ColorFormatter
 
 
 class Logger:
-    """Factory class for creating and retrieving loggers for Ethicrawl instances."""
+    """Factory class for creating and managing loggers throughout Ethicrawl.
+
+    This class provides a centralized way to create and configure loggers based on
+    the application's configuration settings. It supports:
+
+    - Resource-specific loggers with hierarchical naming
+    - Component-specific log levels
+    - Console output with optional color formatting
+    - File output with configurable paths
+    - Initialization management to prevent duplicate configuration
+
+    The Logger class is designed as a static utility class rather than being instantiated.
+    All methods are static and operate on the global logging configuration.
+
+    Example:
+        >>> from ethicrawl.logger import Logger
+        >>> from ethicrawl.core import Resource, Url
+        >>> # Setup logging (happens automatically when first logger is created)
+        >>> Logger.setup_logging()
+        >>> # Get a logger for a specific resource
+        >>> resource = Resource(Url("https://example.com"))
+        >>> logger = Logger.logger(resource, "http")
+        >>> logger.info("Making request to %s", resource.url)
+    """
 
     # Keep track of whether logging has been initialized
     _initialized = False
@@ -25,9 +48,22 @@ class Logger:
 
     @staticmethod
     def setup_logging() -> None:
-        """
-        Set up logging based on current configuration.
-        This should be called once at application startup.
+        """Configure the logging system based on current configuration.
+
+        This method reads the logger configuration from the global Config singleton
+        and sets up handlers, formatters, and log levels accordingly. It should be
+        called once at application startup, but is also called automatically by
+        logger() if needed.
+
+        The method configures:
+        - Root logger with WARNING level
+        - Main application logger with configured level
+        - Console output (if enabled)
+        - File output (if enabled)
+        - Component-specific log levels
+
+        This method is idempotent - calling it multiple times has no effect
+        after the initial setup.
         """
         if Logger._initialized:
             return
@@ -85,7 +121,17 @@ class Logger:
 
     @staticmethod
     def _clean_name(name: str) -> str:
-        """Clean a string to make it suitable as a logger name."""
+        """Clean a string to make it suitable as a logger name.
+
+        Removes or replaces characters that would be invalid in logger names,
+        following Python's logging module conventions.
+
+        Args:
+            name: The string to clean
+
+        Returns:
+            A cleaned string suitable for use as a logger name
+        """
         # Replace invalid characters with underscores
         name = sub(r"[^a-zA-Z0-9_\-\.]", "_", name)
         # Replace consecutive dots with a single dot
@@ -98,17 +144,24 @@ class Logger:
 
     @staticmethod
     def logger(resource: Resource, component: str | None = None) -> LoggingLogger:
-        """
-        Get a logger for the specified URL, optionally with a component name.
+        """Get a logger for the specified resource, optionally with a component name.
+
+        Creates or retrieves a logger with a hierarchical name based on the resource URL
+        and optional component. Automatically initializes logging if not already done.
 
         Args:
-            url: The URL to create a logger for
+            resource: The resource to create a logger for
             component: Optional component name (e.g., "robots", "sitemaps")
 
         Returns:
-            A logger instance
-        """
+            A logger instance configured according to application settings
 
+        Example:
+            >>> from ethicrawl.core import Resource
+            >>> resource = Resource("https://example.com")
+            >>> logger = Logger.logger(resource, "http")
+            >>> logger.debug("Processing %s", resource.url)
+        """
         if not Logger._initialized:
             Logger.setup_logging()
 
@@ -137,7 +190,16 @@ class Logger:
 
     @staticmethod
     def reset() -> None:
-        """Reset logging configuration - useful for testing."""
+        """Reset logging configuration to initial state.
+
+        Removes all handlers and resets the initialization flag,
+        allowing logging to be reconfigured. Primarily used for testing.
+
+        Example:
+            >>> # In a test setup
+            >>> def setUp(self):
+            >>>     Logger.reset()  # Ensure clean logging state
+        """
         Logger._initialized = False
         Logger._console_handler = None
         Logger._file_handler = None

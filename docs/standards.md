@@ -52,11 +52,29 @@ Use type hints for all public methods and functions:
 def process_url(url: str, timeout: Optional[int] = None) -> Dict[str, Any]:
     """Process the given URL and return results."""
 ```
-### Documentation
 
-* All modules, classes, methods, and functions should have docstrings
-* Use Google-style docstrings with type information
-* Include example usage for public APIs when appropriate
+
+##### Method/Function Docstrings
+```python
+def can_fetch(self, url: str, user_agent: str = None) -> bool:
+    """Check if a URL can be fetched according to robots.txt rules.
+
+    Args:
+        url: The URL to check against robots.txt rules
+        user_agent: Optional user agent string to use for checking.
+            Defaults to the client's configured user agent.
+
+    Returns:
+        True if the URL is allowed, False otherwise.
+
+    Raises:
+        RobotDisallowedError: If access is denied and raise_on_disallow=True
+        ValueError: If the URL is malformed
+    """
+```
+
+
+
 
 ## Error Handling Style Guide for Ethicrawl
 A consistent approach to error handling improves code readability and helps developers understand and handle errors effectively. This document outlines our standards for raising exceptions in the Ethicrawl codebase.
@@ -148,4 +166,3 @@ assert isinstance(item, Resource), f"Expected Resource, got {type(item).__name__
 ```
 
 By following these guidelines, we'll maintain a consistent approach to error handling across the Ethicrawl codebase.
-

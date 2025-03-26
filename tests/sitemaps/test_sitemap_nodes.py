@@ -3,10 +3,10 @@ import pytest
 from ethicrawl.context import Context
 from ethicrawl.core import Resource, ResourceList
 from ethicrawl.sitemaps import (
-    IndexNode,
+    IndexDocument,
     IndexEntry,
-    SitemapNode,
-    UrlsetNode,
+    SitemapDocument,
+    UrlsetDocument,
     UrlsetEntry,
 )
 from ethicrawl.error import SitemapError
@@ -74,7 +74,7 @@ invalid_sitemap_doc = """
 """
 
 
-class TestSitemapNode:
+class TestSitemapDocument:
     def get_context(self) -> Context:
         url = "https://www.example.com/sitemap.xml"
         return Context(Resource(url))
@@ -84,81 +84,81 @@ class TestSitemapNode:
             SitemapError,
             match="Invalid XML syntax: Required default namespace not found: http://www.sitemaps.org/schemas/sitemap/0.9",
         ):
-            node = SitemapNode(self.get_context(), html_doc)
+            document = SitemapDocument(self.get_context(), html_doc)
 
     def test_malformed_doc(self):
         with pytest.raises(
             SitemapError,
             match="Invalid XML syntax.*",
         ):
-            node = SitemapNode(self.get_context(), malformed_doc)
+            document = SitemapDocument(self.get_context(), malformed_doc)
 
 
-class TestIndexNode(TestSitemapNode):
+class TestIndexDocument(TestSitemapDocument):
     def test_index(self):
-        # Create index node
-        node = IndexNode(self.get_context(), index_doc)
+        # Create index document
+        document = IndexDocument(self.get_context(), index_doc)
 
-        assert node.type == "sitemapindex"
+        assert document.type == "sitemapindex"
 
-        assert len(node.entries) == 1
-        assert all(isinstance(entry, IndexEntry) for entry in node.entries)
+        assert len(document.entries) == 1
+        assert all(isinstance(entry, IndexEntry) for entry in document.entries)
 
         # Verify first entry
-        first = node.entries[0]
+        first = document.entries[0]
         assert first.url == "https://www.example.com/sport/sitemap.xml"
         assert first.lastmod == "2025-03-03"
 
     def test_bad_index(self):
         """Test handling of malformed urlset (correct namespace but wrong structure)."""
 
-        # Create node with badly structured but valid XML
+        # Create document with badly structured but valid XML
         with pytest.raises(ValueError, match="Expected a root sitemapindex got foo"):
-            node = IndexNode(self.get_context(), invalid_sitemap_doc)
+            document = IndexDocument(self.get_context(), invalid_sitemap_doc)
 
     def test_index_setter(self):
-        node = IndexNode(self.get_context())
+        document = IndexDocument(self.get_context())
         entry = IndexEntry("https://www.example.com/sport/sitemap.xml")
         with pytest.raises(TypeError, match="Expected a ResourceList, got int"):
-            node.entries = 1
+            document.entries = 1
         with pytest.raises(TypeError, match="Expected a ResourceList, got list"):
-            node.entries = [entry, 1]
-        node.entries = ResourceList([entry])
-        assert node.entries[-1].url == "https://www.example.com/sport/sitemap.xml"
+            document.entries = [entry, 1]
+        document.entries = ResourceList([entry])
+        assert document.entries[-1].url == "https://www.example.com/sport/sitemap.xml"
 
 
-class TestUrlSetNode(TestSitemapNode):
+class TestUrlSetDocument(TestSitemapDocument):
     def test_urlset(self):
-        # Create urlset node
-        node = UrlsetNode(self.get_context(), urlset_doc)
+        # Create urlset document
+        document = UrlsetDocument(self.get_context(), urlset_doc)
 
-        # Verify node type
-        assert node.type == "urlset"
+        # Verify document type
+        assert document.type == "urlset"
 
         # Verify entries are parsed
-        assert len(node.entries) == 2
-        assert all(isinstance(entry, UrlsetEntry) for entry in node.entries)
+        assert len(document.entries) == 2
+        assert all(isinstance(entry, UrlsetEntry) for entry in document.entries)
 
         # Verify first entry
-        first = node.entries[0]
+        first = document.entries[0]
         assert str(first.url) == "https://www.example.com/sport"
         assert first.changefreq == "hourly"
         assert first.priority == 0.8
         assert first.lastmod is None
 
         # Verify second entry
-        second = node.entries[1]
+        second = document.entries[1]
         assert str(second.url) == "https://www.example.com/sport/football"
         assert second.changefreq == "hourly"
         assert second.priority == 0.8
         assert second.lastmod == "2025-03-03"
 
         # Test string representation
-        assert "UrlsetNode" in str(node)
+        assert "UrlsetDocument" in str(document)
 
     def test_bad_urlset(self):
         """Test handling of malformed urlset (correct namespace but wrong structure)."""
 
-        # Create node with badly structured but valid XML
+        # Create document with badly structured but valid XML
         with pytest.raises(ValueError, match="Expected a root urlset got foo"):
-            node = UrlsetNode(self.get_context(), invalid_sitemap_doc)
+            document = UrlsetDocument(self.get_context(), invalid_sitemap_doc)
