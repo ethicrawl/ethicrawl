@@ -1,4 +1,4 @@
-.PHONY: test coverage information lint security test docker-build docker-build-all docker-audit docker-bandit docker-semgrep docker-test docker-black docker-pyright docker-mypy
+.PHONY: docs clean test coverage information lint security test docker-build docker-build-all docker-audit docker-bandit docker-semgrep docker-test docker-black docker-pyright docker-mypy docker-docs-build docker-docs-serve
 
 docker-test: docker-build-all
 	@echo "\n🧪 Running tests..."
@@ -15,6 +15,7 @@ docker-build-all: docker-build-base
 	@docker build -q -t ethicrawl:bandit -f docker/Dockerfile.bandit . > /dev/null
 	@docker build -q -t ethicrawl:black -f docker/Dockerfile.black . > /dev/null
 	@docker build -q -t ethicrawl:coverage -f docker/Dockerfile.coverage . > /dev/null
+	@docker build -q -t ethicrawl:mkdocs -f docker/Dockerfile.mkdocs . > /dev/null
 	@docker build -q -t ethicrawl:mypy -f docker/Dockerfile.mypy . > /dev/null
 	@docker build -q -t ethicrawl:pyright -f docker/Dockerfile.pyright . > /dev/null
 	@docker build -q -t ethicrawl:semgrep -f docker/Dockerfile.semgrep . > /dev/null
@@ -50,6 +51,27 @@ docker-mypy: docker-build-all
 	@echo "============================="
 	@docker run --rm -v $(PWD):/app ethicrawl:mypy
 
+docker-docs-build: docker-build-all
+	@echo "\n📚 Building documentation..."
+	@echo "=========================="
+	@mkdir -p site
+	@docker run --rm \
+		-v $(PWD)/docs:/app/docs \
+		-v $(PWD)/ethicrawl:/app/ethicrawl \
+		-v $(PWD)/site:/app/site \
+		-v $(PWD)/mkdocs.yml:/app/mkdocs.yml \
+		-v $(PWD)/README.md:/app/README.md \
+		ethicrawl:mkdocs build
+
+docker-docs-serve: docker-build-all
+	@echo "\n📚 Serving documentation at http://localhost:8000"
+	@echo "==========================================="
+	@docker run --rm -p 8000:8000 \
+		-v $(PWD)/docs:/app/docs \
+		-v $(PWD)/ethicrawl:/app/ethicrawl \
+		-v $(PWD)/mkdocs.yml:/app/mkdocs.yml \
+		-v $(PWD)/README.md:/app/README.md \
+		ethicrawl:mkdocs
 coverage: docker-build-all
 	@echo "\n📊 Running tests with coverage..."
 	@echo "==============================="
@@ -132,163 +154,39 @@ security:
 
 test: coverage lint security
 
-# make test
-# Building base image...
-# Building tool images...
-# ✅ All images built successfully
+clean:
+	@echo "🧹 Cleaning up generated files..."
+	@echo "==============================="
+	@# Remove coverage reports
+	@rm -rf reports/htmlcov
+	@rm -f reports/coverage.txt
+	@rm -f .coverage
+	@rm -f .coverage.*
 
-# 📊 Running tests with coverage...
-# ===============================
-# ============================= test session starts ==============================
-# platform linux -- Python 3.10.16, pytest-8.3.5, pluggy-1.5.0
-# rootdir: /app
-# configfile: pyproject.toml
-# plugins: cov-6.0.0
-# collected 166 items
+	@# Remove Python bytecode files
+	@find . -type d -name __pycache__ -exec rm -rf {} +
+	@find . -type f -name "*.pyc" -delete
+	@find . -type f -name "*.pyo" -delete
 
-# tests/code_cover/client/http/test_chrome_transport.py ............       [  7%]
-# tests/code_cover/client/http/test_http_client.py .....                   [ 10%]
-# tests/code_cover/client/http/test_http_request.py ...                    [ 12%]
-# tests/code_cover/client/http/test_http_response.py ...                   [ 13%]
-# tests/code_cover/client/http/test_requests_transport.py ...              [ 15%]
-# tests/code_cover/client/test_client.py .                                 [ 16%]
-# tests/code_cover/client/test_transport.py .                              [ 16%]
-# tests/code_cover/config/test_base_config.py .                            [ 17%]
-# tests/code_cover/config/test_config.py ......                            [ 21%]
-# tests/code_cover/config/test_http_config.py .......                      [ 25%]
-# tests/code_cover/config/test_http_proxy_config.py ....                   [ 27%]
-# tests/code_cover/config/test_logger_config.py .....                      [ 30%]
-# tests/code_cover/config/test_sitemap_config.py .                         [ 31%]
-# tests/code_cover/context/test_context.py ........                        [ 36%]
-# tests/code_cover/core/test_headers.py ......                             [ 39%]
-# tests/code_cover/core/test_resource.py ......                            [ 43%]
-# tests/code_cover/core/test_resource_list.py .........                    [ 48%]
-# tests/code_cover/core/test_url.py ..................                     [ 59%]
-# tests/code_cover/logger/test_formatter.py ....                           [ 62%]
-# tests/code_cover/logger/test_logger.py ..                                [ 63%]
-# tests/code_cover/robots/test_robot.py .............                      [ 71%]
-# tests/code_cover/robots/test_robot_factory.py ..                         [ 72%]
-# tests/code_cover/sitemaps/test_index_entry.py .                          [ 72%]
-# tests/code_cover/sitemaps/test_sitemap_entry.py .                        [ 73%]
-# tests/code_cover/sitemaps/test_sitemap_nodes.py ...............          [ 82%]
-# tests/code_cover/sitemaps/test_sitemap_parser.py ...........             [ 89%]
-# tests/code_cover/sitemaps/test_urlset_entry.py .....                     [ 92%]
-# tests/code_cover/test_ethicrawl.py .............                         [100%]
+	@# Remove distribution artifacts
+	@rm -rf dist/
+	@rm -rf build/
+	@rm -rf *.egg-info/
+	@rm -rf *.egg/
 
-# ============================= 166 passed in 15.09s =============================
-# Wrote HTML report to reports/htmlcov/index.html
+	@# Remove generated documentation
+	@rm -rf site/
 
-# ✅ Coverage report generated in reports/htmlcov/ directory
-# 🧹 RUNNING LINTING CHECKS 🧹
-# ===========================
-# Building base image...
-# Building tool images...
-# ✅ All images built successfully
+	@# Remove test and type checking caches
+	@rm -rf .pytest_cache/
+	@rm -rf .mypy_cache/
+	@rm -rf .tox/
 
-# 🔠 Checking code formatting with black...
-# ========================================
-# All done! ✨ 🍰 ✨
-# 50 files would be left unchanged.
-# Building base image...
-# Building tool images...
-# ✅ All images built successfully
+	@# Remove temporary files
+	@find . -type f -name ".DS_Store" -delete
+	@find . -type f -name "*.swp" -delete
+	@find . -type f -name "*.swo" -delete
 
-# 📝 Checking types with pyright...
-# ===============================
-# 0 errors, 0 warnings, 0 informations
-# Building base image...
-# Building tool images...
-# ✅ All images built successfully
+	@echo "\n✅ Clean up complete"
 
-# 📝 Checking types with mypy...
-# =============================
-# Success: no issues found in 50 source files
-
-# ✅ All linting checks passed!
-# 🛡️  RUNNING SECURITY CHECKS 🛡️
-# =============================
-# Building base image...
-# Building tool images...
-# ✅ All images built successfully
-
-
-# 📦 Running dependency audit with pip-audit...
-# ===============================================
-# No known vulnerabilities found
-# Building base image...
-# Building tool images...
-# ✅ All images built successfully
-
-
-# 🔍 Running code security scan with bandit...
-# =============================================
-# [main]  INFO    profile include tests: None
-# [main]  INFO    profile exclude tests: None
-# [main]  INFO    cli include tests: None
-# [main]  INFO    cli exclude tests: None
-# [main]  INFO    running on Python 3.10.16
-# Run started:2025-03-27 10:24:18.526427
-
-# Test results:
-#         No issues identified.
-
-# Code scanned:
-#         Total lines of code: 3931
-#         Total lines skipped (#nosec): 1
-#         Total potential issues skipped due to specifically being disabled (e.g., #nosec BXXX): 0
-
-# Run metrics:
-#         Total issues (by severity):
-#                 Undefined: 0
-#                 Low: 0
-#                 Medium: 0
-#                 High: 0
-#         Total issues (by confidence):
-#                 Undefined: 0
-#                 Low: 0
-#                 Medium: 0
-#                 High: 0
-# Files skipped (0):
-# Building base image...
-# Building tool images...
-# ✅ All images built successfully
-
-
-# 🔎 Running pattern matching with semgrep...
-# ============================================
-# METRICS: Using configs from the Registry (like --config=p/ci) reports pseudonymous rule metrics to semgrep.dev.
-# To disable Registry rule metrics, use "--metrics=off".
-# Using configs only from local files (like --config=xyz.yml) does not enable metrics.
-
-# More information: https://semgrep.dev/docs/metrics
-
-
-
-# ┌─────────────┐
-# │ Scan Status │
-# └─────────────┘
-#   Scanning 162 files tracked by git with 1060 Code rules:
-
-#   Language      Rules   Files          Origin      Rules
-#  ─────────────────────────────        ───────────────────
-#   <multilang>      48     162          Community    1060
-#   python          242      50
-
-
-
-# ┌──────────────┐
-# │ Scan Summary │
-# └──────────────┘
-# ✅ Scan completed successfully.
-#  • Findings: 0 (0 blocking)
-#  • Rules run: 290
-#  • Targets scanned: 162
-#  • Parsed lines: ~100.0%
-#  • No ignore information available
-# Ran 290 rules on 162 files: 0 findings.
-# (need more rules? `semgrep login` for additional free Semgrep Registry rules)
-
-# If Semgrep missed a finding, please send us feedback to let us know!
-# See https://semgrep.dev/docs/reporting-false-negatives/
-
-# ✅ All security checks passed!
+docs: docker-docs-build

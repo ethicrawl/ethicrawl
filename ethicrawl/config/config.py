@@ -77,7 +77,7 @@ class Config(metaclass=SingletonMeta):
     # Thread safety helpers
     _lock = threading.RLock()
 
-    def get_snapshot(self):
+    def get_snapshot(self) -> "Config":
         """Create a thread-safe deep copy of the current configuration.
 
         Returns:
@@ -155,7 +155,7 @@ class Config(metaclass=SingletonMeta):
             if cls in cls.__class__._instances:
                 del cls.__class__._instances[cls]
 
-    def to_dict(self):
+    def to_dict(self) -> dict:
         """Convert the configuration to a dictionary.
 
         Returns:
@@ -174,7 +174,7 @@ class Config(metaclass=SingletonMeta):
 
         return result
 
-    def __str__(self):
+    def __str__(self) -> str:
         """Format the configuration as a JSON string.
 
         Returns:

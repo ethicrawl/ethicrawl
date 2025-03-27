@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from typing import Any
 
 from .url import Url
 
@@ -44,7 +45,7 @@ class Resource:
                 f"Error creating resource, got {type(self.url).__name__} expected str or Url"
             )
 
-    def __hash__(self):
+    def __hash__(self) -> int:
         """Generate a hash based on the string representation of the URL.
 
         Returns:
@@ -52,7 +53,7 @@ class Resource:
         """
         return hash(str(self.url))
 
-    def __eq__(self, other):
+    def __eq__(self, other: Any) -> bool:
         """Compare resources for equality based on their URLs.
 
         Two resources are considered equal if they have the same URL.

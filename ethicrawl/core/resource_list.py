@@ -13,8 +13,8 @@ class ResourceList(Generic[T]):
     collections of Resources with additional filtering methods and type safety.
     The class is generic and can contain any subclass of Resource.
 
-    Attributes:
-        No public attributes as internal storage is private
+    Note:
+        This class has no public attributes as all storage is private.
 
     Examples:
         >>> from ethicrawl.core import Resource, ResourceList

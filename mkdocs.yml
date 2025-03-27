@@ -1,13 +1,17 @@
 site_name: Ethicrawl
+site_url: https://ethicrawl.github.io/ethicrawl/
+repo_url: https://github.com/ethicrawl/ethicrawl
 nav:
   - Home: index.md
   - Code Standards: standards.md
   - API Reference:
-      - Overview: api/ethicrawl.md # Add this line to include the file in navigation
+      - Overview: api/ethicrawl.md
 
-theme: readthedocs
+theme: material
 markdown_extensions:
   - pymdownx.snippets
+  - pymdownx.highlight
+  - pymdownx.superfences
 plugins:
   - search
   - mkdocstrings:
@@ -16,3 +20,5 @@ plugins:
         python:
           options:
             show_source: false
+          selection:
+            docstring_style: google
