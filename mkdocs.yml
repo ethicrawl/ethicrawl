@@ -5,7 +5,17 @@ nav:
   - Home: index.md
   - Code Standards: standards.md
   - API Reference:
-      - Overview: api/ethicrawl.md
+      - Overview: api/overview.md
+      - Ethicrawl: api/ethicrawl.md
+      - Core: api/core.md
+      - Context: api/context.md
+      - Error Handling: api/error.md
+      - Configuration: api/config.md
+      - Logger: api/logger.md
+      - Client: api/client.md
+      - HttpClient: api/client.http.md
+      - Robots: api/robots.md
+      - Sitemaps: api/sitemaps.md
 
 theme: material
 markdown_extensions:

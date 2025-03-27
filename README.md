@@ -60,7 +60,7 @@ ethicrawl.bind("https://example.com")
 
 # Get a page - robots.txt rules automatically respected
 try:
-    response = ethicrawl.get("/page.html")
+    response = ethicrawl.get("https://example.com/page.html")
 except RobotDisallowedError:
     print("The site prohibits fetching the page")
 

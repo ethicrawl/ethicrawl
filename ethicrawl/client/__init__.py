@@ -1,4 +1,4 @@
-"""Client interfaces for making ethical requests to resources."""
+"""Client interfaces for making requests to resources."""
 
 from .client import Client, NoneClient
 from .request import Request
