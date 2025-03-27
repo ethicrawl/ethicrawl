@@ -1,0 +1,3 @@
+# Core Module
+
+::: ethicrawl.core

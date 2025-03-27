@@ -1,0 +1,3 @@
+# Config Module
+
+::: ethicrawl.config

@@ -1,0 +1,3 @@
+# Error Classes
+
+::: ethicrawl.error

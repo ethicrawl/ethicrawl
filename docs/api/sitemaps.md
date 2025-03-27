@@ -1,0 +1,3 @@
+# Sitemaps Module
+
+::: ethicrawl.sitemaps

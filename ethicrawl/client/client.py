@@ -1,7 +1,6 @@
 from abc import ABC, abstractmethod
-from typing import Optional
 
-from ethicrawl.core import Resource, Headers
+from ethicrawl.core import Resource
 
 from .response import Response
 from .request import Request
