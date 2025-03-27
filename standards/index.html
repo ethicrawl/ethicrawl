@@ -1,0 +1,2023 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://ethicrawl.github.io/ethicrawl/standards/">
+      
+      
+        <link rel="prev" href="..">
+      
+      
+        <link rel="next" href="../api/ethicrawl/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.9">
+    
+    
+      
+        <title>Code Standards - Ethicrawl</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.4af4bdda.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#coding-standards" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Ethicrawl" class="md-header__button md-logo" aria-label="Ethicrawl" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Ethicrawl
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Code Standards
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/ethicrawl/ethicrawl" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Ethicrawl" class="md-nav__button md-logo" aria-label="Ethicrawl" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Ethicrawl
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/ethicrawl/ethicrawl" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Code Standards
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Code Standards
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#python-code-standards" class="md-nav__link">
+    <span class="md-ellipsis">
+      Python Code Standards
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Python Code Standards">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#general-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      General Requirements
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#code-formatting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Code Formatting
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#import-organization" class="md-nav__link">
+    <span class="md-ellipsis">
+      Import Organization
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#type-hints" class="md-nav__link">
+    <span class="md-ellipsis">
+      Type Hints
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Type Hints">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#methodfunction-docstrings" class="md-nav__link">
+    <span class="md-ellipsis">
+      Method/Function Docstrings
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#error-handling-style-guide-for-ethicrawl" class="md-nav__link">
+    <span class="md-ellipsis">
+      Error Handling Style Guide for Ethicrawl
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Error Handling Style Guide for Ethicrawl">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#general-principles" class="md-nav__link">
+    <span class="md-ellipsis">
+      General Principles
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#standard-exception-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      Standard Exception Types
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Standard Exception Types">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#typeerror" class="md-nav__link">
+    <span class="md-ellipsis">
+      TypeError
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="TypeError">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#format" class="md-nav__link">
+    <span class="md-ellipsis">
+      Format:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      Examples:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#valueerror" class="md-nav__link">
+    <span class="md-ellipsis">
+      ValueError
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ValueError">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#format_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Format:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#examples_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Examples:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#domain-specific-exceptions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Domain-Specific Exceptions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Domain-Specific Exceptions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#error-message-guidelines" class="md-nav__link">
+    <span class="md-ellipsis">
+      Error Message Guidelines
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#documenting-exceptions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Documenting Exceptions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#error-assertions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Error Assertions
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Documentation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Documentation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#documentation-focus-areas" class="md-nav__link">
+    <span class="md-ellipsis">
+      Documentation Focus Areas
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#docstring-format" class="md-nav__link">
+    <span class="md-ellipsis">
+      Docstring Format
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Docstring Format">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#module-docstrings" class="md-nav__link">
+    <span class="md-ellipsis">
+      Module Docstrings
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#class-docstrings" class="md-nav__link">
+    <span class="md-ellipsis">
+      Class Docstrings
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#methodfunction-docstrings_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Method/Function Docstrings
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-docstrings" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property Docstrings
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#constructor-docstrings" class="md-nav__link">
+    <span class="md-ellipsis">
+      Constructor Docstrings
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#coverage-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      Coverage Requirements
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#special-cases" class="md-nav__link">
+    <span class="md-ellipsis">
+      Special Cases
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Special Cases">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#private-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      Private Methods
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#one-line-docstrings" class="md-nav__link">
+    <span class="md-ellipsis">
+      One-line Docstrings
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verification-approach" class="md-nav__link">
+    <span class="md-ellipsis">
+      Verification Approach
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#documentation-language-guidelines" class="md-nav__link">
+    <span class="md-ellipsis">
+      Documentation Language Guidelines
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#examples_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Examples:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#logging-standards-for-ethicrawl" class="md-nav__link">
+    <span class="md-ellipsis">
+      Logging Standards for Ethicrawl
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Logging Standards for Ethicrawl">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#log-levels-and-their-uses" class="md-nav__link">
+    <span class="md-ellipsis">
+      Log Levels and Their Uses
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Log Levels and Their Uses">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#critical-loggingcritical-50" class="md-nav__link">
+    <span class="md-ellipsis">
+      CRITICAL (logging.CRITICAL, 50)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="CRITICAL (logging.CRITICAL, 50)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#when-to-use" class="md-nav__link">
+    <span class="md-ellipsis">
+      When to use:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#examples_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Examples:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#error-loggingerror-40" class="md-nav__link">
+    <span class="md-ellipsis">
+      ERROR (logging.ERROR, 40)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ERROR (logging.ERROR, 40)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#when-to-use_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      When to use:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#examples_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Examples:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#warning-loggingwarning-30" class="md-nav__link">
+    <span class="md-ellipsis">
+      WARNING (logging.WARNING, 30)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when-to-use_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      When to use:
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="When to use:">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#examples_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Examples:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#info-logginginfo-20" class="md-nav__link">
+    <span class="md-ellipsis">
+      INFO (logging.INFO, 20)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="INFO (logging.INFO, 20)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#when-to-use_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      When to use:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#examples_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Examples:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#debug-loggingdebug-10" class="md-nav__link">
+    <span class="md-ellipsis">
+      DEBUG (logging.DEBUG, 10)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="DEBUG (logging.DEBUG, 10)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#when-to-use_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      When to use:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#examples_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Examples:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#logging-best-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      Logging Best Practices
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#component-specific-guidelines" class="md-nav__link">
+    <span class="md-ellipsis">
+      Component-Specific Guidelines
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    API Reference
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            API Reference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/ethicrawl/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#python-code-standards" class="md-nav__link">
+    <span class="md-ellipsis">
+      Python Code Standards
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Python Code Standards">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#general-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      General Requirements
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#code-formatting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Code Formatting
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#import-organization" class="md-nav__link">
+    <span class="md-ellipsis">
+      Import Organization
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#type-hints" class="md-nav__link">
+    <span class="md-ellipsis">
+      Type Hints
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Type Hints">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#methodfunction-docstrings" class="md-nav__link">
+    <span class="md-ellipsis">
+      Method/Function Docstrings
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#error-handling-style-guide-for-ethicrawl" class="md-nav__link">
+    <span class="md-ellipsis">
+      Error Handling Style Guide for Ethicrawl
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Error Handling Style Guide for Ethicrawl">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#general-principles" class="md-nav__link">
+    <span class="md-ellipsis">
+      General Principles
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#standard-exception-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      Standard Exception Types
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Standard Exception Types">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#typeerror" class="md-nav__link">
+    <span class="md-ellipsis">
+      TypeError
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="TypeError">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#format" class="md-nav__link">
+    <span class="md-ellipsis">
+      Format:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      Examples:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#valueerror" class="md-nav__link">
+    <span class="md-ellipsis">
+      ValueError
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ValueError">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#format_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Format:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#examples_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Examples:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#domain-specific-exceptions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Domain-Specific Exceptions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Domain-Specific Exceptions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#error-message-guidelines" class="md-nav__link">
+    <span class="md-ellipsis">
+      Error Message Guidelines
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#documenting-exceptions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Documenting Exceptions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#error-assertions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Error Assertions
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Documentation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Documentation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#documentation-focus-areas" class="md-nav__link">
+    <span class="md-ellipsis">
+      Documentation Focus Areas
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#docstring-format" class="md-nav__link">
+    <span class="md-ellipsis">
+      Docstring Format
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Docstring Format">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#module-docstrings" class="md-nav__link">
+    <span class="md-ellipsis">
+      Module Docstrings
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#class-docstrings" class="md-nav__link">
+    <span class="md-ellipsis">
+      Class Docstrings
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#methodfunction-docstrings_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Method/Function Docstrings
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-docstrings" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property Docstrings
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#constructor-docstrings" class="md-nav__link">
+    <span class="md-ellipsis">
+      Constructor Docstrings
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#coverage-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      Coverage Requirements
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#special-cases" class="md-nav__link">
+    <span class="md-ellipsis">
+      Special Cases
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Special Cases">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#private-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      Private Methods
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#one-line-docstrings" class="md-nav__link">
+    <span class="md-ellipsis">
+      One-line Docstrings
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verification-approach" class="md-nav__link">
+    <span class="md-ellipsis">
+      Verification Approach
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#documentation-language-guidelines" class="md-nav__link">
+    <span class="md-ellipsis">
+      Documentation Language Guidelines
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#examples_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Examples:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#logging-standards-for-ethicrawl" class="md-nav__link">
+    <span class="md-ellipsis">
+      Logging Standards for Ethicrawl
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Logging Standards for Ethicrawl">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#log-levels-and-their-uses" class="md-nav__link">
+    <span class="md-ellipsis">
+      Log Levels and Their Uses
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Log Levels and Their Uses">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#critical-loggingcritical-50" class="md-nav__link">
+    <span class="md-ellipsis">
+      CRITICAL (logging.CRITICAL, 50)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="CRITICAL (logging.CRITICAL, 50)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#when-to-use" class="md-nav__link">
+    <span class="md-ellipsis">
+      When to use:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#examples_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Examples:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#error-loggingerror-40" class="md-nav__link">
+    <span class="md-ellipsis">
+      ERROR (logging.ERROR, 40)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ERROR (logging.ERROR, 40)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#when-to-use_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      When to use:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#examples_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Examples:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#warning-loggingwarning-30" class="md-nav__link">
+    <span class="md-ellipsis">
+      WARNING (logging.WARNING, 30)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when-to-use_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      When to use:
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="When to use:">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#examples_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Examples:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#info-logginginfo-20" class="md-nav__link">
+    <span class="md-ellipsis">
+      INFO (logging.INFO, 20)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="INFO (logging.INFO, 20)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#when-to-use_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      When to use:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#examples_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Examples:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#debug-loggingdebug-10" class="md-nav__link">
+    <span class="md-ellipsis">
+      DEBUG (logging.DEBUG, 10)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="DEBUG (logging.DEBUG, 10)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#when-to-use_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      When to use:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#examples_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Examples:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#logging-best-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      Logging Best Practices
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#component-specific-guidelines" class="md-nav__link">
+    <span class="md-ellipsis">
+      Component-Specific Guidelines
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="coding-standards">Coding Standards</h1>
+<h2 id="python-code-standards">Python Code Standards</h2>
+<h3 id="general-requirements">General Requirements</h3>
+<ul>
+<li><strong>Python Version</strong>: We target Python 3.10 and above</li>
+<li>Code may work on earlier versions but is not tested or supported</li>
+<li><strong>Line Endings</strong>: Use UNIX-style line endings (LF, <code>\n</code>)</li>
+<li><strong>Indentation</strong>: Use 4 spaces for indentation (no tabs)</li>
+<li><strong>Maximum Line Length</strong>: 88 characters (Black default)</li>
+</ul>
+<h3 id="code-formatting">Code Formatting</h3>
+<p>We use <a href="https://github.com/psf/black">Black</a> as our code formatter with default settings:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Install Black</span>
+pip<span class="w"> </span>install<span class="w"> </span>black
+
+<span class="c1"># Format a single file</span>
+black<span class="w"> </span>path/to/file.py
+
+<span class="c1"># Format all Python files in a directory</span>
+black<span class="w"> </span>directory_name/
+</code></pre></div>
+<h3 id="import-organization">Import Organization</h3>
+<p>Imports should be grouped in the following order, with a blank line between each group:</p>
+<ul>
+<li>Standard library imports</li>
+<li>Third-party imports</li>
+<li>Local application imports</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="c1"># Standard library</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+
+<span class="c1"># Third-party</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">bs4</span><span class="w"> </span><span class="kn">import</span> <span class="n">BeautifulSoup</span>
+
+<span class="c1"># Local</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ethicrawl.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">Resource</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ethicrawl.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">Config</span>
+</code></pre></div>
+<h3 id="type-hints">Type Hints</h3>
+<p>Use type hints for all public methods and functions:</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">process_url</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">timeout</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Process the given URL and return results.&quot;&quot;&quot;</span>
+</code></pre></div>
+<h5 id="methodfunction-docstrings">Method/Function Docstrings</h5>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">can_fetch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">user_agent</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if a URL can be fetched according to robots.txt rules.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        url: The URL to check against robots.txt rules</span>
+<span class="sd">        user_agent: Optional user agent string to use for checking.</span>
+<span class="sd">            Defaults to the client&#39;s configured user agent.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        True if the URL is allowed, False otherwise.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        RobotDisallowedError: If access is denied and raise_on_disallow=True</span>
+<span class="sd">        ValueError: If the URL is malformed</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+</code></pre></div>
+<h2 id="error-handling-style-guide-for-ethicrawl">Error Handling Style Guide for Ethicrawl</h2>
+<p>A consistent approach to error handling improves code readability and helps developers understand and handle errors effectively. This document outlines our standards for raising exceptions in the Ethicrawl codebase.</p>
+<h3 id="general-principles">General Principles</h3>
+<ol>
+<li>Be specific - Use the most specific exception type appropriate for the error</li>
+<li>Be descriptive - Error messages should help users identify and fix problems</li>
+<li>Be consistent - Follow the same patterns throughout the codebase</li>
+</ol>
+<h3 id="standard-exception-types">Standard Exception Types</h3>
+<h4 id="typeerror">TypeError</h4>
+<p>Use for incorrect argument types or invalid operations on types.</p>
+<h5 id="format">Format:</h5>
+<div class="highlight"><pre><span></span><code><span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expected </span><span class="si">{</span><span class="n">expected_type</span><span class="si">}</span><span class="s2">, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">actual</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+<h5 id="examples">Examples:</h5>
+<div class="highlight"><pre><span></span><code><span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expected string, Url, or Resource, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;headers must be a Headers instance or dictionary&quot;</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="valueerror">ValueError</h4>
+<p>Use for arguments that have the right type but an invalid value.</p>
+<h5 id="format_1">Format:</h5>
+<div class="highlight"><pre><span></span><code><span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">parameter_name</span><span class="si">}</span><span class="s2"> must be </span><span class="si">{</span><span class="n">constraint</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+<h5 id="examples_1">Examples:</h5>
+<div class="highlight"><pre><span></span><code><span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;jitter must be between 0.0 and 1.0&quot;</span><span class="p">)</span>
+<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;max_retries cannot be negative&quot;</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="domain-specific-exceptions">Domain-Specific Exceptions</h3>
+<p>Create custom exceptions for domain-specific errors. All custom exceptions should:</p>
+<ol>
+<li>Inherit from appropriate base exceptions</li>
+<li>Include "Error" in the class name</li>
+<li>Be placed in a relevant _error.py module</li>
+</ol>
+<h5 id="example">Example:</h5>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">RobotDisallowedError</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Raised when access to a URL is disallowed by robots.txt rules.&quot;&quot;&quot;</span>
+</code></pre></div>
+<h3 id="error-message-guidelines">Error Message Guidelines</h3>
+<ol>
+<li>Be specific about what went wrong</li>
+<li>Provide the invalid value when helpful</li>
+<li>Suggest a fix when possible</li>
+<li>Use consistent terminology across similar errors</li>
+</ol>
+<h3 id="documenting-exceptions">Documenting Exceptions</h3>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">function_name</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Function description.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        param_name: Parameter description.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Return description.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ExceptionType: Condition when raised.</span>
+<span class="sd">        AnotherException: Another condition.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+</code></pre></div>
+<p>Always document exceptions in docstrings:</p>
+<h3 id="error-assertions">Error Assertions</h3>
+<p>For internal logic verification, use assertions with descriptive messages:</p>
+<div class="highlight"><pre><span></span><code><span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">Resource</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Expected Resource, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">item</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span>
+</code></pre></div>
+<h2 id="documentation">Documentation</h2>
+<p>We follow <a href="https://google.github.io/styleguide/pyguide.html#38-comments-and-docstrings">Google-style docstrings</a> for all code documentation.</p>
+<h3 id="documentation-focus-areas">Documentation Focus Areas</h3>
+<ul>
+<li>All public APIs (methods, classes, and modules) must have comprehensive docstrings</li>
+<li>Private methods with complex logic should have docstrings</li>
+<li>Simple private methods or properties may omit docstrings</li>
+<li>Focus on documentation that enhances IDE tooltips and developer experience</li>
+</ul>
+<h3 id="docstring-format">Docstring Format</h3>
+<h4 id="module-docstrings">Module Docstrings</h4>
+<div class="highlight"><pre><span></span><code><span class="sd">&quot;&quot;&quot;Module for handling robots.txt parsing and permission checking.</span>
+
+<span class="sd">This module provides functionality for fetching, parsing and checking</span>
+<span class="sd">permissions against robots.txt files according to the Robots Exclusion</span>
+<span class="sd">Protocol.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+</code></pre></div>
+<h4 id="class-docstrings">Class Docstrings</h4>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Robot</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Representation of a robots.txt file with permission checking.</span>
+
+<span class="sd">    This class handles fetching and parsing robots.txt files and provides</span>
+<span class="sd">    methods to check if URLs can be accessed according to the rules.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        url: The URL of the robots.txt file</span>
+<span class="sd">        sitemaps: List of sitemap URLs found in robots.txt</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+</code></pre></div>
+<h4 id="methodfunction-docstrings_1">Method/Function Docstrings</h4>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">can_fetch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">user_agent</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="s2">&quot;&quot;&quot;Check if a URL can be fetched according to robots.txt rules.</span>
+
+<span class="s2">    Args:</span>
+<span class="s2">        url: The URL to check against robots.txt rules</span>
+<span class="s2">        user_agent: Optional user agent string to use for checking.</span>
+<span class="s2">            Defaults to the client&#39;s configured user agent.</span>
+
+<span class="s2">    Returns:</span>
+<span class="s2">        True if the URL is allowed, False otherwise.</span>
+
+<span class="s2">    Raises:</span>
+<span class="s2">        RobotDisallowedError: If access is denied and raise_on_disallow=True</span>
+<span class="s2">        ValueError: If the URL is malformed</span>
+
+<span class="s2">    Example:</span>
+<span class="s2">        &gt;&gt;&gt; robot = Robot(&quot;https://example.com/robots.txt&quot;)</span>
+<span class="s2">        &gt;&gt;&gt; robot.can_fetch(&quot;https://example.com/allowed&quot;)</span>
+<span class="s2">        True</span>
+<span class="s2">        &gt;&gt;&gt; robot.can_fetch(&quot;https://example.com/disallowed&quot;)</span>
+<span class="s2">        False</span>
+</code></pre></div>
+<h4 id="property-docstrings">Property Docstrings</h4>
+<div class="highlight"><pre><span></span><code><span class="nd">@property</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">sitemaps</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;List of sitemap URLs found in robots.txt.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        List of sitemap URLs as strings.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+</code></pre></div>
+<h4 id="constructor-docstrings">Constructor Docstrings</h4>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">Context</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialize a Robot instance.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        url: URL to the robots.txt file</span>
+<span class="sd">        context: Optional context for the request.</span>
+<span class="sd">            If not provided, a default context will be created.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+</code></pre></div>
+<h3 id="coverage-requirements">Coverage Requirements</h3>
+<ul>
+<li>All public methods, classes, and modules must have docstrings (100% coverage)</li>
+<li>Private methods with complex logic should have docstrings</li>
+<li>Simple private methods or properties may omit docstrings</li>
+<li>The overall project requires a minimum of 95% docstring coverage as measured by interrogate</li>
+</ul>
+<h3 id="special-cases">Special Cases</h3>
+<h4 id="private-methods">Private Methods</h4>
+<p>Private methods (starting with underscore) should have docstrings if they:
+- Contain complex logic
+- Are called from multiple places
+- Would benefit from documentation for maintainers</p>
+<h4 id="one-line-docstrings">One-line Docstrings</h4>
+<p>For simple methods with obvious behavior, a one-line docstring is acceptable:</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">is_allowed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return True if the URL is allowed by robots.txt.&quot;&quot;&quot;</span>
+</code></pre></div>
+<h3 id="verification-approach">Verification Approach</h3>
+<p>Documentation quality is verified through code review rather than automated metrics.
+Reviewers should confirm that:</p>
+<ul>
+<li>Public APIs have clear, complete docstrings</li>
+<li>Examples are provided for non-obvious usage</li>
+<li>Type information is present in docstrings</li>
+<li>Error cases and exceptions are documented</li>
+</ul>
+<h3 id="documentation-language-guidelines">Documentation Language Guidelines</h3>
+<p>When writing documentation, follow these language principles:</p>
+<ol>
+<li><strong>Be objective</strong> - Avoid subjective descriptors like "elegant", "beautiful", or "clever"</li>
+<li><strong>Be precise</strong> - Focus on what code does, not subjective quality judgments</li>
+<li><strong>Be technical</strong> - Use concrete technical terms rather than metaphorical language</li>
+<li><strong>Be consistent</strong> - Maintain a neutral, professional tone throughout documentation</li>
+</ol>
+<h3 id="examples_2">Examples:</h3>
+<p>Avoid:
+<div class="highlight"><pre><span></span><code><span class="sd">&quot;&quot;&quot;This elegant pattern enables seamless chaining of operations.&quot;&quot;&quot;</span>
+</code></pre></div></p>
+<p>Better:
+<div class="highlight"><pre><span></span><code><span class="sd">&quot;&quot;&quot;This design allows operation outputs to serve as inputs to other operations.&quot;&quot;&quot;</span>
+</code></pre></div></p>
+<p>Avoid
+<div class="highlight"><pre><span></span><code><span class="sd">&quot;&quot;&quot;Beautiful integration between components creates a powerful system.&quot;&quot;&quot;</span>
+</code></pre></div></p>
+<p>Better
+<code>Components communicate through well-defined interfaces that enable extensibility.</code></p>
+<h2 id="logging-standards-for-ethicrawl">Logging Standards for Ethicrawl</h2>
+<p>Good logging practices are essential for troubleshooting, monitoring, and understanding application behavior.</p>
+<h3 id="log-levels-and-their-uses">Log Levels and Their Uses</h3>
+<h4 id="critical-loggingcritical-50">CRITICAL (logging.CRITICAL, 50)</h4>
+<p>Use for severe errors that prevent core functionality from working.</p>
+<h5 id="when-to-use">When to use:</h5>
+<ul>
+<li>Application cannot continue functioning</li>
+<li>Data corruption or loss has occurred</li>
+<li>Security breaches or compromises</li>
+<li>Resource exhaustion that threatens system stability</li>
+</ul>
+<h5 id="examples_3">Examples:</h5>
+<div class="highlight"><pre><span></span><code><span class="n">logger</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failed to initialize client: </span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Persistent storage corruption detected in </span><span class="si">{</span><span class="n">file_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="error-loggingerror-40">ERROR (logging.ERROR, 40)</h4>
+<p>Use for runtime errors that prevent specific operations from completing but don't crash the application.</p>
+<h5 id="when-to-use_1">When to use:</h5>
+<ul>
+<li>Failed HTTP requests</li>
+<li>Failed data processing operations</li>
+<li>Configuration errors</li>
+<li>External service unavailability</li>
+<li>Unexpected exceptions in non-critical paths</li>
+</ul>
+<h4 id="examples_4">Examples:</h4>
+<div class="highlight"><pre><span></span><code><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;HTTP request failed: </span><span class="si">{</span><span class="n">status_code</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">reason</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failed to parse sitemap at </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">error_message</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="warning-loggingwarning-30">WARNING (logging.WARNING, 30)</h4>
+<p>Use for conditions that might cause problems but allow operations to continue.</p>
+<h4 id="when-to-use_2">When to use:</h4>
+<ul>
+<li>Deprecated feature usage</li>
+<li>Slow response times</li>
+<li>Retrying operations after recoverable failures</li>
+<li>Access denied for certain operations</li>
+<li>Unexpected data formats that can be handled</li>
+<li>Rate limiting being applied</li>
+</ul>
+<h5 id="examples_5">Examples:</h5>
+<div class="highlight"><pre><span></span><code><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;URL disallowed by robots.txt: </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Slow response from </span><span class="si">{</span><span class="n">domain</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">response_time</span><span class="si">}</span><span class="s2">s&quot;</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Retrying request (</span><span class="si">{</span><span class="n">retry_count</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">max_retries</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="info-logginginfo-20">INFO (logging.INFO, 20)</h4>
+<p>Use for normal operational events and milestones.</p>
+<h5 id="when-to-use_3">When to use:</h5>
+<ul>
+<li>Application startup and shutdown</li>
+<li>Configuration settings</li>
+<li>Successful site binding and crawling</li>
+<li>Processing milestones</li>
+<li>Summary information about operations</li>
+<li>Changes to application state</li>
+</ul>
+<h5 id="examples_6">Examples:</h5>
+<div class="highlight"><pre><span></span><code><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Bound to site: </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Robots.txt processed: </span><span class="si">{</span><span class="n">allowed_count</span><span class="si">}</span><span class="s2"> allowed paths, </span><span class="si">{</span><span class="n">disallowed_count</span><span class="si">}</span><span class="s2"> disallowed&quot;</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Processed </span><span class="si">{</span><span class="n">page_count</span><span class="si">}</span><span class="s2"> pages in </span><span class="si">{</span><span class="n">duration</span><span class="si">}</span><span class="s2">s&quot;</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="debug-loggingdebug-10">DEBUG (logging.DEBUG, 10)</h4>
+<p>Use for detailed information useful during development and debugging.</p>
+<h5 id="when-to-use_4">When to use:</h5>
+<ul>
+<li>Function entry/exit points</li>
+<li>Variable values and state changes</li>
+<li>Decision logic paths</li>
+<li>Low-level HTTP details</li>
+<li>Parsing steps</li>
+<li>Rate limiting details</li>
+</ul>
+<h5 id="examples_7">Examples:</h5>
+<div class="highlight"><pre><span></span><code><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Processing URL: </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Page found in cache, age: </span><span class="si">{</span><span class="n">cache_age</span><span class="si">}</span><span class="s2">s&quot;</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Parser state: </span><span class="si">{</span><span class="n">current_state</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="logging-best-practices">Logging Best Practices</h4>
+<ol>
+<li>Be Concise and Specific</li>
+<li>Include exactly what happened and where</li>
+<li>
+<p>Use active voice (e.g., "Failed to connect" instead of "Connection failure occurred")</p>
+</li>
+<li>
+<p>Include Context</p>
+</li>
+<li>Always include relevant identifiers (URLs, IDs, component names)</li>
+<li>Include relevant variable values</li>
+<li>
+<p>For errors, include exception messages and/or stack traces</p>
+</li>
+<li>
+<p>Be Consistent</p>
+</li>
+<li>Use consistent terminology across similar log messages</li>
+<li>Use consistent formatting for similar events</li>
+<li>
+<p>Use sentence case for log messages (capitalize first word)</p>
+</li>
+<li>
+<p>Avoid Sensitive Information</p>
+</li>
+<li>No authentication credentials</li>
+<li>No personal data</li>
+<li>
+<p>No sensitive headers or tokens</p>
+</li>
+<li>
+<p>Use Structured Fields for Machine Parsing</p>
+</li>
+<li>Place structured data at the end of the message</li>
+<li>Use consistent key-value format: <code>key=value</code></li>
+</ol>
+<h4 id="component-specific-guidelines">Component-Specific Guidelines</h4>
+<p>Each component should have a consistent logging identity:</p>
+<ol>
+<li>Robot/Robots.txt</li>
+<li>INFO: Robots.txt fetching and parsing results</li>
+<li>WARNING: Disallowed access attempts</li>
+<li>
+<p>ERROR: Failed to fetch/parse robots.txt</p>
+</li>
+<li>
+<p>HTTP Client</p>
+</li>
+<li>DEBUG: Request details</li>
+<li>INFO: Rate limiting information</li>
+<li>WARNING: Retries and slow responses</li>
+<li>
+<p>ERROR: Failed requests</p>
+</li>
+<li>
+<p>Sitemap</p>
+</li>
+<li>INFO: Sitemap discovery and parsing</li>
+<li>WARNING: Malformed but recoverable sitemap content</li>
+<li>ERROR: Failed sitemap fetching/parsing</li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.c8b220af.min.js"></script>
+      
+    
+  </body>
+</html>
