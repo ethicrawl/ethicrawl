@@ -1,0 +1,14 @@
+# docker/Dockerfile.publish
+FROM ethicrawl-base:latest
+
+# Install build and publish tools
+RUN pip install --no-cache-dir \
+    build \
+    twine \
+    check-wheel-contents
+
+# Working directory
+WORKDIR /app
+
+# Entrypoint allows for flexible commands
+ENTRYPOINT ["bash"]

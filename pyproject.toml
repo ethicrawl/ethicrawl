@@ -4,17 +4,16 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "ethicrawl"
-version = "1.0.0-alpha.1"
+version = "1.0.0-beta.1"
 description = "A Python library for ethical web crawling"
 readme = "README.md"
 authors = [
     {name = "Ethicrawl Team", email = "ethicrawl@smkd.net"},
 ]
-license = {text = "Apache License 2.0"}
+license = "Apache-2.0"
 classifiers = [
-    "Development Status :: 3 - Alpha",
+    "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
-    "License :: OSI Approved :: Apache Software License",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
