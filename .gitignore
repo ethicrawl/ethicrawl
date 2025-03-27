@@ -46,4 +46,6 @@ pip-audit-results.json
 semgrep-results.json
 .ruff_cache/
 .mypy_cache/
+# mkdocs
+site
 site/
