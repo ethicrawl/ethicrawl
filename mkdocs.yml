@@ -1,52 +1,7 @@
 site_name: Ethicrawl
-site_description: Ethical web crawling library for Python
-site_author: Ethicrawl Team
-
-repo_url: https://github.com/ethicrawl/ethicrawl
-repo_name: ethicrawl
-
-# Theme configuration
-theme:
-  name: material
-  palette:
-    primary: indigo
-    accent: blue
-  features:
-    - navigation.instant
-    - navigation.tracking
-    - navigation.expand
-    - navigation.indexes
-    - content.code.annotate
-    - search.highlight
-    - search.share
-
-# Extensions
-markdown_extensions:
-  - pymdownx.highlight
-  - pymdownx.superfences
-  - admonition
-  - pymdownx.details
-  - pymdownx.tabbed
-
-# Plugins
-plugins:
-  - search
-  - mkdocstrings:
-      default_handler: python
-      handlers:
-        python:
-          options:
-            docstring_style: google
-            inherited_members: true
-            filters: ["!^_"]
-            show_source: true
-            members_order: source
-            heading_level: 3
-            show_signature_annotations: true
-
-# Navigation structure
 nav:
   - Home: index.md
   - Code Standards: standards.md
-  - Documentation Standards: documentation.md
-  - Logging Standards: logging.md
+theme: readthedocs
+markdown_extensions:
+  - pymdownx.snippets
