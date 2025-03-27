@@ -4,7 +4,7 @@
 [![codecov](https://codecov.io/gh/ethicrawl/ethicrawl/branch/main/graph/badge.svg)](https://codecov.io/gh/ethicrawl/ethicrawl)
 [![Security](https://github.com/ethicrawl/ethicrawl/actions/workflows/security.yml/badge.svg)](https://github.com/ethicrawl/ethicrawl/actions/workflows/security.yml)
 [![Python Version](https://img.shields.io/badge/python-3.10+-blue)](https://github.com/ethicrawl/ethicrawl)
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/ethicrawl/ethicrawl/LICENSE)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/ethicrawl/ethicrawl/blob/main/LICENSE)
 [![PyPI version](https://badge.fury.io/py/ethicrawl.svg)](https://badge.fury.io/py/ethicrawl)
 
 A Python library for ethical web crawling that respects robots.txt rules, maintains proper rate limits, and provides powerful tools for web scraping.
@@ -68,4 +68,4 @@ ethicrawl.unbind()
 ```
 
 ## License
-Apache 2.0 License - See LICENSE file for details.
+Apache 2.0 License - See [LICENSE](https://github.com/ethicrawl/ethicrawl/blob/main/LICENSE) file for details.

@@ -2,6 +2,17 @@ site_name: Ethicrawl
 nav:
   - Home: index.md
   - Code Standards: standards.md
+  - API Reference:
+      - Overview: api/ethicrawl.md # Add this line to include the file in navigation
+
 theme: readthedocs
 markdown_extensions:
   - pymdownx.snippets
+plugins:
+  - search
+  - mkdocstrings:
+      default_handler: python
+      handlers:
+        python:
+          options:
+            show_source: false
