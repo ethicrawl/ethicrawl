@@ -1,0 +1,4 @@
+# docker/Dockerfile.semgrep
+FROM ethicrawl-base:latest
+RUN pip install --no-cache-dir semgrep
+CMD ["semgrep", "--config=auto", "ethicrawl"]

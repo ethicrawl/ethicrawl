@@ -1,0 +1,4 @@
+# docker/Dockerfile.bandit
+FROM ethicrawl-base:latest
+RUN pip install --no-cache-dir bandit
+CMD ["bandit", "-r", "ethicrawl"]
