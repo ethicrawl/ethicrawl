@@ -1,0 +1,4275 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://ethicrawl.github.io/ethicrawl/api/config/">
+      
+      
+        <link rel="prev" href="../error/">
+      
+      
+        <link rel="next" href="../logger/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.9">
+    
+    
+      
+        <title>Configuration - Ethicrawl</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.4af4bdda.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#config-module" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Ethicrawl" class="md-header__button md-logo" aria-label="Ethicrawl" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Ethicrawl
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Configuration
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/ethicrawl/ethicrawl" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Ethicrawl" class="md-nav__button md-logo" aria-label="Ethicrawl" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Ethicrawl
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/ethicrawl/ethicrawl" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../standards/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Code Standards
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    API Reference
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            API Reference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../overview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ethicrawl/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Ethicrawl
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../core/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Core
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../context/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Context
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../error/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Error Handling
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Configuration
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Configuration
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#ethicrawl.config" class="md-nav__link">
+    <span class="md-ellipsis">
+      config
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ethicrawl.config.BaseConfig" class="md-nav__link">
+    <span class="md-ellipsis">
+      BaseConfig
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="BaseConfig">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.BaseConfig.__repr__" class="md-nav__link">
+    <span class="md-ellipsis">
+      __repr__
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.BaseConfig.__str__" class="md-nav__link">
+    <span class="md-ellipsis">
+      __str__
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.BaseConfig.to_dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      to_dict
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ethicrawl.config.Config" class="md-nav__link">
+    <span class="md-ellipsis">
+      Config
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Config">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.Config--thread-safe-update-of-multiple-settings-at-once" class="md-nav__link">
+    <span class="md-ellipsis">
+      Thread-safe update of multiple settings at once
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.Config--get-a-snapshot-for-thread-safe-reading" class="md-nav__link">
+    <span class="md-ellipsis">
+      Get a snapshot for thread-safe reading
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.Config--export-config-for-integration-with-external-systems" class="md-nav__link">
+    <span class="md-ellipsis">
+      Export config for integration with external systems
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.Config.__str__" class="md-nav__link">
+    <span class="md-ellipsis">
+      __str__
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.Config.get_snapshot" class="md-nav__link">
+    <span class="md-ellipsis">
+      get_snapshot
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.Config.reset" class="md-nav__link">
+    <span class="md-ellipsis">
+      reset
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.Config.to_dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      to_dict
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.Config.update" class="md-nav__link">
+    <span class="md-ellipsis">
+      update
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ethicrawl.config.HttpConfig" class="md-nav__link">
+    <span class="md-ellipsis">
+      HttpConfig
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="HttpConfig">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.HttpConfig--get-the-global-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Get the global configuration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.HttpConfig--update-http-settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      Update HTTP settings
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.HttpConfig--configure-proxy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configure proxy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.HttpConfig.headers" class="md-nav__link">
+    <span class="md-ellipsis">
+      headers
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.HttpConfig.jitter" class="md-nav__link">
+    <span class="md-ellipsis">
+      jitter
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.HttpConfig.max_retries" class="md-nav__link">
+    <span class="md-ellipsis">
+      max_retries
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.HttpConfig.proxies" class="md-nav__link">
+    <span class="md-ellipsis">
+      proxies
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.HttpConfig.rate_limit" class="md-nav__link">
+    <span class="md-ellipsis">
+      rate_limit
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.HttpConfig.retry_delay" class="md-nav__link">
+    <span class="md-ellipsis">
+      retry_delay
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.HttpConfig.timeout" class="md-nav__link">
+    <span class="md-ellipsis">
+      timeout
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.HttpConfig.user_agent" class="md-nav__link">
+    <span class="md-ellipsis">
+      user_agent
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.HttpConfig.to_dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      to_dict
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ethicrawl.config.HttpProxyConfig" class="md-nav__link">
+    <span class="md-ellipsis">
+      HttpProxyConfig
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="HttpProxyConfig">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.HttpProxyConfig--configure-http-proxy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configure HTTP proxy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.HttpProxyConfig--configure-https-proxy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configure HTTPS proxy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.HttpProxyConfig--clear-http-proxy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Clear HTTP proxy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.HttpProxyConfig.http" class="md-nav__link">
+    <span class="md-ellipsis">
+      http
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.HttpProxyConfig.https" class="md-nav__link">
+    <span class="md-ellipsis">
+      https
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.HttpProxyConfig.to_dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      to_dict
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ethicrawl.config.LoggerConfig" class="md-nav__link">
+    <span class="md-ellipsis">
+      LoggerConfig
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="LoggerConfig">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.LoggerConfig--set-global-log-level" class="md-nav__link">
+    <span class="md-ellipsis">
+      Set global log level
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.LoggerConfig--enable-file-logging" class="md-nav__link">
+    <span class="md-ellipsis">
+      Enable file logging
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.LoggerConfig--set-component-specific-level" class="md-nav__link">
+    <span class="md-ellipsis">
+      Set component-specific level
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.LoggerConfig.component_levels" class="md-nav__link">
+    <span class="md-ellipsis">
+      component_levels
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.LoggerConfig.console_enabled" class="md-nav__link">
+    <span class="md-ellipsis">
+      console_enabled
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.LoggerConfig.file_enabled" class="md-nav__link">
+    <span class="md-ellipsis">
+      file_enabled
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.LoggerConfig.file_path" class="md-nav__link">
+    <span class="md-ellipsis">
+      file_path
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.LoggerConfig.format" class="md-nav__link">
+    <span class="md-ellipsis">
+      format
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.LoggerConfig.level" class="md-nav__link">
+    <span class="md-ellipsis">
+      level
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.LoggerConfig.use_colors" class="md-nav__link">
+    <span class="md-ellipsis">
+      use_colors
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.LoggerConfig.set_component_level" class="md-nav__link">
+    <span class="md-ellipsis">
+      set_component_level
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.LoggerConfig.to_dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      to_dict
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ethicrawl.config.SitemapConfig" class="md-nav__link">
+    <span class="md-ellipsis">
+      SitemapConfig
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SitemapConfig">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.SitemapConfig--increase-recursion-depth-for-complex-sites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Increase recursion depth for complex sites
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.SitemapConfig--allow-following-external-domains" class="md-nav__link">
+    <span class="md-ellipsis">
+      Allow following external domains
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.SitemapConfig.follow_external" class="md-nav__link">
+    <span class="md-ellipsis">
+      follow_external
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.SitemapConfig.max_depth" class="md-nav__link">
+    <span class="md-ellipsis">
+      max_depth
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.SitemapConfig.validate_urls" class="md-nav__link">
+    <span class="md-ellipsis">
+      validate_urls
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.SitemapConfig.to_dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      to_dict
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../logger/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Logger
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../client/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Client
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../client.http/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HttpClient
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../robots/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Robots
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sitemaps/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Sitemaps
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#ethicrawl.config" class="md-nav__link">
+    <span class="md-ellipsis">
+      config
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ethicrawl.config.BaseConfig" class="md-nav__link">
+    <span class="md-ellipsis">
+      BaseConfig
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="BaseConfig">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.BaseConfig.__repr__" class="md-nav__link">
+    <span class="md-ellipsis">
+      __repr__
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.BaseConfig.__str__" class="md-nav__link">
+    <span class="md-ellipsis">
+      __str__
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.BaseConfig.to_dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      to_dict
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ethicrawl.config.Config" class="md-nav__link">
+    <span class="md-ellipsis">
+      Config
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Config">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.Config--thread-safe-update-of-multiple-settings-at-once" class="md-nav__link">
+    <span class="md-ellipsis">
+      Thread-safe update of multiple settings at once
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.Config--get-a-snapshot-for-thread-safe-reading" class="md-nav__link">
+    <span class="md-ellipsis">
+      Get a snapshot for thread-safe reading
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.Config--export-config-for-integration-with-external-systems" class="md-nav__link">
+    <span class="md-ellipsis">
+      Export config for integration with external systems
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.Config.__str__" class="md-nav__link">
+    <span class="md-ellipsis">
+      __str__
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.Config.get_snapshot" class="md-nav__link">
+    <span class="md-ellipsis">
+      get_snapshot
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.Config.reset" class="md-nav__link">
+    <span class="md-ellipsis">
+      reset
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.Config.to_dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      to_dict
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.Config.update" class="md-nav__link">
+    <span class="md-ellipsis">
+      update
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ethicrawl.config.HttpConfig" class="md-nav__link">
+    <span class="md-ellipsis">
+      HttpConfig
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="HttpConfig">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.HttpConfig--get-the-global-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Get the global configuration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.HttpConfig--update-http-settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      Update HTTP settings
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.HttpConfig--configure-proxy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configure proxy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.HttpConfig.headers" class="md-nav__link">
+    <span class="md-ellipsis">
+      headers
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.HttpConfig.jitter" class="md-nav__link">
+    <span class="md-ellipsis">
+      jitter
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.HttpConfig.max_retries" class="md-nav__link">
+    <span class="md-ellipsis">
+      max_retries
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.HttpConfig.proxies" class="md-nav__link">
+    <span class="md-ellipsis">
+      proxies
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.HttpConfig.rate_limit" class="md-nav__link">
+    <span class="md-ellipsis">
+      rate_limit
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.HttpConfig.retry_delay" class="md-nav__link">
+    <span class="md-ellipsis">
+      retry_delay
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.HttpConfig.timeout" class="md-nav__link">
+    <span class="md-ellipsis">
+      timeout
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.HttpConfig.user_agent" class="md-nav__link">
+    <span class="md-ellipsis">
+      user_agent
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.HttpConfig.to_dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      to_dict
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ethicrawl.config.HttpProxyConfig" class="md-nav__link">
+    <span class="md-ellipsis">
+      HttpProxyConfig
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="HttpProxyConfig">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.HttpProxyConfig--configure-http-proxy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configure HTTP proxy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.HttpProxyConfig--configure-https-proxy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configure HTTPS proxy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.HttpProxyConfig--clear-http-proxy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Clear HTTP proxy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.HttpProxyConfig.http" class="md-nav__link">
+    <span class="md-ellipsis">
+      http
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.HttpProxyConfig.https" class="md-nav__link">
+    <span class="md-ellipsis">
+      https
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.HttpProxyConfig.to_dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      to_dict
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ethicrawl.config.LoggerConfig" class="md-nav__link">
+    <span class="md-ellipsis">
+      LoggerConfig
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="LoggerConfig">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.LoggerConfig--set-global-log-level" class="md-nav__link">
+    <span class="md-ellipsis">
+      Set global log level
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.LoggerConfig--enable-file-logging" class="md-nav__link">
+    <span class="md-ellipsis">
+      Enable file logging
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.LoggerConfig--set-component-specific-level" class="md-nav__link">
+    <span class="md-ellipsis">
+      Set component-specific level
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.LoggerConfig.component_levels" class="md-nav__link">
+    <span class="md-ellipsis">
+      component_levels
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.LoggerConfig.console_enabled" class="md-nav__link">
+    <span class="md-ellipsis">
+      console_enabled
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.LoggerConfig.file_enabled" class="md-nav__link">
+    <span class="md-ellipsis">
+      file_enabled
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.LoggerConfig.file_path" class="md-nav__link">
+    <span class="md-ellipsis">
+      file_path
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.LoggerConfig.format" class="md-nav__link">
+    <span class="md-ellipsis">
+      format
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.LoggerConfig.level" class="md-nav__link">
+    <span class="md-ellipsis">
+      level
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.LoggerConfig.use_colors" class="md-nav__link">
+    <span class="md-ellipsis">
+      use_colors
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.LoggerConfig.set_component_level" class="md-nav__link">
+    <span class="md-ellipsis">
+      set_component_level
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.LoggerConfig.to_dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      to_dict
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ethicrawl.config.SitemapConfig" class="md-nav__link">
+    <span class="md-ellipsis">
+      SitemapConfig
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SitemapConfig">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.SitemapConfig--increase-recursion-depth-for-complex-sites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Increase recursion depth for complex sites
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.SitemapConfig--allow-following-external-domains" class="md-nav__link">
+    <span class="md-ellipsis">
+      Allow following external domains
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.SitemapConfig.follow_external" class="md-nav__link">
+    <span class="md-ellipsis">
+      follow_external
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.SitemapConfig.max_depth" class="md-nav__link">
+    <span class="md-ellipsis">
+      max_depth
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.SitemapConfig.validate_urls" class="md-nav__link">
+    <span class="md-ellipsis">
+      validate_urls
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethicrawl.config.SitemapConfig.to_dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      to_dict
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="config-module">Config Module</h1>
+
+
+<div class="doc doc-object doc-module">
+
+
+
+<a id="ethicrawl.config"></a>
+    <div class="doc doc-contents first">
+
+        <p>Configuration system for Ethicrawl.</p>
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="ethicrawl.config.BaseConfig" class="doc doc-heading">
+            <code>BaseConfig</code>
+
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="abc.ABC">ABC</span></code></p>
+
+
+        <p>Abstract base class for configuration components.</p>
+<p>All configuration classes inherit from this class to ensure
+a consistent interface and behavior across the configuration system.
+Configuration objects can be converted to dictionaries, serialized,
+and represented as strings with consistent formatting.</p>
+
+
+<details class="example" open>
+  <summary>Example</summary>
+  <blockquote>
+<blockquote>
+<blockquote>
+<p>from abc import ABC
+from ethicrawl.config import BaseConfig</p>
+<p>class MyConfig(BaseConfig):
+...     def <strong>init</strong>(self, name="default", value=42):
+...         self.name = name
+...         self.value = value
+...
+...     def to_dict(self) -&gt; dict:
+...         return {"name": self.name, "value": self.value}</p>
+<p>config = MyConfig("test", 100)
+config.to_dict()
+{'name': 'test', 'value': 100}
+print(config)
+{
+  "name": "test",
+  "value": 100
+}</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</details>
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="ethicrawl.config.BaseConfig.__repr__" class="doc doc-heading">
+            <code class="highlight language-python"><span class="fm">__repr__</span><span class="p">()</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Default string representation showing config values.</p>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="str">str</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>String in format ClassName({config values})</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="ethicrawl.config.BaseConfig.__str__" class="doc doc-heading">
+            <code class="highlight language-python"><span class="fm">__str__</span><span class="p">()</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Human-readable string representation.</p>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="str">str</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Pretty-printed JSON representation of the configuration</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="ethicrawl.config.BaseConfig.to_dict" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">to_dict</span><span class="p">()</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-abstractmethod"><code>abstractmethod</code></small>
+  </span>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Convert configuration to a dictionary representation.</p>
+<p>Implementations must produce a JSON-serializable dictionary
+that fully represents the configuration state.</p>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="dict">dict</span>[<span title="str">str</span>, <span title="typing.Any">Any</span>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Dictionary representation of the configuration</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="ethicrawl.config.Config" class="doc doc-heading">
+            <code>Config</code>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+
+
+        <p>Global configuration singleton for Ethicrawl.</p>
+<p>This class provides a centralized, thread-safe configuration system
+for all components of Ethicrawl. It implements the Singleton pattern
+to ensure consistent settings throughout the application.</p>
+<p>The configuration is organized into sections (http, logger, sitemap)
+with each section containing component-specific settings.</p>
+
+
+<details class="thread-safety" open>
+  <summary>Thread Safety</summary>
+  <p>All configuration updates are protected by a reentrant lock,
+ensuring thread-safe operation in multi-threaded crawling scenarios.</p>
+</details>
+
+<details class="integration-features" open>
+  <summary>Integration Features</summary>
+  <ul>
+<li>Convert to/from dictionaries for integration with external config systems</li>
+<li>JSON serialization for storage or transmission</li>
+<li>Hierarchical structure matches common config formats</li>
+</ul>
+</details>
+
+<p><span class="doc-section-title">Attributes:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code><span title="ethicrawl.config.Config.http">http</span></code></td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="HttpConfig
+
+
+  
+      dataclass
+   (ethicrawl.config.http_config.HttpConfig)" href="#ethicrawl.config.HttpConfig">HttpConfig</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>HTTP-specific configuration (user agent, headers, timeout)</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="ethicrawl.config.Config.logger">logger</span></code></td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="LoggerConfig
+
+
+  
+      dataclass
+   (ethicrawl.config.logger_config.LoggerConfig)" href="#ethicrawl.config.LoggerConfig">LoggerConfig</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Logging configuration (levels, format, output)</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="ethicrawl.config.Config.sitemap">sitemap</span></code></td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="SitemapConfig
+
+
+  
+      dataclass
+   (ethicrawl.config.sitemap_config.SitemapConfig)" href="#ethicrawl.config.SitemapConfig">SitemapConfig</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Sitemap parsing configuration (limits, defaults)</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<details class="example" open>
+  <summary>Example</summary>
+  <blockquote>
+<blockquote>
+<blockquote>
+<p>from ethicrawl.config import Config
+config = Config()  # Get the global instance
+config.http.user_agent = "MyCustomBot/1.0"
+config.logger.level = "DEBUG"</p>
+<h3 id="ethicrawl.config.Config--thread-safe-update-of-multiple-settings-at-once">Thread-safe update of multiple settings at once</h3>
+<p>config.update({
+...     "http": {"timeout": 30},
+...     "logger": {"component_levels": {"robots": "DEBUG"}}
+... })</p>
+<h3 id="ethicrawl.config.Config--get-a-snapshot-for-thread-safe-reading">Get a snapshot for thread-safe reading</h3>
+<p>snapshot = config.get_snapshot()
+print(snapshot.http.timeout)
+30</p>
+<h3 id="ethicrawl.config.Config--export-config-for-integration-with-external-systems">Export config for integration with external systems</h3>
+<p>config_dict = config.to_dict()
+config_json = str(config)</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</details>
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="ethicrawl.config.Config.__str__" class="doc doc-heading">
+            <code class="highlight language-python"><span class="fm">__str__</span><span class="p">()</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Format the configuration as a JSON string.</p>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="str">str</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Formatted JSON representation of the configuration</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="ethicrawl.config.Config.get_snapshot" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">get_snapshot</span><span class="p">()</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Create a thread-safe deep copy of the current configuration.</p>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="Config
+
+
+  
+      dataclass
+   (ethicrawl.config.config.Config)" href="#ethicrawl.config.Config">Config</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A deep copy of the current Config object</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="ethicrawl.config.Config.reset" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">reset</span><span class="p">()</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
+  </span>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Reset the singleton instance to default values.</p>
+<p>Removes the existing instance from the singleton registry,
+causing a new instance to be created on next access.</p>
+
+
+<details class="example" open>
+  <summary>Example</summary>
+  <blockquote>
+<blockquote>
+<blockquote>
+<p>Config.reset()  # Reset to defaults
+config = Config()  # Get fresh instance</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</details>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="ethicrawl.config.Config.to_dict" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">to_dict</span><span class="p">()</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Convert the configuration to a dictionary.</p>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="dict">dict</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A nested dictionary representing all configuration sections</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="ethicrawl.config.Config.update" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">update</span><span class="p">(</span><span class="n">config_dict</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Update configuration from a dictionary.</p>
+<p>Updates configuration sections based on a nested dictionary structure.
+The dictionary should have section names as top-level keys and
+property-value pairs as nested dictionaries.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>config_dict</code>
+            </td>
+            <td>
+                  <code><span title="dict">dict</span>[<span title="str">str</span>, <span title="typing.Any">Any</span>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Dictionary with configuration settings</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="AttributeError">AttributeError</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If trying to set a property that doesn't exist</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<details class="example" open>
+  <summary>Example</summary>
+  <blockquote>
+<blockquote>
+<blockquote>
+<p>config.update({
+...     "http": {
+...         "user_agent": "CustomBot/1.0",
+...         "timeout": 30
+...     },
+...     "logger": {
+...         "level": "DEBUG"
+...     }
+... })</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</details>
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="ethicrawl.config.HttpConfig" class="doc doc-heading">
+            <code>HttpConfig</code>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="BaseConfig (ethicrawl.config.base_config.BaseConfig)" href="#ethicrawl.config.BaseConfig">BaseConfig</a></code></p>
+
+
+        <p>HTTP client configuration settings for Ethicrawl.</p>
+<p>This class manages all HTTP-specific configuration options including
+timeouts, rate limiting, retries, user agent settings, headers, and
+proxy configuration. It provides validation for all values to ensure
+they're within safe and reasonable ranges.</p>
+<p>All setters perform type checking and value validation to prevent
+invalid configurations. The class integrates with the global Config
+singleton for system-wide settings.</p>
+
+
+<p><span class="doc-section-title">Attributes:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code><a class="autorefs autorefs-internal" title="timeout
+
+  
+      property
+      writable
+   (ethicrawl.config.HttpConfig.timeout)" href="#ethicrawl.config.HttpConfig.timeout">timeout</a></code></td>
+            <td>
+                  <code><span title="float">float</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Request timeout in seconds (default: 30.0)</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><a class="autorefs autorefs-internal" title="max_retries
+
+  
+      property
+      writable
+   (ethicrawl.config.HttpConfig.max_retries)" href="#ethicrawl.config.HttpConfig.max_retries">max_retries</a></code></td>
+            <td>
+                  <code><span title="int">int</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Maximum retry attempts for failed requests (default: 3)</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><a class="autorefs autorefs-internal" title="retry_delay
+
+  
+      property
+      writable
+   (ethicrawl.config.HttpConfig.retry_delay)" href="#ethicrawl.config.HttpConfig.retry_delay">retry_delay</a></code></td>
+            <td>
+                  <code><span title="float">float</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Base delay between retries in seconds (default: 1.0)</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><a class="autorefs autorefs-internal" title="rate_limit
+
+  
+      property
+      writable
+   (ethicrawl.config.HttpConfig.rate_limit)" href="#ethicrawl.config.HttpConfig.rate_limit">rate_limit</a></code></td>
+            <td>
+                  <code><span title="float">float</span> | None</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Maximum requests per second (default: 0.5)</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><a class="autorefs autorefs-internal" title="jitter
+
+  
+      property
+      writable
+   (ethicrawl.config.HttpConfig.jitter)" href="#ethicrawl.config.HttpConfig.jitter">jitter</a></code></td>
+            <td>
+                  <code><span title="float">float</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Random variation factor for rate limiting (default: 0.2)</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><a class="autorefs autorefs-internal" title="user_agent
+
+  
+      property
+      writable
+   (ethicrawl.config.HttpConfig.user_agent)" href="#ethicrawl.config.HttpConfig.user_agent">user_agent</a></code></td>
+            <td>
+                  <code><span title="str">str</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>User agent string for requests (default: "Ethicrawl/1.0")</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><a class="autorefs autorefs-internal" title="headers
+
+  
+      property
+      writable
+   (ethicrawl.config.HttpConfig.headers)" href="#ethicrawl.config.HttpConfig.headers">headers</a></code></td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="Headers (ethicrawl.core.Headers)" href="../core/#ethicrawl.core.Headers">Headers</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Default headers to include with requests</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><a class="autorefs autorefs-internal" title="proxies
+
+  
+      property
+      writable
+   (ethicrawl.config.HttpConfig.proxies)" href="#ethicrawl.config.HttpConfig.proxies">proxies</a></code></td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="HttpProxyConfig
+
+
+  
+      dataclass
+   (ethicrawl.config.http_proxy_config.HttpProxyConfig)" href="#ethicrawl.config.HttpProxyConfig">HttpProxyConfig</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Proxy server configuration</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<details class="example" open>
+  <summary>Example</summary>
+  <blockquote>
+<blockquote>
+<blockquote>
+<p>from ethicrawl.config import Config</p>
+<h3 id="ethicrawl.config.HttpConfig--get-the-global-configuration">Get the global configuration</h3>
+<p>config = Config()</p>
+<h3 id="ethicrawl.config.HttpConfig--update-http-settings">Update HTTP settings</h3>
+<p>config.http.timeout = 60.0
+config.http.user_agent = "MyCustomCrawler/2.0"
+config.http.rate_limit = 1.0  # 1 request per second</p>
+<h3 id="ethicrawl.config.HttpConfig--configure-proxy">Configure proxy</h3>
+<p>config.http.proxies = {"http": "http://proxy:8080", "https": "https://proxy:8443"}</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</details>
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="ethicrawl.config.HttpConfig.headers" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">headers</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+      <small class="doc doc-label doc-label-writable"><code>writable</code></small>
+  </span>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Get request headers.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="ethicrawl.config.HttpConfig.jitter" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">jitter</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+      <small class="doc doc-label doc-label-writable"><code>writable</code></small>
+  </span>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Random variation factor for rate limiting.</p>
+<p>Adds randomness to the timing between requests to make
+crawling patterns less predictable. The random factor
+is calculated as: delay * (1 + random() * jitter)</p>
+<p>Valid range: 0.0-1.0
+Default: 0.2</p>
+
+
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="TypeError">TypeError</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If value is not a number</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="ValueError">ValueError</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If value outside allowed range</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="ethicrawl.config.HttpConfig.max_retries" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">max_retries</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+      <small class="doc doc-label doc-label-writable"><code>writable</code></small>
+  </span>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Maximum number of retry attempts for failed requests.</p>
+<p>Controls how many times a failed request should be retried
+before giving up. Uses exponential backoff between attempts.</p>
+<p>Valid range: 0-10 (0 means no retries)
+Default: 3</p>
+
+
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="TypeError">TypeError</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If value is not an integer</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="ValueError">ValueError</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If value is negative or &gt; 10</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="ethicrawl.config.HttpConfig.proxies" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">proxies</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+      <small class="doc doc-label doc-label-writable"><code>writable</code></small>
+  </span>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Proxy server configuration for HTTP requests.</p>
+<p>Configures HTTP and HTTPS proxy servers for requests.</p>
+
+
+<details class="example" open>
+  <summary>Example</summary>
+  <blockquote>
+<blockquote>
+<blockquote>
+<p>config.http.proxies = {
+...    "http": "http://proxy:8080",
+...    "https": "https://proxy:8443"
+... }</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</details>
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="HttpProxyConfig
+
+
+  
+      dataclass
+   (ethicrawl.config.http_proxy_config.HttpProxyConfig)" href="#ethicrawl.config.HttpProxyConfig">HttpProxyConfig</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>HttpProxyConfig object with http and https properties</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="TypeError">TypeError</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If value is not HttpProxyConfig or dict</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="ethicrawl.config.HttpConfig.rate_limit" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">rate_limit</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+      <small class="doc doc-label doc-label-writable"><code>writable</code></small>
+  </span>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Maximum requests per second allowed.</p>
+<p>Controls request frequency to avoid overwhelming servers.
+Set to None to disable rate limiting (not recommended).</p>
+<p>Example: 0.5 means maximum of one request every 2 seconds</p>
+<p>Valid range: &gt; 0
+Default: 0.5</p>
+
+
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="TypeError">TypeError</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If value is not a number</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="ValueError">ValueError</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If value is &lt;= 0</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="ethicrawl.config.HttpConfig.retry_delay" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">retry_delay</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+      <small class="doc doc-label doc-label-writable"><code>writable</code></small>
+  </span>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Base delay between retries in seconds</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="ethicrawl.config.HttpConfig.timeout" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">timeout</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+      <small class="doc doc-label doc-label-writable"><code>writable</code></small>
+  </span>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Request timeout in seconds.</p>
+<p>Controls how long to wait for a response before abandoning the request.</p>
+<p>Valid range: 0 &lt; timeout &lt;= 300
+Default: 30.0</p>
+
+
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="TypeError">TypeError</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If value is not a number</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="ValueError">ValueError</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If value is &lt;= 0 or &gt; 300</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="ethicrawl.config.HttpConfig.user_agent" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">user_agent</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+      <small class="doc doc-label doc-label-writable"><code>writable</code></small>
+  </span>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>User agent string</p>
+
+    </div>
+
+</div>
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="ethicrawl.config.HttpConfig.to_dict" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">to_dict</span><span class="p">()</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Convert config to dictionary.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="ethicrawl.config.HttpProxyConfig" class="doc doc-heading">
+            <code>HttpProxyConfig</code>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="BaseConfig (ethicrawl.config.base_config.BaseConfig)" href="#ethicrawl.config.BaseConfig">BaseConfig</a></code></p>
+
+
+        <p>HTTP proxy configuration settings.</p>
+<p>Manages proxy server URLs for HTTP and HTTPS connections.
+Both proxy types can be configured independently and are validated
+to ensure they contain valid URLs.</p>
+
+
+<p><span class="doc-section-title">Attributes:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code><a class="autorefs autorefs-internal" title="http
+
+  
+      property
+      writable
+   (ethicrawl.config.HttpProxyConfig.http)" href="#ethicrawl.config.HttpProxyConfig.http">http</a></code></td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="Url (ethicrawl.core.Url)" href="../core/#ethicrawl.core.Url">Url</a> | None</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>HTTP proxy server URL</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><a class="autorefs autorefs-internal" title="https
+
+  
+      property
+      writable
+   (ethicrawl.config.HttpProxyConfig.https)" href="#ethicrawl.config.HttpProxyConfig.https">https</a></code></td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="Url (ethicrawl.core.Url)" href="../core/#ethicrawl.core.Url">Url</a> | None</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>HTTPS proxy server URL</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<details class="example" open>
+  <summary>Example</summary>
+  <blockquote>
+<blockquote>
+<blockquote>
+<p>from ethicrawl.config import Config
+config = Config()</p>
+<h3 id="ethicrawl.config.HttpProxyConfig--configure-http-proxy">Configure HTTP proxy</h3>
+<p>config.http.proxies.http = "http://proxy.example.com:8080"</p>
+<h3 id="ethicrawl.config.HttpProxyConfig--configure-https-proxy">Configure HTTPS proxy</h3>
+<p>config.http.proxies.https = "http://secure-proxy.example.com:8443"</p>
+<h3 id="ethicrawl.config.HttpProxyConfig--clear-http-proxy">Clear HTTP proxy</h3>
+<p>config.http.proxies.http = None</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</details>
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="ethicrawl.config.HttpProxyConfig.http" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">http</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+      <small class="doc doc-label doc-label-writable"><code>writable</code></small>
+  </span>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>HTTP proxy server URL.</p>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="Url (ethicrawl.core.Url)" href="../core/#ethicrawl.core.Url">Url</a> | None</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Url object or None if not configured</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="ethicrawl.config.HttpProxyConfig.https" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">https</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+      <small class="doc doc-label doc-label-writable"><code>writable</code></small>
+  </span>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>HTTPS proxy server URL.</p>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="Url (ethicrawl.core.Url)" href="../core/#ethicrawl.core.Url">Url</a> | None</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Url object or None if not configured</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+    </div>
+
+</div>
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="ethicrawl.config.HttpProxyConfig.to_dict" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">to_dict</span><span class="p">()</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Convert proxy configuration to dictionary format.</p>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="dict">dict</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Dict with 'http' and 'https' keys mapping to URL strings or None</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="ethicrawl.config.LoggerConfig" class="doc doc-heading">
+            <code>LoggerConfig</code>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="BaseConfig (ethicrawl.config.base_config.BaseConfig)" href="#ethicrawl.config.BaseConfig">BaseConfig</a></code></p>
+
+
+        <p>Logging configuration for Ethicrawl.</p>
+<p>Controls all aspects of Ethicrawl's logging system including output
+destinations, format, levels, and component-specific settings.</p>
+<p>The class provides validation for all settings and supports both numeric
+and string-based log levels (e.g., "DEBUG" or logging.DEBUG).</p>
+
+
+<p><span class="doc-section-title">Attributes:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code><a class="autorefs autorefs-internal" title="level
+
+  
+      property
+      writable
+   (ethicrawl.config.LoggerConfig.level)" href="#ethicrawl.config.LoggerConfig.level">level</a></code></td>
+            <td>
+                  <code><span title="int">int</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Default log level for all components (default: INFO)</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><a class="autorefs autorefs-internal" title="console_enabled
+
+  
+      property
+      writable
+   (ethicrawl.config.LoggerConfig.console_enabled)" href="#ethicrawl.config.LoggerConfig.console_enabled">console_enabled</a></code></td>
+            <td>
+                  <code><span title="bool">bool</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Whether to log to console (default: True)</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><a class="autorefs autorefs-internal" title="file_enabled
+
+  
+      property
+      writable
+   (ethicrawl.config.LoggerConfig.file_enabled)" href="#ethicrawl.config.LoggerConfig.file_enabled">file_enabled</a></code></td>
+            <td>
+                  <code><span title="bool">bool</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Whether to write logs to a file (default: False)</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><a class="autorefs autorefs-internal" title="file_path
+
+  
+      property
+      writable
+   (ethicrawl.config.LoggerConfig.file_path)" href="#ethicrawl.config.LoggerConfig.file_path">file_path</a></code></td>
+            <td>
+                  <code><span title="str">str</span> | None</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Path where log file should be written (default: None)</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><a class="autorefs autorefs-internal" title="use_colors
+
+  
+      property
+      writable
+   (ethicrawl.config.LoggerConfig.use_colors)" href="#ethicrawl.config.LoggerConfig.use_colors">use_colors</a></code></td>
+            <td>
+                  <code><span title="bool">bool</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Whether to use colored console output (default: True)</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><a class="autorefs autorefs-internal" title="format
+
+  
+      property
+      writable
+   (ethicrawl.config.LoggerConfig.format)" href="#ethicrawl.config.LoggerConfig.format">format</a></code></td>
+            <td>
+                  <code><span title="str">str</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Log message format string</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><a class="autorefs autorefs-internal" title="component_levels
+
+  
+      property
+   (ethicrawl.config.LoggerConfig.component_levels)" href="#ethicrawl.config.LoggerConfig.component_levels">component_levels</a></code></td>
+            <td>
+                  <code><span title="dict">dict</span>[<span title="str">str</span>, <span title="int">int</span>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Dictionary of component-specific log levels</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<details class="example" open>
+  <summary>Example</summary>
+  <blockquote>
+<blockquote>
+<blockquote>
+<p>from ethicrawl.config import Config
+config = Config()</p>
+<h3 id="ethicrawl.config.LoggerConfig--set-global-log-level">Set global log level</h3>
+<p>config.logger.level = "DEBUG"</p>
+<h3 id="ethicrawl.config.LoggerConfig--enable-file-logging">Enable file logging</h3>
+<p>config.logger.file_enabled = True
+config.logger.file_path = "ethicrawl.log"</p>
+<h3 id="ethicrawl.config.LoggerConfig--set-component-specific-level">Set component-specific level</h3>
+<p>config.logger.set_component_level("robots", "DEBUG")
+config.logger.set_component_level("http", "WARNING")</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</details>
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="ethicrawl.config.LoggerConfig.component_levels" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">component_levels</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Special log levels for specific components.</p>
+<p>Returns a dictionary mapping component names to log levels.
+Note: Returns a copy to prevent direct mutation.</p>
+
+
+<details class="example" open>
+  <summary>Example</summary>
+  <blockquote>
+<blockquote>
+<blockquote>
+<p>config.logger.component_levels
+{'robots': 10, 'http': 30}</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="ethicrawl.config.LoggerConfig.console_enabled" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">console_enabled</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+      <small class="doc doc-label doc-label-writable"><code>writable</code></small>
+  </span>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Whether to log to console/stdout.</p>
+<p>When True, log messages will be printed to the console.
+Default: True</p>
+
+
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="TypeError">TypeError</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If value is not a boolean</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="ethicrawl.config.LoggerConfig.file_enabled" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">file_enabled</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+      <small class="doc doc-label doc-label-writable"><code>writable</code></small>
+  </span>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Whether to log to a file.</p>
+<p>When True, log messages will be written to the file specified
+by file_path (which must also be set).
+Default: False</p>
+
+
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="TypeError">TypeError</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If value is not a boolean</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="ethicrawl.config.LoggerConfig.file_path" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">file_path</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+      <small class="doc doc-label doc-label-writable"><code>writable</code></small>
+  </span>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Path to log file.</p>
+<p>Only used when file_enabled is True.
+Default: None</p>
+
+
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="TypeError">TypeError</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If value is not a string or None</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="ethicrawl.config.LoggerConfig.format" class="doc doc-heading">
+            <code class="highlight language-python"><span class="nb">format</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+      <small class="doc doc-label doc-label-writable"><code>writable</code></small>
+  </span>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Log message format string.</p>
+<p>Uses Python's logging format string syntax.
+Default: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"</p>
+
+
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="TypeError">TypeError</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If value is not a string</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="ValueError">ValueError</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If value is empty</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="ethicrawl.config.LoggerConfig.level" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">level</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+      <small class="doc doc-label doc-label-writable"><code>writable</code></small>
+  </span>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Default log level for all loggers.</p>
+<p>Can be set using either integer constants from the logging module
+or string names like "DEBUG", "INFO", etc.</p>
+<p>Default: logging.INFO (20)</p>
+
+
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="TypeError">TypeError</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If value is not an integer or string</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="ValueError">ValueError</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If value is an invalid level</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="ethicrawl.config.LoggerConfig.use_colors" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">use_colors</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+      <small class="doc doc-label doc-label-writable"><code>writable</code></small>
+  </span>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Whether to use colorized output for console logging.</p>
+<p>When True, different log levels will be displayed in different
+colors in terminal output for better readability.
+Default: True</p>
+
+
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="TypeError">TypeError</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If value is not a boolean</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+    </div>
+
+</div>
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="ethicrawl.config.LoggerConfig.set_component_level" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">set_component_level</span><span class="p">(</span><span class="n">component_name</span><span class="p">,</span> <span class="n">level</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Set a specific log level for a component.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>component_name</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The component name (e.g., "robots", "sitemaps")</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>level</code>
+            </td>
+            <td>
+                  <code><span title="int">int</span> | <span title="str">str</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The log level (can be int or level name string)</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="TypeError">TypeError</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If level is not an integer or string</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="ValueError">ValueError</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If string level name is not valid</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<details class="example" open>
+  <summary>Example</summary>
+  <blockquote>
+<blockquote>
+<blockquote>
+<p>config.logger.set_component_level("robots", "DEBUG")
+config.logger.set_component_level("http", logging.WARNING)</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</details>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="ethicrawl.config.LoggerConfig.to_dict" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">to_dict</span><span class="p">()</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Convert logger configuration to a dictionary.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="ethicrawl.config.SitemapConfig" class="doc doc-heading">
+            <code>SitemapConfig</code>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="BaseConfig (ethicrawl.config.base_config.BaseConfig)" href="#ethicrawl.config.BaseConfig">BaseConfig</a></code></p>
+
+
+        <p>Configuration for sitemap parsing and traversal.</p>
+<p>Controls behavior of sitemap parsing including recursion limits,
+error handling, and filtering options. This configuration affects
+how sitemaps are discovered, parsed, and which URLs are included
+in the final results.</p>
+
+
+<p><span class="doc-section-title">Attributes:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code><a class="autorefs autorefs-internal" title="max_depth
+
+  
+      property
+      writable
+   (ethicrawl.config.SitemapConfig.max_depth)" href="#ethicrawl.config.SitemapConfig.max_depth">max_depth</a></code></td>
+            <td>
+                  <code><span title="int">int</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Maximum recursion depth for nested sitemaps (default: 5)</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><a class="autorefs autorefs-internal" title="follow_external
+
+  
+      property
+      writable
+   (ethicrawl.config.SitemapConfig.follow_external)" href="#ethicrawl.config.SitemapConfig.follow_external">follow_external</a></code></td>
+            <td>
+                  <code><span title="bool">bool</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Whether to follow sitemap links to external domains (default: False)</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><a class="autorefs autorefs-internal" title="validate_urls
+
+  
+      property
+      writable
+   (ethicrawl.config.SitemapConfig.validate_urls)" href="#ethicrawl.config.SitemapConfig.validate_urls">validate_urls</a></code></td>
+            <td>
+                  <code><span title="bool">bool</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Whether to validate URLs before adding them to results (default: True)</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<details class="example" open>
+  <summary>Example</summary>
+  <blockquote>
+<blockquote>
+<blockquote>
+<p>from ethicrawl.config import Config
+config = Config()</p>
+<h3 id="ethicrawl.config.SitemapConfig--increase-recursion-depth-for-complex-sites">Increase recursion depth for complex sites</h3>
+<p>config.sitemap.max_depth = 10</p>
+<h3 id="ethicrawl.config.SitemapConfig--allow-following-external-domains">Allow following external domains</h3>
+<p>config.sitemap.follow_external = True</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</details>
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="ethicrawl.config.SitemapConfig.follow_external" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">follow_external</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+      <small class="doc doc-label doc-label-writable"><code>writable</code></small>
+  </span>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Whether to follow sitemap links to external domains.</p>
+<p>When True, sitemap references to other domains will be followed.
+When False, only sitemaps on the same domain will be processed.</p>
+<p>Default: False</p>
+
+
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="TypeError">TypeError</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If value is not a boolean</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="ethicrawl.config.SitemapConfig.max_depth" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">max_depth</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+      <small class="doc doc-label doc-label-writable"><code>writable</code></small>
+  </span>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Maximum recursion depth for nested sitemaps.</p>
+<p>Controls how many levels of sitemap references will be followed.
+Many sites use sitemap indexes that point to other sitemaps, and
+this setting limits how deep that recursion can go.</p>
+<p>Valid range: &gt;= 1
+Default: 5</p>
+
+
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="TypeError">TypeError</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If value is not an integer</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="ValueError">ValueError</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If value is less than 1</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="ethicrawl.config.SitemapConfig.validate_urls" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">validate_urls</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+      <small class="doc doc-label doc-label-writable"><code>writable</code></small>
+  </span>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Whether to validate URLs before adding them to results.</p>
+<p>When True, each URL found in sitemaps will be validated for
+proper format before being included in results. This helps
+filter out malformed URLs but adds some processing overhead.</p>
+<p>Default: True</p>
+
+
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="TypeError">TypeError</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If value is not a boolean</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+    </div>
+
+</div>
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="ethicrawl.config.SitemapConfig.to_dict" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">to_dict</span><span class="p">()</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Convert configuration to a dictionary.</p>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="dict">dict</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Dictionary with all sitemap configuration values</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.c8b220af.min.js"></script>
+      
+    
+  </body>
+</html>
