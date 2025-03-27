@@ -1,4 +1,4 @@
-name: Security Scan
+name: security
 permissions:
   contents: read
   pull-requests: write
