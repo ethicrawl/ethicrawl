@@ -1,0 +1,18 @@
+# docker/Dockerfile.base
+FROM python:3.10-slim
+
+WORKDIR /app
+
+# Copy only what's needed to install dependencies
+COPY pyproject.toml .
+
+# Update pip and set default pip configs for security
+RUN python3 -m pip install --upgrade pip && \
+    pip config set global.no-cache-dir true && \
+    pip config set global.disable-pip-version-check true
+
+# Install only the project dependencies
+RUN pip install -e .
+
+# Source code will be mounted here
+VOLUME ["/app"]

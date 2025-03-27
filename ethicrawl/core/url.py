@@ -166,7 +166,7 @@ class Url:
         """
         return self._parsed.geturl()
 
-    def __eq__(self, other):
+    def __eq__(self, other: Any) -> bool:
         """Compare URLs for equality.
 
         Args:
@@ -181,7 +181,7 @@ class Url:
             return str(self) == other
         return False
 
-    def __hash__(self):
+    def __hash__(self) -> int:
         """Return a hash of the URL.
 
         The hash is based on the string representation of the URL,
@@ -241,7 +241,7 @@ class Url:
         # Unified URL construction
         return Url(f"{self.scheme}://{loc}{new_path}")
 
-    def extend(self, *args) -> "Url":
+    def extend(self, *args: Any) -> "Url":
         """Extend the URL with additional path components or query parameters.
 
         This method supports multiple extension patterns:

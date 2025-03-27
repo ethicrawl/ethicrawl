@@ -1,0 +1,8 @@
+# docker/Dockerfile.audit
+FROM ethicrawl-base:latest
+
+# Install only pip-audit
+RUN pip install --no-cache-dir pip-audit
+
+# Run without mounting source - just audit what's installed
+CMD ["pip-audit"]

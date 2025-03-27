@@ -1,4 +1,4 @@
-name: Python Tests
+name: tests
 permissions:
   contents: read
   pull-requests: write

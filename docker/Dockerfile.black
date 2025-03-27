@@ -1,0 +1,8 @@
+# docker/Dockerfile.black
+FROM ethicrawl-base:latest
+
+# Install only black
+RUN pip install --no-cache-dir black
+
+# Will need source code mounted
+CMD ["black", "--check", "ethicrawl"]

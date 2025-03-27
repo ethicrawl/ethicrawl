@@ -1,0 +1,18 @@
+# docker/Dockerfile.mkdocs
+# Dockerfile for MkDocs documentation generation
+FROM ethicrawl-base:latest
+
+# Install MkDocs with Python documentation support
+RUN pip install --no-cache-dir \
+    mkdocs \
+    mkdocstrings \
+    mkdocstrings-python \
+    pymdown-extensions \
+    mkdocs-material
+
+# Set working directory
+WORKDIR /app
+
+# Will need source code mounted
+ENTRYPOINT ["mkdocs"]
+CMD ["serve", "--dev-addr=0.0.0.0:8000"]

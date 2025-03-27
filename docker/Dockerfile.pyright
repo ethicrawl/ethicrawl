@@ -1,0 +1,10 @@
+# docker/Dockerfile.pyright
+FROM ethicrawl-base:latest
+
+# Install only pyright
+RUN pip install --no-cache-dir pyright lxml-stubs
+# Pre-run pyright to get the node dependency installed
+RUN pyright
+
+# Will need source code mounted
+CMD ["pyright", "ethicrawl"]

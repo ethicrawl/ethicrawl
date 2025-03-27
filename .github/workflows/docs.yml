@@ -1,0 +1,44 @@
+# .github/workflows/docs.yml
+name: Deploy Docs
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:  # Allow manual triggering
+
+jobs:
+  deploy-docs:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Fetch all history
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build base image
+        run: docker build -t ethicrawl-base -f docker/Dockerfile.base .
+
+      - name: Build MkDocs image
+        run: docker build -t ethicrawl:mkdocs -f docker/Dockerfile.mkdocs .
+
+      - name: Build documentation
+        run: |
+          mkdir -p site
+          docker run --rm \
+            -v $(pwd)/docs:/app/docs \
+            -v $(pwd)/ethicrawl:/app/ethicrawl \
+            -v $(pwd)/site:/app/site \
+            -v $(pwd)/mkdocs.yml:/app/mkdocs.yml \
+            -v $(pwd)/README.md:/app/README.md \
+            ethicrawl:mkdocs build
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./site

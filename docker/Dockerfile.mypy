@@ -1,0 +1,8 @@
+# docker/Dockerfile.mypy
+FROM ethicrawl-base:latest
+
+# Install only pyright
+RUN pip install --no-cache-dir mypy lxml-stubs types-requests types-colorama
+
+# Will need source code mounted
+CMD ["mypy", "ethicrawl"]
