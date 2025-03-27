@@ -3,9 +3,10 @@
 [![pytest](https://github.com/ethicrawl/ethicrawl/actions/workflows/python-tests.yml/badge.svg)](https://github.com/ethicrawl/ethicrawl/actions/workflows/python-tests.yml)
 [![codecov](https://codecov.io/gh/ethicrawl/ethicrawl/branch/main/graph/badge.svg)](https://codecov.io/gh/ethicrawl/ethicrawl)
 [![Security](https://github.com/ethicrawl/ethicrawl/actions/workflows/security.yml/badge.svg)](https://github.com/ethicrawl/ethicrawl/actions/workflows/security.yml)
-[![Python Version](https://img.shields.io/badge/python-3.10+-blue)](https://github.com/ethicrawl/ethicrawl)
+[![Python](https://img.shields.io/badge/python-3.10+-blue)](https://github.com/ethicrawl/ethicrawl)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/ethicrawl/ethicrawl/blob/main/LICENSE)
-[![PyPI version](https://badge.fury.io/py/ethicrawl.svg)](https://badge.fury.io/py/ethicrawl)
+[![PyPI](https://badge.fury.io/py/ethicrawl.svg)](https://badge.fury.io/py/ethicrawl)
+[![Documentation](https://img.shields.io/badge/docs-latest-blue.svg)](https://ethicrawl.github.io/ethicrawl/)
 
 A Python library for ethical web crawling that respects robots.txt rules, maintains proper rate limits, and provides powerful tools for web scraping.
 
@@ -66,6 +67,10 @@ except RobotDisallowedError:
 # Release resources when done
 ethicrawl.unbind()
 ```
+
+## Documentation
+
+Comprehensive documentation is available at [https://ethicrawl.github.io/ethicrawl/](https://ethicrawl.github.io/ethicrawl/)
 
 ## License
 Apache 2.0 License - See [LICENSE](https://github.com/ethicrawl/ethicrawl/blob/main/LICENSE) file for details.

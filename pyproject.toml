@@ -7,6 +7,7 @@ name = "ethicrawl"
 version = "1.0.0-alpha.1"
 description = "A Python library for ethical web crawling"
 readme = "README.md"
+urls = { Documentation = "https://ethicrawl.github.io/ethicrawl/", Repository = "https://github.com/ethicrawl/ethicrawl" }
 authors = [
     {name = "Ethicrawl Team", email = "ethicrawl@smkd.net"},
 ]
@@ -22,6 +23,7 @@ classifiers = [
     "Programming Language :: Python :: 3.13",
     "Topic :: Internet :: WWW/HTTP",
     "Topic :: Software Development :: Libraries",
+    "Topic :: Software Development :: Libraries :: Python Modules",
 ]
 keywords = ["web crawler", "ethical", "robots.txt", "sitemap", "web scraping"]
 dependencies = [

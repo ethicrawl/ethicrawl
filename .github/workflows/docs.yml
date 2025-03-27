@@ -4,7 +4,7 @@ name: Deploy Docs
 on:
   push:
     branches:
-      - develop  # Trigger on pushes to develop branch
+      - main
   workflow_dispatch:  # Allow manual triggering
 
 jobs:
