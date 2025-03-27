@@ -20,5 +20,3 @@ plugins:
         python:
           options:
             show_source: false
-          selection:
-            docstring_style: google
