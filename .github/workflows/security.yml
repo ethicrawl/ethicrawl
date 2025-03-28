@@ -1,10 +1,13 @@
-name: security
+name: security and quality
 permissions:
   contents: read
   pull-requests: write
 
 on:
-  push:
+  # Run after tests workflow completes successfully
+  workflow_run:
+    workflows: ["tests"]
+    types: [completed]
     branches: [develop, main]
   pull_request:
     branches: [main]
@@ -12,7 +15,16 @@ on:
     - cron: "0 0 * * 0" # Weekly on Sundays
 
 jobs:
-  security-scan:
+  # Skip if the tests workflow failed
+  check-tests-status:
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name != 'workflow_run' }}
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Tests passed, proceeding with quality and security checks"
+
+  code-quality:
+    name: Code Quality
+    needs: [check-tests-status]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -25,21 +37,67 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install --upgrade bandit black mypy pyright pip-audit semgrep lxml-stubs types-requests types-colorama
+          pip install --upgrade black mypy pyright lxml-stubs types-requests types-colorama
           pip install -e .
 
-      # LINTING CHECKS
+      # CODE QUALITY CHECKS
       - name: Run Black formatter check
-        run: black --check .
+        run: |
+          black --check . 2>&1 | tee black-results.txt
+          exit ${PIPESTATUS[0]}
         id: black
 
+      # TYPE CHECKING
       - name: Run mypy type checking
-        run: mypy ethicrawl
+        run: |
+          mypy ethicrawl 2>&1 | tee mypy-results.txt
+          exit ${PIPESTATUS[0]}
         id: mypy
 
       - name: Run pyright analysis
-        run: pyright
+        run: |
+          pyright ethicrawl 2>&1 | tee pyright-results.txt
+          exit ${PIPESTATUS[0]}
         id: pyright
+
+      # Upload results
+      - name: Upload code quality results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: code-quality-results
+          path: |
+            black-results.txt
+            mypy-results.txt
+            pyright-results.txt
+
+      # Create summary report
+      - name: Create job summary
+        if: always()
+        run: |
+          echo "## Code Quality Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- Black: ${{ steps.black.outcome == 'success' && '✅ Passed' || '❌ Failed' }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Mypy: ${{ steps.mypy.outcome == 'success' && '✅ Passed' || '❌ Failed' }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Pyright: ${{ steps.pyright.outcome == 'success' && '✅ Passed' || '❌ Failed' }}" >> $GITHUB_STEP_SUMMARY
+
+  security-scan:
+    name: Security Analysis
+    needs: [check-tests-status]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install --upgrade bandit pip-audit semgrep
+          pip install -e .
 
       # SECURITY CHECKS
       - name: Run Bandit
@@ -54,12 +112,12 @@ jobs:
         run: semgrep scan --config=auto --json -o semgrep-results.json
         id: semgrep
 
-      # Upload all results as artifacts
-      - name: Upload scan results
-        if: always() # always upload even on failure
+      # Upload results
+      - name: Upload security results
+        if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: security-and-lint-results
+          name: security-results
           path: |
             bandit-results.json
             pip-audit-results.json
@@ -69,15 +127,8 @@ jobs:
       - name: Create job summary
         if: always()
         run: |
-          echo "## Security and Linting Results" >> $GITHUB_STEP_SUMMARY
+          echo "## Security Analysis Results" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-
-          echo "### Linting Checks" >> $GITHUB_STEP_SUMMARY
-          echo "- Black: ${{ steps.black.outcome == 'success' && '✅ Passed' || '❌ Failed' }}" >> $GITHUB_STEP_SUMMARY
-          echo "- Mypy: ${{ steps.mypy.outcome == 'success' && '✅ Passed' || '❌ Failed' }}" >> $GITHUB_STEP_SUMMARY
-          echo "- Pyright: ${{ steps.pyright.outcome == 'success' && '✅ Passed' || '❌ Failed' }}" >> $GITHUB_STEP_SUMMARY
-
-          echo "### Security Checks" >> $GITHUB_STEP_SUMMARY
           echo "- Bandit: ${{ steps.bandit.outcome == 'success' && '✅ Passed' || '❌ Issues found' }}" >> $GITHUB_STEP_SUMMARY
           echo "- pip-audit: ${{ steps.pip-audit.outcome == 'success' && '✅ No vulnerabilities' || '⚠️ Vulnerabilities detected' }}" >> $GITHUB_STEP_SUMMARY
           echo "- Semgrep: ${{ steps.semgrep.outcome == 'success' && '✅ Passed' || '❌ Issues found' }}" >> $GITHUB_STEP_SUMMARY
