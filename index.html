@@ -283,6 +283,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Documentation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#installation" class="md-nav__link">
     <span class="md-ellipsis">
       Installation
@@ -295,15 +304,6 @@
   <a href="#quick-start" class="md-nav__link">
     <span class="md-ellipsis">
       Quick Start
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#documentation" class="md-nav__link">
-    <span class="md-ellipsis">
-      Documentation
     </span>
   </a>
   
@@ -677,6 +677,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Documentation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#installation" class="md-nav__link">
     <span class="md-ellipsis">
       Installation
@@ -689,15 +698,6 @@
   <a href="#quick-start" class="md-nav__link">
     <span class="md-ellipsis">
       Quick Start
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#documentation" class="md-nav__link">
-    <span class="md-ellipsis">
-      Documentation
     </span>
   </a>
   
@@ -732,21 +732,21 @@
 
 
 <h1 id="ethicrawl">Ethicrawl</h1>
-<p><a href="https://github.com/ethicrawl/ethicrawl/actions/workflows/python-tests.yml"><img alt="pytest" src="https://github.com/ethicrawl/ethicrawl/actions/workflows/python-tests.yml/badge.svg" /></a>
+<p><a href="https://github.com/ethicrawl/ethicrawl"><img alt="python" src="https://img.shields.io/badge/python-3.10+-blue" /></a>
+<a href="https://github.com/ethicrawl/ethicrawl/blob/main/LICENSE"><img alt="license" src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" /></a>
+<a href="https://github.com/ethicrawl/ethicrawl/actions/workflows/python-tests.yml"><img alt="pytest" src="https://github.com/ethicrawl/ethicrawl/actions/workflows/python-tests.yml/badge.svg" /></a>
 <a href="https://codecov.io/gh/ethicrawl/ethicrawl"><img alt="codecov" src="https://codecov.io/gh/ethicrawl/ethicrawl/branch/main/graph/badge.svg" /></a>
 <a href="https://github.com/ethicrawl/ethicrawl/actions/workflows/security.yml"><img alt="security" src="https://github.com/ethicrawl/ethicrawl/actions/workflows/security.yml/badge.svg" /></a>
-<a href="https://github.com/ethicrawl/ethicrawl"><img alt="python" src="https://img.shields.io/badge/python-3.10+-blue" /></a>
-<a href="https://github.com/ethicrawl/ethicrawl/blob/main/LICENSE"><img alt="license" src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" /></a>
 <a href="https://badge.fury.io/py/ethicrawl"><img alt="PyPI" src="https://badge.fury.io/py/ethicrawl.svg" /></a>
 <a href="https://ethicrawl.github.io/ethicrawl/"><img alt="docs" src="https://img.shields.io/badge/docs-latest-blue.svg" /></a></p>
-<p>A Python library for ethical web crawling that respects robots.txt rules, maintains proper rate limits, and provides powerful tools for web scraping.</p>
+<p>Ethicrawl is a Python library for ethical, professional-grade web crawling. It automatically respects robots.txt, enforces rate limits, and offers robust sitemap parsing and domain control—making it easy to build reliable and responsible crawlers.</p>
 <h2 id="project-goals">Project Goals</h2>
 <p>Ethicrawl is built on the principle that web crawling should be:</p>
 <ul>
-<li><strong>Ethical</strong>: Respect website owners' rights and server resources</li>
-<li><strong>Safe</strong>: Prevent accidental overloading of servers or violation of policies</li>
-<li><strong>Powerful</strong>: Provide a complete toolkit for professional web crawling</li>
-<li><strong>Extensible</strong>: Support customization for diverse crawling needs</li>
+<li><strong>Ethical by Design</strong>: Automatically respects robots.txt and rate limits, ensuring responsible web crawling.</li>
+<li><strong>Server-Safe</strong>: Prevents accidental overloading with built-in safeguards.</li>
+<li><strong>Feature-Rich</strong>: Includes robust sitemap parsing, domain control, and flexible configuration.</li>
+<li><strong>Extensible &amp; Customizable</strong>: Easily adapts to diverse crawling needs through flexible settings and clean architecture.</li>
 </ul>
 <h2 id="key-features">Key Features</h2>
 <ul>
@@ -756,6 +756,8 @@
 <li><strong>Domain Control</strong>: Explicit whitelisting for cross-domain access</li>
 <li><strong>Flexible Configuration</strong>: Easily configure all aspects of crawling behavior</li>
 </ul>
+<h2 id="documentation">Documentation</h2>
+<p>Comprehensive documentation is available at <a href="https://ethicrawl.github.io/ethicrawl/">https://ethicrawl.github.io/ethicrawl/</a></p>
 <h2 id="installation">Installation</h2>
 <p>Install the latest version from PyPI:</p>
 <div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>ethicrawl
@@ -766,6 +768,11 @@ git<span class="w"> </span>clone<span class="w"> </span>https://github.com/ethic
 
 <span class="c1"># Navigate to the directory</span>
 <span class="nb">cd</span><span class="w"> </span>ethicrawl
+
+<span class="c1"># Create and activate a virtual environment (optional but recommended)</span>
+python<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>venv
+<span class="nb">source</span><span class="w"> </span>venv/bin/activate<span class="w">  </span><span class="c1"># Linux/Mac</span>
+venv<span class="se">\S</span>cripts<span class="se">\a</span>ctivate<span class="w">     </span><span class="c1"># Windows</span>
 
 <span class="c1"># Install in development mode</span>
 pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.
@@ -787,8 +794,6 @@ pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </s
 <span class="c1"># Release resources when done</span>
 <span class="n">ethicrawl</span><span class="o">.</span><span class="n">unbind</span><span class="p">()</span>
 </code></pre></div>
-<h2 id="documentation">Documentation</h2>
-<p>Comprehensive documentation is available at <a href="https://ethicrawl.github.io/ethicrawl/">https://ethicrawl.github.io/ethicrawl/</a></p>
 <h2 id="license">License</h2>
 <p>Apache 2.0 License - See <a href="https://github.com/ethicrawl/ethicrawl/blob/main/LICENSE">LICENSE</a> file for details.</p>
 
