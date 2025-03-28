@@ -25,30 +25,59 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install --upgrade bandit pip-audit semgrep
+          pip install --upgrade bandit black mypy pyright pip-audit semgrep
           pip install -e .
 
-      # Static code analysis with Bandit
+      # LINTING CHECKS
+      - name: Run Black formatter check
+        run: black --check .
+        id: black
+
+      - name: Run mypy type checking
+        run: mypy ethicrawl
+        id: mypy
+
+      - name: Run pyright analysis
+        run: pyright
+        id: pyright
+
+      # SECURITY CHECKS
       - name: Run Bandit
         run: bandit -r ethicrawl -f json -o bandit-results.json
+        id: bandit
 
-      # Dependency vulnerability scanning with pip-audit
-      # PYSEC-2022-43012: old version of setuptools on the runners, irrelevant
       - name: Run pip-audit
         run: pip-audit --ignore-vuln PYSEC-2022-43012 -f json -o pip-audit-results.json
-        # Remove continue-on-error to make workflow fail on issues
+        id: pip-audit
 
-      # Advanced code scanning with Semgrep
       - name: Run Semgrep
-        run: semgrep scan --json ethicrawl -o semgrep-results.json
+        run: semgrep scan --config=auto --json -o semgrep-results.json
+        id: semgrep
 
-      # Upload scan results as artifacts
-      - name: Upload security scan results
+      # Upload all results as artifacts
+      - name: Upload scan results
         if: always() # always upload even on failure
         uses: actions/upload-artifact@v4
         with:
-          name: security-scan-results
+          name: security-and-lint-results
           path: |
             bandit-results.json
             pip-audit-results.json
             semgrep-results.json
+
+      # Create summary report
+      - name: Create job summary
+        if: always()
+        run: |
+          echo "## Security and Linting Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          echo "### Linting Checks" >> $GITHUB_STEP_SUMMARY
+          echo "- Black: ${{ steps.black.outcome == 'success' && '✅ Passed' || '❌ Failed' }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Mypy: ${{ steps.mypy.outcome == 'success' && '✅ Passed' || '❌ Failed' }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Pyright: ${{ steps.pyright.outcome == 'success' && '✅ Passed' || '❌ Failed' }}" >> $GITHUB_STEP_SUMMARY
+
+          echo "### Security Checks" >> $GITHUB_STEP_SUMMARY
+          echo "- Bandit: ${{ steps.bandit.outcome == 'success' && '✅ Passed' || '❌ Issues found' }}" >> $GITHUB_STEP_SUMMARY
+          echo "- pip-audit: ${{ steps.pip-audit.outcome == 'success' && '✅ No vulnerabilities' || '⚠️ Vulnerabilities detected' }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Semgrep: ${{ steps.semgrep.outcome == 'success' && '✅ Passed' || '❌ Issues found' }}" >> $GITHUB_STEP_SUMMARY
