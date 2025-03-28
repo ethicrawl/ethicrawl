@@ -25,7 +25,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install --upgrade bandit black mypy pyright pip-audit semgrep
+          pip install --upgrade bandit black mypy pyright pip-audit semgrep lxml-stubs types-requests types-colorama
           pip install -e .
 
       # LINTING CHECKS
