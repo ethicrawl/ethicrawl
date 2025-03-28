@@ -34,8 +34,6 @@ class Client(ABC):
         Returns:
             A Response object containing the result
 
-        Raises:
-            Various exceptions depending on the implementation
         """
         pass
 
