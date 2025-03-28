@@ -1,23 +1,23 @@
 # Ethicrawl
 
+[![python](https://img.shields.io/badge/python-3.10+-blue)](https://github.com/ethicrawl/ethicrawl)
+[![license](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/ethicrawl/ethicrawl/blob/main/LICENSE)
 [![pytest](https://github.com/ethicrawl/ethicrawl/actions/workflows/python-tests.yml/badge.svg)](https://github.com/ethicrawl/ethicrawl/actions/workflows/python-tests.yml)
 [![codecov](https://codecov.io/gh/ethicrawl/ethicrawl/branch/main/graph/badge.svg)](https://codecov.io/gh/ethicrawl/ethicrawl)
 [![security](https://github.com/ethicrawl/ethicrawl/actions/workflows/security.yml/badge.svg)](https://github.com/ethicrawl/ethicrawl/actions/workflows/security.yml)
-[![python](https://img.shields.io/badge/python-3.10+-blue)](https://github.com/ethicrawl/ethicrawl)
-[![license](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/ethicrawl/ethicrawl/blob/main/LICENSE)
 [![PyPI](https://badge.fury.io/py/ethicrawl.svg)](https://badge.fury.io/py/ethicrawl)
 [![docs](https://img.shields.io/badge/docs-latest-blue.svg)](https://ethicrawl.github.io/ethicrawl/)
 
-A Python library for ethical web crawling that respects robots.txt rules, maintains proper rate limits, and provides powerful tools for web scraping.
+Ethicrawl is a Python library for ethical, professional-grade web crawling. It automatically respects robots.txt, enforces rate limits, and offers robust sitemap parsing and domain control—making it easy to build reliable and responsible crawlers.
 
 ## Project Goals
 
 Ethicrawl is built on the principle that web crawling should be:
 
-* **Ethical**: Respect website owners' rights and server resources
-* **Safe**: Prevent accidental overloading of servers or violation of policies
-* **Powerful**: Provide a complete toolkit for professional web crawling
-* **Extensible**: Support customization for diverse crawling needs
+* **Ethical by Design**: Automatically respects robots.txt and rate limits, ensuring responsible web crawling.
+* **Server-Safe**: Prevents accidental overloading with built-in safeguards.
+* **Feature-Rich**: Includes robust sitemap parsing, domain control, and flexible configuration.
+* **Extensible & Customizable**: Easily adapts to diverse crawling needs through flexible settings and clean architecture.
 
 ## Key Features
 
@@ -26,6 +26,10 @@ Ethicrawl is built on the principle that web crawling should be:
 * **Sitemap Support**: Parse and filter XML sitemaps to discover content
 * **Domain Control**: Explicit whitelisting for cross-domain access
 * **Flexible Configuration**: Easily configure all aspects of crawling behavior
+
+## Documentation
+
+Comprehensive documentation is available at [https://ethicrawl.github.io/ethicrawl/](https://ethicrawl.github.io/ethicrawl/)
 
 ## Installation
 
@@ -43,6 +47,11 @@ git clone https://github.com/ethicrawl/ethicrawl.git
 
 # Navigate to the directory
 cd ethicrawl
+
+# Create and activate a virtual environment (optional but recommended)
+python -m venv venv
+source venv/bin/activate  # Linux/Mac
+venv\Scripts\activate     # Windows
 
 # Install in development mode
 pip install -e .
@@ -67,10 +76,6 @@ except RobotDisallowedError:
 # Release resources when done
 ethicrawl.unbind()
 ```
-
-## Documentation
-
-Comprehensive documentation is available at [https://ethicrawl.github.io/ethicrawl/](https://ethicrawl.github.io/ethicrawl/)
 
 ## License
 Apache 2.0 License - See [LICENSE](https://github.com/ethicrawl/ethicrawl/blob/main/LICENSE) file for details.

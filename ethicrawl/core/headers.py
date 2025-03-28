@@ -10,8 +10,7 @@ class Headers(dict):
     proper type handling and provides flexible initialization from various
     header sources.
 
-    Attributes:
-        Inherits all dictionary attributes
+    Inherits all dictionary attributes
 
     Examples:
         >>> headers = Headers({"Content-Type": "text/html"})
@@ -94,7 +93,7 @@ class Headers(dict):
                 value = str(value)
             super().__setitem__(key, value)
 
-    def __contains__(self, key):
+    def __contains__(self, key) -> bool:
         """Check if header exists with case-insensitive comparison.
 
         Args:

@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 
-from ethicrawl.client.response import Response
+from .response import Response
+from .request import Request
 
 
 class Transport(ABC):
