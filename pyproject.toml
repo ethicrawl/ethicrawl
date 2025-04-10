@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "ethicrawl"
-version = "1.0.0-beta.1"
+version = "1.0.0-beta.2"
 description = "A Python library for ethical web crawling"
 readme = "README.md"
 authors = [

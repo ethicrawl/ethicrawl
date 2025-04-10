@@ -7,7 +7,7 @@ from ethicrawl.config import Config
 from ethicrawl.context import Context
 from ethicrawl.core import Headers, Resource, Url
 from ethicrawl.robots import Robot
-from ethicrawl.context import ContextManager  # Instead of aliasing as RequestRouter
+from ethicrawl.context import ContextManager
 from ethicrawl.sitemaps import SitemapParser
 
 
@@ -171,7 +171,7 @@ class Ethicrawl:
     @property
     @ensure_bound
     def sitemaps(self) -> SitemapParser:
-        """Access the sitemap parser for the bound domain.
+        """Access the sitemap parser for the primary bound domain.
 
         The parser is created on first access and cached for subsequent calls.
         It provides methods to extract URLs from XML sitemaps.
@@ -183,12 +183,9 @@ class Ethicrawl:
             RuntimeError: If not bound to a site
         """
 
-        # figure out which site it is, and get the appropriate sitemap with a client
-
         if not hasattr(self, "_sitemap"):
             # Get a sitemap parser from the context manager that uses the correct client
             client = self._context_manager.client(self._context.resource)
-            # client.get()
             self._sitemap = self._context_manager.sitemap(self._context.resource)
         return self._sitemap
 
@@ -231,48 +228,3 @@ class Ethicrawl:
         self.logger.debug("Preparing to fetch %s", resource.url)
 
         return self._context_manager.get(resource, headers=Headers(headers))
-
-        # @ensure_bound
-        # @property
-        # def sitemap(self):
-        #     pass
-
-        # # Get domain from URL
-        # target_domain_key = resource.url.base
-
-        # # Check if domain is allowed
-        # root_domain = self._get_root_domain()
-        # domain_ctx = (
-        #     root_domain
-        #     if resource.url.base == root_domain.context.resource.url.base
-        #     else self._whitelist.get(target_domain_key)
-        # )
-
-        # if domain_ctx is None:
-        #     # Change this line to include scheme in the bound domain
-        #     bound_domain_key = f"{root_domain.context.resource.url.scheme}://{root_domain.context.resource.url.netloc}"
-
-        #     self.logger.warning(
-        #         "Domain not allowed: %s (bound to %s)",
-        #         target_domain_key,  # This already includes scheme+netloc
-        #         bound_domain_key,  # Now this also includes scheme+netloc
-        #     )
-
-        #     raise DomainWhitelistError(
-        #         str(resource.url),
-        #         bound_domain_key,  # Pass the full scheme+netloc format
-        #     )
-        # else:
-        #     self.logger.debug("Using domain context for %s", target_domain_key)
-
-        # robot = domain_ctx.robot
-
-        # # Extract User-Agent from headers if present (for robots.txt checking)
-        # user_agent = None
-        # if headers:
-        #     headers = Headers(headers)
-        #     user_agent = headers.get("User-Agent")
-
-        # # See if we can fetch the resource
-        # if robot.can_fetch(resource, user_agent=user_agent):
-        #     self.logger.debug("Request permitted by robots.txt policy")

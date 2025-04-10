@@ -47,19 +47,3 @@ except RobotDisallowedError as e:
     print(e)
 
 ec.unbind()
-
-# (venv) ➜  ethicrawl git:(async_support) ✗ python testbed.py
-# 2025-03-30 20:30:19,085 - ethicrawl.https_www_bbc_co_uk.robots - INFO - Server returned 200 - using robots.txt
-# 2025-03-30 20:30:19,086 - ethicrawl.https_www_bbc_co_uk - INFO - Successfully bound to https://www.bbc.co.uk
-# routing https://www.bbc.co.uk/food/sitemap.xml via the scheduler
-# routing https://www.bbc.co.uk/food/recipes/applecrumble_2971 via the scheduler
-# 200 398564
-# Cannot access URL 'https://ichef.bbci.co.uk/food/ic/food_16x9_1600/recipes/applecrumble_2971_16x9.jpg' - domain not whitelisted.'
-# 2025-03-30 20:30:23,849 - ethicrawl.https_ichef_bbci_co_uk.robots - INFO - Server returned 200 - using robots.txt
-# 2025-03-30 20:30:23,850 - ethicrawl.https_www_bbc_co_uk - INFO - Successfully bound to https://ichef.bbci.co.uk
-# routing https://ichef.bbci.co.uk/food/ic/food_16x9_1600/recipes/applecrumble_2971_16x9.jpg via the scheduler
-# 200 227229
-# routing https://www.bbc.co.uk/search/crumble via the scheduler
-# 2025-03-30 20:30:26,266 - ethicrawl.http_www_example_com.client.requests - WARNING - Client error: HTTP 404 for https://www.bbc.co.uk/search/crumble
-# 2025-03-30 20:30:26,266 - ethicrawl.http_www_example_com.client - WARNING - Client error fetching https://www.bbc.co.uk/search/crumble: HTTP 404
-# 2025-03-30 20:30:26,266 - ethicrawl.https_www_bbc_co_uk - INFO - Unbinding from www.bbc.co.uk
