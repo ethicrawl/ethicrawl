@@ -7,6 +7,7 @@ from typing import Any
 from .http_config import HttpConfig
 from .logger_config import LoggerConfig
 from .sitemap_config import SitemapConfig
+from .concurrency_config import ConcurrencyConfig
 
 
 class SingletonMeta(type):
@@ -73,6 +74,7 @@ class Config(metaclass=SingletonMeta):
     http: HttpConfig = field(default_factory=HttpConfig)
     logger: LoggerConfig = field(default_factory=LoggerConfig)
     sitemap: SitemapConfig = field(default_factory=SitemapConfig)
+    concurrency: ConcurrencyConfig = field(default_factory=ConcurrencyConfig)
 
     # Thread safety helpers
     _lock = threading.RLock()

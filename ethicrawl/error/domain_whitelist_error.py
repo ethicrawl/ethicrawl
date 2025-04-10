@@ -12,8 +12,7 @@ class DomainWhitelistError(EthicrawlError):
         bound_domain: The domain the ethicrawl is bound to
     """
 
-    def __init__(self, url, bound_domain):
+    def __init__(self, url):
         self.url = url
-        self.bound_domain = bound_domain
-        message = f"Cannot access URL '{url}' - domain not whitelisted. Ethicrawl is bound to '{bound_domain}'"
+        message = f"Cannot access URL '{url}' - domain not whitelisted.'"
         super().__init__(message)
