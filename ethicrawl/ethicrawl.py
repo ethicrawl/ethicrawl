@@ -7,7 +7,7 @@ from ethicrawl.config import Config
 from ethicrawl.context import Context
 from ethicrawl.core import Headers, Resource, Url
 from ethicrawl.robots import Robot
-from ethicrawl.scheduler import Scheduler
+from ethicrawl.context import ContextManager  # Instead of aliasing as RequestRouter
 from ethicrawl.sitemaps import SitemapParser
 
 
@@ -58,7 +58,7 @@ class Ethicrawl:
         >>> ethicrawl.unbind()  # Clean up when done
     """
 
-    def bind(self, url: str | Url | Resource, client: HttpClient | None = None) -> bool:
+    def bind(self, url: str | Url | Resource, client: Client | None = None) -> bool:
         """Bind the ethicrawl to a specific website domain.
 
         Binding establishes the primary domain context with its robots.txt handler,
@@ -66,7 +66,7 @@ class Ethicrawl:
 
         Args:
             url: The base URL of the site to crawl (string, Url, or Resource)
-            client: HTTP client to use for requests. Defaults to a standard HttpClient
+            client: HTTP client to use for requests. Defaults to a standard Client
 
         Returns:
             bool: True if binding was successful
@@ -81,12 +81,12 @@ class Ethicrawl:
         resource = Resource(url)
 
         if not self.bound:
-            self._scheduler: Scheduler = Scheduler()
+            self._context_manager: ContextManager = ContextManager()
             self._default_client: Client = client or HttpClient()
             self._context = Context(resource, self._default_client)
 
         client = client or self._default_client
-        self._scheduler.bind(resource, client)
+        self._context_manager.bind(resource, client)
         self.logger.info("Successfully bound to %s", url)
         return True
 
@@ -166,7 +166,7 @@ class Ethicrawl:
     @property
     @ensure_bound
     def robots(self) -> Robot:
-        return self._scheduler.robot(self._context.resource)
+        return self._context_manager.robot(self._context.resource)
 
     @property
     @ensure_bound
@@ -182,10 +182,14 @@ class Ethicrawl:
         Raises:
             RuntimeError: If not bound to a site
         """
+
+        # figure out which site it is, and get the appropriate sitemap with a client
+
         if not hasattr(self, "_sitemap"):
-            self._sitemap = self._scheduler.sitemap(
-                self._context.resource
-            )  #  SitemapParser(self._context)
+            # Get a sitemap parser from the context manager that uses the correct client
+            client = self._context_manager.client(self._context.resource)
+            # client.get()
+            self._sitemap = self._context_manager.sitemap(self._context.resource)
         return self._sitemap
 
     @ensure_bound
@@ -226,6 +230,13 @@ class Ethicrawl:
 
         self.logger.debug("Preparing to fetch %s", resource.url)
 
+        return self._context_manager.get(resource, headers=Headers(headers))
+
+        # @ensure_bound
+        # @property
+        # def sitemap(self):
+        #     pass
+
         # # Get domain from URL
         # target_domain_key = resource.url.base
 
@@ -265,5 +276,3 @@ class Ethicrawl:
         # # See if we can fetch the resource
         # if robot.can_fetch(resource, user_agent=user_agent):
         #     self.logger.debug("Request permitted by robots.txt policy")
-
-        return self._scheduler.get(resource, headers=headers)

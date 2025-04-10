@@ -1,5 +1,5 @@
 .PHONY: clean docker docs info test \
-		coverage lint security
+		coverage lint security \
 		docker-build-base docker-build-tools docker-clean docker-validate docker-if-needed
 
 DOCKER_TOOLS = audit bandit black coverage mkdocs mypy publish pyright semgrep

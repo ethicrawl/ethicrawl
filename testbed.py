@@ -39,6 +39,8 @@ crumble_img: HttpResponse = ec.get(sample_img)
 
 print(crumble_img.status_code, len(crumble_img.content))
 
+# robots currently broken
+
 try:
     ec.get(disallowed_url)
 except RobotDisallowedError as e:
