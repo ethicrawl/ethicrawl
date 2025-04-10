@@ -1,19 +1,14 @@
 from functools import wraps
 from logging import Logger as logging_Logger
-from typing import TypeVar, cast
 
-from ethicrawl.client import Response
+from ethicrawl.client import Response, Client
 from ethicrawl.client.http import HttpClient, HttpResponse
 from ethicrawl.config import Config
 from ethicrawl.context import Context
-from ethicrawl.error import DomainWhitelistError
 from ethicrawl.core import Headers, Resource, Url
 from ethicrawl.robots import Robot
+from ethicrawl.context import ContextManager
 from ethicrawl.sitemaps import SitemapParser
-
-from .domain_context import DomainContext
-
-T = TypeVar("T", bound=DomainContext)
 
 
 def ensure_bound(func):
@@ -63,20 +58,7 @@ class Ethicrawl:
         >>> ethicrawl.unbind()  # Clean up when done
     """
 
-    def _get_root_domain(self) -> DomainContext:
-        """Get the root domain context with type safety.
-
-        Returns:
-            The root domain context
-
-        Raises:
-            RuntimeError: If the root domain is not set
-        """
-        if not hasattr(self, "_root_domain") or self._root_domain is None:
-            raise RuntimeError("Root domain not initialized")
-        return cast(DomainContext, self._root_domain)
-
-    def bind(self, url: str | Url | Resource, client: HttpClient | None = None) -> bool:
+    def bind(self, url: str | Url | Resource, client: Client | None = None) -> bool:
         """Bind the ethicrawl to a specific website domain.
 
         Binding establishes the primary domain context with its robots.txt handler,
@@ -84,7 +66,7 @@ class Ethicrawl:
 
         Args:
             url: The base URL of the site to crawl (string, Url, or Resource)
-            client: HTTP client to use for requests. Defaults to a standard HttpClient
+            client: HTTP client to use for requests. Defaults to a standard Client
 
         Returns:
             bool: True if binding was successful
@@ -93,24 +75,18 @@ class Ethicrawl:
             ValueError: If URL is invalid
             RuntimeError: If already bound to a different site
         """
-        if self.bound:
-            root_domain = self._get_root_domain()
-            raise RuntimeError(
-                f"Already bound to {root_domain.context.resource.url} - unbind() first"
-            )
-
-        self._root_domain: DomainContext | None = None
-        self._whitelist: dict[str, DomainContext] = {}
-
         if isinstance(url, Resource):
             url = url.url
         url = Url(str(url), validate=True)
         resource = Resource(url)
-        client = client or HttpClient()
-        context = Context(resource, client)
 
-        # Use DomainContext for the root domain
-        self._root_domain = DomainContext(context=context)
+        if not self.bound:
+            self._context_manager: ContextManager = ContextManager()
+            self._default_client: Client = client or HttpClient()
+            self._context = Context(resource, self._default_client)
+
+        client = client or self._default_client
+        self._context_manager.bind(resource, client)
         self.logger.info("Successfully bound to %s", url)
         return True
 
@@ -125,7 +101,7 @@ class Ethicrawl:
         """
         # Find all instance attributes starting with underscore
         if self.bound:
-            domain = self._get_root_domain().context.resource.url.netloc
+            domain = self._context.resource.url.netloc
             self.logger.info("Unbinding from %s", domain)
 
         private_attrs = [attr for attr in vars(self) if attr.startswith("_")]
@@ -139,34 +115,20 @@ class Ethicrawl:
 
     @ensure_bound
     def whitelist(self, url: str | Url, client: HttpClient | None = None) -> bool:
-        """
-        Whitelist an additional domain for crawling.
+        """Add a domain to the whitelist.
 
-        By default, Ethicrawl will only request URLs from the bound domain.
-        Whitelisting allows accessing resources from other domains (like CDNs).
+        Deprecated:
+            This method is deprecated and will be removed in a future version.
+            Use bind() instead, which now serves the same purpose.
 
         Args:
-            url (str or Url): URL from the domain to whitelist
-            client (HttpClient, optional): Client to use for this domain
+            url: The base URL to whitelist
+            client: HTTP client to use for this domain
 
         Returns:
             bool: True if whitelisting was successful
-
-        Raises:
-            RuntimeError: If not bound to a primary site
         """
-        if isinstance(url, Resource):
-            url = url.url
-        url = Url(str(url), validate=True)
-
-        # Include both scheme and netloc in the domain key
-        domain_key = f"{url.scheme}://{url.netloc}"
-        root_domain = self._get_root_domain()
-        context = Context(Resource(url), client or root_domain.context.client)
-
-        self._whitelist[domain_key] = DomainContext(context=context)
-        self.logger.info("Whitelisted domain: %s", domain_key)
-        return True
+        return self.bind(url, client)
 
     @property
     def bound(self) -> bool:
@@ -175,7 +137,7 @@ class Ethicrawl:
         Returns:
             bool: True if the ethicrawl is bound to a domain, False otherwise
         """
-        return hasattr(self, "_root_domain") and self._root_domain is not None
+        return hasattr(self, "_context") and self._context is not None
 
     @property
     def config(self) -> Config:
@@ -199,30 +161,17 @@ class Ethicrawl:
         Raises:
             RuntimeError: If not bound to a site
         """
-        root_domain = self._get_root_domain()
-        return root_domain.context.logger("")
+        return self._context.logger("")
 
     @property
     @ensure_bound
     def robots(self) -> Robot:
-        """Access the robots.txt handler for the bound domain.
-
-        The Robot instance manages fetching, parsing, and enforcing
-        robots.txt rules for the current domain.
-
-        Returns:
-            Robot: The robots.txt handler for this domain
-
-        Raises:
-            RuntimeError: If not bound to a site
-        """
-        root_domain = self._get_root_domain()
-        return root_domain.robot
+        return self._context_manager.robot(self._context.resource)
 
     @property
     @ensure_bound
     def sitemaps(self) -> SitemapParser:
-        """Access the sitemap parser for the bound domain.
+        """Access the sitemap parser for the primary bound domain.
 
         The parser is created on first access and cached for subsequent calls.
         It provides methods to extract URLs from XML sitemaps.
@@ -233,9 +182,11 @@ class Ethicrawl:
         Raises:
             RuntimeError: If not bound to a site
         """
+
         if not hasattr(self, "_sitemap"):
-            root_domain = self._get_root_domain()
-            self._sitemap = SitemapParser(root_domain.context)
+            # Get a sitemap parser from the context manager that uses the correct client
+            client = self._context_manager.client(self._context.resource)
+            self._sitemap = self._context_manager.sitemap(self._context.resource)
         return self._sitemap
 
     @ensure_bound
@@ -276,49 +227,4 @@ class Ethicrawl:
 
         self.logger.debug("Preparing to fetch %s", resource.url)
 
-        # Get domain from URL
-        target_domain_key = f"{resource.url.scheme}://{resource.url.netloc}"
-
-        # Check if domain is allowed
-        root_domain = self._get_root_domain()
-        domain_ctx = (
-            root_domain
-            if resource.url.netloc == root_domain.context.resource.url.netloc
-            and resource.url.scheme == root_domain.context.resource.url.scheme
-            else self._whitelist.get(target_domain_key)
-        )
-
-        if domain_ctx is None:
-            # Change this line to include scheme in the bound domain
-            bound_domain_key = f"{root_domain.context.resource.url.scheme}://{root_domain.context.resource.url.netloc}"
-
-            self.logger.warning(
-                "Domain not allowed: %s (bound to %s)",
-                target_domain_key,  # This already includes scheme+netloc
-                bound_domain_key,  # Now this also includes scheme+netloc
-            )
-
-            raise DomainWhitelistError(
-                str(resource.url),
-                bound_domain_key,  # Pass the full scheme+netloc format
-            )
-        else:
-            self.logger.debug("Using domain context for %s", target_domain_key)
-
-        context = domain_ctx.context
-        robot = domain_ctx.robot
-
-        # Extract User-Agent from headers if present (for robots.txt checking)
-        user_agent = None
-        if headers:
-            headers = Headers(headers)
-            user_agent = headers.get("User-Agent")
-
-        # See if we can fetch the resource
-        if robot.can_fetch(resource, user_agent=user_agent):
-            self.logger.debug("Request permitted by robots.txt policy")
-
-        # Use the domain's context to get its client
-        if isinstance(context.client, HttpClient):
-            return context.client.get(resource, headers=headers)
-        return context.client.get(resource)
+        return self._context_manager.get(resource, headers=Headers(headers))

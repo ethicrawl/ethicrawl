@@ -120,6 +120,13 @@ class Robot(Resource):
 
         can_fetch = self._parser.can_fetch(str(resource.url), user_agent)
 
+        if resource.url.path in ["robots.txt", "/robots.txt"]:
+            self._logger.debug(
+                "Permission check for %s: canonical robots.txt is always allowed",
+                resource.url,
+            )
+            return True
+
         # Log the decision with the used User-Agent for better debugging
         if can_fetch:
             self._logger.debug(

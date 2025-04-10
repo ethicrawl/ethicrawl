@@ -2,6 +2,7 @@
 
 from ethicrawl.config.base_config import BaseConfig
 from ethicrawl.config.config import Config
+from ethicrawl.config.concurrency_config import ConcurrencyConfig
 from ethicrawl.config.http_config import HttpConfig
 from ethicrawl.config.http_proxy_config import HttpProxyConfig
 from ethicrawl.config.logger_config import LoggerConfig

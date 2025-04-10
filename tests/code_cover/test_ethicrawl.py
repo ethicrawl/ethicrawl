@@ -21,19 +21,12 @@ class TestEthicrawl:
         # Test binding
         assert crawler.bind("https://example.com")
         assert crawler.bound
-        assert hasattr(crawler, "_root_domain")
-
-        # Test double binding
-        with pytest.raises(
-            RuntimeError,
-            match=re.escape("Already bound to https://example.com - unbind() first"),
-        ):
-            crawler.bind("https://example.com")
+        assert hasattr(crawler, "_context")
 
         # Test unbinding
         assert crawler.unbind()
         assert not crawler.bound
-        assert not hasattr(crawler, "_root_domain")
+        assert not hasattr(crawler, "_context")
 
         # Test binding with a Url
         assert crawler.bind(Url("https://example.com"))
@@ -169,27 +162,13 @@ class TestEthicrawl:
         # Test request to non-whitelisted domain is rejected
         with pytest.raises(
             DomainWhitelistError,
-            match="Cannot access URL 'https://example.com/index.html' - domain not whitelisted. Ethicrawl is bound to 'http://localhost:5000'",
+            match="Cannot access URL 'https://example.com/index.html' - domain not whitelisted.",
         ):
             crawler.get("https://example.com/index.html")
 
-        # Verify whitelist internals - KEY CHANGE: Add protocol to whitelist key
-        assert hasattr(crawler, "_whitelist")
-        assert f"http://127.0.0.1:{port}" in crawler._whitelist  # Include protocol here
-        assert hasattr(crawler._whitelist[f"http://127.0.0.1:{port}"], "context")
         # Check robot property accessor works
-        robot = crawler._whitelist[
-            f"http://127.0.0.1:{port}"
-        ].robot  # Include protocol here
+        robot = crawler.robots
         assert robot is not None
-
-        # Test that whitelist information is cleared on unbind
-        crawler.unbind()
-        assert not hasattr(crawler, "_whitelist")
-
-        # Test that re-binding starts with clean whitelist
-        crawler.bind(primary_url)
-        assert hasattr(crawler, "_whitelist")
 
     def test_whitelist_resource(self):
         crawler = Ethicrawl()
@@ -235,11 +214,6 @@ class TestEthicrawl:
             f"{base_url}/private/secret.html", headers={"Accept": "text/html"}
         )
         assert result.status_code == 200  # Should still use DefaultBot
-
-    def test_get_root_domain(self):
-        ec = Ethicrawl()
-        with pytest.raises(RuntimeError, match="Root domain not initialized"):
-            ec._get_root_domain()
 
     def test_get_with_non_http_client(self):
         """Test the get method with a client that's not an HttpClient."""
