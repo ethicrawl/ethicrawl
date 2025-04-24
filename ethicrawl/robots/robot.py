@@ -45,7 +45,9 @@ class Robot(Resource):
 
         Fetches the robots.txt file using the provided context's client,
         then parses it according to response status:
-        - 404: Create empty ruleset (allow all)
+        - 404: Create empty ruleset (allow all) per RFC 9309
+        - 403: Create empty ruleset (allow all) with warning - CDN restriction pattern
+        - 410: Create empty ruleset (allow all) with warning - resource gone
         - 200: Parse actual robots.txt content
         - Other: Create restrictive ruleset (deny all)
         """
@@ -59,9 +61,24 @@ class Robot(Resource):
             status_code = (
                 response.status_code  # pyright: ignore[reportAttributeAccessIssue]
             )
+
+        empty_ruleset = Protego.parse("")
+
         if status_code == 404:  # spec says fail open
-            self._parser = Protego.parse("")
+            self._parser = empty_ruleset
             self._logger.info("Server returned %s - allowing all", status_code)
+        elif status_code == 403:  # CDN security pattern
+            self._parser = empty_ruleset
+            self._logger.warning(
+                "Server returned %s - possible CDN restriction, allowing all with caution",
+                status_code,
+            )
+        elif status_code == 410:  # Gone - resource permanently removed
+            self._parser = empty_ruleset
+            self._logger.warning(
+                "Server returned %s - resource permanently removed, allowing all with caution",
+                status_code,
+            )
         elif status_code == 200:  # there's a robots.txt to use
             self._parser = Protego.parse(
                 response.text  # pyright: ignore[reportAttributeAccessIssue]
