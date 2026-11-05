@@ -11,7 +11,6 @@ from ethicrawl.sitemaps import (
 )
 from ethicrawl.error import SitemapError
 
-
 html_doc = """
 <html xmlns="http://www.w3.org/TR/html4/">
     <head>

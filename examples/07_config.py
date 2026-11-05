@@ -121,8 +121,7 @@ print(f"Component Levels: {config.logger.component_levels}")
 print("\n==== COMMON CONFIGURATION USE CASES ====")
 
 print("\n--- Slow, Careful Crawling ---")
-print(
-    """
+print("""
 # For high-reliability crawling with minimal impact
 config = Config()
 config.http.rate_limit = 0.1  # Only 1 request per 10 seconds
@@ -130,23 +129,19 @@ config.http.jitter = 0.5  # Add 0-50% random variation to delay
 config.http.max_retries = 5  # More retries for resilience
 config.http.user_agent = "EthicrawlBot/1.0 (https://example.com/bot)"  # Identifiable
 config.logger.file_enabled = True  # Log everything for audit trail
-"""
-)
+""")
 
 print("\n--- Deep Sitemap Exploration ---")
-print(
-    """
+print("""
 # For comprehensive sitemap crawling
 config = Config()
 config.sitemap.max_depth = 15  # Follow deeply nested sitemaps
 config.sitemap.follow_external = True  # Follow external references
 config.logger.set_component_level("sitemaps", "DEBUG")  # Detailed sitemap logs
-"""
-)
+""")
 
 print("\n--- Multi-domain Crawling with Different Rates ---")
-print(
-    """
+print("""
 # Create different clients for different domains
 from ethicrawl.client import HttpClient
 
@@ -163,13 +158,11 @@ ethicrawl.whitelist("https://cdn.example.com", client=cdn_client)
 Config().http.rate_limit = 0.1  # 1 request per 10 seconds
 api_client = HttpClient()  # Will use updated config
 ethicrawl.whitelist("https://api.example.com", client=api_client)
-"""
-)
+""")
 
 # 6. THREAD SAFETY
 print("\n==== THREAD SAFETY FEATURES ====")
-print(
-    """
+print("""
 Key thread safety features in Ethicrawl's configuration system:
 
 1. All property access is protected by a reentrant lock
@@ -188,8 +181,7 @@ Key thread safety features in Ethicrawl's configuration system:
        "http": {"timeout": 30, "max_retries": 5},
        "logger": {"level": "DEBUG"}
    })
-"""
-)
+""")
 
 # Clean up
 if os.path.exists(config_file):

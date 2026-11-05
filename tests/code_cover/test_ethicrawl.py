@@ -1,6 +1,7 @@
 import pytest
 import re
 from logging import Logger as logging_Logger
+from urllib.parse import urlparse
 
 from unittest.mock import Mock
 
@@ -8,6 +9,30 @@ from ethicrawl import Ethicrawl, Resource, Config, Url, HttpClient
 from ethicrawl.robots import Robot
 from ethicrawl.error import RobotDisallowedError, DomainWhitelistError
 from ethicrawl.sitemaps import SitemapParser
+
+
+@pytest.fixture(autouse=True)
+def no_external_http(monkeypatch):
+    """Answer requests to non-local hosts with a canned 404.
+
+    bind() eagerly fetches robots.txt, so binding to example.com used to hit the
+    real internet. Local test-server traffic is passed through untouched.
+    """
+    import requests
+
+    real_get = requests.Session.get
+
+    def fake_get(self, url, *args, **kwargs):
+        host = urlparse(str(url)).hostname
+        if host in ("localhost", "127.0.0.1"):
+            return real_get(self, url, *args, **kwargs)
+        response = requests.Response()
+        response.status_code = 404
+        response.url = str(url)
+        response._content = b""
+        return response
+
+    monkeypatch.setattr(requests.Session, "get", fake_get)
 
 
 class TestEthicrawl:
