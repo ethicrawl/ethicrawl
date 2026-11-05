@@ -5,7 +5,13 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches: [main, develop]
   workflow_dispatch:  # Allow manual triggering
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   deploy-docs:
@@ -13,13 +19,13 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0  # Fetch all history
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-
+      # Plain `docker build` on the runner's default builder keeps images in
+      # the local store, so the MkDocs image can build FROM ethicrawl-base.
+      # (A docker-container buildx builder would not load them.)
       - name: Build base image
         run: docker build -t ethicrawl-base -f docker/Dockerfile.base .
 
@@ -37,8 +43,10 @@ jobs:
             -v $(pwd)/README.md:/app/README.md \
             ethicrawl:mkdocs build
 
+      # PRs only verify the docs build; deployment happens from main.
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+        if: github.event_name != 'pull_request'
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./site

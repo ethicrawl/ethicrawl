@@ -1,39 +1,47 @@
 name: security
 permissions:
   contents: read
-  pull-requests: write
 
 on:
   push:
     branches: [develop, main]
   pull_request:
-    branches: [main]
+    branches: [main, develop]
   schedule:
     - cron: "0 0 * * 0" # Weekly on Sundays
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   security-scan:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
-          python-version: "3.10"
+          python-version: "3.13"
+          cache: pip
+          cache-dependency-path: pyproject.toml
 
+      # Only the project and its lint tooling go into this environment, so
+      # pip-audit reports on what ethicrawl actually depends on. Standalone
+      # scanners (bandit, semgrep) run isolated via pipx.
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install --upgrade bandit black mypy pyright pip-audit semgrep lxml-stubs types-requests types-colorama
-          pip install -e .
+          pip install -e ".[lint]" pip-audit
 
       # CODE QUALITY CHECKS
       - name: Run Black formatter check
         run: black --check .
         id: black
 
-      # STATIC ANALYSIS
+      # STATIC ANALYSIS (both tools target the oldest supported Python via pyproject.toml)
       - name: Run mypy type checking
         run: mypy ethicrawl
         id: mypy
@@ -44,23 +52,24 @@ jobs:
 
       # SECURITY CHECKS
       - name: Run Bandit
-        run: bandit -r ethicrawl -f json -o bandit-results.json
+        run: pipx run bandit -r ethicrawl -f json -o bandit-results.json
         id: bandit
 
       - name: Run pip-audit
-        run: pip-audit --ignore-vuln PYSEC-2022-43012 -f json -o pip-audit-results.json
+        run: pip-audit --skip-editable -f json -o pip-audit-results.json
         id: pip-audit
 
       - name: Run Semgrep
-        run: semgrep scan --config=auto --json -o semgrep-results.json
+        run: pipx run semgrep scan --config=auto --json -o semgrep-results.json
         id: semgrep
 
       # Upload all results as artifacts
       - name: Upload scan results
         if: always() # always upload even on failure
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: security-and-lint-results
+          if-no-files-found: ignore
           path: |
             bandit-results.json
             pip-audit-results.json

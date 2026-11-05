@@ -4,7 +4,7 @@ FROM ethicrawl-base:latest
 
 # Install MkDocs with Python documentation support
 RUN pip install --no-cache-dir \
-    mkdocs \
+    "mkdocs>=1.6,<2" \
     mkdocstrings \
     mkdocstrings-python \
     pymdown-extensions \
