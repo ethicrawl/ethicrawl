@@ -14,8 +14,8 @@
 We use [Black](https://github.com/psf/black) as our code formatter with default settings:
 
 ```shell
-# Install Black
-pip install black
+# Install Black (pinned to the project's version via the lint extra)
+pip install -e ".[lint]"
 
 # Format a single file
 black path/to/file.py
