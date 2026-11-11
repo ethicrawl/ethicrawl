@@ -112,7 +112,7 @@ class Robot(Resource):
         # Use provided User-Agent or fall back to client's default or system default.
         if user_agent is None:  # Only if no user agent provided
             if hasattr(self._context.client, "user_agent"):  # Try client's user agent
-                user_agent = (
+                user_agent = str(
                     self._context.client.user_agent  # pyright: ignore[reportAttributeAccessIssue]
                 )
             else:  # Fall back to config

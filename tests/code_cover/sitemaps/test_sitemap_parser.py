@@ -409,3 +409,11 @@ class TestSitemapParser:
 
             result = sp._get(r)
             assert isinstance(result, UrlsetDocument)
+
+    def test_get_requires_client(self):
+        context = self.context()
+        sp = SitemapParser(context)
+        with patch.object(type(context), "client", new_callable=PropertyMock) as prop:
+            prop.return_value = "not-a-client"
+            with pytest.raises(TypeError, match="Expected Client instance, got str"):
+                sp._get(Resource(context.resource.url))

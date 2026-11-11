@@ -8,7 +8,6 @@ from ethicrawl.error import RobotDisallowedError
 from ethicrawl.core import Url, Resource
 from ethicrawl.client import Client
 
-
 empty_robots_txt = """
 """
 
@@ -267,3 +266,20 @@ class TestRobot:
 
             # Call can_fetch (should use the fallback user_agent)
             assert robot.can_fetch("https://www.example.com/about") is True
+
+    def test_can_fetch_robots_txt_always_allowed(self):
+        """robots.txt itself stays fetchable even for a fully blocked agent."""
+        url = "https://www.example.com"
+        mock_client = Mock(spec=Client)
+        mock_response = Mock()
+        mock_response.status_code = 200
+        mock_response.text = "User-agent: *\nDisallow: /\n"
+        mock_client.get.return_value = mock_response
+        mock_client.user_agent = "test-agent"
+
+        context = Context(Resource(url), mock_client)
+        robot = Robot(RobotFactory.robotify(Url(url)), context)
+
+        assert robot.can_fetch("https://www.example.com/robots.txt") is True
+        with pytest.raises(RobotDisallowedError):
+            robot.can_fetch("https://www.example.com/anything")

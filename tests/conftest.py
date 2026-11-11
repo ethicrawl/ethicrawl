@@ -1,4 +1,5 @@
 import pytest
+import socket
 import threading
 from flask import Flask, Response
 import time
@@ -6,6 +7,24 @@ import time
 
 from ethicrawl.config import Config
 from ethicrawl.logger import Logger
+
+
+def _fake_gethostbyname(hostname: str) -> str:
+    """Offline stand-in for socket.gethostbyname.
+
+    Fully-qualified names (anything with a dot) and ``localhost`` resolve to
+    the loopback address; bare single-label names fail, mirroring what a real
+    resolver does for something like ``http://x``.
+    """
+    if hostname == "localhost" or "." in hostname:
+        return "127.0.0.1"
+    raise socket.gaierror(socket.EAI_NONAME, "Name or service not known")
+
+
+@pytest.fixture(autouse=True)
+def offline_dns(monkeypatch):
+    """Keep the suite hermetic: Url(validate=True) must not hit real DNS."""
+    monkeypatch.setattr("ethicrawl.core.url.gethostbyname", _fake_gethostbyname)
 
 
 @pytest.fixture(autouse=True)

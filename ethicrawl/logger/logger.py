@@ -43,8 +43,8 @@ class Logger:
     _initialized = False
 
     # Cache for handlers to avoid duplicate creation
-    _console_handler = None
-    _file_handler = None
+    _console_handler: StreamHandler | None = None
+    _file_handler: FileHandler | None = None
 
     @staticmethod
     def setup_logging() -> None:

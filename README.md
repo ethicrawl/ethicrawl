@@ -53,8 +53,11 @@ python -m venv venv
 source venv/bin/activate  # Linux/Mac
 venv\Scripts\activate     # Windows
 
-# Install in development mode
-pip install -e .
+# Install in development mode (add the test and lint tooling with .[dev])
+pip install -e ".[dev]"
+
+# Run the test suite
+pytest
 ```
 
 ## Quick Start
